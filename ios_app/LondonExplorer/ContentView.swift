@@ -21,7 +21,7 @@ struct ContentView: View {
                 }
                 .tag(0)
             
-            MainScreenView()
+            ProgressView()
                 .environmentObject(networkMonitor)
                 .tabItem {
                     Label("Browse", systemImage: "magnifyingglass")
@@ -29,7 +29,7 @@ struct ContentView: View {
                 }
                 .tag(1)
             
-            MainScreenView()
+            CreateRouteView()
                 .environmentObject(networkMonitor)
                 .tabItem {
                     Label("New Route", systemImage: "plus")
@@ -37,7 +37,7 @@ struct ContentView: View {
                 }
                 .tag(2)
             
-            MainScreenView()
+            ProgressView()
                 .environmentObject(networkMonitor)
                 .tabItem {
                     Label("Favourites", systemImage: selection == 3 ? "heart.fill" : "heart")
@@ -45,7 +45,7 @@ struct ContentView: View {
                 }
                 .tag(3)
             
-            MainScreenView()
+            ProgressView()
                 .environmentObject(networkMonitor)
                 .tabItem {
                     Label("Profile", systemImage: selection == 4 ? "person.fill" : "person")

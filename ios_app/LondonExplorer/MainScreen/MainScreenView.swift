@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MainScreenView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
-    @State var routes: [Route] = MockData.MainScreen
+    @State var routes: [Route] = MockData.Routes
     @State var friendsFeed: [FriendUpdate] = MockData.FriendsFeed
     @State var onRoute: RouteProgress = MockData.RouteProgress[0]
     @State var friendsOnRoute: [RouteProgress] = MockData.RouteProgress
@@ -31,9 +31,9 @@ struct MainScreenView: View {
                 Spacer()
                 if isLoading {
                     VStack(spacing: 25) {
-                        OnRouteWidget(route: $onRoute)
+                        OnRouteWidget(routeProgress: $onRoute)
                         if networkMonitor.isConnected {
-                            FriendsOnRouteWidget(routes: $friendsOnRoute)
+                            FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
                             SuggestedRoutesCarousel(routes: $routes)
                             FriendsFeed(friendsFeed: $friendsFeed)
                         } else {

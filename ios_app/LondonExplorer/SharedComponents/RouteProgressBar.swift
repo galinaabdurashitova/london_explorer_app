@@ -10,7 +10,7 @@ import SwiftUI
 
 struct RouteProgressBar: View {
     @Binding var num: Int
-    @Binding var total: Int
+    @State var total: Int
     
     var body: some View {
         GeometryReader { geometry in
@@ -46,10 +46,7 @@ struct RouteProgressBar: View {
             get: { return 20 },
             set: { _ in }
         ),
-        total: Binding<Int> (
-            get: { return 100 },
-            set: { _ in }
-        )
+        total: 100
     )
     .padding()
 }

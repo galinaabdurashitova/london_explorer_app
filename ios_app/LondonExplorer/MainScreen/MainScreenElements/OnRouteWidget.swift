@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct OnRouteWidget: View {
-    @Binding var route: RouteProgress
+    @Binding var routeProgress: RouteProgress
     
     var body: some View {
         VStack (spacing: 20) {
@@ -20,14 +20,14 @@ struct OnRouteWidget: View {
                 Spacer()
             }
             
-            RouteProgressView(route: $route)
+            RouteProgressView(routeProgress: $routeProgress)
         }
     }
 }
 
 #Preview {
     OnRouteWidget(
-        route: Binding<RouteProgress> (
+        routeProgress: Binding<RouteProgress> (
             get: { return MockData.RouteProgress[0] },
             set: { _ in }
         )

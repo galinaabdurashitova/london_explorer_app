@@ -28,14 +28,12 @@ struct RouteCard: View {
                     .frame(height:  size == .L ? UIScreen.main.bounds.width * 0.8 : 156)
                     .cornerRadius(8.0)
                 
-                Group {
-                    label.view
-                        .padding(.all, 6.0)
-                        .background(Color.lightBlue)
-                        .opacity(0.7)
-                        .cornerRadius(16.0)
-                        .padding(.all, 7.0)
-                }
+                label.view
+                    .padding(.all, 6.0)
+                    .background(Color.lightBlue)
+                    .opacity(0.7)
+                    .cornerRadius(16.0)
+                    .padding(.all, 7.0)
             }
             VStack (alignment: .leading, spacing: 5) {
                 Text(route.name)
@@ -51,7 +49,7 @@ struct RouteCard: View {
 #Preview {
     RouteCard(
         route: Binding<Route> (
-            get: { return MockData.MainScreen[3] },
+            get: { return MockData.Routes[3] },
             set: { _ in }
         ),
         label: .download(Date()),

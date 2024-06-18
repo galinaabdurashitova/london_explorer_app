@@ -62,7 +62,7 @@ struct SuggestedRoutesCarousel: View {
 #Preview {
     SuggestedRoutesCarousel(
         routes: Binding<[Route]> (
-            get: { return MockData.MainScreen },
+            get: { return MockData.Routes },
             set: { _ in }
         ),
         lines: 3

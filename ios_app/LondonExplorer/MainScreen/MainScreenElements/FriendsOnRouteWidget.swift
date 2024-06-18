@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct FriendsOnRouteWidget: View {
-    @Binding var routes: [RouteProgress]
+    @Binding var friendsProgresses: [RouteProgress]
     
     var body: some View {
         VStack (spacing: 20) {
@@ -20,9 +20,9 @@ struct FriendsOnRouteWidget: View {
                 Spacer()
             }
             
-            ForEach ($routes) { route in
+            ForEach ($friendsProgresses) { route in
                 if let friend = route.user.wrappedValue {
-                    RouteProgressView(route: route, user: route.user)
+                    RouteProgressView(routeProgress: route, user: route.user)
                 }
             }
         }
@@ -31,7 +31,7 @@ struct FriendsOnRouteWidget: View {
 
 #Preview {
     FriendsOnRouteWidget(
-        routes: Binding<[RouteProgress]> (
+        friendsProgresses: Binding<[RouteProgress]> (
             get: { return MockData.RouteProgress },
             set: { _ in }
         )

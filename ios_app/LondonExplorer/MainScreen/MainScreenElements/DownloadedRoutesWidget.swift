@@ -36,7 +36,7 @@ struct DownloadedRoutesWidget: View {
 #Preview {
     DownloadedRoutesWidget(
         routes: Binding<[Route]> (
-            get: { return MockData.MainScreen },
+            get: { return MockData.Routes },
             set: { _ in }
         )
     )

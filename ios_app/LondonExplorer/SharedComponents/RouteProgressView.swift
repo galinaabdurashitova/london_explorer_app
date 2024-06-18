@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 struct RouteProgressView: View {
-    @Binding var route: RouteProgress
+    @Binding var routeProgress: RouteProgress
     @Binding var user: User?
     
-    init(route: Binding<RouteProgress>, user: Binding<User?> = .constant(nil)) {
-        self._route = route
+    init(routeProgress: Binding<RouteProgress>, user: Binding<User?> = .constant(nil)) {
+        self._routeProgress = routeProgress
         self._user = user
     }
     
@@ -22,7 +22,7 @@ struct RouteProgressView: View {
             VStack (spacing: 3) {
                 HStack (spacing: 10) {
                     ZStack (alignment: .topLeading) {
-                        route.route.image
+                        routeProgress.route.image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 120)
@@ -47,12 +47,12 @@ struct RouteProgressView: View {
                             }
                         }
                         
-                        Text(route.route.name)
+                        Text(routeProgress.route.name)
                             .sectionCaption()
                         
                         VStack (alignment: .leading, spacing: 0) {
                             HStack {
-                                Text(String(route.collectables) + "/" + String(route.route.collectables))
+                                Text(String(routeProgress.collectables) + "/" + String(routeProgress.route.collectables))
                                     .foregroundColor(Color.redDark)
                                     .font(.system(size: 14, weight: .black))
                                 Text("collectables")
@@ -61,7 +61,7 @@ struct RouteProgressView: View {
                             }
                             
                             HStack {
-                                Text(String(route.stops) + "/" + String(route.route.stops))
+                                Text(String(routeProgress.stops) + "/" + String(routeProgress.route.stops.count))
                                     .foregroundColor(Color.redDark)
                                     .font(.system(size: 14, weight: .black))
                                 Text("stops")
@@ -73,7 +73,7 @@ struct RouteProgressView: View {
                     .frame(height: 120)
                 }
                 
-                RouteProgressBar(num: $route.stops, total: $route.route.stops)
+                RouteProgressBar(num: $routeProgress.stops, total: routeProgress.route.stops.count)
             }
             .padding(20)
         }
@@ -88,13 +88,13 @@ struct RouteProgressView: View {
 #Preview {
     VStack (spacing: 25) {
         RouteProgressView(
-            route: Binding<RouteProgress> (
+            routeProgress: Binding<RouteProgress> (
                 get: { return MockData.RouteProgress[0] },
                 set: { _ in }
             )
         )
         RouteProgressView(
-            route: Binding<RouteProgress> (
+            routeProgress: Binding<RouteProgress> (
                 get: { return MockData.RouteProgress[1] },
                 set: { _ in }
             ),

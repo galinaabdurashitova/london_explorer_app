@@ -36,10 +36,35 @@ extension Text {
             .lineLimit(2)
             .truncationMode(.tail)
     }
+    
+    func screenHeadline() -> some View {
+        self
+            .font(.system(size: 24, weight: .semibold))
+            .kerning(-0.2)
+            .lineLimit(2)
+            .truncationMode(.tail)
+    }
+    
+    func screenSubheadline() -> some View {
+        self
+            .font(.system(size: 16, weight: .medium))
+            .lineLimit(2)
+            .truncationMode(.tail)
+    }
+    
+    func label() -> some View {
+        self
+            .font(.system(size: 14, weight: .light))
+            .foregroundColor(Color.black.opacity(0.5))
+            .padding(.vertical, 6)
+            .padding(.horizontal, 8)
+            .background(Color.black.opacity(0.05))
+            .cornerRadius(20)
+    }
 }
 
 #Preview {
-    VStack {
+    VStack(spacing: 10) {
         Text("This is some text")
             .sectionCaption()
         
@@ -51,5 +76,14 @@ extension Text {
         
         Text("This is some text")
             .subheadline()
+        
+        Text("This is some text")
+            .screenHeadline()
+        
+        Text("This is some text")
+            .screenSubheadline()
+        
+        Text("This is some text")
+            .label()
     }
 }
