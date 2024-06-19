@@ -14,7 +14,7 @@ struct AttractionCard: View {
     var body: some View {
         VStack (alignment: .leading, spacing: 10) {
             HStack (spacing: 14) {
-                    attraction.images[0]
+                    Image(uiImage: attraction.images[0])
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 80, height: 80)

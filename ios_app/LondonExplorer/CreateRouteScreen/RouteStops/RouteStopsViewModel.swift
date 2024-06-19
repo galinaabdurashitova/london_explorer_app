@@ -11,32 +11,41 @@ import MapKit
 
 class RouteStopsViewModel: ObservableObject {
     @Published var stops: [Route.RouteStop] = []
-    @Published var pathes: [MKRoute?] = []
+    @Published var pathes: [CodableMKRoute?] = []
     @Published var isLoading: Bool = false
     @Published var test: Bool = false
     
     init(useTestData: Bool = false) {
+        self.pathes = Array(repeating: nil, count: 20)
         if useTestData {
             stops = MockData.RouteStops
+            //pathes = [nil, nil, nil]
             Task {
                 await calculateRoute()
             }
         }
     }
     
+    @MainActor
     func calculateRoute() async {
+        print("Starting route calculation")
         if stops.count > 1 {
-            self.pathes = Array(repeating: nil, count: stops.count-1)
+//            self.pathes = Array(repeating: nil, count: stops.count-1)
             self.isLoading = true
             for index in 1..<stops.count {
                 if let calculatedRouteStep = await calculateRouteStep(start: stops[index-1].attraction.coordinates, destination: stops[index].attraction.coordinates) {
-                    self.pathes[index-1] = calculatedRouteStep
-                } else {
-                    self.pathes[index-1] = nil
+//                    self.stops[index].expectedTravelTime = calculatedRouteStep.expectedTravelTime
+//                    self.stops[index].pathTo = calculatedRouteStep.polyline.coordinates
+                    self.pathes[index-1] = CodableMKRoute(from: calculatedRouteStep)
                 }
+//                else {
+//                    self.pathes[index-1] = nil
+//                }
+                print("Route step \(index-1) calculated")
             }
             self.isLoading = false
         }
+        print("Finished route calculation")
     }
     
     func calculateRouteStep(start: CLLocationCoordinate2D, destination: CLLocationCoordinate2D) async -> MKRoute? {

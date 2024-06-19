@@ -12,7 +12,7 @@ import MapKit
 struct PathConnection: View {
     @Binding var isLoading: Bool
     @State var reversed: Bool = false
-    @Binding var path: MKRoute?
+    @Binding var path: CodableMKRoute?
     
     var body: some View {
         ZStack {
@@ -51,7 +51,7 @@ struct PathConnection: View {
             get: { return false },
             set: { _ in }
         ),
-        path: .constant(MKRoute())
+        path: .constant(CodableMKRoute(from: MKRoute()))
     )
     .padding()
 }

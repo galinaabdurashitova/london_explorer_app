@@ -70,53 +70,53 @@ class MockData {
         Route(
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
-            image: Image("BigBen"),
+            image: UIImage(imageLiteralResourceName: "BigBen"),
             saves: 212,
             collectables: 5,
-            stops: RouteStops,
-            pathes: [nil, nil, nil]
+            stops: RouteStops
+            , pathes: [nil, nil, nil]
         ),
         Route(
             name: "London Secrets",
             description: "Another description but shorter",
-            image: Image("Museum"),
+            image: UIImage(imageLiteralResourceName: "Museum"),
             saves: 52,
             collectables: 7,
-            stops: RouteStops,
-            pathes: [nil, nil, nil]
+            stops: RouteStops
+            , pathes: [nil, nil, nil]
         ),
         Route(
             name: "Some Route Some Route Some Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
-            image: Image("LondonStreet"),
+            image: UIImage(imageLiteralResourceName: "LondonStreet"),
             saves: 103,
             collectables: 5,
-            stops: RouteStops,
-            pathes: [nil, nil, nil]
+            stops: RouteStops
+            , pathes: [nil, nil, nil]
         ),
         Route(
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
-            image: Image("BigBen"),
+            image: UIImage(imageLiteralResourceName: "BigBen"),
             saves: 212,
             collectables: 5,
             downloadDate: Date(),
-            stops: RouteStops,
-            pathes: [nil, nil, nil]
+            stops: RouteStops
+            , pathes: [nil, nil, nil]
         ),
         Route(
             name: "London Secrets",
             description: "Another description but shorter",
-            image: Image("Museum"),
+            image: UIImage(imageLiteralResourceName: "Museum"),
             saves: 52,
             collectables: 5,
-            stops: RouteStops,
-            pathes: [nil, nil, nil]
+            stops: RouteStops
+            , pathes: [nil, nil, nil]
         )//,
 //        Route(
 //            name: "Some Route",
 //            description: "Visit all the main sights and see Big Ben following this fantastic route",
-//            image: Image("LondonStreet"),
+//            image: UIImage(imageLiteralResourceName: "LondonStreet"),
 //            saves: 103
 //        )
     ]
@@ -164,11 +164,11 @@ class MockData {
             address: "London SW1A 0AA",
             coordinates: CLLocationCoordinate2D(latitude: 51.4991509, longitude: -0.1252128),
             images: [
-                Image("BigBen1"),
-                Image("BigBen2"),
-                Image("BigBen3"),
-                Image("BigBen4"),
-                Image("BigBen5")
+                UIImage(imageLiteralResourceName: "BigBen1"),
+                UIImage(imageLiteralResourceName: "BigBen2"),
+                UIImage(imageLiteralResourceName: "BigBen3"),
+                UIImage(imageLiteralResourceName: "BigBen4"),
+                UIImage(imageLiteralResourceName: "BigBen5")
             ],
             categories: [
                 .historical,
@@ -184,11 +184,11 @@ class MockData {
             address: "London SW1A 1AA", 
             coordinates: CLLocationCoordinate2D(latitude: 51.5013481, longitude: -0.1419304),
             images: [
-                Image("BuckinghamPalace1"),
-                Image("BuckinghamPalace2"),
-                Image("BuckinghamPalace3"),
-                Image("BuckinghamPalace4"),
-                Image("BuckinghamPalace5")
+                UIImage(imageLiteralResourceName: "BuckinghamPalace1"),
+                UIImage(imageLiteralResourceName: "BuckinghamPalace2"),
+                UIImage(imageLiteralResourceName: "BuckinghamPalace3"),
+                UIImage(imageLiteralResourceName: "BuckinghamPalace4"),
+                UIImage(imageLiteralResourceName: "BuckinghamPalace5")
             ],
             categories: [
                 .historical,
@@ -202,9 +202,9 @@ class MockData {
             address: "Great Russell St, London WC1B 3DG",
             coordinates: CLLocationCoordinate2D(latitude: 51.5194155, longitude: -0.1269882),
             images: [
-                Image("BritishMuseum1"),
-                Image("BritishMuseum2"),
-                Image("BritishMuseum3")
+                UIImage(imageLiteralResourceName: "BritishMuseum1"),
+                UIImage(imageLiteralResourceName: "BritishMuseum2"),
+                UIImage(imageLiteralResourceName: "BritishMuseum3")
             ],
             categories: [
                 .museums,
@@ -219,7 +219,7 @@ class MockData {
             address: "London EC3N 4AB",
             coordinates: CLLocationCoordinate2D(latitude: 51.5081266, longitude: -0.0760809),
             images: [
-                Image("Tower1")
+                UIImage(imageLiteralResourceName: "Tower1")
             ],
             categories: [
                 .historical,

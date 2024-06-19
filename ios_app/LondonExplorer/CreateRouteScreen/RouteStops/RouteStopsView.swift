@@ -12,16 +12,15 @@ import UniformTypeIdentifiers
 
 struct RouteStopsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: RouteStopsViewModel = RouteStopsViewModel()
+    @StateObject var viewModel: RouteStopsViewModel = RouteStopsViewModel()
     @State private var showAttractionSearchView: Bool = false
     @State private var confirmRemove: Bool = false
     @State private var draggingItem: Route.RouteStop?
     
-    init(useTestData: Bool = false) {
-        if useTestData {
-            viewModel = RouteStopsViewModel(useTestData: useTestData)
-        }
-    }
+//    init(useTestData: Bool = false) {
+//        //viewModel = RouteStopsViewModel(useTestData: true)
+//        viewModel = RouteStopsViewModel(useTestData: useTestData)
+//    }
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -61,26 +60,27 @@ struct RouteStopsView: View {
             }
             .fullScreenCover(isPresented: $showAttractionSearchView) {
                 NavigationStack {
-                    AttractionsSearchView(chosenAttractions: $viewModel.stops)
-                        .onDisappear {
-                            Task {
-                                await viewModel.calculateRoute()
-                            }
-                        }
+                    AttractionsSearchView(routeViewModel: viewModel)
+//                    AttractionsSearchView(chosenAttractions: $viewModel.stops)
+//                        .onDisappear {
+//                            Task { [weak viewModel] in
+//                                await viewModel?.calculateRoute()
+//                            }
+//                        }
                 }
             }
             
-            NavigationLink(destination: {
-                FinishCreateView(stops: viewModel.stops, pathes: viewModel.pathes)
-            }) {
-                ButtonView(
-                    text: .constant("Continue"),
-                    colour: Color.lightBlue,
-                    textColour: Color.black,
-                    size: .L
-                )
-                .padding(.bottom, 20)
-            }
+//            NavigationLink(destination: {
+//                FinishCreateView(stops: viewModel.stops, pathes: viewModel.pathes)
+//            }) {
+//                ButtonView(
+//                    text: .constant("Continue"),
+//                    colour: Color.lightBlue,
+//                    textColour: Color.black,
+//                    size: .L
+//                )
+//                .padding(.bottom, 20)
+//            }
         }
         .popup(
             isPresented: $confirmRemove,
@@ -106,19 +106,15 @@ struct RouteStopsView: View {
             if viewModel.stops.count > 0 {
                 NavigationLink(destination: {
                     MapRouteView(
-                        route: Binding<Route> (
-                            get: { return
-                                Route(
-                                    name: "New Route",
-                                    description: "",
-                                    image: viewModel.stops[0].attraction.images[0],
-                                    collectables: 0,
-                                    stops: viewModel.stops,
-                                    pathes: viewModel.pathes
-                                )
-                            },
-                            set: { _ in }
-                        )
+//                        route: Route(
+//                            name: "New Route",
+//                            description: "",
+//                            image: viewModel.stops[0].attraction.images[0],
+//                            collectables: 0,
+//                            stops: viewModel.stops,
+//                            pathes: viewModel.pathes
+//                        )
+                        stops: viewModel.stops, pathes: viewModel.pathes
                     )
                     .toolbar(.hidden, for: .tabBar)
                 }) {
@@ -130,8 +126,9 @@ struct RouteStopsView: View {
     
     var RouteStopsPath: some View {
         VStack(spacing: -1) {
-            ForEach(viewModel.stops.indices, id: \.self) { index in
-                if index > 0, viewModel.pathes.count > index - 1 {
+            ForEach(viewModel.stops.indices) { index in
+                if index > 0, viewModel.pathes.count > index - 1
+                {
                     PathConnection(
                         isLoading: $viewModel.isLoading,
                         reversed: index % 2 == 1 ? false : true,
@@ -147,11 +144,11 @@ struct RouteStopsView: View {
                     .onDrop(of: [UTType.text], delegate: RouteStopCardDropDelegate(item: viewModel.stops[index], current: $draggingItem, stops: $viewModel.stops, viewModel: viewModel))
             }
         }
-        .onAppear {
-            Task {
-                await viewModel.calculateRoute()
-            }
-        }
+//        .onAppear {
+//            Task {
+//                await viewModel.calculateRoute()
+//            }
+//        }
     }
     
     var AddStopsButton: some View {
@@ -182,5 +179,5 @@ struct RouteStopsView: View {
 }
 
 #Preview {
-    RouteStopsView(useTestData: true)
+    RouteStopsView()
 }

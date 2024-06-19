@@ -12,7 +12,8 @@ struct RouteLabelRow: View {
     @Binding var route: Route
     
     var pathTime: String {
-        let seconds = route.pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) + Double(route.stops.count * 15 * 60)
+        let seconds = route.stops.compactMap { $0.expectedTravelTime }.reduce(0, +) + Double(route.stops.count * 15 * 60)
+//        route.pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) + Double(route.stops.count * 15 * 60)
         let totalMinutes = Int(seconds / 60)
         let hours = totalMinutes / 60
         let minutes = totalMinutes % 60

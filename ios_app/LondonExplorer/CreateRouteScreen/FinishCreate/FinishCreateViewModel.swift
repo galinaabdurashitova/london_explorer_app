@@ -15,14 +15,14 @@ class FinishCreateViewModel: ObservableObject {
     @Published var routeDescription: String
     //@AppStorage("LONDON_EXPLORER_ROUTE") var savedRoute: Route
     
-    init(stops: [Route.RouteStop], pathes: [MKRoute?]) {
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
         self.route = Route(
             name: "New Route",
             description: "",
-            image: stops.count > 0 ? stops[0].attraction.images[0] : Image(""),
+            image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
             collectables: 0,
-            stops: stops,
-            pathes: pathes
+            stops: stops
+            , pathes: pathes
         )
         //self.savedRoute = self.route
         self.routeName = ""

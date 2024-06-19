@@ -13,7 +13,7 @@ struct FinishCreateView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: FinishCreateViewModel
     
-    init(stops: [Route.RouteStop], pathes: [MKRoute?]) {
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
         self.viewModel = FinishCreateViewModel(stops: stops, pathes: pathes)
     }
     
@@ -98,7 +98,7 @@ struct FinishCreateView: View {
                 
                 if viewModel.route.stops.count > 0 {
                     NavigationLink(destination: {
-                        MapRouteView(route: $viewModel.route)
+                        MapRouteView(route: viewModel.route)
                             .toolbar(.hidden, for: .tabBar)
                     }) {
                         MapLinkButton()
@@ -106,7 +106,7 @@ struct FinishCreateView: View {
                 }
             }
             
-            RouteStopsList(route: $viewModel.route)
+//            RouteStopsList(route: $viewModel.route)
         }
     }
 }

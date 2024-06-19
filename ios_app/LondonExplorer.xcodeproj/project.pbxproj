@@ -294,21 +294,21 @@
 		2AA5B12A2C09049D001EC475 /* SharedComponents */ = {
 			isa = PBXGroup;
 			children = (
-				2AA5B1352C09D7BB001EC475 /* FeedUpdate.swift */,
-				2AA5B12B2C0904C5001EC475 /* RouteCard.swift */,
-				2AA5B1312C090EE4001EC475 /* SectionHeader.swift */,
-				2AA5B1402C09FB2E001EC475 /* RouteProgressBar.swift */,
-				2AA5B1422C0A017E001EC475 /* RouteProgressView.swift */,
-				2AE8A0212C13A2C6005E0F62 /* ScreenHeader.swift */,
 				2AE8A0362C14E8D3005E0F62 /* AttractionCategoriesCarousel.swift */,
-				2A76D4A62C15D13D007908E0 /* ImagesSlidesHeader.swift */,
+				2A76D4BE2C172AAD007908E0 /* BackButton.swift */,
 				2A76D4AD2C15FF56007908E0 /* ButtonView.swift */,
 				2A76D4AF2C160C2D007908E0 /* CategoryLabel.swift */,
-				2A76D4BE2C172AAD007908E0 /* BackButton.swift */,
-				2A76D4C52C18F849007908E0 /* RouteStopsList.swift */,
-				2A76D4CD2C1B9653007908E0 /* PopUp.swift */,
-				2A76D4D22C1F6A65007908E0 /* RouteLabelRow.swift */,
 				2A76D4D42C1F6C05007908E0 /* CustomTextField.swift */,
+				2AA5B1352C09D7BB001EC475 /* FeedUpdate.swift */,
+				2A76D4A62C15D13D007908E0 /* ImagesSlidesHeader.swift */,
+				2A76D4CD2C1B9653007908E0 /* PopUp.swift */,
+				2AA5B12B2C0904C5001EC475 /* RouteCard.swift */,
+				2A76D4D22C1F6A65007908E0 /* RouteLabelRow.swift */,
+				2AA5B1402C09FB2E001EC475 /* RouteProgressBar.swift */,
+				2AA5B1422C0A017E001EC475 /* RouteProgressView.swift */,
+				2A76D4C52C18F849007908E0 /* RouteStopsList.swift */,
+				2AE8A0212C13A2C6005E0F62 /* ScreenHeader.swift */,
+				2AA5B1312C090EE4001EC475 /* SectionHeader.swift */,
 			);
 			path = SharedComponents;
 			sourceTree = "<group>";
@@ -335,10 +335,10 @@
 		2AE8A01E2C13A1D4005E0F62 /* CreateRouteScreen */ = {
 			isa = PBXGroup;
 			children = (
-				2A76D4CF2C1CBB3D007908E0 /* FinishCreate */,
-				2A76D4B12C1621B0007908E0 /* RouteStops */,
 				2AE8A0262C14A694005E0F62 /* AttractionsSearch */,
 				2AE8A0252C14A675005E0F62 /* CreateRoute */,
+				2A76D4CF2C1CBB3D007908E0 /* FinishCreate */,
+				2A76D4B12C1621B0007908E0 /* RouteStops */,
 			);
 			path = CreateRouteScreen;
 			sourceTree = "<group>";

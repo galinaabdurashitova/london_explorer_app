@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import MapKit
 
+
 struct CodableMKPolyline: Codable {
     var coordinates: [CLLocationCoordinate2D]
 

@@ -22,13 +22,6 @@ struct CodableMKRoute: Codable {
         self.polyline = CodableMKPolyline(polyline: route.polyline)
     }
 
-    func toMKRoute() -> MKRoute {
-        let route = MKRoute()
-        // MKRoute properties are read-only, so you cannot directly assign them
-        // Instead, create a new MKRoute and configure it
-        return route
-    }
-
     private enum CodingKeys: String, CodingKey {
         case name
         case distance

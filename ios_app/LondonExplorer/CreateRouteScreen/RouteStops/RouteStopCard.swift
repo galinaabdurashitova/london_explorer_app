@@ -48,7 +48,7 @@ struct RouteStopCard: View {
     var body: some View {
         ZStack (alignment: .topLeading) {
             HStack {
-                stop.attraction.images[0]
+                Image(uiImage: stop.attraction.images[0])
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 80, height: 80)

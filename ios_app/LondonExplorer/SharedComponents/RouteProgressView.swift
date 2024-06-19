@@ -22,7 +22,7 @@ struct RouteProgressView: View {
             VStack (spacing: 3) {
                 HStack (spacing: 10) {
                     ZStack (alignment: .topLeading) {
-                        routeProgress.route.image
+                        Image(uiImage: routeProgress.route.image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 120)

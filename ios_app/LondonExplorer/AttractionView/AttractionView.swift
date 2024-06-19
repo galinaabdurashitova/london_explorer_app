@@ -12,7 +12,7 @@ struct AttractionView: View {
     //@EnvironmentObject var networkMonitor: NetworkMonitor
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: AttractionSearchViewModel
-    @Binding var attraction: Attraction
+    @State var attraction: Attraction
     
     @State private var scrollOffset: CGFloat = 0
     
@@ -133,11 +133,8 @@ struct AttractionView: View {
 
 #Preview {
     AttractionView(
-        viewModel: AttractionSearchViewModel(), 
-        attraction: Binding<Attraction> (
-            get: { return MockData.Attractions[0] },
-            set: { _ in }
-        )
+        viewModel: AttractionSearchViewModel(),
+        attraction: MockData.Attractions[0]
     )
     //.environmentObject(NetworkMonitor())
 }

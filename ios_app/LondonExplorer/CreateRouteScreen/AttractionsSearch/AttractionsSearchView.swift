@@ -12,11 +12,17 @@ struct AttractionsSearchView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: AttractionSearchViewModel
-    @Binding var chosenAttractions: [Route.RouteStop]
+    @ObservedObject var routeViewModel: RouteStopsViewModel
+//    @Binding var chosenAttractions: [Route.RouteStop]
     
-    init(chosenAttractions: Binding<[Route.RouteStop]>) {
-        _chosenAttractions = chosenAttractions
-        self.viewModel = AttractionSearchViewModel(stops: chosenAttractions.wrappedValue)
+//    init(chosenAttractions: Binding<[Route.RouteStop]>) {
+//        _chosenAttractions = chosenAttractions
+//        self.viewModel = AttractionSearchViewModel(stops: chosenAttractions.wrappedValue)
+//    }
+    
+    init(routeViewModel: RouteStopsViewModel) {
+        self.viewModel = AttractionSearchViewModel(stops: routeViewModel.stops)
+        self.routeViewModel = routeViewModel
     }
     
     var body: some View {
@@ -47,7 +53,11 @@ struct AttractionsSearchView: View {
                     textColour: Color.black,
                     size: .L
                 ) {
-                    chosenAttractions = viewModel.stops
+                    routeViewModel.stops = viewModel.stops
+                    routeViewModel.pathes = Array(repeating: nil, count: viewModel.stops.count - 1)
+//                    Task {
+//                        await routeViewModel.calculateRoute()
+//                    }
                     self.presentationMode.wrappedValue.dismiss()
                 }
                 .padding(.bottom, 20)
@@ -120,7 +130,13 @@ struct AttractionsSearchView: View {
         VStack (spacing: 5) {
             ForEach(viewModel.filters.count == 0 ? $viewModel.attractions : $viewModel.filteredAttractions) { attraction in
                 HStack (spacing: 5) {
-                    NavigationLink(destination: AttractionView(viewModel: viewModel, attraction: attraction)) {
+                    NavigationLink(
+                        destination: {
+                            AttractionView(
+                                viewModel: viewModel,
+                                attraction: attraction.wrappedValue
+                            )
+                    }) {
                         AttractionCard(attraction: attraction)
                     }
                     
@@ -146,6 +162,7 @@ struct AttractionsSearchView: View {
 }
 
 #Preview {
-    AttractionsSearchView(chosenAttractions: .constant([]))
+    AttractionsSearchView(routeViewModel: RouteStopsViewModel())
+//    AttractionsSearchView(chosenAttractions: .constant([]))
         .environmentObject(NetworkMonitor())
 }

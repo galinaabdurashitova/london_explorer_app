@@ -22,7 +22,7 @@ struct RouteCard: View {
     var body: some View {
         VStack (alignment: .leading, spacing: 10) {
             ZStack (alignment: .topTrailing) {
-                route.image
+                Image(uiImage: route.image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height:  size == .L ? UIScreen.main.bounds.width * 0.8 : 156)
