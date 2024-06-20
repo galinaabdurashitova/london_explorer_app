@@ -27,9 +27,7 @@ struct FeedUpdate: View {
             Spacer()
             
             update.getIcon()
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 50)
+                .icon(size: 50)
         }
         .padding(.all, 15.0)
         .background(Color.lightBlue)

@@ -10,24 +10,21 @@ import SwiftUI
 import MapKit
 
 struct RouteSheetContent: View {
-//    @Binding var route: Route
-    @Binding var routeName: String
-    @Binding var stops: [Route.RouteStop]
-    @Binding var pathes: [CodableMKRoute?]
+    @Binding var route: Route
     @State var useTestData: Bool = false
     
     // Function used for test view separately - for the preview
-//    func buildRoute() async {
-//        route.pathes = await MockData.calculateRoute(stops: route.stops).compactMap {
-//            $0 != nil ? CodableMKRoute(from: $0!) : nil
-//        }
-//    }
+    func buildRoute() async {
+        route.pathes = await MockData.calculateRoute(stops: route.stops).compactMap {
+            $0 != nil ? CodableMKRoute(from: $0!) : nil
+        }
+    }
     
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 25) {
                 HStack {
-                    Text(routeName)
+                    Text(route.name.isEmpty ? "New Route" : route.name)
                         .screenHeadline()
                     Spacer()
                 }
@@ -52,30 +49,29 @@ struct RouteSheetContent: View {
                     }
                 }
                 
-//                RouteStopsList(route: $route)
-                RouteStopsList(stops: $stops, pathes: $pathes)
+                RouteStopsList(route: $route)
                 
                 Spacer()
             }
         }
         .scrollClipDisabled()
-//        .onAppear {
-//            if useTestData {
-//                Task {
-//                    await buildRoute()
-//                }
-//            }
-//        }
+        .onAppear {
+            if useTestData {
+                Task {
+                    await buildRoute()
+                }
+            }
+        }
     }
 }
 
-//#Preview {
-//    RouteSheetContent(
-//        route: Binding<Route> (
-//            get: { return MockData.Routes[0] },
-//            set: { _ in }
-//        ),
-//        useTestData: true
-//    )
-//    .padding()
-//}
+#Preview {
+    RouteSheetContent(
+        route: Binding<Route> (
+            get: { return MockData.Routes[0] },
+            set: { _ in }
+        ),
+        useTestData: true
+    )
+    .padding()
+}

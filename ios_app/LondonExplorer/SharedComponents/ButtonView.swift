@@ -57,7 +57,7 @@ struct ButtonView: View {
                     .foregroundColor(disabled ? Color.black.opacity(0.1) : textColour.opacity(0.7))
                     .font(.system(size: 15, weight: .bold))
                     .padding()
-                    .frame(width: size == ButtonSize.L ? UIScreen.main.bounds.width * 0.8 : UIScreen.main.bounds.width / 2 - 25, height: size == ButtonSize.L ? 50 : 70)
+                    .frame(width: size == ButtonSize.L ? UIScreen.main.bounds.width * 0.8 : UIScreen.main.bounds.width / 2 - 25)
                     .background(disabled ? Color(red: 0.949, green: 0.949, blue: 0.949) : colour)
             }
             .background(Color.white)
@@ -69,7 +69,7 @@ struct ButtonView: View {
                     .foregroundColor(disabled ? Color.black.opacity(0.1) : textColour.opacity(0.7))
                     .font(.system(size: 15, weight: .bold))
                     .padding()
-                    .frame(width: size == ButtonSize.L ? UIScreen.main.bounds.width * 0.8 : UIScreen.main.bounds.width / 2 - 25, height: size == ButtonSize.L ? 50 : 70)
+                    .frame(width: size == ButtonSize.L ? UIScreen.main.bounds.width * 0.8 : UIScreen.main.bounds.width / 2 - 25)
                     .background(disabled ? Color(red: 0.949, green: 0.949, blue: 0.949) : colour)
             }
             .background(Color.white)

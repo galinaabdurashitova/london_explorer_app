@@ -29,14 +29,10 @@ struct CreateRouteCard: View {
                 
                 ZStack (alignment: .bottomTrailing) {
                     Image("MapMarker3DIcon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 130)
+                        .icon(size: 130)
                     
                     Image("Plus3DIcon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 50)
+                        .icon(size: 50)
                 }
                 .padding(.bottom, -10)
             }
@@ -57,14 +53,10 @@ struct CreateRouteCard: View {
     private var NoInternetCard: some View {
         VStack (alignment: .center, spacing: 12) {
             Image(systemName: "wifi.slash")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 50)
+                .icon(size: 50)
                 .padding()
                 .background(Color.white)
                 .cornerRadius(100)
-                .foregroundColor(Color.black)
-                .fontWeight(.light)
             
             Text("Oops!")
                 .font(.system(size: 16, weight: .bold))

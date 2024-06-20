@@ -13,33 +13,33 @@ import MapKit
 struct CodableMKPolyline: Codable {
     var coordinates: [CLLocationCoordinate2D]
 
+    // Initialize from an MKPolyline
     init(polyline: MKPolyline) {
-        var coords = [CLLocationCoordinate2D]()
-        let range = NSRange(location: 0, length: polyline.pointCount)
-        polyline.getCoordinates(&coords, range: range)
+        let count = polyline.pointCount
+        var coords = [CLLocationCoordinate2D](repeating: kCLLocationCoordinate2DInvalid, count: count)
+        polyline.getCoordinates(&coords, range: NSRange(location: 0, length: count))
         self.coordinates = coords
     }
 
+    // Convert back to MKPolyline
     func toMKPolyline() -> MKPolyline {
-        let count = coordinates.count
-        var coords = UnsafeMutablePointer<CLLocationCoordinate2D>.allocate(capacity: count)
-        coords.initialize(from: coordinates, count: count)
-        let polyline = MKPolyline(coordinates: coords, count: count)
-        coords.deallocate()
-        return polyline
+        return MKPolyline(coordinates: coordinates, count: coordinates.count)
     }
 
-    private enum CodingKeys: String, CodingKey {
-        case coordinates
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        coordinates = try container.decode([CLLocationCoordinate2D].self, forKey: .coordinates)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(coordinates, forKey: .coordinates)
-    }
+//    // Codable compliance
+//    private enum CodingKeys: String, CodingKey {
+//        case coordinates
+//    }
+//
+//    // Decoding the coordinates array
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        coordinates = try container.decode([CLLocationCoordinate2D].self, forKey: .coordinates)
+//    }
+//
+//    // Encoding the coordinates array
+//    func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(coordinates, forKey: .coordinates)
+//    }
 }

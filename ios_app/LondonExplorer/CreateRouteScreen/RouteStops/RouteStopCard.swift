@@ -49,10 +49,7 @@ struct RouteStopCard: View {
         ZStack (alignment: .topLeading) {
             HStack {
                 Image(uiImage: stop.attraction.images[0])
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 80, height: 80)
-                    .cornerRadius(8)
+                    .roundedFrame(width: 80, height: 80)
                 
                 VStack (alignment: .leading, spacing: 5) {
                     Text("Stop \(stop.stepNo)")
@@ -71,10 +68,7 @@ struct RouteStopCard: View {
                 
                 Spacer()
                 Image(systemName: "quotelevel")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 25)
-                    .opacity(0.2)
+                    .icon(size: 25, colour: Color.black.opacity(0.2))
                     .rotationEffect(.degrees(90))
             }
             .padding(.all, 12)
@@ -92,13 +86,13 @@ struct RouteStopCard: View {
             
             Button(action: {
                 viewModel.deleteStop(stop: stop)
+                Task {
+                    await viewModel.calculateRoute()
+                }
             }) {
                 Image(systemName: "xmark.circle.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 22)
+                    .icon(size: 22, colour: Color.redAccent)
                     .background(Color.white)
-                    .foregroundColor(Color.redAccent)
                     .cornerRadius(100)
                     .padding([.top, .leading], -7)
             }

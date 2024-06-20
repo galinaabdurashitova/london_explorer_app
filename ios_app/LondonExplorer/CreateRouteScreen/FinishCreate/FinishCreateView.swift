@@ -12,6 +12,7 @@ import MapKit
 struct FinishCreateView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: FinishCreateViewModel
+    @State private var isNavigationActive = false
     
     init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
         self.viewModel = FinishCreateViewModel(stops: stops, pathes: pathes)
@@ -33,8 +34,9 @@ struct FinishCreateView: View {
             .scrollClipDisabled()
             .padding(.all, 20)
             
-            NavigationLink(destination: {
-                
+            Button(action: {
+                viewModel.saveRoute()
+                isNavigationActive = true
             }) {
                 ButtonView(
                     text: .constant("Save route"),
@@ -42,13 +44,15 @@ struct FinishCreateView: View {
                     textColour: Color.white,
                     size: .L,
                     disabled: Binding<Bool> (
-                        get: { return viewModel.routeName.isEmpty || viewModel.routeDescription.isEmpty },
+                        get: { return viewModel.route.name.isEmpty || viewModel.route.description.isEmpty },
                         set: { _ in }
                     )
                 )
-                .padding(.bottom, 20)
             }
-            .disabled(viewModel.routeName.isEmpty || viewModel.routeDescription.isEmpty)
+            .padding(.bottom, 20)
+            .navigationDestination(isPresented: $isNavigationActive) {
+                SavedRouteView(route: viewModel.route)
+            }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .tabBar)
@@ -68,13 +72,11 @@ struct FinishCreateView: View {
                     subheadline: .constant("Your route has")
                 )
                 
-                RouteLabelRow(route: $viewModel.route)
+                RouteLabelRow(route: viewModel.route)
             }
             Spacer()
             Image("BigBen3DIcon")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 80)
+                .icon(size: 80)
         }
     }
     
@@ -84,9 +86,9 @@ struct FinishCreateView: View {
                 .font(.system(size: 14, weight: .light))
                 .opacity(0.5)
             
-            CustomTextField(fieldText: .constant("Route Name"), fillerText: .constant("Type route name here..."), textVariable: $viewModel.routeName, maxLength: 64)
+            CustomTextField(fieldText: .constant("Route Name"), fillerText: .constant("Type route name here..."), textVariable: $viewModel.route.name, maxLength: 64)
             
-            CustomTextField(fieldText: .constant("Route Description"), fillerText: .constant("Fill in route description..."), textVariable: $viewModel.routeDescription, height: 200, maxLength: 32000)
+            CustomTextField(fieldText: .constant("Route Description"), fillerText: .constant("Fill in route description..."), textVariable: $viewModel.route.description, height: 200, maxLength: 32000)
         }
     }
     
@@ -106,7 +108,7 @@ struct FinishCreateView: View {
                 }
             }
             
-//            RouteStopsList(route: $viewModel.route)
+            RouteStopsList(route: $viewModel.route)
         }
     }
 }

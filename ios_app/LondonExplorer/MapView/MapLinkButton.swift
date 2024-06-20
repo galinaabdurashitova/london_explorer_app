@@ -16,9 +16,7 @@ struct MapLinkButton: View {
                 .font(.system(size: 16, weight: .light))
             
             Image("MapiOSIcon")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 25)
+                .icon(size: 25)
         }
         .foregroundColor(Color.black)
         .opacity(0.5)

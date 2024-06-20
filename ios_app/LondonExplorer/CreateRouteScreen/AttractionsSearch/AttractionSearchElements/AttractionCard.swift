@@ -15,10 +15,7 @@ struct AttractionCard: View {
         VStack (alignment: .leading, spacing: 10) {
             HStack (spacing: 14) {
                     Image(uiImage: attraction.images[0])
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 80, height: 80)
-                        .cornerRadius(8)
+                        .roundedFrame(width: 80, height: 80)
                     
                     VStack (alignment: .leading, spacing: 5) {
                         Text(attraction.name)

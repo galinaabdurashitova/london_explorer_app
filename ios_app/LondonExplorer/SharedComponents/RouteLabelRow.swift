@@ -9,23 +9,35 @@ import Foundation
 import SwiftUI
 
 struct RouteLabelRow: View {
-    @Binding var route: Route
+    @State var stops: Int
+    @State var collectables: Int
+    @State var seconds: Double
     
     var pathTime: String {
-        let seconds = route.stops.compactMap { $0.expectedTravelTime }.reduce(0, +) + Double(route.stops.count * 15 * 60)
-//        route.pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) + Double(route.stops.count * 15 * 60)
         let totalMinutes = Int(seconds / 60)
         let hours = totalMinutes / 60
         let minutes = totalMinutes % 60
         return "\(hours)h \(minutes)min"
     }
     
+    init(route: Route) {
+        self.stops = route.stops.count
+        self.collectables = route.collectables
+        self.seconds = route.pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) + Double(route.stops.count * 15 * 60)
+    }
+    
+    init(stops: [Route.RouteStop], collectables: Int = 0, pathes: [CodableMKRoute?]) {
+        self.stops = stops.count
+        self.collectables = collectables
+        self.seconds = pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) + Double(stops.count * 15 * 60)
+    }
+    
     var body: some View {
         HStack(spacing: 5) {
-            Text(String(route.stops.count) + " stops")
+            Text(String(stops) + " stops")
                 .label()
             
-            Text(String(route.collectables) + " collectables")
+            Text(String(collectables) + " collectables")
                 .label()
             
             Text(pathTime)
@@ -35,5 +47,5 @@ struct RouteLabelRow: View {
 }
 
 #Preview {
-    RouteLabelRow(route: .constant(MockData.Routes[0]))
+    RouteLabelRow(route: MockData.Routes[0])
 }

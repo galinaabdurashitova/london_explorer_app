@@ -11,44 +11,46 @@ import MapKit
 
 struct MapRouteView: View {
     @Environment(\.presentationMode) var presentationMode
-//    @State var route: Route
-    @State var routeName: String
-    @State var stops: [Route.RouteStop]
-    @State var pathes: [CodableMKRoute?]
+    @State var route: Route
     @State var showSheet: Bool = true
-//    @State var useTestData: Bool = false
+    @State var useTestData: Bool = false
     
     // Function used for test view separately - for the preview
-//    func buildRoute() async {
-//        route.pathes = await MockData.calculateRoute(stops: route.stops).compactMap {
-//            $0 != nil ? CodableMKRoute(from: $0!) : nil
-//        }
-//    }
-    
-    init(route: Route) {
-        self.routeName = route.name
-        self.stops = route.stops
-        self.pathes = route.pathes
+    func buildRoute() async {
+        route.pathes = await MockData.calculateRoute(stops: route.stops).compactMap {
+            $0 != nil ? CodableMKRoute(from: $0!) : nil
+        }
     }
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
-        self.routeName = "New Route"
-        self.stops = stops
-        self.pathes = pathes
+    init(route: Route, useTestData: Bool = false) {
+        self.route = route
+        self.useTestData = useTestData
+    }
+    
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], routeName: String = "", useTestData: Bool = false) {
+        self.route = Route(
+            name: routeName.isEmpty ? "New Route" : routeName,
+            description: "",
+            image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
+            collectables: 0,
+            stops: stops,
+            pathes: pathes
+        )
+        self.useTestData = useTestData
     }
     
     var body: some View {
         ZStack (alignment: .topLeading) {
             Map(selection: .constant(MKMapItem())) {
-                ForEach(stops.indices, id: \.self) { index in
-                    if index > 0, let route = pathes[index - 1] {
+                ForEach(route.stops.indices, id: \.self) { index in
+                    if index > 0, let route = route.pathes[index - 1] {
                         MapPolyline(route.polyline.toMKPolyline())
                             .stroke(Color.redAccent, lineWidth: 5)
                     }
                     
                     Annotation(
-                        stops[index].attraction.name,
-                        coordinate: stops[index].attraction.coordinates
+                        route.stops[index].attraction.name,
+                        coordinate: route.stops[index].attraction.coordinates
                     ) {
                         RouteAttractionAnnotation(index: index)
                     }
@@ -67,8 +69,7 @@ struct MapRouteView: View {
         }
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showSheet) {
-//            RouteSheetContent(route: $route)
-            RouteSheetContent(routeName: $routeName, stops: $stops, pathes: $pathes)
+            RouteSheetContent(route: $route)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 40)
                 .edgesIgnoringSafeArea(.bottom) 
@@ -79,13 +80,13 @@ struct MapRouteView: View {
                 .interactiveDismissDisabled()
                 .presentationContentInteraction(.scrolls)
         }
-//        .onAppear {
-//            if useTestData {
-//                Task {
-//                    await buildRoute()
-//                }
-//            }
-//        }
+        .onAppear {
+            if useTestData {
+                Task {
+                    await buildRoute()
+                }
+            }
+        }
     }
     
     private func RouteAttractionAnnotation(index: Int) -> some View {
@@ -100,7 +101,7 @@ struct MapRouteView: View {
                 .foregroundColor(Color.redAccent)
                 .padding(.top, 50)
             
-            Image(uiImage: stops[index].attraction.images[0])
+            Image(uiImage: route.stops[index].attraction.images[0])
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 60, height: 60)
@@ -120,9 +121,9 @@ struct MapRouteView: View {
     }
 }
 
-//#Preview {
-//    MapRouteView(
-//        route: MockData.Routes[0]//,
-////        useTestData: true
-//    )
-//}
+#Preview {
+    MapRouteView(
+        route: MockData.Routes[0],
+        useTestData: true
+    )
+}

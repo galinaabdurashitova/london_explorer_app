@@ -24,10 +24,7 @@ struct MainScreenHeader: View {
                         // Open camera
                     }) {
                         Image(systemName: "camera.fill")
-                            .resizable()
-                            .foregroundColor(.black)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 45)
+                            .icon(size: 45, colour: Color.black)
                     }
                 }
                 .padding(.horizontal, 20)

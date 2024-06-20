@@ -35,6 +35,7 @@ struct MapContent: View {
             ) {
                 Marker(attraction.name, coordinate: attraction.coordinates)
             }
+            .disabled(true)
             .cornerRadius(10)
             .frame(height: 300)
         }

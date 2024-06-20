@@ -27,65 +27,75 @@ struct PopUp: View {
     @State private var yOffset: CGFloat = UIScreen.main.bounds.height
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            VStack(spacing: 10) {
-                VStack(spacing: 20) {
-                    Text(text)
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 20, weight: .medium))
-                        .opacity(0.7)
-                    
-                    Image(systemName: "questionmark.circle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 75, height: 75)
-                        .padding(.all, 15)
-                        .foregroundColor(Color.redAccent.opacity(0.7))
-                        .background(Color.grayBackground)
-                        .cornerRadius(8)
-                }
-                .padding(.all, 15)
+        GeometryReader { geometry in
+            ZStack(alignment: .bottom) {
+                Color.white.opacity(0.1)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        isOpen = false
+                    }
                 
-                ButtonView(text: $buttonText, colour: Color.redDark, textColour: Color.white, size: .L) {
-                    action()
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        isOpen = false
-                    }
+                VStack {
+                    PopUp
+                        .shadow(radius: 2)
+                        .offset(y: yOffset)
+                        .onAppear {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                yOffset = 0
+                            }
+                        }
+                        .onChange(of: isOpen) { newValue in
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                yOffset = newValue ? 0 : UIScreen.main.bounds.height
+                            }
+                        }
                 }
-                ButtonView(text: .constant("Cancel"), colour: Color.blueAccent, textColour: Color.white, size: .L) {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        isOpen = false
-                    }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 30)
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .background(.ultraThinMaterial)
+        }
+    }
+    
+    var PopUp: some View {
+        VStack(spacing: 10) {
+            VStack(spacing: 20) {
+                Text(text)
+                    .multilineTextAlignment(.center)
+                    .font(.system(size: 20, weight: .medium))
+                    .opacity(0.7)
+                
+                Image(systemName: "questionmark.circle")
+                    .icon(size: 75, colour: Color.redAccent.opacity(0.7))
+                    .padding(.all, 15)
+                    .background(Color.grayBackground)
+                    .cornerRadius(8)
+            }
+            .padding(.all, 15)
+            
+            ButtonView(text: $buttonText, colour: Color.redDark, textColour: Color.white, size: .L) {
+                action()
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isOpen = false
                 }
             }
-            .padding(.all, 20)
-            .background(Color.white)
-            .cornerRadius(30)
-            .shadow(radius: 2)
-            .offset(y: yOffset)
-            .onAppear {
+            ButtonView(text: .constant("Cancel"), colour: Color.blueAccent, textColour: Color.white, size: .L) {
                 withAnimation(.easeInOut(duration: 0.2)) {
-                    yOffset = 0
-                }
-            }
-            .onChange(of: isOpen) { newValue in
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    yOffset = newValue ? 0 : UIScreen.main.bounds.height
+                    isOpen = false
                 }
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 50)
-        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        .background(.ultraThinMaterial)
+        .padding(.all, 20)
+        .background(Color.white)
+        .cornerRadius(30)
     }
 }
 
 #Preview {
     ZStack {
         Image("BigBen")
+            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         PopUp(isOpen: .constant(true), text: "It's some question a user needs to confirm It's some question a user needs to confirm", buttonText: "Do it") {
             
         } 

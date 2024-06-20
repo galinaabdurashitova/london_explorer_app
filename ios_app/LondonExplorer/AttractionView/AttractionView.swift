@@ -27,7 +27,7 @@ struct AttractionView: View {
     var body: some View {
         VStack (spacing: -60) {
             ZStack (alignment: .topLeading) {
-                ImagesSlidesHeader(images: $attraction.images)
+                ImagesSlidesHeader(images: attraction.images)
                     .frame(width: UIScreen.main.bounds.width, height: headerHeight)
                     .clipped()
                     .padding(.vertical, 0)

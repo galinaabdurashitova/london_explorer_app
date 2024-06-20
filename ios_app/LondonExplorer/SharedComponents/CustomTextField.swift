@@ -12,7 +12,6 @@ struct CustomTextField: View {
     @Binding var fieldText: String
     @Binding var fillerText: String
     @Binding var textVariable: String
-    @State private var internalText: String = ""
     @State private var borderColor: Color = Color.blueAccent
     @State private var shakeOffset: CGFloat = 0
     var height: Double?
@@ -24,14 +23,12 @@ struct CustomTextField: View {
                 .font(.system(size: 14, weight: .bold))
                 .kerning(-0.2)
             
-            TextField(fillerText, text: $internalText, axis: height != nil ? .vertical : .horizontal)
+            TextField(fillerText, text: $textVariable, axis: height != nil ? .vertical : .horizontal)
                 .font(.system(size: 16, weight: .regular))
-                .onChange(of: internalText) { newValue in
-                    if newValue.count <= maxLength {
-                        textVariable = newValue
-                    } else {
+                .onChange(of: textVariable) { newValue in
+                    if newValue.count > maxLength {
                         shakeAndHighlight()
-                        internalText = String(newValue.prefix(maxLength))
+                        textVariable = String(newValue.prefix(maxLength))
                     }
                 }
             

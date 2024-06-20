@@ -18,9 +18,7 @@ struct EmptyStateBanner: View {
                     .kerning(-0.2)
                 Spacer()
                 Image("Bus3DIcon")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 60, height: 60)
+                    .icon(size: 60)
                     .padding(.top, -10)
             }
             

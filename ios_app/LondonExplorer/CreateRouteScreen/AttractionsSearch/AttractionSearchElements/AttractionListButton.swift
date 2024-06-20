@@ -22,11 +22,8 @@ struct AttractionListButton: View {
                 .font(.system(size: 18, weight: .bold))
         } else {
             Image(systemName: "circle")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+                .icon(size: 35, colour: Color.black.opacity(0.5))
                 .fontWeight(.ultraLight)
-                .frame(width: 35)
-                .foregroundColor(Color.black.opacity(0.5))
         }
     }
 }

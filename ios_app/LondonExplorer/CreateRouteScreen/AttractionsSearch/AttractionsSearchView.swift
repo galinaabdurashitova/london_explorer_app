@@ -15,14 +15,9 @@ struct AttractionsSearchView: View {
     @ObservedObject var routeViewModel: RouteStopsViewModel
 //    @Binding var chosenAttractions: [Route.RouteStop]
     
-//    init(chosenAttractions: Binding<[Route.RouteStop]>) {
-//        _chosenAttractions = chosenAttractions
-//        self.viewModel = AttractionSearchViewModel(stops: chosenAttractions.wrappedValue)
-//    }
-    
     init(routeViewModel: RouteStopsViewModel) {
-        self.viewModel = AttractionSearchViewModel(stops: routeViewModel.stops)
         self.routeViewModel = routeViewModel
+        self.viewModel = AttractionSearchViewModel(stops: routeViewModel.stops)
     }
     
     var body: some View {
@@ -54,10 +49,9 @@ struct AttractionsSearchView: View {
                     size: .L
                 ) {
                     routeViewModel.stops = viewModel.stops
-                    routeViewModel.pathes = Array(repeating: nil, count: viewModel.stops.count - 1)
-//                    Task {
-//                        await routeViewModel.calculateRoute()
-//                    }
+                    Task {
+                        await routeViewModel.calculateRoute()
+                    }
                     self.presentationMode.wrappedValue.dismiss()
                 }
                 .padding(.bottom, 20)
@@ -78,10 +72,7 @@ struct AttractionsSearchView: View {
             HStack (spacing: 15) {
                 HStack (spacing: 12) {
                     Image(systemName: "magnifyingglass")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 20)
-                        .foregroundColor(Color.black.opacity(0.7))
+                        .icon(size: 20, colour: Color.black.opacity(0.7))
                     TextField("Search", text: $viewModel.searchText)
                         .font(.system(size: 16))
                 }
@@ -95,10 +86,7 @@ struct AttractionsSearchView: View {
                     viewModel.showFilter.toggle()
                 }) {
                     Image("FilterSFIcon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 40, height: 40)
-                        .foregroundColor(Color.black.opacity(0.5))
+                        .icon(size: 40, colour: Color.black.opacity(0.5))
                         .padding(.all, 7)
                         .background(Color.grayBackground)
                         .cornerRadius(8)
@@ -163,6 +151,5 @@ struct AttractionsSearchView: View {
 
 #Preview {
     AttractionsSearchView(routeViewModel: RouteStopsViewModel())
-//    AttractionsSearchView(chosenAttractions: .constant([]))
         .environmentObject(NetworkMonitor())
 }

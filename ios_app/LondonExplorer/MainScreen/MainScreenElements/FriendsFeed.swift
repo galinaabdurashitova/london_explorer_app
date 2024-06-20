@@ -41,9 +41,7 @@ struct FriendsFeed: View {
                                 Text("Add a friend")
                                     .font(.system(size: 14, weight: .semibold))
                                 Image(systemName: "chevron.forward")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 10)
+                                    .icon(size: 10)
                             }
                             .foregroundColor(Color.black)
                         }

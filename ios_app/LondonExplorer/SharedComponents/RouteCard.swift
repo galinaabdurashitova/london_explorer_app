@@ -20,29 +20,34 @@ struct RouteCard: View {
     var size: CardSize = .S
     
     var body: some View {
-        VStack (alignment: .leading, spacing: 10) {
-            ZStack (alignment: .topTrailing) {
-                Image(uiImage: route.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height:  size == .L ? UIScreen.main.bounds.width * 0.8 : 156)
-                    .cornerRadius(8.0)
+        NavigationLink(destination: {
+            RouteView(route: route)
+        }) {
+            VStack (alignment: .leading, spacing: 10) {
+                ZStack (alignment: .topTrailing) {
+                    Image(uiImage: route.image)
+                        .roundedHeightFrame(
+                            height: size == .L ? UIScreen.main.bounds.width * 0.8 : 156
+                        )
+                    
+                    label.view
+                        .padding(.all, 6.0)
+                        .background(Color.lightBlue)
+                        .opacity(0.7)
+                        .cornerRadius(16.0)
+                        .padding(.all, 7.0)
+                }
                 
-                label.view
-                    .padding(.all, 6.0)
-                    .background(Color.lightBlue)
-                    .opacity(0.7)
-                    .cornerRadius(16.0)
-                    .padding(.all, 7.0)
+                VStack (alignment: .leading, spacing: 5) {
+                    Text(route.name)
+                        .headline()
+                    Text(route.description)
+                        .subheadline()
+                }
             }
-            VStack (alignment: .leading, spacing: 5) {
-                Text(route.name)
-                    .headline()
-                Text(route.description)
-                    .subheadline()
-            }
+            .frame(width: size == .S ? 156 : UIScreen.main.bounds.width - 40)
+            .foregroundColor(Color.black)
         }
-        .frame(width: size == .S ? 156 : UIScreen.main.bounds.width - 40)
     }
 }
 

@@ -23,13 +23,10 @@ struct WidgetError: View {
                 // Update
             }) {
                 Image(systemName: "arrow.triangle.2.circlepath")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 35)
-                    .frame(width: 50, height: 50)
+                    .icon(size: 35, colour: Color.black)
+                    .padding(.all, 8)
                     .background(Color.white)
                     .cornerRadius(100)
-                    .foregroundColor(Color.black)
                     .fontWeight(.light)
             }
         }

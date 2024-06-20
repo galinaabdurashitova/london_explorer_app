@@ -73,6 +73,15 @@
 		2AFD1F592C21DAA40061060E /* CoordinatesCodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F582C21DAA40061060E /* CoordinatesCodableExtension.swift */; };
 		2AFD1F5B2C21DAC80061060E /* CodableMKRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F5A2C21DAC80061060E /* CodableMKRoute.swift */; };
 		2AFD1F5D2C21DAEC0061060E /* CodableMKPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F5C2C21DAEC0061060E /* CodableMKPolyline.swift */; };
+		2AFD1F5F2C237E820061060E /* RoutesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F5E2C237E820061060E /* RoutesStorage.swift */; };
+		2AFD1F622C237F3E0061060E /* SavedRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F612C237F3E0061060E /* SavedRouteView.swift */; };
+		2AFD1F652C247FA60061060E /* RouteDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F642C247FA60061060E /* RouteDataView.swift */; };
+		2AFD1F672C247FDF0061060E /* RouteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F662C247FDF0061060E /* RouteButton.swift */; };
+		2AFD1F6B2C2481930061060E /* RouteMapContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F6A2C2481930061060E /* RouteMapContent.swift */; };
+		2AFD1F6D2C248D250061060E /* RouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F6C2C248D250061060E /* RouteView.swift */; };
+		2AFD1F6F2C2497580061060E /* RouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F6E2C2497580061060E /* RouteViewModel.swift */; };
+		2AFD1F742C249F4D0061060E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F732C249F4D0061060E /* ProfileView.swift */; };
+		2AFD1F762C249F7F0061060E /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -144,6 +153,15 @@
 		2AFD1F582C21DAA40061060E /* CoordinatesCodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatesCodableExtension.swift; sourceTree = "<group>"; };
 		2AFD1F5A2C21DAC80061060E /* CodableMKRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableMKRoute.swift; sourceTree = "<group>"; };
 		2AFD1F5C2C21DAEC0061060E /* CodableMKPolyline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableMKPolyline.swift; sourceTree = "<group>"; };
+		2AFD1F5E2C237E820061060E /* RoutesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesStorage.swift; sourceTree = "<group>"; };
+		2AFD1F612C237F3E0061060E /* SavedRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedRouteView.swift; sourceTree = "<group>"; };
+		2AFD1F642C247FA60061060E /* RouteDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDataView.swift; sourceTree = "<group>"; };
+		2AFD1F662C247FDF0061060E /* RouteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteButton.swift; sourceTree = "<group>"; };
+		2AFD1F6A2C2481930061060E /* RouteMapContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMapContent.swift; sourceTree = "<group>"; };
+		2AFD1F6C2C248D250061060E /* RouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteView.swift; sourceTree = "<group>"; };
+		2AFD1F6E2C2497580061060E /* RouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewModel.swift; sourceTree = "<group>"; };
+		2AFD1F732C249F4D0061060E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,12 +178,9 @@
 		2A76D4A82C15D5A2007908E0 /* MapView */ = {
 			isa = PBXGroup;
 			children = (
-				2A76D4A42C15C944007908E0 /* MapContent.swift */,
-				2A76D4A92C15D5D7007908E0 /* MapAttractionView.swift */,
-				2A76D4C72C1A0A35007908E0 /* MapRouteView.swift */,
-				2A76D4C22C18F7E5007908E0 /* RouteSheetContent.swift */,
-				2A76D4AB2C15F2D7007908E0 /* AttractionSheetContent.swift */,
 				2A76D4B42C162306007908E0 /* MapLinkButton.swift */,
+				2AFD1F682C24814A0061060E /* AttractionMap */,
+				2AFD1F692C24815C0061060E /* RouteMap */,
 			);
 			path = MapView;
 			sourceTree = "<group>";
@@ -220,6 +235,8 @@
 				2AA5B1232C08D803001EC475 /* Models */,
 				2A8506912C0A8A65003A3117 /* NetworkMonitor.swift */,
 				2AA5B1102C08B891001EC475 /* Preview Content */,
+				2AFD1F722C249EE30061060E /* Profile */,
+				2AFD1F632C247F690061060E /* Route */,
 				2AA5B12A2C09049D001EC475 /* SharedComponents */,
 				2AA5B13D2C09F662001EC475 /* Styles */,
 			);
@@ -287,6 +304,7 @@
 				2AA5B1392C09E52B001EC475 /* RouteProgress.swift */,
 				2AA5B13B2C09E5E5001EC475 /* User.swift */,
 				2AE8A02E2C14BDB2005E0F62 /* Attraction.swift */,
+				2AFD1F5E2C237E820061060E /* RoutesStorage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -335,10 +353,11 @@
 		2AE8A01E2C13A1D4005E0F62 /* CreateRouteScreen */ = {
 			isa = PBXGroup;
 			children = (
-				2AE8A0262C14A694005E0F62 /* AttractionsSearch */,
 				2AE8A0252C14A675005E0F62 /* CreateRoute */,
-				2A76D4CF2C1CBB3D007908E0 /* FinishCreate */,
+				2AE8A0262C14A694005E0F62 /* AttractionsSearch */,
 				2A76D4B12C1621B0007908E0 /* RouteStops */,
+				2A76D4CF2C1CBB3D007908E0 /* FinishCreate */,
+				2AFD1F602C237F260061060E /* SavedRoute */,
 			);
 			path = CreateRouteScreen;
 			sourceTree = "<group>";
@@ -398,6 +417,54 @@
 				2AFD1F5C2C21DAEC0061060E /* CodableMKPolyline.swift */,
 			);
 			path = Codables;
+			sourceTree = "<group>";
+		};
+		2AFD1F602C237F260061060E /* SavedRoute */ = {
+			isa = PBXGroup;
+			children = (
+				2AFD1F612C237F3E0061060E /* SavedRouteView.swift */,
+			);
+			path = SavedRoute;
+			sourceTree = "<group>";
+		};
+		2AFD1F632C247F690061060E /* Route */ = {
+			isa = PBXGroup;
+			children = (
+				2AFD1F642C247FA60061060E /* RouteDataView.swift */,
+				2AFD1F662C247FDF0061060E /* RouteButton.swift */,
+				2AFD1F6C2C248D250061060E /* RouteView.swift */,
+				2AFD1F6E2C2497580061060E /* RouteViewModel.swift */,
+			);
+			path = Route;
+			sourceTree = "<group>";
+		};
+		2AFD1F682C24814A0061060E /* AttractionMap */ = {
+			isa = PBXGroup;
+			children = (
+				2A76D4AB2C15F2D7007908E0 /* AttractionSheetContent.swift */,
+				2A76D4A92C15D5D7007908E0 /* MapAttractionView.swift */,
+				2A76D4A42C15C944007908E0 /* MapContent.swift */,
+			);
+			path = AttractionMap;
+			sourceTree = "<group>";
+		};
+		2AFD1F692C24815C0061060E /* RouteMap */ = {
+			isa = PBXGroup;
+			children = (
+				2A76D4C72C1A0A35007908E0 /* MapRouteView.swift */,
+				2A76D4C22C18F7E5007908E0 /* RouteSheetContent.swift */,
+				2AFD1F6A2C2481930061060E /* RouteMapContent.swift */,
+			);
+			path = RouteMap;
+			sourceTree = "<group>";
+		};
+		2AFD1F722C249EE30061060E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				2AFD1F732C249F4D0061060E /* ProfileView.swift */,
+				2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -472,10 +539,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A76D4B52C162306007908E0 /* MapLinkButton.swift in Sources */,
+				2AFD1F6D2C248D250061060E /* RouteView.swift in Sources */,
+				2AFD1F6F2C2497580061060E /* RouteViewModel.swift in Sources */,
 				2AA5B13A2C09E52B001EC475 /* RouteProgress.swift in Sources */,
 				2AA5B1272C08E17E001EC475 /* FriendUpdate.swift in Sources */,
 				2A76D4B92C170A6B007908E0 /* PathConnection.swift in Sources */,
+				2AFD1F6B2C2481930061060E /* RouteMapContent.swift in Sources */,
 				2A76D4D32C1F6A65007908E0 /* RouteLabelRow.swift in Sources */,
+				2AFD1F5F2C237E820061060E /* RoutesStorage.swift in Sources */,
 				2A76D4BF2C172AAD007908E0 /* BackButton.swift in Sources */,
 				2AFD1F5B2C21DAC80061060E /* CodableMKRoute.swift in Sources */,
 				2A76D4B02C160C2D007908E0 /* CategoryLabel.swift in Sources */,
@@ -495,9 +566,12 @@
 				2AE8A0352C14E674005E0F62 /* AttractionCard.swift in Sources */,
 				2AA5B1572C0A18BC001EC475 /* EmptyStateBanner.swift in Sources */,
 				2AA5B1532C0A166E001EC475 /* Label.swift in Sources */,
+				2AFD1F672C247FDF0061060E /* RouteButton.swift in Sources */,
 				2AA5B10D2C08B890001EC475 /* ContentView.swift in Sources */,
+				2AFD1F762C249F7F0061060E /* ProfileViewModel.swift in Sources */,
 				2AFD1F592C21DAA40061060E /* CoordinatesCodableExtension.swift in Sources */,
 				2AA5B12C2C0904C5001EC475 /* RouteCard.swift in Sources */,
+				2AFD1F652C247FA60061060E /* RouteDataView.swift in Sources */,
 				2A76D4AA2C15D5D7007908E0 /* MapAttractionView.swift in Sources */,
 				2AA5B1412C09FB2E001EC475 /* RouteProgressBar.swift in Sources */,
 				2A76D4C32C18F7E5007908E0 /* RouteSheetContent.swift in Sources */,
@@ -505,6 +579,7 @@
 				2A76D4C62C18F849007908E0 /* RouteStopsList.swift in Sources */,
 				2A76D4AE2C15FF56007908E0 /* ButtonView.swift in Sources */,
 				2AE8A02D2C14BA39005E0F62 /* CreateRouteCard.swift in Sources */,
+				2AFD1F742C249F4D0061060E /* ProfileView.swift in Sources */,
 				2A8506922C0A8A65003A3117 /* NetworkMonitor.swift in Sources */,
 				2AA5B1192C08B8CC001EC475 /* MainScreenView.swift in Sources */,
 				2AA5B1292C090417001EC475 /* LondonExplorerLogo.swift in Sources */,
@@ -513,6 +588,7 @@
 				2AA5B12E2C0909BC001EC475 /* SuggestedRoutesCarousel.swift in Sources */,
 				2AA5B14E2C0A11C9001EC475 /* DownloadedRoutesWidget.swift in Sources */,
 				2AA5B1322C090EE4001EC475 /* SectionHeader.swift in Sources */,
+				2AFD1F622C237F3E0061060E /* SavedRouteView.swift in Sources */,
 				2AA5B13F2C09F673001EC475 /* ImageStyles.swift in Sources */,
 				2AFD1F562C21B26C0061060E /* ImageCodableExtension.swift in Sources */,
 				2AA5B1382C09E4FD001EC475 /* OnRouteWidget.swift in Sources */,

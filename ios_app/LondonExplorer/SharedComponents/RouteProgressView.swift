@@ -23,14 +23,10 @@ struct RouteProgressView: View {
                 HStack (spacing: 10) {
                     ZStack (alignment: .topLeading) {
                         Image(uiImage: routeProgress.route.image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 120)
-                            .cornerRadius(8)
+                            .roundedHeightFrame(height: 120)
+                        
                         Image("Route3DIcon")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: 60)
+                            .icon(size: 60)
                             .padding(.all, -17)
                     }
                     .frame(width: (geometry.size.width - 45) / 2, height: 120)

@@ -11,6 +11,8 @@ struct ContentView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @State var selection = 0
     
+    @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
+    
     var body: some View {
         TabView (selection: $selection) {
             MainScreenView()
@@ -45,7 +47,7 @@ struct ContentView: View {
                 }
                 .tag(3)
             
-            ProgressView()
+            ProfileView()
                 .environmentObject(networkMonitor)
                 .tabItem {
                     Label("Profile", systemImage: selection == 4 ? "person.fill" : "person")

@@ -12,15 +12,14 @@ import UniformTypeIdentifiers
 
 struct RouteStopsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @StateObject var viewModel: RouteStopsViewModel = RouteStopsViewModel()
+    @ObservedObject var viewModel: RouteStopsViewModel //= RouteStopsViewModel()
     @State private var showAttractionSearchView: Bool = false
     @State private var confirmRemove: Bool = false
     @State private var draggingItem: Route.RouteStop?
     
-//    init(useTestData: Bool = false) {
-//        //viewModel = RouteStopsViewModel(useTestData: true)
-//        viewModel = RouteStopsViewModel(useTestData: useTestData)
-//    }
+    init(useTestData: Bool = false) {
+        viewModel = RouteStopsViewModel(useTestData: useTestData)
+    }
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -61,33 +60,23 @@ struct RouteStopsView: View {
             .fullScreenCover(isPresented: $showAttractionSearchView) {
                 NavigationStack {
                     AttractionsSearchView(routeViewModel: viewModel)
-//                    AttractionsSearchView(chosenAttractions: $viewModel.stops)
-//                        .onDisappear {
-//                            Task { [weak viewModel] in
-//                                await viewModel?.calculateRoute()
-//                            }
-//                        }
                 }
             }
             
-//            NavigationLink(destination: {
-//                FinishCreateView(stops: viewModel.stops, pathes: viewModel.pathes)
-//            }) {
-//                ButtonView(
-//                    text: .constant("Continue"),
-//                    colour: Color.lightBlue,
-//                    textColour: Color.black,
-//                    size: .L
-//                )
-//                .padding(.bottom, 20)
-//            }
-        }
-        .popup(
-            isPresented: $confirmRemove,
-            text: "Are you sure you want to remove all the stops from the current route?",
-            buttonText: "Start the route over"
-        ) {
-            viewModel.removeAllStops()
+            
+            if viewModel.stops.count > 1 {
+                NavigationLink(destination: {
+                    FinishCreateView(stops: viewModel.stops, pathes: viewModel.pathes)
+                }) {
+                    ButtonView(
+                        text: .constant("Continue"),
+                        colour: Color.lightBlue,
+                        textColour: Color.black,
+                        size: .L
+                    )
+                    .padding(.bottom, 20)
+                }
+            }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .tabBar)
@@ -96,6 +85,13 @@ struct RouteStopsView: View {
                 self.presentationMode.wrappedValue.dismiss()
             }
         )
+        .popup(
+            isPresented: $confirmRemove,
+            text: "Are you sure you want to remove all the stops from the current route?",
+            buttonText: "Start the route over"
+        ) {
+            viewModel.removeAllStops()
+        }
     }
     
     var ListHeader: some View {
@@ -105,17 +101,7 @@ struct RouteStopsView: View {
             
             if viewModel.stops.count > 0 {
                 NavigationLink(destination: {
-                    MapRouteView(
-//                        route: Route(
-//                            name: "New Route",
-//                            description: "",
-//                            image: viewModel.stops[0].attraction.images[0],
-//                            collectables: 0,
-//                            stops: viewModel.stops,
-//                            pathes: viewModel.pathes
-//                        )
-                        stops: viewModel.stops, pathes: viewModel.pathes
-                    )
+                    MapRouteView(stops: viewModel.stops, pathes: viewModel.pathes)
                     .toolbar(.hidden, for: .tabBar)
                 }) {
                     MapLinkButton()
@@ -126,7 +112,7 @@ struct RouteStopsView: View {
     
     var RouteStopsPath: some View {
         VStack(spacing: -1) {
-            ForEach(viewModel.stops.indices) { index in
+            ForEach(viewModel.stops.indices, id: \.self) { index in
                 if index > 0, viewModel.pathes.count > index - 1
                 {
                     PathConnection(
@@ -144,11 +130,6 @@ struct RouteStopsView: View {
                     .onDrop(of: [UTType.text], delegate: RouteStopCardDropDelegate(item: viewModel.stops[index], current: $draggingItem, stops: $viewModel.stops, viewModel: viewModel))
             }
         }
-//        .onAppear {
-//            Task {
-//                await viewModel.calculateRoute()
-//            }
-//        }
     }
     
     var AddStopsButton: some View {
@@ -160,13 +141,9 @@ struct RouteStopsView: View {
                     .foregroundColor(Color.black)
                     .opacity(0.5)
                 Spacer()
-                Color.redAccent
-                    .frame(width: 25, height: 25)
-                    .mask(
-                        Image("LocationiOSIcon")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    )
+                
+                Image("LocationiOSIcon")
+                    .icon(size: 25, colour: Color.redAccent)
             }
             .frame(height: 60)
             .padding(.horizontal, 12)
@@ -179,5 +156,5 @@ struct RouteStopsView: View {
 }
 
 #Preview {
-    RouteStopsView()
+    RouteStopsView(useTestData: true)
 }

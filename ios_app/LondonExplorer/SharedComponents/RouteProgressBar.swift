@@ -26,9 +26,7 @@ struct RouteProgressBar: View {
                     .foregroundColor(Color.redAccent)
                 
                 Image("Bus3DIcon")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 56)
+                    .icon(size: 56)
                     .padding(.leading, geometry.size.width * self.getPercent() - 28)
                     .padding(.top, -5)
             }
