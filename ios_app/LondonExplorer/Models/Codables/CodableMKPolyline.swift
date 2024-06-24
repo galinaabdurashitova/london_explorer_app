@@ -10,7 +10,7 @@ import SwiftUI
 import MapKit
 
 
-struct CodableMKPolyline: Codable {
+struct CodableMKPolyline: Codable, Hashable {
     var coordinates: [CLLocationCoordinate2D]
 
     // Initialize from an MKPolyline

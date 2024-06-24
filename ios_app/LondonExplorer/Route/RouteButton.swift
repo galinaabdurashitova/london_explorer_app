@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum RouteButton  {
+enum RouteButton {
     case publish
     case published
     case edit
@@ -16,63 +16,64 @@ enum RouteButton  {
     case download
     case deleteDownload
     
-    struct RouteButton {
+    struct RouteButtonDetails {
         var label: String
         var colour: Color
         var text: String
-        var action: () -> Void
+        var action: (_ route: Binding<Route>, _ view: AnyView) -> AnyView
     }
     
-    var details: RouteButton {
+    var details: RouteButtonDetails {
         switch self {
         case .publish:
-            return RouteButton(
+            return RouteButtonDetails(
                 label: "arrow.up.circle",
                 colour: Color.blueAccent,
-                text: "Publish route"
-            ) {
-                
-            }
+                text: "Publish route",
+                action: { route, view in return AnyView(view) }
+            )
         case .published:
-            return RouteButton(
+            return RouteButtonDetails(
                 label: "",
                 colour: Color.clear,
-                text: ""
-            ) {
-                
-            }
+                text: "",
+                action: { route, view in return AnyView(view) }
+            )
         case .edit:
-            return RouteButton(
+            return RouteButtonDetails(
                 label: "pencil",
                 colour: Color.redAccent,
-                text: "Edit route"
-            ) {
-                
-            }
+                text: "Edit route",
+                action: { route, view in
+                    return AnyView(
+                        EditRouteView(
+                            route: route,
+                            button: view
+                        )
+                    )
+                }
+            )
         case .start:
-            return RouteButton(
+            return RouteButtonDetails(
                 label: "play",
                 colour: Color.greenAccent,
-                text: "Start the route"
-            ) {
-                
-            }
+                text: "Start the route",
+                action: { route, view in return AnyView(view) }
+            )
         case .download:
-            return RouteButton(
+            return RouteButtonDetails(
                 label: "",
                 colour: Color.clear,
-                text: ""
-            ) {
-                
-            }
+                text: "",
+                action: { route, view in return AnyView(view) }
+            )
         case .deleteDownload:
-            return RouteButton(
+            return RouteButtonDetails(
                 label: "",
                 colour: Color.clear,
-                text: ""
-            ) {
-                
-            }
+                text: "",
+                action: { route, view in return AnyView(view) }
+            )
         }
     }
     
@@ -84,9 +85,14 @@ enum RouteButton  {
                 .fontWeight(.light)
             
             Text(self.details.text)
+                .foregroundColor(Color.black)
                 .font(.system(size: 14))
         }
         .frame(width: (UIScreen.main.bounds.width - 40) / 3, height: 65)
     }
+    
+    @ViewBuilder
+    func button(route: Binding<Route>) -> some View {
+        self.details.action(route, AnyView(self.view))
+    }
 }
-

@@ -35,8 +35,7 @@ struct RouteDataView: View {
                         alignment: .trailing
                     )
                 
-                
-                RouteButton.edit.view
+                RouteButton.edit.button(route: $route)
                     .overlay(
                         Rectangle()
                             .frame(width: 1),

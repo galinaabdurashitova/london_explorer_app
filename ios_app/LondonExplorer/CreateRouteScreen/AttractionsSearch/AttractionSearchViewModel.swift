@@ -15,10 +15,27 @@ class AttractionSearchViewModel: ObservableObject {
     @Published var stops: [Route.RouteStop]
     @Published var searchText: String = ""
     @Published var showFilter: Bool = false
+    @Published var isLoading: Bool = false
+    @Published var error: String? = nil
+    
+    private let service: AttractionsServiceProtocol = AttractionsService()
     
     init(stops: [Route.RouteStop] = []) {
-        self.attractions = MockData.Attractions
+        self.attractions = []
         self.stops = stops
+        fetchAttractions()
+    }
+    
+    func fetchAttractions() {
+        isLoading = true
+        Task {
+            do {
+                attractions = try await service.fetchAttractions()
+            } catch {
+                self.error = error.localizedDescription
+            }
+            isLoading = false
+        }
     }
     
     func toggleCategoryFilter(category: Attraction.Category) {

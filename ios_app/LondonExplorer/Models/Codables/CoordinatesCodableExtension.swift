@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import CoreLocation
 
-extension CLLocationCoordinate2D: Codable {
+extension CLLocationCoordinate2D: Codable, Hashable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let latitude = try container.decode(CLLocationDegrees.self, forKey: .latitude)
@@ -26,5 +26,14 @@ extension CLLocationCoordinate2D: Codable {
     private enum CodingKeys: String, CodingKey {
         case latitude
         case longitude
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(latitude)
+        hasher.combine(longitude)
+    }
+    
+    public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
+        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
     }
 }

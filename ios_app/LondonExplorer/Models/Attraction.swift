@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 import MapKit
 
-struct Attraction: Identifiable, Equatable, Codable {
-    var id = UUID()
+struct Attraction: Identifiable, Equatable, Codable, Hashable {
+    var id: String
     var name: String
     var shortDescription: String
     var fullDescription: String
@@ -23,7 +23,19 @@ struct Attraction: Identifiable, Equatable, Codable {
         return lhs.id == rhs.id
     }
     
-    enum Category: String, CaseIterable, Identifiable, Codable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(name)
+        hasher.combine(shortDescription)
+        hasher.combine(fullDescription)
+        hasher.combine(address)
+        hasher.combine(coordinates.latitude)
+        hasher.combine(coordinates.longitude)
+        hasher.combine(images.map { $0.pngData()?.hashValue ?? 0 })
+        hasher.combine(categories)
+    }
+    
+    enum Category: String, CaseIterable, Identifiable, Codable, Hashable {
         var id: String { self.rawValue }
         
         case historical = "Historical"
@@ -80,7 +92,7 @@ struct Attraction: Identifiable, Equatable, Codable {
         case categories
     }
     
-    init(id: UUID = UUID(), name: String, shortDescription: String, fullDescription: String, address: String, coordinates: CLLocationCoordinate2D, images: [UIImage], categories: [Category]) {
+    init(id: String, name: String, shortDescription: String, fullDescription: String, address: String, coordinates: CLLocationCoordinate2D, images: [UIImage], categories: [Category]) {
         self.id = id
         self.name = name
         self.shortDescription = shortDescription
@@ -94,7 +106,7 @@ struct Attraction: Identifiable, Equatable, Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.id = try container.decode(UUID.self, forKey: .id)
+        self.id = try container.decode(String.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
         self.shortDescription = try container.decode(String.self, forKey: .shortDescription)
         self.fullDescription = try container.decode(String.self, forKey: .fullDescription)

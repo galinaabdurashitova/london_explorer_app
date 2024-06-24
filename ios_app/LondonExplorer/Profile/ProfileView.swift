@@ -15,12 +15,15 @@ struct ProfileView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 20) {
-                    ForEach($viewModel.savedRoutes, id: \.id) { route in
+                    ForEach($viewModel.routes, id: \.id) { route in
                         RouteCard(route: route, size: .M)
                     }
                 }
                 .padding(.all, 20)
             }
+        }
+        .onAppear {
+            viewModel.loadRoutes()
         }
     }
 }

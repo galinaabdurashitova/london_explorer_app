@@ -11,6 +11,8 @@ import SwiftUI
 struct YourRoutesCarousel: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @Binding var routes: [Route]
+    @Binding var tabSelection: Int
+    @Binding var path: NavigationPath
     
     var body: some View {
         VStack (spacing: 20) {
@@ -24,7 +26,7 @@ struct YourRoutesCarousel: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack (alignment: .top, spacing: 12) {
-                    CreateRouteCard()
+                    CreateRouteCard(tabSelection: $tabSelection, path: $path)
                         .environmentObject(NetworkMonitor())
                     
                     ForEach($routes) { route in
@@ -42,7 +44,9 @@ struct YourRoutesCarousel: View {
         routes: Binding<[Route]> (
             get: { return MockData.Routes },
             set: { _ in }
-        )
+        ),
+        tabSelection: .constant(2),
+        path: .constant(NavigationPath())
     )
     .environmentObject(NetworkMonitor())
     .padding()

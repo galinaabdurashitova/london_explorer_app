@@ -35,6 +35,7 @@ extension Text {
             .opacity(0.5)
             .lineLimit(2)
             .truncationMode(.tail)
+            .multilineTextAlignment(.leading)
     }
     
     func screenHeadline() -> some View {

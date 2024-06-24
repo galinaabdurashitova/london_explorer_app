@@ -10,14 +10,21 @@ import SwiftUI
 
 struct CreateRouteCard: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @Binding var tabSelection: Int
+    @Binding var path: NavigationPath
     
     var body: some View {
-        if networkMonitor.isConnected {
-            NavigationLink(destination: RouteStopsView()) {
-                CreateNewRouteCard
+        ZStack {
+            if networkMonitor.isConnected {
+                NavigationLink(value: networkMonitor.isConnected) {
+                    CreateNewRouteCard
+                }
+                .navigationDestination(for: Bool.self) { _ in
+                    CreateStopsView(tabSelection: $tabSelection, path: $path)
+                }
+            } else {
+                NoInternetCard
             }
-        } else {
-            NoInternetCard
         }
     }
     
@@ -75,6 +82,6 @@ struct CreateRouteCard: View {
 }
 
 #Preview {
-    CreateRouteCard()
+    CreateRouteCard(tabSelection: .constant(2), path: .constant(NavigationPath()))
         .environmentObject(NetworkMonitor())
 }

@@ -9,16 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
-    @State var selection = 0
+    @State var tabSelection = 0
     
     @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
     
     var body: some View {
-        TabView (selection: $selection) {
+        TabView (selection: $tabSelection) {
             MainScreenView()
                 .environmentObject(networkMonitor)
                 .tabItem {
-                    Label("Home", systemImage: selection == 0 ? "house.fill" :  "house")
+                    Label("Home", systemImage: tabSelection == 0 ? "house.fill" :  "house")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(0)
@@ -31,7 +31,7 @@ struct ContentView: View {
                 }
                 .tag(1)
             
-            CreateRouteView()
+            CreateRouteView(tabSelection: $tabSelection)
                 .environmentObject(networkMonitor)
                 .tabItem {
                     Label("New Route", systemImage: "plus")
@@ -42,7 +42,7 @@ struct ContentView: View {
             ProgressView()
                 .environmentObject(networkMonitor)
                 .tabItem {
-                    Label("Favourites", systemImage: selection == 3 ? "heart.fill" : "heart")
+                    Label("Favourites", systemImage: tabSelection == 3 ? "heart.fill" : "heart")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(3)
@@ -50,7 +50,7 @@ struct ContentView: View {
             ProfileView()
                 .environmentObject(networkMonitor)
                 .tabItem {
-                    Label("Profile", systemImage: selection == 4 ? "person.fill" : "person")
+                    Label("Profile", systemImage: tabSelection == 4 ? "person.fill" : "person")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(4)

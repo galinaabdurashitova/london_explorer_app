@@ -28,6 +28,7 @@ struct RouteStopsList: View {
         _route = Binding<Route> (
             get: {
                 return Route(
+                    dateCreated: Date(),
                     name: "New Route",
                     description: "",
                     image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),

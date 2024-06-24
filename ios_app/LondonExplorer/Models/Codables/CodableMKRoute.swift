@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import MapKit
 
-struct CodableMKRoute: Codable {
+struct CodableMKRoute: Codable, Hashable {
     var name: String
     var distance: CLLocationDistance
     var expectedTravelTime: TimeInterval

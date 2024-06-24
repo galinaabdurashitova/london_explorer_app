@@ -10,18 +10,15 @@ import SwiftUI
 import MapKit
 
 class RouteStopsViewModel: ObservableObject {
-    @Published var stops: [Route.RouteStop] = []
-    @Published var pathes: [CodableMKRoute?] = []
+    @Published var stops: [Route.RouteStop]
+    @Published var pathes: [CodableMKRoute?]
     @Published var isLoading: Bool = false
-    @Published var test: Bool = false
+    @Published var draggingItem: Route.RouteStop?
+    @Published var deleteIconSize: Double = 25
     
-    init(useTestData: Bool = false) {
-        if useTestData {
-            stops = MockData.RouteStops
-            Task {
-                await calculateRoute()
-            }
-        }
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
+        self.stops = stops
+        self.pathes = pathes
     }
     
     @MainActor

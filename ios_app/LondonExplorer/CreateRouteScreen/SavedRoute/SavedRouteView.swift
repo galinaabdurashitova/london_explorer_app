@@ -10,6 +10,8 @@ import SwiftUI
 
 struct SavedRouteView: View {
     @State var route: Route
+    @Binding var tabSelection: Int
+    @Binding var path: NavigationPath
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -37,7 +39,7 @@ struct SavedRouteView: View {
                     textColour: Color.white,
                     size: .M
                 ) {
-                    
+                    path.removeLast(path.count)
                 }
                 
                 ButtonView(
@@ -46,7 +48,7 @@ struct SavedRouteView: View {
                     textColour: Color.white,
                     size: .M
                 ) {
-                    
+                    tabSelection = 4
                 }
             }
             .padding(.bottom, 20)
@@ -57,5 +59,9 @@ struct SavedRouteView: View {
 }
 
 #Preview {
-    SavedRouteView(route: MockData.Routes[0])
+    SavedRouteView(
+        route: MockData.Routes[0],
+        tabSelection: .constant(2),
+        path: .constant(NavigationPath())
+    )
 }

@@ -22,7 +22,7 @@ struct RouteView: View {
         return Double(headerHeight - scrollOffset * 2) / 100
     }
     
-    init(route: Route) {
+    init(route: Binding<Route>) {
         self.viewModel = RouteViewModel(route: route)
     }
     
@@ -107,5 +107,5 @@ struct RouteView: View {
 }
 
 #Preview {
-    RouteView(route: MockData.Routes[0])
+    RouteView(route: .constant(MockData.Routes[0]))
 }

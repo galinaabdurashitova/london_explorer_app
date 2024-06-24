@@ -21,7 +21,7 @@ struct RouteCard: View {
     
     var body: some View {
         NavigationLink(destination: {
-            RouteView(route: route)
+            RouteView(route: $route)
         }) {
             VStack (alignment: .leading, spacing: 10) {
                 ZStack (alignment: .topTrailing) {

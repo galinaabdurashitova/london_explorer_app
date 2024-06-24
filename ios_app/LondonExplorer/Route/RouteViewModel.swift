@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 class RouteViewModel: ObservableObject {
-    @Published var route: Route
+    @Binding var route: Route
     @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
     
-    init(route: Route) {
-        self.route = route
+    init(route: Binding<Route>) {
+        self._route = route
     }
     
     func deleteRoute() {

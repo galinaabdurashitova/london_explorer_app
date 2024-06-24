@@ -13,9 +13,13 @@ struct FinishCreateView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: FinishCreateViewModel
     @State private var isNavigationActive = false
+    @Binding var tabSelection: Int
+    @Binding var path: NavigationPath
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
         self.viewModel = FinishCreateViewModel(stops: stops, pathes: pathes)
+        _tabSelection = tabSelection
+        _path = path
     }
     
     var body: some View {
@@ -37,6 +41,7 @@ struct FinishCreateView: View {
             Button(action: {
                 viewModel.saveRoute()
                 isNavigationActive = true
+                path.append(viewModel.route)
             }) {
                 ButtonView(
                     text: .constant("Save route"),
@@ -50,8 +55,8 @@ struct FinishCreateView: View {
                 )
             }
             .padding(.bottom, 20)
-            .navigationDestination(isPresented: $isNavigationActive) {
-                SavedRouteView(route: viewModel.route)
+            .navigationDestination(for: Route.self) { value in
+                SavedRouteView(route: value, tabSelection: $tabSelection, path: $path)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -116,6 +121,8 @@ struct FinishCreateView: View {
 #Preview {
     FinishCreateView(
         stops: MockData.RouteStops,
-        pathes: [nil, nil, nil]
+        pathes: [nil, nil, nil],
+        tabSelection: .constant(2),
+        path: .constant(NavigationPath())
     )
 }

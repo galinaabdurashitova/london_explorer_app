@@ -11,9 +11,11 @@ import SwiftUI
 struct CreateRouteView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @State var routes: [Route] = MockData.Routes
+    @Binding var tabSelection: Int
+    @State var path = NavigationPath()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView(showsIndicators: false) {
                 VStack (spacing: 25) {
                     HStack {
@@ -24,7 +26,7 @@ struct CreateRouteView: View {
                         Spacer()
                     }
                     
-                    YourRoutesCarousel(routes: $routes)
+                    YourRoutesCarousel(routes: $routes, tabSelection: $tabSelection, path: $path)
                     
                     if networkMonitor.isConnected {
                         SuggestedRoutesCarousel(routes: $routes)
@@ -39,6 +41,6 @@ struct CreateRouteView: View {
 }
 
 #Preview {
-    CreateRouteView()
+    CreateRouteView(tabSelection: .constant(2))
         .environmentObject(NetworkMonitor())
 }

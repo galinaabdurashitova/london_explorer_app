@@ -15,6 +15,7 @@ class FinishCreateViewModel: ObservableObject {
     
     init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
         self.route = Route(
+            dateCreated: Date(),
             name: "",
             description: "",
             image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),

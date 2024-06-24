@@ -9,8 +9,9 @@ import Foundation
 import SwiftUI
 import MapKit
 
-struct Route: Identifiable, Codable {
+struct Route: Identifiable, Codable, Hashable {
     var id = UUID()
+    var dateCreated: Date
     var name: String
     var description: String
     var image: UIImage
@@ -29,12 +30,10 @@ struct Route: Identifiable, Codable {
     }
     var pathes: [CodableMKRoute?] = []
     
-    struct RouteStop: Identifiable, Equatable, Codable {
+    struct RouteStop: Identifiable, Equatable, Codable, Hashable {
         var id = UUID()
         var stepNo: Int
         var attraction: Attraction
-        var pathTo: [CLLocationCoordinate2D]?
-        var expectedTravelTime: Double?
         
         static func == (lhs: Route.RouteStop, rhs: Route.RouteStop) -> Bool {
             lhs.id == rhs.id
@@ -43,6 +42,7 @@ struct Route: Identifiable, Codable {
     
     enum CodingKeys: String, CodingKey {
         case id
+        case dateCreated
         case name
         case description
         case image
@@ -53,9 +53,10 @@ struct Route: Identifiable, Codable {
         case pathes
     }
     
-    init(id: UUID = UUID(), name: String, description: String, image: UIImage, saves: Int = 0, collectables: Int, downloadDate: Date? = nil, stops: [RouteStop], pathes: [CodableMKRoute?]
+    init(id: UUID = UUID(), dateCreated: Date, name: String, description: String, image: UIImage, saves: Int = 0, collectables: Int, downloadDate: Date? = nil, stops: [RouteStop], pathes: [CodableMKRoute?]
     ) {
         self.id = id
+        self.dateCreated = dateCreated
         self.name = name
         self.description = description
         self.image = image
@@ -70,6 +71,7 @@ struct Route: Identifiable, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try container.decode(UUID.self, forKey: .id)
+        self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
         self.name = try container.decode(String.self, forKey: .name)
         self.description = try container.decode(String.self, forKey: .description)
         self.image = UIImage(data: try container.decode(Data.self, forKey: .image)) ?? UIImage(imageLiteralResourceName: "default")
@@ -84,6 +86,7 @@ struct Route: Identifiable, Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(id, forKey: .id)
+        try container.encode(dateCreated, forKey: .dateCreated)
         try container.encode(name, forKey: .name)
         try container.encode(description, forKey: .description)
         try container.encode(image.jpegData(compressionQuality: 1.0), forKey: .image)

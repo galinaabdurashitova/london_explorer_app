@@ -31,17 +31,25 @@ struct AttractionsSearchView: View {
                     
                     SearchBar
                     
-                    AttractionsList
-                    
-                    if viewModel.stops.count > 0 {
-                        Spacer().frame(height: 40)
+                    if viewModel.isLoading {
+                        loading
+                    } else if let error = viewModel.error {
+                        ErrorScreen() {
+                            viewModel.fetchAttractions()
+                        }
+                    } else {
+                        AttractionsList
+                        
+                        if viewModel.stops.count > 0 {
+                            Spacer().frame(height: 40)
+                        }
                     }
                 }
                 .padding(.all, 20)
             }
-            
-            
-            if viewModel.stops.count > 0 {
+                
+                
+            if viewModel.stops.count > 0, !viewModel.isLoading {
                 ButtonView(
                     text: .constant("Add (\(String(viewModel.stops.count)))"),
                     colour: Color.lightBlue,
@@ -147,9 +155,56 @@ struct AttractionsSearchView: View {
             }
         }
     }
+    
+    private var loading: some View {
+        VStack (spacing: 5) {
+            ForEach(0..<4) { index in
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 14) {
+                        Color(Color.black.opacity(0.05))
+                            .frame(width: 80, height: 80)
+                            .loading(isLoading: true)
+                        
+                        VStack(alignment: .leading, spacing: 5) {
+                            Color(Color.black.opacity(0.05))
+                                .frame(width: 80, height: 25)
+                                .loading(isLoading: true)
+                            
+                            Color(Color.black.opacity(0.05))
+                                .frame(width: 175, height: 55)
+                                .loading(isLoading: true)
+                        }
+                        
+                        Spacer()
+                    }
+                    
+                    HStack {
+                        ForEach(0..<4) { index in
+                            Color(Color.black.opacity(0.05))
+                                .frame(width: 70, height: 23)
+                                .loading(isLoading: true)
+                        }
+                    }
+                }
+                .foregroundColor(Color.black)
+            }
+            .padding(.vertical, 10)
+            .overlay(
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(Color.black.opacity(0.5)),
+                alignment: .top
+            )
+        }
+    }
 }
 
 #Preview {
-    AttractionsSearchView(routeViewModel: RouteStopsViewModel())
-        .environmentObject(NetworkMonitor())
+    AttractionsSearchView(
+        routeViewModel: RouteStopsViewModel(
+            stops: MockData.RouteStops,
+            pathes: [nil, nil, nil]
+        )
+    )
+    .environmentObject(NetworkMonitor())
 }
