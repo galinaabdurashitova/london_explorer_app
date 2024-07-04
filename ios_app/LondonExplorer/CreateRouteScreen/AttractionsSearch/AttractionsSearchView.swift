@@ -33,7 +33,7 @@ struct AttractionsSearchView: View {
                     
                     if viewModel.isLoading {
                         loading
-                    } else if let error = viewModel.error {
+                    } else if viewModel.error != nil {
                         ErrorScreen() {
                             viewModel.fetchAttractions()
                         }

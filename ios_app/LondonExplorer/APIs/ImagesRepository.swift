@@ -13,7 +13,7 @@ import FirebaseStorage
 class ImagesRepository: ObservableObject {
 //    private let storage = Storage.storage()
     private let storageRef = Storage.storage().reference()
-    private var attractionImagesCache = [Attraction: [UIImage]]()
+//    private var attractionImagesCache = [Attraction: [UIImage]]()
 //    private var imageCache = [String: UIImage]()
     
     enum ImageRepositoryError: Error {
@@ -22,9 +22,9 @@ class ImagesRepository: ObservableObject {
     }
     
     func getAttractionImages(attraction: Attraction) async throws -> [UIImage] {
-        if let cachedAttraction = attractionImagesCache[attraction] {
-            return cachedAttraction
-        }
+//        if let cachedAttraction = attractionImagesCache[attraction] {
+//            return cachedAttraction
+//        }
         
         let imageRef = storageRef.child("attractions/" + attraction.id)
         
@@ -38,12 +38,13 @@ class ImagesRepository: ObservableObject {
                     if let image = UIImage(data: data) {
                         images.append(image)
                         
-                        if var cachedAttraction = attractionImagesCache[attraction] {
-                            cachedAttraction.append(image)
-                            attractionImagesCache[attraction] = cachedAttraction
-                        } else {
-                            attractionImagesCache[attraction] = [image]
-                        }
+                        // It causes crashes - need a fix
+//                        if var cachedAttraction = attractionImagesCache[attraction] {
+//                            cachedAttraction.append(image)
+//                            attractionImagesCache[attraction] = cachedAttraction
+//                        } else {
+//                            attractionImagesCache[attraction] = [image]
+//                        }
                     }
                 } catch {
                     print("Failed to download image \(item.name): \(error.localizedDescription)")
