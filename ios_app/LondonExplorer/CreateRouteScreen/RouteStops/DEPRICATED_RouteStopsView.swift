@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
-
+// I decided not to use this view
 struct RouteStopsView: View {
     @ObservedObject var viewModel: RouteStopsViewModel //= RouteStopsViewModel()
     @State private var showAttractionSearchView: Bool = false

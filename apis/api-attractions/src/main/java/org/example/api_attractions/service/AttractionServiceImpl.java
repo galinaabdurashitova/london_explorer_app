@@ -29,21 +29,6 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
-    public void saveAttraction(Attraction attraction) {
-        attractionRepository.save(attraction);
-    }
-
-    @Override
-    public void updateAttraction(Attraction attraction) {
-        attractionRepository.save(attraction);
-    }
-
-    @Override
-    public void deleteAttraction(String id) {
-        attractionRepository.deleteById(id);
-    }
-
-    @Override
     public List<AttractionDTO> getAllAttractions() {
         return attractionRepository.findAll().stream()
                 .filter(attraction -> !attraction.getCategories().isEmpty())

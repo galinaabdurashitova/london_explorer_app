@@ -7,9 +7,6 @@ import java.util.List;
 
 public interface AttractionService {
     AttractionDTO getAttractionById(String id);
-    void saveAttraction(Attraction attraction);
-    void updateAttraction(Attraction attraction);
-    void deleteAttraction(String id);
     List<AttractionDTO> getAllAttractions();
     AttractionDTO getAttractionByIdProjected(String id);
 }

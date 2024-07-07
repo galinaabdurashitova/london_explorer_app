@@ -129,14 +129,3 @@ struct Attraction: Identifiable, Equatable, Codable, Hashable {
         try container.encode(categories, forKey: .categories)
     }
 }
-
-struct AttractionWrapper: Identifiable, Equatable, Codable, Hashable {
-    var id: String
-    var name: String
-    var shortDescription: String
-    var fullDescription: String
-    var address: String
-    var latitude: Double
-    var longitude: Double
-    var categories: [String]
-}

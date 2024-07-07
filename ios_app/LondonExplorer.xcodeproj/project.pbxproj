@@ -13,7 +13,7 @@
 		2A76D4AC2C15F2D7007908E0 /* AttractionSheetContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4AB2C15F2D7007908E0 /* AttractionSheetContent.swift */; };
 		2A76D4AE2C15FF56007908E0 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4AD2C15FF56007908E0 /* ButtonView.swift */; };
 		2A76D4B02C160C2D007908E0 /* CategoryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4AF2C160C2D007908E0 /* CategoryLabel.swift */; };
-		2A76D4B32C1621D2007908E0 /* RouteStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4B22C1621D2007908E0 /* RouteStopsView.swift */; };
+		2A76D4B32C1621D2007908E0 /* DEPRICATED_RouteStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4B22C1621D2007908E0 /* DEPRICATED_RouteStopsView.swift */; };
 		2A76D4B52C162306007908E0 /* MapLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4B42C162306007908E0 /* MapLinkButton.swift */; };
 		2A76D4B72C1624D6007908E0 /* RouteStopCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4B62C1624D6007908E0 /* RouteStopCard.swift */; };
 		2A76D4B92C170A6B007908E0 /* PathConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4B82C170A6B007908E0 /* PathConnection.swift */; };
@@ -115,7 +115,7 @@
 		2A76D4AB2C15F2D7007908E0 /* AttractionSheetContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionSheetContent.swift; sourceTree = "<group>"; };
 		2A76D4AD2C15FF56007908E0 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		2A76D4AF2C160C2D007908E0 /* CategoryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryLabel.swift; sourceTree = "<group>"; };
-		2A76D4B22C1621D2007908E0 /* RouteStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteStopsView.swift; sourceTree = "<group>"; };
+		2A76D4B22C1621D2007908E0 /* DEPRICATED_RouteStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DEPRICATED_RouteStopsView.swift; sourceTree = "<group>"; };
 		2A76D4B42C162306007908E0 /* MapLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLinkButton.swift; sourceTree = "<group>"; };
 		2A76D4B62C1624D6007908E0 /* RouteStopCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteStopCard.swift; sourceTree = "<group>"; };
 		2A76D4B82C170A6B007908E0 /* PathConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathConnection.swift; sourceTree = "<group>"; };
@@ -222,7 +222,7 @@
 		2A76D4B12C1621B0007908E0 /* RouteStops */ = {
 			isa = PBXGroup;
 			children = (
-				2A76D4B22C1621D2007908E0 /* RouteStopsView.swift */,
+				2A76D4B22C1621D2007908E0 /* DEPRICATED_RouteStopsView.swift */,
 				2A76D4B62C1624D6007908E0 /* RouteStopCard.swift */,
 				2A76D4B82C170A6B007908E0 /* PathConnection.swift */,
 				2A76D4BA2C171846007908E0 /* RouteStopsViewModel.swift */,
@@ -627,7 +627,7 @@
 				2AE8A0202C13A20A005E0F62 /* CreateRouteView.swift in Sources */,
 				2AD4B9652C0CDAFC00B90C8A /* LoadingView.swift in Sources */,
 				2AA5B1362C09D7BB001EC475 /* FeedUpdate.swift in Sources */,
-				2A76D4B32C1621D2007908E0 /* RouteStopsView.swift in Sources */,
+				2A76D4B32C1621D2007908E0 /* DEPRICATED_RouteStopsView.swift in Sources */,
 				2AFD1F5D2C21DAEC0061060E /* CodableMKPolyline.swift in Sources */,
 				2AD4B9632C0CD98E00B90C8A /* LoadingStyle.swift in Sources */,
 				2AA5B13C2C09E5E5001EC475 /* User.swift in Sources */,
