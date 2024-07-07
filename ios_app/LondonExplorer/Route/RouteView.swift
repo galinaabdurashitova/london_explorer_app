@@ -32,8 +32,9 @@ struct RouteView: View {
                 ImagesSlidesHeader(
                     images: viewModel.route.stops.compactMap { stop in
                         stop.attraction.images.first
-                })
-                .frame(width: UIScreen.main.bounds.width, height: headerHeight)
+                    }
+                )
+                .frame(height: headerHeight)
                 .clipped()
                 .padding(.vertical, 0)
                 .edgesIgnoringSafeArea(.top)

@@ -33,6 +33,7 @@ class AttractionSearchViewModel: ObservableObject {
                 attractions = try await service.fetchAttractions()
             } catch {
                 self.error = error.localizedDescription
+                print("Error: \(error)")
             }
             isLoading = false
         }

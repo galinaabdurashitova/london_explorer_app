@@ -21,12 +21,12 @@ class ImagesRepository: ObservableObject {
         case downloadFailed(String, String)
     }
     
-    func getAttractionImages(attraction: Attraction) async throws -> [UIImage] {
+    func getAttractionImages(attractionId: String) async throws -> [UIImage] {
 //        if let cachedAttraction = attractionImagesCache[attraction] {
 //            return cachedAttraction
 //        }
         
-        let imageRef = storageRef.child("attractions/" + attraction.id)
+        let imageRef = storageRef.child("attractions/" + attractionId)
         
         do {
             let result = try await imageRef.listAll()
@@ -52,7 +52,7 @@ class ImagesRepository: ObservableObject {
             }
             
             if images.isEmpty {
-                throw ImageRepositoryError.downloadFailed(attraction.id, "No images were successfully downloaded.")
+                throw ImageRepositoryError.downloadFailed(attractionId, "No images were successfully downloaded.")
             }
             
             return images
@@ -63,7 +63,7 @@ class ImagesRepository: ObservableObject {
     
     private func getData(from reference: StorageReference) async throws -> Data {
         return try await withCheckedThrowingContinuation { continuation in
-            reference.getData(maxSize: 10 * 1024 * 1024) { data, error in
+            reference.getData(maxSize: 1 * 1024 * 1024) { data, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let data = data {

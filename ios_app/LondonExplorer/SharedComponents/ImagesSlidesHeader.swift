@@ -17,6 +17,7 @@ struct ImagesSlidesHeader: View {
                 Image(uiImage: images[item])
                     .resizable()
                     .scaledToFill()
+                    .frame(height: 315)
             }
         }
         .tabViewStyle(PageTabViewStyle())
@@ -28,5 +29,4 @@ struct ImagesSlidesHeader: View {
     ImagesSlidesHeader(
         images: MockData.Attractions[0].images
     )
-    .padding()
 }
