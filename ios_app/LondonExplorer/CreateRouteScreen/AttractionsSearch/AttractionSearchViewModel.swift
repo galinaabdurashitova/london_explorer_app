@@ -10,7 +10,7 @@ import SwiftUI
 
 class AttractionSearchViewModel: ObservableObject {
     @Published var attractions: [Attraction]
-    @Published var filteredAttractions: [Attraction] = []
+    @Published var filteredAttractions: [Attraction]
     @Published var filters: [Attraction.Category] = []
     @Published var stops: [Route.RouteStop]
     @Published var searchText: String = ""
@@ -23,6 +23,7 @@ class AttractionSearchViewModel: ObservableObject {
     
     init(stops: [Route.RouteStop] = []) {
         self.attractions = []
+        self.filteredAttractions = []
         self.stops = stops
         fetchAttractions()
     }
@@ -34,8 +35,14 @@ class AttractionSearchViewModel: ObservableObject {
                 var fetchedAttractions = try await service.fetchAttractions()
                 
                 for attraction in fetchedAttractions {
-                    await fetchAttractionImages(attraction: attraction)
+                    var newAttraction = attraction
+                    await fetchAttractionImages(attraction: &newAttraction)
+                    if !newAttraction.images.isEmpty {
+                        attractions.append(newAttraction)
+                    }
                 }
+                
+                filteredAttractions = attractions
             } catch {
                 self.error = error.localizedDescription
                 print("Error: \(error)")
@@ -45,11 +52,10 @@ class AttractionSearchViewModel: ObservableObject {
         }
     }
     
-    func fetchAttractionImages(attraction: Attraction) async {
+    func fetchAttractionImages(attraction: inout Attraction) async {
         do {
-            var newAttraction = attraction
-            newAttraction.images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
-            attractions.append(newAttraction)
+            var images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
+            attraction.images = images
         } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
             print("Listing failed for attraction \(attraction.id): \(message)")
         } catch ImagesRepository.ImageRepositoryError.downloadFailed(let itemName, let message) {
@@ -69,10 +75,22 @@ class AttractionSearchViewModel: ObservableObject {
     }
     
     func filterAttractions() {
-        filteredAttractions = attractions
-        for category in filters {
-            filteredAttractions = filteredAttractions.filter { $0.categories.contains(category) }
+        var tempAttractions = attractions
+        
+        if !filters.isEmpty {
+            for category in filters {
+                tempAttractions = filteredAttractions.filter { $0.categories.contains(category) }
+            }
         }
+        
+        if !searchText.isEmpty {
+            tempAttractions = tempAttractions.filter { attraction in
+                attraction.name.lowercased().contains(searchText.lowercased()) ||
+                attraction.shortDescription.lowercased().contains(searchText.lowercased())
+            }
+        }
+        
+        filteredAttractions = tempAttractions
     }
     
     func toggleAttracation(attraction: Attraction) {

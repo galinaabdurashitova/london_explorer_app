@@ -83,6 +83,9 @@ struct AttractionsSearchView: View {
                         .icon(size: 20, colour: Color.black.opacity(0.7))
                     TextField("Search", text: $viewModel.searchText)
                         .font(.system(size: 16))
+                        .onChange(of: viewModel.searchText) {
+                            viewModel.filterAttractions()
+                        }
                 }
                 .padding()
                 .overlay(
@@ -124,7 +127,7 @@ struct AttractionsSearchView: View {
     
     private var AttractionsList: some View {
         VStack (spacing: 5) {
-            ForEach(viewModel.filters.count == 0 ? $viewModel.attractions : $viewModel.filteredAttractions) { attraction in
+            ForEach($viewModel.filteredAttractions) { attraction in
                 HStack (spacing: 5) {
                     NavigationLink(
                         destination: {
