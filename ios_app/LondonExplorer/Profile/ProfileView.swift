@@ -68,7 +68,7 @@ struct ProfileView: View {
                 
                 HStack(spacing: 0) {
                     HStack(spacing: 10) {
-                        Text(String(viewModel.user.routesCreated))
+                        Text(String(viewModel.user.routesCreated.count))
                             .font(.system(size: 20, weight: .bold))
                             .kerning(-0.2)
                         Text("routes")

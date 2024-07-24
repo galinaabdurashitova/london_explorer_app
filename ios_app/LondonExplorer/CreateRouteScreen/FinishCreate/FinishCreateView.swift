@@ -16,8 +16,8 @@ struct FinishCreateView: View {
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
-        self.viewModel = FinishCreateViewModel(stops: stops, pathes: pathes)
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], tabSelection: Binding<Int>, path: Binding<NavigationPath>, auth: AuthController) {
+        self.viewModel = FinishCreateViewModel(stops: stops, pathes: pathes, auth: auth)
         _tabSelection = tabSelection
         _path = path
     }
@@ -123,6 +123,7 @@ struct FinishCreateView: View {
         stops: MockData.RouteStops,
         pathes: [nil, nil, nil],
         tabSelection: .constant(2),
-        path: .constant(NavigationPath())
+        path: .constant(NavigationPath()),
+        auth: AuthController()
     )
 }

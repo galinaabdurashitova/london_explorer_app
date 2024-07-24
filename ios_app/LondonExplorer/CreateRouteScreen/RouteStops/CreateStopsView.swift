@@ -11,6 +11,7 @@ import UniformTypeIdentifiers
 
 struct CreateStopsView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var auth: AuthController
     @ObservedObject var viewModel: RouteStopsViewModel
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
@@ -70,7 +71,7 @@ struct CreateStopsView: View {
                     .padding(.bottom, 20)
                 }
                 .navigationDestination(for: [Route.RouteStop].self) { value in
-                    FinishCreateView(stops: value, pathes: viewModel.pathes, tabSelection: $tabSelection, path: $path)
+                    FinishCreateView(stops: value, pathes: viewModel.pathes, tabSelection: $tabSelection, path: $path, auth: auth)
                 }
             }
         }
@@ -194,4 +195,5 @@ struct CreateStopsView: View {
         tabSelection: .constant(2),
         path: .constant(NavigationPath())
     )
+    .environmentObject(AuthController())
 }

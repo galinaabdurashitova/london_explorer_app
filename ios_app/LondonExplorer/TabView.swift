@@ -33,6 +33,7 @@ struct MainTabView: View {
             
             CreateRouteView(tabSelection: $tabSelection)
                 .environmentObject(networkMonitor)
+                .environmentObject(auth)
                 .tabItem {
                     Label("New Route", systemImage: "plus")
                         .environment(\.symbolVariants, .none)

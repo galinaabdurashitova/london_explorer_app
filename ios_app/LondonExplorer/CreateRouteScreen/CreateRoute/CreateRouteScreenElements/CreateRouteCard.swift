@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CreateRouteCard: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var auth: AuthController
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     
@@ -21,6 +22,7 @@ struct CreateRouteCard: View {
                 }
                 .navigationDestination(for: Bool.self) { _ in
                     CreateStopsView(tabSelection: $tabSelection, path: $path)
+                        .environmentObject(auth)
                 }
             } else {
                 NoInternetCard
@@ -84,4 +86,5 @@ struct CreateRouteCard: View {
 #Preview {
     CreateRouteCard(tabSelection: .constant(2), path: .constant(NavigationPath()))
         .environmentObject(NetworkMonitor())
+        .environmentObject(AuthController())
 }

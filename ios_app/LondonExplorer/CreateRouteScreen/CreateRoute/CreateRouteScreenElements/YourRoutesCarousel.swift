@@ -10,6 +10,7 @@ import SwiftUI
 
 struct YourRoutesCarousel: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var auth: AuthController
     @Binding var routes: [Route]
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
@@ -27,7 +28,8 @@ struct YourRoutesCarousel: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack (alignment: .top, spacing: 12) {
                     CreateRouteCard(tabSelection: $tabSelection, path: $path)
-                        .environmentObject(NetworkMonitor())
+                        .environmentObject(networkMonitor)
+                        .environmentObject(auth)
                     
                     ForEach($routes) { route in
                         RouteCard(route: route, label: .likes(route.saves.wrappedValue))
@@ -49,5 +51,6 @@ struct YourRoutesCarousel: View {
         path: .constant(NavigationPath())
     )
     .environmentObject(NetworkMonitor())
+    .environmentObject(AuthController())
     .padding()
 }

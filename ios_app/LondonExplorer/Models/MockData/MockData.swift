@@ -69,6 +69,11 @@ class MockData {
     public static var Routes: [Route] = [
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
+            userCreated: 
+                Route.UserCreated(
+                    userId: "1",
+                    name: "Anna"
+                ),
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
@@ -79,6 +84,11 @@ class MockData {
         ),
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
+            userCreated:
+                Route.UserCreated(
+                    userId: "2",
+                    name: "Mary"
+                ),
             name: "London Secrets",
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
@@ -89,6 +99,11 @@ class MockData {
         ),
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
+            userCreated:
+                Route.UserCreated(
+                    userId: "1",
+                    name: "Anna"
+                ),
             name: "Some Route Some Route Some Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "LondonStreet"),
@@ -99,6 +114,11 @@ class MockData {
         ),
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
+            userCreated:
+                Route.UserCreated(
+                    userId: "2",
+                    name: "Mary"
+                ),
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
@@ -110,6 +130,11 @@ class MockData {
         ),
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
+            userCreated:
+                Route.UserCreated(
+                    userId: "1",
+                    name: "Anna"
+                ),
             name: "London Secrets",
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
@@ -117,13 +142,7 @@ class MockData {
             collectables: 5,
             stops: RouteStops
             , pathes: [nil, nil, nil]
-        )//,
-//        Route(
-//            name: "Some Route",
-//            description: "Visit all the main sights and see Big Ben following this fantastic route",
-//            image: UIImage(imageLiteralResourceName: "LondonStreet"),
-//            saves: 103
-//        )
+        )
     ]
     
     public static var FriendsFeed: [FriendUpdate] = [

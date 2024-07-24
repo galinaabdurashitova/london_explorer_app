@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CreateRouteView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var auth: AuthController
     @State var routes: [Route] = MockData.Routes
     @Binding var tabSelection: Int
     @State var path = NavigationPath()
@@ -27,6 +28,7 @@ struct CreateRouteView: View {
                     }
                     
                     YourRoutesCarousel(routes: $routes, tabSelection: $tabSelection, path: $path)
+                        .environmentObject(auth)
                     
                     if networkMonitor.isConnected {
                         SuggestedRoutesCarousel(routes: $routes)
@@ -43,4 +45,5 @@ struct CreateRouteView: View {
 #Preview {
     CreateRouteView(tabSelection: .constant(2))
         .environmentObject(NetworkMonitor())
+        .environmentObject(AuthController())
 }
