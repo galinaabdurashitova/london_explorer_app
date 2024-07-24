@@ -25,11 +25,11 @@ class AttractionSearchViewModel: ObservableObject {
         self.attractions = []
         self.filteredAttractions = []
         self.stops = stops
-        fetchAttractions()
+        self.fetchAttractions()
     }
     
     func fetchAttractions() {
-        isLoading = true
+        self.isLoading = true
         Task {
             do {
                 var fetchedAttractions = try await service.fetchAttractions()
@@ -42,7 +42,9 @@ class AttractionSearchViewModel: ObservableObject {
                     }
                 }
                 
-                filteredAttractions = attractions
+                DispatchQueue.main.async {
+                    self.filteredAttractions = self.attractions
+                }
             } catch {
                 self.error = error.localizedDescription
                 print("Error: \(error)")

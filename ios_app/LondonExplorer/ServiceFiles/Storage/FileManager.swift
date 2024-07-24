@@ -8,7 +8,7 @@
 import Foundation
 
 // ALL CURRENT STORAGES USED
-//@UserStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var user: User?
+//@UserStorage(key: "LONDON_EXPLORER_USERS") var user: [User]
 //@RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
 //@RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
 //@CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?

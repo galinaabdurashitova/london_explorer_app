@@ -10,7 +10,8 @@ import SwiftUI
 
 struct RouteView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: RouteViewModel
+    @EnvironmentObject var auth: AuthController
+    @StateObject var viewModel: RouteViewModel
     @State private var scrollOffset: CGFloat = 0
     @State private var confirmDelete: Bool = false
     
@@ -23,7 +24,7 @@ struct RouteView: View {
     }
     
     init(route: Binding<Route>) {
-        self.viewModel = RouteViewModel(route: route)
+        self._viewModel = StateObject(wrappedValue: RouteViewModel(route: route))
     }
     
     var body: some View {
@@ -49,12 +50,15 @@ struct RouteView: View {
                     Spacer().frame(height: 0)
                     
                     RouteDataView(route: $viewModel.route)
+                        .environmentObject(auth)
                     
-                    Button("Delete the route") {
-                        confirmDelete = true
+                    if auth.profile.userId == viewModel.route.userCreated.id {
+                        Button("Delete the route") {
+                            confirmDelete = true
+                        }
+                        .padding(.top, 20)
+                        .foregroundColor(Color.redAccent)
                     }
-                    .padding(.top, 20)
-                    .foregroundColor(Color.redAccent)
                     
                     Spacer().frame(height: 20)
                 }
@@ -110,4 +114,5 @@ struct RouteView: View {
 
 #Preview {
     RouteView(route: .constant(MockData.Routes[0]))
+        .environmentObject(AuthController())
 }

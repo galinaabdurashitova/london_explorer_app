@@ -14,12 +14,14 @@ class AuthController: ObservableObject {
     @Published var isSignedIn = false
     @Published var profile: User = User(userId: "", name: "", userName: "")
     
-    // Temp realisation storing user data - delete after implementing users-api
-    @UserStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var user: User?
+    private var usersRepository: UsersServiceProtocol = UsersService()
     
     init(testProfile: Bool? = false) {
         if let test = testProfile, test == true  {
-            self.profile = MockData.Users[0]
+            DispatchQueue.main.async {
+                self.profile = MockData.Users[0]
+                self.isSignedIn = true
+            }
         } else {
             observeAuthChanges()
         }
@@ -27,11 +29,11 @@ class AuthController: ObservableObject {
     
     private func fetchUserProfile(userId: String) async {
         do {
-            // Replace with actual async profile fetching implementation
-            // let profile = try await profileRepository.fetchProfile(userId: userId)
-            // self.profile = profile
-            self.profile = user ?? User(userId: "", name: "", userName: "")
-            self.isSignedIn = true
+            let profile = try await usersRepository.fetchUser(userId: userId)
+            DispatchQueue.main.async {
+                self.profile = profile
+                self.isSignedIn = true
+            }
         } catch {
             print("Error while fetching the user profile: \(error)")
         }
@@ -71,14 +73,19 @@ class AuthController: ObservableObject {
             let user = authResult.user
             print("User \(user.uid) signed up.")
             
-            let userProfile = User(userId: ""/*, email: email*/, name: name, userName: userName)
-            
-            self.user = userProfile
+            let userProfile = User(userId: user.uid/*, email: email*/, name: name, userName: userName)
             
             // Replace with actual async profile creation implementation
-            // let profile = try await profileRepository.createProfile(profile: userProfile)
-             self.profile = userProfile
-             self.isSignedIn = true
+            do {
+                try await usersRepository.createUser(newUser: userProfile)
+                
+                DispatchQueue.main.async {
+                    self.profile = userProfile
+                    self.isSignedIn = true
+                }
+            } catch {
+                throw NSError(domain: "AuthController", code: 999, userInfo: [NSLocalizedDescriptionKey: "Unexpected error"])
+            }
         } catch {
             print("Error signing up: \(error)")
             throw error
@@ -88,8 +95,11 @@ class AuthController: ObservableObject {
     func signOut() {
         do {
             try Auth.auth().signOut()
-            self.isSignedIn = false
-            self.profile = User(userId: "", name: "", userName: "")
+            
+            DispatchQueue.main.async {
+                self.isSignedIn = false
+                self.profile = User(userId: "", name: "", userName: "")
+            }
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }

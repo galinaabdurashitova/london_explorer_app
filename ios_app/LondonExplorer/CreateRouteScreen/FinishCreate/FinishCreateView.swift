@@ -11,15 +11,16 @@ import MapKit
 
 struct FinishCreateView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: FinishCreateViewModel
+    @EnvironmentObject var auth: AuthController
+    @StateObject var viewModel: FinishCreateViewModel
     @State private var isNavigationActive = false
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], tabSelection: Binding<Int>, path: Binding<NavigationPath>, auth: AuthController) {
-        self.viewModel = FinishCreateViewModel(stops: stops, pathes: pathes, auth: auth)
-        _tabSelection = tabSelection
-        _path = path
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
+        self._viewModel = StateObject(wrappedValue: FinishCreateViewModel(stops: stops, pathes: pathes))
+        self._tabSelection = tabSelection
+        self._path = path
     }
     
     var body: some View {
@@ -39,7 +40,7 @@ struct FinishCreateView: View {
             .padding(.all, 20)
             
             Button(action: {
-                viewModel.saveRoute()
+                viewModel.saveRoute(userId: auth.profile.userId, userName: auth.profile.name)
                 isNavigationActive = true
                 path.append(viewModel.route)
             }) {
@@ -57,6 +58,7 @@ struct FinishCreateView: View {
             .padding(.bottom, 20)
             .navigationDestination(for: Route.self) { value in
                 SavedRouteView(route: value, tabSelection: $tabSelection, path: $path)
+                    .environmentObject(auth)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -123,7 +125,7 @@ struct FinishCreateView: View {
         stops: MockData.RouteStops,
         pathes: [nil, nil, nil],
         tabSelection: .constant(2),
-        path: .constant(NavigationPath()),
-        auth: AuthController()
+        path: .constant(NavigationPath())
     )
+    .environmentObject(AuthController())
 }

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SavedRouteView: View {
+    @EnvironmentObject var auth: AuthController
     @State var route: Route
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
@@ -26,6 +27,8 @@ struct SavedRouteView: View {
                     }
                     
                     RouteDataView(route: $route)
+                        .environmentObject(auth)
+                        
                 }
                 .padding(.all, 20)
                 
@@ -64,4 +67,5 @@ struct SavedRouteView: View {
         tabSelection: .constant(2),
         path: .constant(NavigationPath())
     )
+    .environmentObject(AuthController())
 }

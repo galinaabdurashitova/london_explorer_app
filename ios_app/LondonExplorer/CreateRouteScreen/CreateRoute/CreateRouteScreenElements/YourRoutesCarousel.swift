@@ -33,6 +33,7 @@ struct YourRoutesCarousel: View {
                     
                     ForEach($routes) { route in
                         RouteCard(route: route, label: .likes(route.saves.wrappedValue))
+                            .environmentObject(auth)
                     }
                 }
             }

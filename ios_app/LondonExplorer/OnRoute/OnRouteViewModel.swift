@@ -11,7 +11,6 @@ import MapKit
 
 class OnRouteViewModel: ObservableObject {
     @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
-    @RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
     @Published var routeProgress: RouteProgress
     @Published var currentCoordinate: CLLocationCoordinate2D?
     @Published var directionToStart: MKRoute?
@@ -21,8 +20,11 @@ class OnRouteViewModel: ObservableObject {
     @Published var showGreeting: Bool = false
     @Published var greetingText: String = ""
     @Published var greetingSubText: String = ""
+    @Published var error: Bool = false
     
+    private var auth: AuthController?
     private var locationManager = LocationManager()
+    private var usersService = UsersService()
     
     init(route: Route) {
         self.routeProgress = RouteProgress(
@@ -56,6 +58,10 @@ class OnRouteViewModel: ObservableObject {
         Task {
             await screenSetup()
         }
+    }
+    
+    func setAuthController(_ auth: AuthController) {
+        self.auth = auth
     }
     
     func screenSetup() async {
@@ -190,10 +196,20 @@ class OnRouteViewModel: ObservableObject {
         saveRoute()
     }
     
-    func finishRoute() {
-        routeProgress.endTime = Date()
-        finishedRoutes.append(routeProgress)
-        eraseProgress()
+    func finishRoute() throws {
+        Task {
+            do {
+                routeProgress.endTime = Date()
+                if let auth = auth {
+                    try await usersService.saveFinishedRoute(userId: auth.profile.userId, route: routeProgress)
+                    eraseProgress()
+                } else {
+                    throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "Authorization error. Saving progress is impossible"])
+                }
+            } catch {
+                throw error
+            }
+        }
     }
     
     func eraseProgress() {

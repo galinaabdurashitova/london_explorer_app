@@ -18,9 +18,15 @@ struct User: Codable {
     var awards: Int = 0
     var collectables: Int = 0
     var friends: [String] = []
-    var routesCreated: [String] = []
-    var finishedRoutes: [String] = []
+    var finishedRoutes: [FinishedRoute] = []
     var favRoutes: [String] = []
+    
+    struct FinishedRoute: Codable {
+        var id: String
+        var route: Route?
+        var finishedDate: Date
+        var collectables: Int
+    }
     
     enum CodingKeys: String, CodingKey {
         case userId
@@ -32,12 +38,11 @@ struct User: Codable {
         case awards
         case collectables
         case friends
-        case routesCreated
         case finishedRoutes
         case favRoutes
     }
     
-    init(userId: String/*, email: String*/, name: String, userName: String, userDescription: String? = nil, image: UIImage = UIImage(imageLiteralResourceName: "User3DIcon"), awards: Int = 0, collectables: Int = 0, friends: [String] = [], routesCreated: [String] = [], finishedRoutes: [String] = [], favRoutes: [String] = []) {
+    init(userId: String/*, email: String*/, name: String, userName: String, userDescription: String? = nil, image: UIImage = UIImage(imageLiteralResourceName: "User3DIcon"), awards: Int = 0, collectables: Int = 0, friends: [String] = [], finishedRoutes: [FinishedRoute] = [], favRoutes: [String] = []) {
         self.userId = userId
 //        self.email = email
         self.name = name
@@ -47,7 +52,6 @@ struct User: Codable {
         self.awards = awards
         self.collectables = collectables
         self.friends = friends
-        self.routesCreated = routesCreated
         self.finishedRoutes = finishedRoutes
         self.favRoutes = favRoutes
     }
@@ -64,8 +68,7 @@ struct User: Codable {
         self.awards = try container.decode(Int.self, forKey: .awards)
         self.collectables = try container.decode(Int.self, forKey: .collectables)
         self.friends = try container.decode([String].self, forKey: .friends)
-        self.routesCreated = try container.decode([String].self, forKey: .routesCreated)
-        self.finishedRoutes = try container.decode([String].self, forKey: .finishedRoutes)
+        self.finishedRoutes = try container.decode([FinishedRoute].self, forKey: .finishedRoutes)
         self.favRoutes = try container.decode([String].self, forKey: .favRoutes)
     }
     
@@ -81,8 +84,6 @@ struct User: Codable {
         try container.encode(awards, forKey: .awards)
         try container.encode(collectables, forKey: .collectables)
         try container.encode(friends, forKey: .friends)
-        try container.encode(routesCreated, forKey: .routesCreated)
-        try container.encode(finishedRoutes, forKey: .finishedRoutes)
         try container.encode(favRoutes, forKey: .favRoutes)
     }
 }

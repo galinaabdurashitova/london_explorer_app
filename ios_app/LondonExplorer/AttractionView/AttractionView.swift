@@ -12,7 +12,7 @@ struct AttractionView: View {
     //@EnvironmentObject var networkMonitor: NetworkMonitor
     @Environment(\.presentationMode) var presentationMode
 //    @ObservedObject var viewModel: AttractionSearchViewModel
-    @ObservedObject var viewModel: AttractionViewModel
+    @StateObject var viewModel: AttractionViewModel
 //    @Binding var stops: [Route.RouteStop]
 //    @State var attraction: Attraction
     @State private var scrollOffset: CGFloat = 0
@@ -28,7 +28,7 @@ struct AttractionView: View {
     }
     
     init(stops: Binding<[Route.RouteStop]> = .constant([]), attraction: Attraction, allowAdd: Bool) {
-        self.viewModel = AttractionViewModel(stops: stops, attraction: attraction)
+        self._viewModel = StateObject(wrappedValue: AttractionViewModel(stops: stops, attraction: attraction))
         self.allowAdd = allowAdd
     }
     

@@ -10,7 +10,7 @@ import SwiftUI
 import MapKit
 
 struct Route: Identifiable, Codable, Hashable {
-    var id = UUID()
+    var id: String
     var dateCreated: Date
     var userCreated: UserCreated
     var name: String
@@ -32,13 +32,12 @@ struct Route: Identifiable, Codable, Hashable {
     var pathes: [CodableMKRoute?] = []
     
     struct UserCreated: Identifiable, Equatable, Codable, Hashable {
-        var id = UUID()
-        var userId: String
+        var id: String
         var name: String?
     }
     
     struct RouteStop: Identifiable, Equatable, Codable, Hashable {
-        var id = UUID()
+        var id: String = UUID().uuidString
         var stepNo: Int
         var attraction: Attraction
         
@@ -62,7 +61,7 @@ struct Route: Identifiable, Codable, Hashable {
         case pathes
     }
     
-    init(id: UUID = UUID(), dateCreated: Date, userCreated: UserCreated, name: String, description: String, image: UIImage, saves: Int = 0, collectables: Int, downloadDate: Date? = nil, stops: [RouteStop], pathes: [CodableMKRoute?]
+    init(id: String = UUID().uuidString, dateCreated: Date, userCreated: UserCreated, name: String, description: String, image: UIImage, saves: Int = 0, collectables: Int, downloadDate: Date? = nil, stops: [RouteStop], pathes: [CodableMKRoute?]
     ) {
         self.id = id
         self.dateCreated = dateCreated
@@ -80,7 +79,7 @@ struct Route: Identifiable, Codable, Hashable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.id = try container.decode(UUID.self, forKey: .id)
+        self.id = try container.decode(String.self, forKey: .id)
         self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
         self.userCreated = try container.decode(UserCreated.self, forKey: .userCreated)
         self.name = try container.decode(String.self, forKey: .name)

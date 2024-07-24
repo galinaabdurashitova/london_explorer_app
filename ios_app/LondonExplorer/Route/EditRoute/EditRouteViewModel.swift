@@ -15,6 +15,8 @@ class EditRouteViewModel: ObservableObject {
     @Published var description: String
     @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
     
+    private var routesService = RoutesService()
+    
     init(route: Binding<Route>, isSheetPresented: Binding<Bool>) {
         self._route = route
         self._isSheetPresented = isSheetPresented
@@ -23,15 +25,14 @@ class EditRouteViewModel: ObservableObject {
     }
     
     func saveEditRoute() {
-        if var savedRoute = savedRoutes.first(where: { $0.id == route.id }) {
-            savedRoute.name = self.name
-            savedRoute.description = self.description
-            savedRoutes.removeAll(where: { $0.id == savedRoute.id })
-            savedRoutes.append(savedRoute)
-            route.name = name
-            route.description = description
+        Task {
+            do {
+                try await routesService.updateRoute(updatedRoute: route)
+                isSheetPresented = false
+            } catch {
+                
+            }
         }
-        isSheetPresented = false
     }
     
     func cancelEditRoute() {

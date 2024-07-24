@@ -17,6 +17,7 @@ struct MainTabView: View {
         TabView (selection: $tabSelection) {
             MainScreenView()
                 .environmentObject(networkMonitor)
+                .environmentObject(auth)
                 .tabItem {
                     Label("Home", systemImage: tabSelection == 0 ? "house.fill" :  "house")
                         .environment(\.symbolVariants, .none)

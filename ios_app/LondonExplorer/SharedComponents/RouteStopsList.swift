@@ -29,7 +29,7 @@ struct RouteStopsList: View {
             get: {
                 return Route(
                     dateCreated: Date(),
-                    userCreated: Route.UserCreated(userId: ""),
+                    userCreated: Route.UserCreated(id: ""),
                     name: "New Route",
                     description: "",
                     image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct FriendsOnRouteWidget: View {
+    @EnvironmentObject var auth: AuthController
     @Binding var friendsProgresses: [RouteProgress]
     
     var body: some View {
@@ -23,6 +24,7 @@ struct FriendsOnRouteWidget: View {
             ForEach ($friendsProgresses) { route in
                 if let friend = route.user.wrappedValue {
                     RouteProgressView(routeProgress: route, user: route.user)
+                        .environmentObject(auth)
                 }
             }
         }
@@ -36,5 +38,6 @@ struct FriendsOnRouteWidget: View {
             set: { _ in }
         )
     )
+    .environmentObject(AuthController())
     .padding()
 }

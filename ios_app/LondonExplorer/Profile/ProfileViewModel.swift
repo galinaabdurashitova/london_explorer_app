@@ -11,7 +11,8 @@ import SwiftUI
 class ProfileViewModel: ObservableObject {
     @Published var routes: [Route] = []
     @Published var user: User
-    @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
+    
+    private var routesService = RoutesService()
     
     init(user: User) {
         self.user = user
@@ -19,6 +20,16 @@ class ProfileViewModel: ObservableObject {
     }
     
     func loadRoutes() {
-        self.routes = savedRoutes.sorted(by: { $0.dateCreated > $1.dateCreated })
+        Task {
+            do {
+                if let userRoutes = try await routesService.fetchUserRoutes(userId: user.userId) {
+                    DispatchQueue.main.async {
+                        self.routes = userRoutes.sorted(by: { $0.dateCreated > $1.dateCreated })
+                    }
+                }
+            } catch {
+                //
+            }
+        }
     }
 }

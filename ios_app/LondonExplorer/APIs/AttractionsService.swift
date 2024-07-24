@@ -14,7 +14,6 @@ protocol AttractionsServiceProtocol {
 
 class AttractionsService: AttractionsServiceProtocol {
     private let baseURL = URL(string: "https://c490973c-0f21-4e71-866e-f8e4c353507b-00-3j1hu3pc5bvs1.kirk.replit.dev/api/attractions")!
-    private let imagesRep = ImagesRepository()
     
     struct AttractionWrapper: Identifiable, Equatable, Codable, Hashable {
         var id: String

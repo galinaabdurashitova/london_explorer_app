@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MainScreenView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var auth: AuthController
     @State var routes: [Route] = MockData.Routes
     @State var friendsFeed: [FriendUpdate] = MockData.FriendsFeed
     @State var onRoute: RouteProgress = MockData.RouteProgress[0]
@@ -33,12 +34,16 @@ struct MainScreenView: View {
                     if isLoading {
                         VStack(spacing: 25) {
                             OnRouteWidget()
+                                .environmentObject(auth)
                             if networkMonitor.isConnected {
-                                //                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
+//                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
+//                                    .environmentObject(auth)
                                 SuggestedRoutesCarousel(routes: $routes)
+                                    .environmentObject(auth)
                                 FriendsFeed(friendsFeed: $friendsFeed)
                             } else {
                                 DownloadedRoutesWidget(routes: $routes)
+                                    .environmentObject(auth)
                             }
                             
                             Spacer()
@@ -83,5 +88,6 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
 
 #Preview {
     MainScreenView()
+        .environmentObject(AuthController())
         .environmentObject(NetworkMonitor())
 }

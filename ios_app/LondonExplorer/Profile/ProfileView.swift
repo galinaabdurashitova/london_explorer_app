@@ -10,11 +10,11 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var auth: AuthController
-    @ObservedObject var viewModel: ProfileViewModel
+    @StateObject var viewModel: ProfileViewModel
     @Binding var tabSelection: Int
     
     init(user: User, tabSelection: Binding<Int>) {
-        self.viewModel = ProfileViewModel(user: user)
+        self._viewModel = StateObject(wrappedValue: ProfileViewModel(user: user))
         self._tabSelection = tabSelection
     }
     
@@ -68,7 +68,7 @@ struct ProfileView: View {
                 
                 HStack(spacing: 0) {
                     HStack(spacing: 10) {
-                        Text(String(viewModel.user.routesCreated.count))
+                        Text(String(viewModel.routes.count))
                             .font(.system(size: 20, weight: .bold))
                             .kerning(-0.2)
                         Text("routes")
@@ -100,6 +100,7 @@ struct ProfileView: View {
             
             NavigationLink(destination: {
                 FinishedRoutesView()
+                    .environmentObject(auth)
             }) {
                 StatIcon(icon: "Route3DIcon", number: viewModel.user.finishedRoutes.count, word: "routes finished", colour: Color.greenAccent)
             }
@@ -136,17 +137,18 @@ struct ProfileView: View {
                 Spacer()
             }
             
-//            if viewModel.routes.count > 0 {
+            if viewModel.routes.count > 0 {
                 ForEach($viewModel.routes, id: \.id) { route in
                     RouteCard(route: route, size: .M)
+                        .environmentObject(auth)
                 }
-//            } else {
-//                Button(action: {
-//                    tabSelection = 2
-//                }) {
-//                    ActionBanner(text: "You haven’t created any routes", actionText: "Create a new route")
-//                }
-//            }
+            } else {
+                Button(action: {
+                    tabSelection = 2
+                }) {
+                    ActionBanner(text: "You haven’t created any routes", actionText: "Create a new route")
+                }
+            }
         }
     }
 }

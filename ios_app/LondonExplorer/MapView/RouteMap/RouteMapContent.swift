@@ -15,7 +15,6 @@ struct RouteMapContent: View {
     var body: some View {
         NavigationLink(destination: {
             MapRouteView(route: route)
-                .toolbar(.hidden, for: .tabBar)
         }) {
             VStack {
                 HStack (spacing: 5) {

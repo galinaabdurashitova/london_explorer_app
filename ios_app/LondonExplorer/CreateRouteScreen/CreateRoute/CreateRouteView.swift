@@ -20,10 +20,18 @@ struct CreateRouteView: View {
             ScrollView(showsIndicators: false) {
                 VStack (spacing: 25) {
                     HStack {
-                        ScreenHeader(
-                            headline: .constant("New Route"),
-                            subheadline: .constant("You can create new route or choose from the existing")
-                        )
+                        
+                        NavigationLink(value: networkMonitor.isConnected) {
+                            ScreenHeader(
+                                headline: .constant("New Route"),
+                                subheadline: .constant("You can create new route or choose from the existing")
+                            )
+                        }
+                        .navigationDestination(for: Bool.self) { _ in
+                            CreateStopsView(tabSelection: $tabSelection, path: $path)
+                                .environmentObject(auth)
+                        }
+
                         Spacer()
                     }
                     
@@ -32,8 +40,10 @@ struct CreateRouteView: View {
                     
                     if networkMonitor.isConnected {
                         SuggestedRoutesCarousel(routes: $routes)
+                            .environmentObject(auth)
                     } else {
                         DownloadedRoutesWidget(routes: $routes)
+                            .environmentObject(auth)
                     }
                 }
                 .padding(.all, 20)

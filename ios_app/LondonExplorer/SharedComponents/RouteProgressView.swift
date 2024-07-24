@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct RouteProgressView: View {
+    @EnvironmentObject var auth: AuthController
     @Binding var routeProgress: RouteProgress
     @Binding var user: User?
     
@@ -20,6 +21,7 @@ struct RouteProgressView: View {
     var body: some View {
         NavigationLink(destination: {
             OnRouteView(routeProgress: routeProgress)
+                .environmentObject(auth)
         }) {
             VStack (alignment: .leading, spacing: 3) {
                 HStack (spacing: 10) {
@@ -86,5 +88,6 @@ struct RouteProgressView: View {
             )
         )
     }
+    .environmentObject(AuthController())
     .padding()
 }

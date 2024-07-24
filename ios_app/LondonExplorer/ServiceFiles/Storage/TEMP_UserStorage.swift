@@ -8,16 +8,16 @@
 import Foundation
 
 @propertyWrapper
-struct UserStorage {
+struct UserStorage<T: Codable> {
     private let filename: String
 
     init(key: String) {
         self.filename = key
     }
 
-    var wrappedValue: User? {
+    var wrappedValue: T {
         get {
-            return FileManager.load(filename, as: User.self)
+            return FileManager.load(filename, as: T.self) ?? [] as! T
         }
         set {
             _ = FileManager.save(newValue, to: filename)

@@ -10,15 +10,16 @@ import SwiftUI
 import MapKit
 
 struct OnRouteView: View {
+    @EnvironmentObject var auth: AuthController
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: OnRouteViewModel
+    @StateObject var viewModel: OnRouteViewModel
     
     init(route: Route) {
-        self.viewModel = OnRouteViewModel(route: route)
+        self._viewModel = StateObject(wrappedValue: OnRouteViewModel(route: route))
     }
     
     init(routeProgress: RouteProgress) {
-        self.viewModel = OnRouteViewModel(routeProgress: routeProgress)
+        self._viewModel = StateObject(wrappedValue: OnRouteViewModel(routeProgress: routeProgress))
     }
     
     var body: some View {
@@ -40,6 +41,9 @@ struct OnRouteView: View {
                     self.presentationMode.wrappedValue.dismiss()
                 }
             }
+        }
+        .onAppear {
+            viewModel.setAuthController(auth)
         }
     }
     
@@ -113,8 +117,12 @@ struct OnRouteView: View {
         .overlay {
             if viewModel.lastStop {
                 FinishRoutePopup(isOpen: $viewModel.lastStop) {
-                    viewModel.finishRoute()
-                    self.presentationMode.wrappedValue.dismiss()
+                    do {
+                        try viewModel.finishRoute()
+                        self.presentationMode.wrappedValue.dismiss()
+                    } catch {
+                        viewModel.error = true
+                    }
                 }
             }
         }

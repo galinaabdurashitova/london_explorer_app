@@ -20,7 +20,7 @@ struct RouteProgress: Identifiable, Codable {
     var pauseDuration: TimeInterval = 0
     var lastPauseTime: Date?
     
-    func elapsedTime() -> (String, String) {
+    func elapsedTime() -> ( String, String) {
         let now = Date()
         let totalPauseDuration = pauseDuration + (paused ? now.timeIntervalSince(lastPauseTime ?? now) : 0)
         let elapsed = now.timeIntervalSince(startTime) - totalPauseDuration

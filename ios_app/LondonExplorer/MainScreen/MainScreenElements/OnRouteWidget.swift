@@ -9,8 +9,10 @@ import Foundation
 import SwiftUI
 
 struct OnRouteWidget: View {
-    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var routeProgress: RouteProgress?
+    @EnvironmentObject var auth: AuthController
     @State var currentRoute: RouteProgress?
+    
+    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var routeProgress: RouteProgress?
     
     var body: some View {
         VStack (spacing: 20) {
@@ -29,6 +31,7 @@ struct OnRouteWidget: View {
                             set: { _ in }
                         )
                 )
+                .environmentObject(auth)
             }
         }
         .onAppear {
@@ -39,5 +42,6 @@ struct OnRouteWidget: View {
 
 #Preview {
     OnRouteWidget()
-    .padding()
+        .environmentObject(AuthController())
+        .padding()
 }

@@ -12,16 +12,16 @@ import UniformTypeIdentifiers
 struct CreateStopsView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var auth: AuthController
-    @ObservedObject var viewModel: RouteStopsViewModel
+    @StateObject var viewModel: RouteStopsViewModel
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     @State var showAttractionSearchView: Bool = false
     @State var confirmRemove: Bool = false
     
     init(tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
-        _tabSelection = tabSelection
-        _path = path
-        viewModel = RouteStopsViewModel(stops: [], pathes: [])
+        self._tabSelection = tabSelection
+        self._path = path
+        self._viewModel = StateObject(wrappedValue: RouteStopsViewModel(stops: [], pathes: []))
     }
     
     var body: some View {
@@ -71,7 +71,7 @@ struct CreateStopsView: View {
                     .padding(.bottom, 20)
                 }
                 .navigationDestination(for: [Route.RouteStop].self) { value in
-                    FinishCreateView(stops: value, pathes: viewModel.pathes, tabSelection: $tabSelection, path: $path, auth: auth)
+                    FinishCreateView(stops: value, pathes: viewModel.pathes, tabSelection: $tabSelection, path: $path)
                 }
             }
         }
