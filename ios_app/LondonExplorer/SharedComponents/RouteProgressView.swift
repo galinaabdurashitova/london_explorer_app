@@ -18,23 +18,24 @@ struct RouteProgressView: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack (spacing: 3) {
+        NavigationLink(destination: {
+            OnRouteView(routeProgress: routeProgress)
+        }) {
+            VStack (alignment: .leading, spacing: 3) {
                 HStack (spacing: 10) {
                     ZStack (alignment: .topLeading) {
                         Image(uiImage: routeProgress.route.image)
-                            .roundedHeightFrame(height: 120)
+                            .roundedFrame(width: ((UIScreen.main.bounds.width - 90) * 0.5), height: 120)
                         
                         Image("Route3DIcon")
                             .icon(size: 60)
                             .padding(.all, -17)
                     }
-                    .frame(width: (geometry.size.width - 45) / 2, height: 120)
                     
                     VStack (alignment: .leading, spacing: 8) {
                         if let user = self.user {
                             HStack (spacing: 4) {
-                                user.image
+                                Image(uiImage: user.image)
                                     .profilePicture(size: 22)
                                 Text(user.name)
                                     .font(.system(size: 14, weight: .bold))
@@ -45,39 +46,24 @@ struct RouteProgressView: View {
                         
                         Text(routeProgress.route.name)
                             .sectionCaption()
+                            .multilineTextAlignment(.leading)
                         
-                        VStack (alignment: .leading, spacing: 0) {
-                            HStack {
-                                Text(String(routeProgress.collectables) + "/" + String(routeProgress.route.collectables))
-                                    .foregroundColor(Color.redDark)
-                                    .font(.system(size: 14, weight: .black))
-                                Text("collectables")
-                                    .font(.system(size: 14, weight: .light))
-                                    .opacity(0.8)
-                            }
-                            
-                            HStack {
-                                Text(String(routeProgress.stops) + "/" + String(routeProgress.route.stops.count))
-                                    .foregroundColor(Color.redDark)
-                                    .font(.system(size: 14, weight: .black))
-                                Text("stops")
-                                    .font(.system(size: 14, weight: .light))
-                                    .opacity(0.8)
-                            }
-                        }
+                        RouteProgressStat(routeProgress: $routeProgress, align: .left)
                     }
+                    .foregroundColor(Color.black)
                     .frame(height: 120)
                 }
                 
                 RouteProgressBar(num: $routeProgress.stops, total: routeProgress.route.stops.count)
             }
             .padding(20)
+            .frame(height: 200)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8.0)
+                    .stroke(self.user == nil ? Color.redAccent : Color.blueAccent, lineWidth: 2.0)
+            )
         }
-        .frame(height: 200)
-        .overlay(
-            RoundedRectangle(cornerRadius: 8.0)
-                .stroke(self.user == nil ? Color.redAccent : Color.blueAccent, lineWidth: 2.0)
-        )
+        .disabled(user != nil)
     }
 }
 

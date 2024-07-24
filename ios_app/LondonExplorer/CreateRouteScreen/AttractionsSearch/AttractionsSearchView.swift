@@ -131,10 +131,7 @@ struct AttractionsSearchView: View {
                 HStack (spacing: 5) {
                     NavigationLink(
                         destination: {
-                            AttractionView(
-                                viewModel: viewModel,
-                                attraction: attraction.wrappedValue
-                            )
+                            AttractionView(stops: $viewModel.stops, attraction: attraction.wrappedValue, allowAdd: true)
                     }) {
                         AttractionCard(attraction: attraction)
                     }

@@ -72,6 +72,7 @@ struct RouteView: View {
             }
         }
         .animation(.easeInOut, value: headerHeight)
+        .toolbar(.visible, for: .tabBar)
         .navigationBarBackButtonHidden(true)
         .popup(
             isPresented: $confirmDelete,

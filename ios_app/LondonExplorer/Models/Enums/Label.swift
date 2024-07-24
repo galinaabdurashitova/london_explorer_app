@@ -12,6 +12,7 @@ enum CardLabel {
     case likes(Int)
     case download(Date)
     case empty
+    case completed(Date)
 
     @ViewBuilder
     var view: some View {
@@ -35,6 +36,13 @@ enum CardLabel {
             }
         case .empty:
             EmptyView()
+        case .completed(let date):
+            HStack(spacing: 3) {
+                Text("Completed on")
+                    .font(.system(size: 12))
+                Text(formattedDate(date: date))
+                    .font(.system(size: 12, weight: .bold))
+            }
         }
     }
 

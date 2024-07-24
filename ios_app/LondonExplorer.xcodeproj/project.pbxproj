@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A0E39DB2C4D4D2B00AC32A4 /* AttractionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39DA2C4D4D2B00AC32A4 /* AttractionViewModel.swift */; };
+		2A0E39DD2C4D59E300AC32A4 /* RouteProgressStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39DC2C4D59E300AC32A4 /* RouteProgressStat.swift */; };
+		2A0E39E02C4D76AD00AC32A4 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39DF2C4D76AD00AC32A4 /* LocationManager.swift */; };
+		2A0E39E32C4DB68100AC32A4 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39E22C4DB68100AC32A4 /* FileManager.swift */; };
+		2A0E39E52C4E520800AC32A4 /* Fireworks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39E42C4E520800AC32A4 /* Fireworks.swift */; };
+		2A0E39E72C4E931200AC32A4 /* FinishRoutePopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39E62C4E931200AC32A4 /* FinishRoutePopup.swift */; };
+		2A0E39E92C4EC38A00AC32A4 /* Confetti.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39E82C4EC38A00AC32A4 /* Confetti.swift */; };
+		2A0E39EB2C4EF07300AC32A4 /* RouteClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39EA2C4EF07300AC32A4 /* RouteClock.swift */; };
+		2A0E39ED2C4F110B00AC32A4 /* StartRouteGreeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */; };
+		2A0E39EF2C4FF4FA00AC32A4 /* ActionBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39EE2C4FF4FA00AC32A4 /* ActionBanner.swift */; };
+		2A0E39F12C4FF6E100AC32A4 /* FinishedRoutesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39F02C4FF6E100AC32A4 /* FinishedRoutesView.swift */; };
+		2A0E39F32C4FF75200AC32A4 /* CurrentRouteStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39F22C4FF75200AC32A4 /* CurrentRouteStorage.swift */; };
+		2A0E39F72C5016E200AC32A4 /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39F62C5016E200AC32A4 /* AuthController.swift */; };
+		2A0E39F92C501E9500AC32A4 /* TEMP_UserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39F82C501E9500AC32A4 /* TEMP_UserStorage.swift */; };
+		2A0E39FB2C50227D00AC32A4 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39FA2C50227D00AC32A4 /* TabView.swift */; };
+		2A0E3A052C5043C400AC32A4 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E3A042C5043C400AC32A4 /* AuthView.swift */; };
+		2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */; };
+		2A58EA932C40778100F9A4C0 /* OnRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */; };
+		2A58EA952C40788200F9A4C0 /* RouteAttractionAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */; };
 		2A76D4A52C15C944007908E0 /* MapContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4A42C15C944007908E0 /* MapContent.swift */; };
 		2A76D4A72C15D13D007908E0 /* ImagesSlidesHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4A62C15D13D007908E0 /* ImagesSlidesHeader.swift */; };
 		2A76D4AA2C15D5D7007908E0 /* MapAttractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A76D4A92C15D5D7007908E0 /* MapAttractionView.swift */; };
@@ -109,6 +128,25 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
+		2A0E39DA2C4D4D2B00AC32A4 /* AttractionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionViewModel.swift; sourceTree = "<group>"; };
+		2A0E39DC2C4D59E300AC32A4 /* RouteProgressStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteProgressStat.swift; sourceTree = "<group>"; };
+		2A0E39DF2C4D76AD00AC32A4 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		2A0E39E22C4DB68100AC32A4 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		2A0E39E42C4E520800AC32A4 /* Fireworks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fireworks.swift; sourceTree = "<group>"; };
+		2A0E39E62C4E931200AC32A4 /* FinishRoutePopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishRoutePopup.swift; sourceTree = "<group>"; };
+		2A0E39E82C4EC38A00AC32A4 /* Confetti.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confetti.swift; sourceTree = "<group>"; };
+		2A0E39EA2C4EF07300AC32A4 /* RouteClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteClock.swift; sourceTree = "<group>"; };
+		2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartRouteGreeting.swift; sourceTree = "<group>"; };
+		2A0E39EE2C4FF4FA00AC32A4 /* ActionBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBanner.swift; sourceTree = "<group>"; };
+		2A0E39F02C4FF6E100AC32A4 /* FinishedRoutesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedRoutesView.swift; sourceTree = "<group>"; };
+		2A0E39F22C4FF75200AC32A4 /* CurrentRouteStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRouteStorage.swift; sourceTree = "<group>"; };
+		2A0E39F62C5016E200AC32A4 /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
+		2A0E39F82C501E9500AC32A4 /* TEMP_UserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEMP_UserStorage.swift; sourceTree = "<group>"; };
+		2A0E39FA2C50227D00AC32A4 /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		2A0E3A042C5043C400AC32A4 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteView.swift; sourceTree = "<group>"; };
+		2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteViewModel.swift; sourceTree = "<group>"; };
+		2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteAttractionAnnotation.swift; sourceTree = "<group>"; };
 		2A76D4A42C15C944007908E0 /* MapContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapContent.swift; sourceTree = "<group>"; };
 		2A76D4A62C15D13D007908E0 /* ImagesSlidesHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesSlidesHeader.swift; sourceTree = "<group>"; };
 		2A76D4A92C15D5D7007908E0 /* MapAttractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAttractionView.swift; sourceTree = "<group>"; };
@@ -209,6 +247,57 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A0E39DE2C4D769200AC32A4 /* ServiceFiles */ = {
+			isa = PBXGroup;
+			children = (
+				2A0E39E12C4DB66200AC32A4 /* Storage */,
+				2A0E39F62C5016E200AC32A4 /* AuthController.swift */,
+				2A0E39DF2C4D76AD00AC32A4 /* LocationManager.swift */,
+				2A8506912C0A8A65003A3117 /* NetworkMonitor.swift */,
+			);
+			path = ServiceFiles;
+			sourceTree = "<group>";
+		};
+		2A0E39E12C4DB66200AC32A4 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				2A0E39F22C4FF75200AC32A4 /* CurrentRouteStorage.swift */,
+				2A0E39E22C4DB68100AC32A4 /* FileManager.swift */,
+				2AFD1F5E2C237E820061060E /* RoutesStorage.swift */,
+				2A0E39F82C501E9500AC32A4 /* TEMP_UserStorage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		2A0E39FC2C5022DB00AC32A4 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				2A0E39E42C4E520800AC32A4 /* Fireworks.swift */,
+				2A0E39E82C4EC38A00AC32A4 /* Confetti.swift */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
+		2A0E39FD2C50237E00AC32A4 /* AuthViews */ = {
+			isa = PBXGroup;
+			children = (
+				2A0E3A042C5043C400AC32A4 /* AuthView.swift */,
+			);
+			path = AuthViews;
+			sourceTree = "<group>";
+		};
+		2A58EA8F2C40768C00F9A4C0 /* OnRoute */ = {
+			isa = PBXGroup;
+			children = (
+				2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */,
+				2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */,
+				2A0E39E62C4E931200AC32A4 /* FinishRoutePopup.swift */,
+				2A0E39EA2C4EF07300AC32A4 /* RouteClock.swift */,
+				2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */,
+			);
+			path = OnRoute;
+			sourceTree = "<group>";
+		};
 		2A76D4A82C15D5A2007908E0 /* MapView */ = {
 			isa = PBXGroup;
 			children = (
@@ -259,23 +348,26 @@
 		2AA5B1092C08B890001EC475 /* LondonExplorer */ = {
 			isa = PBXGroup;
 			children = (
+				2A0E39FD2C50237E00AC32A4 /* AuthViews */,
 				2AC56A872C28C50E00F7249B /* APIs */,
-				2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */,
 				2AA5B10E2C08B891001EC475 /* Assets.xcassets */,
 				2AE8A03A2C14F395005E0F62 /* AttractionView */,
 				2AA5B10C2C08B890001EC475 /* ContentView.swift */,
 				2AE8A01E2C13A1D4005E0F62 /* CreateRouteScreen */,
+				2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */,
 				2AA5B11F2C08BDB5001EC475 /* Info.plist */,
 				2AA5B10A2C08B890001EC475 /* LondonExplorerApp.swift */,
 				2AA5B11A2C08B90F001EC475 /* MainScreen */,
 				2A76D4A82C15D5A2007908E0 /* MapView */,
 				2AA5B1232C08D803001EC475 /* Models */,
-				2A8506912C0A8A65003A3117 /* NetworkMonitor.swift */,
+				2A58EA8F2C40768C00F9A4C0 /* OnRoute */,
 				2AA5B1102C08B891001EC475 /* Preview Content */,
 				2AFD1F722C249EE30061060E /* Profile */,
 				2AFD1F632C247F690061060E /* Route */,
+				2A0E39DE2C4D769200AC32A4 /* ServiceFiles */,
 				2AA5B12A2C09049D001EC475 /* SharedComponents */,
 				2AA5B13D2C09F662001EC475 /* Styles */,
+				2A0E39FA2C50227D00AC32A4 /* TabView.swift */,
 			);
 			path = LondonExplorer;
 			sourceTree = "<group>";
@@ -304,12 +396,11 @@
 				2AA5B1562C0A18BC001EC475 /* EmptyStateBanner.swift */,
 				2AA5B1332C0923BD001EC475 /* FriendsFeed.swift */,
 				2AA5B1442C0A02BA001EC475 /* FriendsOnRouteWidget.swift */,
-				2AA5B1282C090417001EC475 /* LondonExplorerLogo.swift */,
+				2AD4B9642C0CDAFC00B90C8A /* LoadingView.swift */,
+				2AD4B9602C0CC4A300B90C8A /* MainScreenHeader.swift */,
 				2AA5B1372C09E4FD001EC475 /* OnRouteWidget.swift */,
 				2AA5B12D2C0909BC001EC475 /* SuggestedRoutesCarousel.swift */,
 				2AA5B14F2C0A1396001EC475 /* WidgetError.swift */,
-				2AD4B9602C0CC4A300B90C8A /* MainScreenHeader.swift */,
-				2AD4B9642C0CDAFC00B90C8A /* LoadingView.swift */,
 			);
 			path = MainScreenElements;
 			sourceTree = "<group>";
@@ -335,12 +426,11 @@
 			children = (
 				2AFD1F572C21DA820061060E /* Codables */,
 				2AA5B1512C0A165B001EC475 /* Enums */,
-				2AA5B1262C08E17E001EC475 /* FriendUpdate.swift */,
 				2AA5B1202C08D79B001EC475 /* MockData */,
+				2AA5B1262C08E17E001EC475 /* FriendUpdate.swift */,
 				2AE8A02E2C14BDB2005E0F62 /* Attraction.swift */,
 				2AA5B1242C08D885001EC475 /* Route.swift */,
 				2AA5B1392C09E52B001EC475 /* RouteProgress.swift */,
-				2AFD1F5E2C237E820061060E /* RoutesStorage.swift */,
 				2AA5B13B2C09E5E5001EC475 /* User.swift */,
 			);
 			path = Models;
@@ -349,22 +439,26 @@
 		2AA5B12A2C09049D001EC475 /* SharedComponents */ = {
 			isa = PBXGroup;
 			children = (
+				2A0E39EE2C4FF4FA00AC32A4 /* ActionBanner.swift */,
 				2AE8A0362C14E8D3005E0F62 /* AttractionCategoriesCarousel.swift */,
 				2A76D4BE2C172AAD007908E0 /* BackButton.swift */,
 				2A76D4AD2C15FF56007908E0 /* ButtonView.swift */,
 				2A76D4AF2C160C2D007908E0 /* CategoryLabel.swift */,
 				2A76D4D42C1F6C05007908E0 /* CustomTextField.swift */,
+				2AC56A8C2C2987B900F7249B /* ErrorScreen.swift */,
 				2AA5B1352C09D7BB001EC475 /* FeedUpdate.swift */,
 				2A76D4A62C15D13D007908E0 /* ImagesSlidesHeader.swift */,
+				2AA5B1282C090417001EC475 /* LondonExplorerLogo.swift */,
 				2A76D4CD2C1B9653007908E0 /* PopUp.swift */,
+				2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */,
 				2AA5B12B2C0904C5001EC475 /* RouteCard.swift */,
 				2A76D4D22C1F6A65007908E0 /* RouteLabelRow.swift */,
 				2AA5B1402C09FB2E001EC475 /* RouteProgressBar.swift */,
+				2A0E39DC2C4D59E300AC32A4 /* RouteProgressStat.swift */,
 				2AA5B1422C0A017E001EC475 /* RouteProgressView.swift */,
 				2A76D4C52C18F849007908E0 /* RouteStopsList.swift */,
 				2AE8A0212C13A2C6005E0F62 /* ScreenHeader.swift */,
 				2AA5B1312C090EE4001EC475 /* SectionHeader.swift */,
-				2AC56A8C2C2987B900F7249B /* ErrorScreen.swift */,
 			);
 			path = SharedComponents;
 			sourceTree = "<group>";
@@ -372,6 +466,7 @@
 		2AA5B13D2C09F662001EC475 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				2A0E39FC2C5022DB00AC32A4 /* Animations */,
 				2AA5B11E2C08BA83001EC475 /* Fonts */,
 				2AA5B13E2C09F673001EC475 /* ImageStyles.swift */,
 				2AA5B12F2C090A33001EC475 /* TextStyles.swift */,
@@ -461,6 +556,7 @@
 			isa = PBXGroup;
 			children = (
 				2AE8A03B2C14F3C1005E0F62 /* AttractionView.swift */,
+				2A0E39DA2C4D4D2B00AC32A4 /* AttractionViewModel.swift */,
 			);
 			path = AttractionView;
 			sourceTree = "<group>";
@@ -521,6 +617,7 @@
 			children = (
 				2AFD1F732C249F4D0061060E /* ProfileView.swift */,
 				2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */,
+				2A0E39F02C4FF6E100AC32A4 /* FinishedRoutesView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -606,23 +703,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A76D4B52C162306007908E0 /* MapLinkButton.swift in Sources */,
+				2A0E39ED2C4F110B00AC32A4 /* StartRouteGreeting.swift in Sources */,
 				2AFD1F6D2C248D250061060E /* RouteView.swift in Sources */,
 				2AFD1F6F2C2497580061060E /* RouteViewModel.swift in Sources */,
 				2AFD1F782C25E2AC0061060E /* DEPRICATED_EditRouteStopsView.swift in Sources */,
 				2AA5B13A2C09E52B001EC475 /* RouteProgress.swift in Sources */,
+				2A0E39E72C4E931200AC32A4 /* FinishRoutePopup.swift in Sources */,
 				2AA5B1272C08E17E001EC475 /* FriendUpdate.swift in Sources */,
 				2A76D4B92C170A6B007908E0 /* PathConnection.swift in Sources */,
 				2AFD1F6B2C2481930061060E /* RouteMapContent.swift in Sources */,
 				2A76D4D32C1F6A65007908E0 /* RouteLabelRow.swift in Sources */,
 				2AFD1F5F2C237E820061060E /* RoutesStorage.swift in Sources */,
+				2A0E39DD2C4D59E300AC32A4 /* RouteProgressStat.swift in Sources */,
 				2A76D4BF2C172AAD007908E0 /* BackButton.swift in Sources */,
 				2AFD1F5B2C21DAC80061060E /* CodableMKRoute.swift in Sources */,
 				2A76D4B02C160C2D007908E0 /* CategoryLabel.swift in Sources */,
+				2A58EA952C40788200F9A4C0 /* RouteAttractionAnnotation.swift in Sources */,
 				2AE8A0292C14A6C4005E0F62 /* YourRoutesCarousel.swift in Sources */,
 				2AA5B1222C08D7C1001EC475 /* MockData.swift in Sources */,
 				2AA5B1432C0A017E001EC475 /* RouteProgressView.swift in Sources */,
+				2A0E39F12C4FF6E100AC32A4 /* FinishedRoutesView.swift in Sources */,
 				2AC56A7E2C28384100F7249B /* EditRouteViewModel.swift in Sources */,
 				2A76D4BB2C171846007908E0 /* RouteStopsViewModel.swift in Sources */,
+				2A0E39DB2C4D4D2B00AC32A4 /* AttractionViewModel.swift in Sources */,
 				2AD4B9612C0CC4A300B90C8A /* MainScreenHeader.swift in Sources */,
 				2AE8A0202C13A20A005E0F62 /* CreateRouteView.swift in Sources */,
 				2AD4B9652C0CDAFC00B90C8A /* LoadingView.swift in Sources */,
@@ -631,8 +734,10 @@
 				2AFD1F5D2C21DAEC0061060E /* CodableMKPolyline.swift in Sources */,
 				2AD4B9632C0CD98E00B90C8A /* LoadingStyle.swift in Sources */,
 				2AA5B13C2C09E5E5001EC475 /* User.swift in Sources */,
+				2A0E39F92C501E9500AC32A4 /* TEMP_UserStorage.swift in Sources */,
 				2AA5B1302C090A33001EC475 /* TextStyles.swift in Sources */,
 				2AE8A0352C14E674005E0F62 /* AttractionCard.swift in Sources */,
+				2A0E39E32C4DB68100AC32A4 /* FileManager.swift in Sources */,
 				2AA5B1572C0A18BC001EC475 /* EmptyStateBanner.swift in Sources */,
 				2AA5B1532C0A166E001EC475 /* Label.swift in Sources */,
 				2AFD1F672C247FDF0061060E /* RouteButton.swift in Sources */,
@@ -640,27 +745,36 @@
 				2AFD1F762C249F7F0061060E /* ProfileViewModel.swift in Sources */,
 				2AFD1F592C21DAA40061060E /* CoordinatesCodableExtension.swift in Sources */,
 				2AA5B12C2C0904C5001EC475 /* RouteCard.swift in Sources */,
+				2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */,
 				2AFD1F652C247FA60061060E /* RouteDataView.swift in Sources */,
 				2A76D4AA2C15D5D7007908E0 /* MapAttractionView.swift in Sources */,
+				2A0E39E52C4E520800AC32A4 /* Fireworks.swift in Sources */,
 				2AA5B1412C09FB2E001EC475 /* RouteProgressBar.swift in Sources */,
 				2AC56A892C28C51B00F7249B /* AttractionsService.swift in Sources */,
 				2A76D4C32C18F7E5007908E0 /* RouteSheetContent.swift in Sources */,
 				2AE8A0372C14E8D3005E0F62 /* AttractionCategoriesCarousel.swift in Sources */,
+				2A58EA932C40778100F9A4C0 /* OnRouteViewModel.swift in Sources */,
 				2AFD1F7C2C2744230061060E /* EditRouteView.swift in Sources */,
 				2A76D4C62C18F849007908E0 /* RouteStopsList.swift in Sources */,
 				2A76D4AE2C15FF56007908E0 /* ButtonView.swift in Sources */,
+				2A0E39E92C4EC38A00AC32A4 /* Confetti.swift in Sources */,
 				2AE8A02D2C14BA39005E0F62 /* CreateRouteCard.swift in Sources */,
 				2AFD1F742C249F4D0061060E /* ProfileView.swift in Sources */,
 				2A8506922C0A8A65003A3117 /* NetworkMonitor.swift in Sources */,
+				2A0E39EF2C4FF4FA00AC32A4 /* ActionBanner.swift in Sources */,
+				2A0E39E02C4D76AD00AC32A4 /* LocationManager.swift in Sources */,
 				2AC56A8B2C28C6BF00F7249B /* ImagesRepository.swift in Sources */,
 				2AA5B1192C08B8CC001EC475 /* MainScreenView.swift in Sources */,
 				2AA5B1292C090417001EC475 /* LondonExplorerLogo.swift in Sources */,
+				2A0E3A052C5043C400AC32A4 /* AuthView.swift in Sources */,
 				2A76D4D52C1F6C05007908E0 /* CustomTextField.swift in Sources */,
 				2A76D4D12C1CBB70007908E0 /* FinishCreateView.swift in Sources */,
+				2A0E39FB2C50227D00AC32A4 /* TabView.swift in Sources */,
 				2AA5B12E2C0909BC001EC475 /* SuggestedRoutesCarousel.swift in Sources */,
 				2AA5B14E2C0A11C9001EC475 /* DownloadedRoutesWidget.swift in Sources */,
 				2AFD1F7A2C25E4770061060E /* CreateStopsView.swift in Sources */,
 				2AA5B1322C090EE4001EC475 /* SectionHeader.swift in Sources */,
+				2A0E39F32C4FF75200AC32A4 /* CurrentRouteStorage.swift in Sources */,
 				2AFD1F622C237F3E0061060E /* SavedRouteView.swift in Sources */,
 				2AA5B13F2C09F673001EC475 /* ImageStyles.swift in Sources */,
 				2AFD1F562C21B26C0061060E /* ImageCodableExtension.swift in Sources */,
@@ -673,10 +787,12 @@
 				2AA5B1342C0923BD001EC475 /* FriendsFeed.swift in Sources */,
 				2A76D4A72C15D13D007908E0 /* ImagesSlidesHeader.swift in Sources */,
 				2AE8A0222C13A2C6005E0F62 /* ScreenHeader.swift in Sources */,
+				2A0E39F72C5016E200AC32A4 /* AuthController.swift in Sources */,
 				2A76D4C12C1736C1007908E0 /* AttractionListButton.swift in Sources */,
 				2A76D4CE2C1B9653007908E0 /* PopUp.swift in Sources */,
 				2AA5B10B2C08B890001EC475 /* LondonExplorerApp.swift in Sources */,
 				2AE8A02F2C14BDB2005E0F62 /* Attraction.swift in Sources */,
+				2A0E39EB2C4EF07300AC32A4 /* RouteClock.swift in Sources */,
 				2A76D4B72C1624D6007908E0 /* RouteStopCard.swift in Sources */,
 				2A76D4C82C1A0A35007908E0 /* MapRouteView.swift in Sources */,
 				2AE8A03C2C14F3C1005E0F62 /* AttractionView.swift in Sources */,

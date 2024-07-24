@@ -20,7 +20,6 @@ enum RouteButton {
         var label: String
         var colour: Color
         var text: String
-        var action: (_ route: Binding<Route>, _ view: AnyView) -> AnyView
     }
     
     var details: RouteButtonDetails {
@@ -29,50 +28,37 @@ enum RouteButton {
             return RouteButtonDetails(
                 label: "arrow.up.circle",
                 colour: Color.blueAccent,
-                text: "Publish route",
-                action: { route, view in return AnyView(view) }
+                text: "Publish route"
             )
         case .published:
             return RouteButtonDetails(
                 label: "",
                 colour: Color.clear,
-                text: "",
-                action: { route, view in return AnyView(view) }
+                text: ""
             )
         case .edit:
             return RouteButtonDetails(
                 label: "pencil",
                 colour: Color.redAccent,
-                text: "Edit route",
-                action: { route, view in
-                    return AnyView(
-                        EditRouteView(
-                            route: route,
-                            button: view
-                        )
-                    )
-                }
+                text: "Edit route"
             )
         case .start:
             return RouteButtonDetails(
                 label: "play",
                 colour: Color.greenAccent,
-                text: "Start the route",
-                action: { route, view in return AnyView(view) }
+                text: "Start the route"
             )
         case .download:
             return RouteButtonDetails(
                 label: "",
                 colour: Color.clear,
-                text: "",
-                action: { route, view in return AnyView(view) }
+                text: ""
             )
         case .deleteDownload:
             return RouteButtonDetails(
                 label: "",
                 colour: Color.clear,
-                text: "",
-                action: { route, view in return AnyView(view) }
+                text: ""
             )
         }
     }
@@ -89,10 +75,5 @@ enum RouteButton {
                 .font(.system(size: 14))
         }
         .frame(width: (UIScreen.main.bounds.width - 40) / 3, height: 65)
-    }
-    
-    @ViewBuilder
-    func button(route: Binding<Route>) -> some View {
-        self.details.action(route, AnyView(self.view))
     }
 }

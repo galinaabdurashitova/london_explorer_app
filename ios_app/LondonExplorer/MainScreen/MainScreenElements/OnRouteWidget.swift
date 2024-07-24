@@ -9,28 +9,35 @@ import Foundation
 import SwiftUI
 
 struct OnRouteWidget: View {
-    @Binding var routeProgress: RouteProgress
+    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var routeProgress: RouteProgress?
+    @State var currentRoute: RouteProgress?
     
     var body: some View {
         VStack (spacing: 20) {
-            HStack {
-                SectionHeader(
-                    headline: .constant("On a Route!")
+            if let routeProgress = currentRoute {
+                HStack {
+                    SectionHeader(
+                        headline: .constant("On a Route!")
+                    )
+                    Spacer()
+                }
+                
+                RouteProgressView(
+                    routeProgress:
+                        Binding<RouteProgress> (
+                            get: { return routeProgress },
+                            set: { _ in }
+                        )
                 )
-                Spacer()
             }
-            
-            RouteProgressView(routeProgress: $routeProgress)
+        }
+        .onAppear {
+            currentRoute = routeProgress
         }
     }
 }
 
 #Preview {
-    OnRouteWidget(
-        routeProgress: Binding<RouteProgress> (
-            get: { return MockData.RouteProgress[0] },
-            set: { _ in }
-        )
-    )
+    OnRouteWidget()
     .padding()
 }

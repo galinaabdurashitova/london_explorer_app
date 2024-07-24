@@ -11,10 +11,13 @@ import SwiftUI
 struct AttractionView: View {
     //@EnvironmentObject var networkMonitor: NetworkMonitor
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: AttractionSearchViewModel
-    @State var attraction: Attraction
-    
+//    @ObservedObject var viewModel: AttractionSearchViewModel
+    @ObservedObject var viewModel: AttractionViewModel
+//    @Binding var stops: [Route.RouteStop]
+//    @State var attraction: Attraction
     @State private var scrollOffset: CGFloat = 0
+    
+    private var allowAdd: Bool
     
     private var headerHeight: CGFloat {
         max(110, 315 - max(0, scrollOffset * 2.5 - 100))
@@ -24,10 +27,15 @@ struct AttractionView: View {
         return Double(headerHeight - scrollOffset * 2) / 100
     }
     
+    init(stops: Binding<[Route.RouteStop]> = .constant([]), attraction: Attraction, allowAdd: Bool) {
+        self.viewModel = AttractionViewModel(stops: stops, attraction: attraction)
+        self.allowAdd = allowAdd
+    }
+    
     var body: some View {
         VStack (spacing: -60) {
             ZStack (alignment: .topLeading) {
-                ImagesSlidesHeader(images: attraction.images)
+                ImagesSlidesHeader(images: viewModel.attraction.images)
                     .frame(height: headerHeight)
                     .clipped()
                     .padding(.vertical, 0)
@@ -43,22 +51,22 @@ struct AttractionView: View {
                     Spacer().frame(height: 10)
                     HStack {
                         VStack (alignment: .leading, spacing: 5) {
-                            Text(attraction.name)
+                            Text(viewModel.attraction.name)
                                 .screenHeadline()
-                            Text(attraction.shortDescription)
+                            Text(viewModel.attraction.shortDescription)
                                 .subheadline()
                         }
                         Spacer()
                     }
                     
-                    AttractionCategoriesCarousel(categories: $attraction.categories)
+                    AttractionCategoriesCarousel(categories: $viewModel.attraction.categories)
                     
-                    Text(attraction.fullDescription)
+                    Text(viewModel.attraction.fullDescription)
                         .font(.system(size: 16))
                     
-                    MapContent(attraction: $attraction)
+                    MapContent(attraction: $viewModel.attraction)
                     
-                    Spacer().frame(height: 80)
+                    Spacer().frame(height: allowAdd ? 80 : 40)
                 }
                 .background(
                     GeometryReader { geometry in
@@ -73,7 +81,9 @@ struct AttractionView: View {
                 scrollOffset = -value
             }
             
-            AddButton
+            if allowAdd {
+                AddButton
+            }
         }
         .animation(.easeInOut, value: headerHeight)
         .navigationBarBackButtonHidden(true)
@@ -88,7 +98,7 @@ struct AttractionView: View {
             
             Spacer()
             
-            Text(attraction.name)
+            Text(viewModel.attraction.name)
                 .font(.headline)
                 .fontWeight(.medium)
                 .opacity(-headerOpacity)
@@ -104,14 +114,14 @@ struct AttractionView: View {
     }
     
     private var AddButton: some View {
-        if !(viewModel.stops.map{ $0.attraction }).contains(attraction) {
+        if !(viewModel.stops.map{ $0.attraction }).contains(viewModel.attraction) {
             ButtonView(
                 text: .constant("Add to the route"),
                 colour: Color.blueAccent,
                 textColour: Color.white,
                 size: .L
             ) {
-                viewModel.toggleAttracation(attraction: attraction)
+                viewModel.toggleAttracation(attraction: viewModel.attraction)
                 self.presentationMode.wrappedValue.dismiss()
             }
             .padding(.bottom, 20)
@@ -122,7 +132,7 @@ struct AttractionView: View {
                 textColour: Color.white,
                 size: .L
             ) {
-                viewModel.toggleAttracation(attraction: attraction)
+                viewModel.toggleAttracation(attraction: viewModel.attraction)
                 self.presentationMode.wrappedValue.dismiss()
             }
             .padding(.bottom, 20)
@@ -132,9 +142,6 @@ struct AttractionView: View {
 
 
 #Preview {
-    AttractionView(
-        viewModel: AttractionSearchViewModel(),
-        attraction: MockData.Attractions[0]
-    )
+    AttractionView(attraction: MockData.Attractions[0], allowAdd: true)
     //.environmentObject(NetworkMonitor())
 }

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct RouteDataView: View {
     @Binding var route: Route
+    @State var isEditSheetPresented: Bool = false
     
     var body: some View {
         VStack(spacing: 25) {
@@ -28,21 +29,11 @@ struct RouteDataView: View {
             }
             
             HStack(spacing: 0) {
-                RouteButton.publish.view
-                    .overlay(
-                        Rectangle()
-                            .frame(width: 1),
-                        alignment: .trailing
-                    )
+                FirstButton
                 
-                RouteButton.edit.button(route: $route)
-                    .overlay(
-                        Rectangle()
-                            .frame(width: 1),
-                        alignment: .trailing
-                    )
+                SecondButton
                 
-                RouteButton.start.view
+                ThirdButton
             }
             
             HStack {
@@ -58,6 +49,39 @@ struct RouteDataView: View {
             }
             
             RouteStopsList(route: $route)
+        }
+    }
+    
+    private var FirstButton: some View {
+        RouteButton.publish.view
+            .overlay(
+                Rectangle()
+                    .frame(width: 1),
+                alignment: .trailing
+            )
+    }
+    
+    private var SecondButton: some View {
+        Button(action: {
+            isEditSheetPresented = true
+        }) {
+            RouteButton.edit.view
+        }
+        .overlay(
+            Rectangle()
+                .frame(width: 1),
+            alignment: .trailing
+        )
+        .sheet(isPresented: $isEditSheetPresented) {
+            EditRouteView(route: $route, isSheetPresented: $isEditSheetPresented)
+        }
+    }
+    
+    private var ThirdButton: some View {
+        NavigationLink(destination: {
+            OnRouteView(route: route)
+        }) {
+            RouteButton.start.view
         }
     }
 }

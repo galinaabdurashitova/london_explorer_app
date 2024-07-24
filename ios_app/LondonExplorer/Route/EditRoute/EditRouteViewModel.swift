@@ -10,14 +10,14 @@ import SwiftUI
 
 class EditRouteViewModel: ObservableObject {
     @Binding var route: Route
-    @Published var isSheetPresented: Bool
+    @Binding var isSheetPresented: Bool
     @Published var name: String
     @Published var description: String
     @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
     
-    init(route: Binding<Route>) {
+    init(route: Binding<Route>, isSheetPresented: Binding<Bool>) {
         self._route = route
-        self.isSheetPresented = false
+        self._isSheetPresented = isSheetPresented
         self.name = route.wrappedValue.name
         self.description = route.wrappedValue.description
     }

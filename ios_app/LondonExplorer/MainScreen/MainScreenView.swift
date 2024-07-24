@@ -23,43 +23,46 @@ struct MainScreenView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            MainScreenHeader(scrollOffset: scrollOffset * 1.6, headerHeight: headerHeight)
-                .frame(height: headerHeight)
-            
-            ScrollView(showsIndicators: false) {
-                Spacer()
-                if isLoading {
-                    VStack(spacing: 25) {
-                        OnRouteWidget(routeProgress: $onRoute)
-                        if networkMonitor.isConnected {
-                            FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
-                            SuggestedRoutesCarousel(routes: $routes)
-                            FriendsFeed(friendsFeed: $friendsFeed)
-                        } else {
-                            DownloadedRoutesWidget(routes: $routes)
+        NavigationStack {
+            VStack(spacing: 0) {
+                MainScreenHeader(scrollOffset: scrollOffset * 1.6, headerHeight: headerHeight)
+                    .frame(height: headerHeight)
+                
+                ScrollView(showsIndicators: false) {
+                    Spacer()
+                    if isLoading {
+                        VStack(spacing: 25) {
+                            OnRouteWidget()
+                            if networkMonitor.isConnected {
+                                //                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
+                                SuggestedRoutesCarousel(routes: $routes)
+                                FriendsFeed(friendsFeed: $friendsFeed)
+                            } else {
+                                DownloadedRoutesWidget(routes: $routes)
+                            }
+                            
+                            Spacer()
                         }
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal, 20)
-                    .background(
-                        GeometryReader { geometry in
-                            Color.clear
-                                .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).minY)
-                        }
-                    )
-                } else {
-                    LoadingView()
                         .padding(.horizontal, 20)
+                        .background(
+                            GeometryReader { geometry in
+                                Color.clear
+                                    .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).minY)
+                            }
+                        )
+                    } else {
+                        LoadingView()
+                            .padding(.horizontal, 20)
+                    }
+                }
+                .coordinateSpace(name: "scroll")
+                .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+                    scrollOffset = max(0, -value)
                 }
             }
-            .coordinateSpace(name: "scroll")
-            .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-                scrollOffset = max(0, -value)
-            }
+            .toolbar(.visible, for: .tabBar)
+            .padding(.top, 20)
         }
-        .padding(.top, 20)
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 self.isLoading = true

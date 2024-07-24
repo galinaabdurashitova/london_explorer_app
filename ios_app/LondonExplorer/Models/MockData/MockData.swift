@@ -151,12 +151,12 @@ class MockData {
     ]
     
     public static var Users: [User] = [
-        User(userId: "1", name: "Anna", image: Image("Anna")),
-        User(userId: "2", name: "Mary", image: Image("Mary"))
+        User(userId: "1"/*, email: "anna@traveler.com"*/, name: "Anna", userName: "annabanana", userDescription: "Traveler girl", image: UIImage(imageLiteralResourceName: "Anna")),
+        User(userId: "2"/*, email: "mary@traveler.com"*/, name: "Mary", userName: "mary_mary", image: UIImage(imageLiteralResourceName: "Mary"))
     ]
     
     public static var RouteProgress: [RouteProgress] = [
-        LondonExplorer.RouteProgress(route: Routes[2], collectables: 3, stops: 2),
+        LondonExplorer.RouteProgress(route: Routes[2], collectables: 3, stops: 0, startTime: Calendar.current.date(from: DateComponents(year: 2024, month: 7, day: 22, hour: 10, minute: 0)) ?? Date()),
         LondonExplorer.RouteProgress(route: Routes[2], collectables: 3, stops: 3, user: Users[0]),
         LondonExplorer.RouteProgress(route: Routes[1], collectables: 2, stops: 1, user: Users[1])
     ]

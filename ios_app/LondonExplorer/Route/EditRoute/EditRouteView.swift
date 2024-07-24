@@ -10,38 +10,25 @@ import SwiftUI
 
 struct EditRouteView: View {
     @ObservedObject var viewModel: EditRouteViewModel
-    var button: AnyView
     
-    init(route: Binding<Route>, button: AnyView) {
-        self.viewModel = EditRouteViewModel(route: route)
-        self.button = button
+    init(route: Binding<Route>, isSheetPresented: Binding<Bool>) {
+        self.viewModel = EditRouteViewModel(route: route, isSheetPresented: isSheetPresented)
     }
     
     var body: some View {
-        Button(action: {
-            viewModel.isSheetPresented = true
-        }) {
-            button
-        }
-        .sheet(isPresented: $viewModel.isSheetPresented) {
-            editSheet
-        }
-    }
-    
-    var editSheet: some View {
         VStack(spacing: 25) {
             HStack {
-                Button("Save") {
-                    viewModel.saveEditRoute()
-                }
-                .foregroundColor(Color.blueAccent)
-                
-                Spacer()
-                
                 Button("Cancel") {
                     viewModel.cancelEditRoute()
                 }
                 .foregroundColor(Color.redAccent)
+                
+                Spacer()
+                
+                Button("Save") {
+                    viewModel.saveEditRoute()
+                }
+                .foregroundColor(Color.blueAccent)
             }
             
             HStack {
@@ -69,7 +56,7 @@ struct EditRouteView: View {
 #Preview {
     EditRouteView(
         route: .constant(MockData.Routes[0]),
-        button: AnyView(Image(systemName: "circle"))
+        isSheetPresented: .constant(true)
     )
     .padding()
 }

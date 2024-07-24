@@ -13,7 +13,7 @@ struct FeedUpdate: View {
     
     var body: some View {
         HStack {
-            update.friend.image
+            Image(uiImage: update.friend.image)
                 .profilePicture(size: 50)
             VStack (alignment: .leading, spacing: 2) {
                 Text(update.formattedDate)

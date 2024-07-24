@@ -26,30 +26,12 @@ struct FriendsFeed: View {
                     ForEach ($friendsFeed) { update in
                         FeedUpdate(update: update)
                     }
-                } else {
-                    HStack {
-                        Text("Your friends don’t have recent updates")
-                            .font(.system(size: 16))
-                            .opacity(0.5)
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            // Go to user search
-                        }) {
-                            HStack (spacing: 7) {
-                                Text("Add a friend")
-                                    .font(.system(size: 14, weight: .semibold))
-                                Image(systemName: "chevron.forward")
-                                    .icon(size: 10)
-                            }
-                            .foregroundColor(Color.black)
-                        }
+                } else {                        
+                    Button(action: {
+                        // Go to user search
+                    }) {
+                        ActionBanner(text: "Your friends don’t have recent updates", actionText: "Add a friend")
                     }
-                    .padding(.horizontal, 15.0)
-                    .padding(.vertical, 20.0)
-                    .background(Color.lightBlue)
-                    .cornerRadius(8)
                 }
             }
         }

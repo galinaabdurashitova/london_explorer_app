@@ -12,6 +12,7 @@ struct CustomTextField: View {
     @Binding var fieldText: String
     @Binding var fillerText: String
     @Binding var textVariable: String
+    @State var isSecure: Bool = false
     @State private var borderColor: Color = Color.blueAccent
     @State private var shakeOffset: CGFloat = 0
     var height: Double?
@@ -23,14 +24,25 @@ struct CustomTextField: View {
                 .font(.system(size: 14, weight: .bold))
                 .kerning(-0.2)
             
-            TextField(fillerText, text: $textVariable, axis: height != nil ? .vertical : .horizontal)
-                .font(.system(size: 16, weight: .regular))
-                .onChange(of: textVariable) { newValue in
-                    if newValue.count > maxLength {
-                        shakeAndHighlight()
-                        textVariable = String(newValue.prefix(maxLength))
+            if isSecure {
+                SecureField(fillerText, text: $textVariable)
+                    .font(.system(size: 16, weight: .regular))
+                    .onChange(of: textVariable) { newValue in
+                        if newValue.count > maxLength {
+                            shakeAndHighlight()
+                            textVariable = String(newValue.prefix(maxLength))
+                        }
                     }
-                }
+            } else {
+                TextField(fillerText, text: $textVariable, axis: height != nil ? .vertical : .horizontal)
+                    .font(.system(size: 16, weight: .regular))
+                    .onChange(of: textVariable) { newValue in
+                        if newValue.count > maxLength {
+                            shakeAndHighlight()
+                            textVariable = String(newValue.prefix(maxLength))
+                        }
+                    }
+            }
             
             if let height = height {
                 Spacer()

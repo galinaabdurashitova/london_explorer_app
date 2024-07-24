@@ -13,30 +13,30 @@ struct RouteMapContent: View {
     @Binding var route: Route
     
     var body: some View {
-        VStack {
-            HStack (spacing: 5) {
-                Spacer()
-                NavigationLink(destination: {
-                    MapRouteView(route: route)
-                        .toolbar(.hidden, for: .tabBar)
-                }) {
+        NavigationLink(destination: {
+            MapRouteView(route: route)
+                .toolbar(.hidden, for: .tabBar)
+        }) {
+            VStack {
+                HStack (spacing: 5) {
+                    Spacer()
                     MapLinkButton()
                 }
-            }
-            
-            Map(selection: .constant(MKMapItem())) {
-                ForEach(route.stops.indices, id: \.self) { index in
-                    if index > 0, let route = route.pathes[index - 1] {
-                        MapPolyline(route.polyline.toMKPolyline())
-                            .stroke(Color.redAccent, lineWidth: 3)
+                
+                Map {
+                    ForEach(route.stops.indices, id: \.self) { index in
+                        if index > 0, let route = route.pathes[index - 1] {
+                            MapPolyline(route.polyline.toMKPolyline())
+                                .stroke(Color.redAccent, lineWidth: 3)
+                        }
+                        
+                        Marker(route.stops[index].attraction.name, coordinate: route.stops[index].attraction.coordinates)
                     }
-                    
-                    Marker(route.stops[index].attraction.name, coordinate: route.stops[index].attraction.coordinates)
                 }
+                .disabled(true)
+                .cornerRadius(10)
+                .frame(height: 300)
             }
-            .disabled(true)
-            .cornerRadius(10)
-            .frame(height: 300)
         }
     }
 }
