@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+
+
 struct CreateRouteView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
@@ -20,17 +22,10 @@ struct CreateRouteView: View {
             ScrollView(showsIndicators: false) {
                 VStack (spacing: 25) {
                     HStack {
-                        
-                        NavigationLink(value: networkMonitor.isConnected) {
-                            ScreenHeader(
-                                headline: .constant("New Route"),
-                                subheadline: .constant("You can create new route or choose from the existing")
-                            )
-                        }
-                        .navigationDestination(for: Bool.self) { _ in
-                            CreateStopsView(tabSelection: $tabSelection, path: $path)
-                                .environmentObject(auth)
-                        }
+                        ScreenHeader(
+                            headline: .constant("New Route"),
+                            subheadline: .constant("You can create new route or choose from the existing")
+                        )
 
                         Spacer()
                     }
@@ -47,6 +42,31 @@ struct CreateRouteView: View {
                     }
                 }
                 .padding(.all, 20)
+            }
+            .navigationDestination(for: CreateRoutePath.self) { value in
+                switch value {
+                case .routeStops:
+                    CreateStopsView(tabSelection: $tabSelection, path: $path)
+                        .environmentObject(auth)
+                case .finishCreate(let stops, let pathes):
+                    FinishCreateView(stops: stops, pathes: pathes, tabSelection: $tabSelection, path: $path)
+                        .environmentObject(auth)
+                case .savedRoute(let route):
+                    SavedRouteView(route: route, tabSelection: $tabSelection, path: $path)
+                        .environmentObject(auth)
+                }
+            }
+            .navigationDestination(for: RouteNavigation.self) { value in
+                switch value {
+                case .info(let route):
+                    RouteView(route: route)
+                        .environmentObject(auth)
+                case .progress(let route):
+                    OnRouteView(route: route)
+                        .environmentObject(auth)
+                case .map(let route):
+                    MapRouteView(route: route)
+                }
             }
         }
     }

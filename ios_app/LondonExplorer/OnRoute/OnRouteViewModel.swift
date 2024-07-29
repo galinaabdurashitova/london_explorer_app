@@ -11,7 +11,7 @@ import MapKit
 
 class OnRouteViewModel: ObservableObject {
     @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
-    @Published var routeProgress: RouteProgress
+    @Binding var routeProgress: RouteProgress
     @Published var currentCoordinate: CLLocationCoordinate2D?
     @Published var directionToStart: MKRoute?
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
@@ -20,18 +20,18 @@ class OnRouteViewModel: ObservableObject {
     @Published var showGreeting: Bool = false
     @Published var greetingText: String = ""
     @Published var greetingSubText: String = ""
-    @Published var error: Bool = false
+    @Published var error: String = ""
     
     private var auth: AuthController?
     private var locationManager = LocationManager()
     private var usersService = UsersService()
     
     init(route: Route) {
-        self.routeProgress = RouteProgress(
+        self._routeProgress = .constant(RouteProgress(
             route: route,
             collectables: 0,
             stops: 0
-        )
+        ))
         
         if let savedRouteProgress = savedRouteProgress {
             if route.id == savedRouteProgress.route.id {
@@ -52,8 +52,8 @@ class OnRouteViewModel: ObservableObject {
         }
     }
     
-    init(routeProgress: RouteProgress) {
-        self.routeProgress = routeProgress
+    init(routeProgress: Binding<RouteProgress>) {
+        self._routeProgress = routeProgress
         
         Task {
             await screenSetup()
@@ -66,25 +66,21 @@ class OnRouteViewModel: ObservableObject {
     
     func screenSetup() async {
         locationManager.onLocationUpdate = { newCoordinate in
-            DispatchQueue.main.async {
                 self.currentCoordinate = newCoordinate
-            }
             Task {
                 await self.getDirectionToStart(start: newCoordinate)
-                DispatchQueue.main.async {
-                    self.calculateRegion()
-                }
+                self.calculateRegion()
             }
         }
     }
     
     func saveRoute() {
-        savedRouteProgress = routeProgress
+        self.savedRouteProgress = self.routeProgress
     }
     
     func pause() {
-        routeProgress.paused = true
-        routeProgress.lastPauseTime = Date()
+        self.routeProgress.paused = true
+        self.routeProgress.lastPauseTime = Date()
     }
     
     func resume() {
@@ -172,36 +168,40 @@ class OnRouteViewModel: ObservableObject {
             longitudeDelta: (maxLon - minLon) * 1.5
         )
         
-        mapRegion = MKCoordinateRegion(center: center, span: span)
+        DispatchQueue.main.async {
+            self.mapRegion = MKCoordinateRegion(center: center, span: span)
+        }
     }
     
     func changeStop(next: Bool = true) {
         if next {
-            if routeProgress.stops < routeProgress.route.stops.count {
-                routeProgress.stops += 1
+            if self.routeProgress.stops < self.routeProgress.route.stops.count {
+                self.routeProgress.stops += 1
             }
         } else {
-            if routeProgress.stops > 0 {
-                routeProgress.stops -= 1
+            if self.routeProgress.stops > 0 {
+                self.routeProgress.stops -= 1
             }
         }
         
-        if routeProgress.stops < routeProgress.route.stops.count {
-            calculateRegion()
+        if self.routeProgress.stops < self.routeProgress.route.stops.count {
+            self.calculateRegion()
         } else {
-            lastStop = true
-            routeProgress.endTime = Date()
+            self.lastStop = true
+            self.routeProgress.endTime = Date()
         }
         
-        saveRoute()
+        self.saveRoute()
     }
     
     func finishRoute() throws {
+        self.routeProgress.endTime = Date()
+        
         Task {
             do {
-                routeProgress.endTime = Date()
                 if let auth = auth {
-                    try await usersService.saveFinishedRoute(userId: auth.profile.userId, route: routeProgress)
+                    try await usersService.saveFinishedRoute(userId: auth.profile.id, route: routeProgress)
+                    auth.profile.finishedRoutes.append(User.FinishedRoute(id: routeProgress.route.id, finishedDate: routeProgress.endTime!, collectables: routeProgress.collectables))
                     eraseProgress()
                 } else {
                     throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "Authorization error. Saving progress is impossible"])

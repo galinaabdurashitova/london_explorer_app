@@ -8,7 +8,23 @@
 import Foundation
 import SwiftUI
 
-struct RouteProgress: Identifiable, Codable {
+struct RouteProgress: Identifiable, Codable, Hashable, Equatable {
+    static func == (lhs: RouteProgress, rhs: RouteProgress) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(route)
+        hasher.combine(collectables)
+        hasher.combine(stops)
+        hasher.combine(user)
+        hasher.combine(startTime)
+        hasher.combine(endTime)
+        hasher.combine(paused)
+        hasher.combine(lastPauseTime)
+    }
+    
     var id = UUID()
     var route: Route
     var collectables: Int

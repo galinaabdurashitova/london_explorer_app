@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 class RouteViewModel: ObservableObject {
-    @Binding var route: Route
+    @Published var route: Route
     @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
     
     private var routesService = RoutesService()
     
-    init(route: Binding<Route>) {
-        self._route = route
+    init(route: Route) {
+        self.route = route
     }
     
     func deleteRoute() {
@@ -23,7 +23,9 @@ class RouteViewModel: ObservableObject {
             do {
                 try await routesService.deleteRoute(routeId: route.id)
                 if let current = savedRouteProgress, current.route.id == route.id {
-                    savedRouteProgress = nil
+                    DispatchQueue.main.async {
+                        self.savedRouteProgress = nil
+                    }
                 }
             } catch {
                 print("Error deleting route")

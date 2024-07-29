@@ -38,7 +38,11 @@ struct SuggestedRoutesCarousel: View {
                         VStack (spacing: 20) {
                             ForEach(0..<lines, id: \.self) { row in
                                 if let routeIndex = indexForColumnRow(column: column, row: row), routeIndex < routes.count {
-                                    RouteCard(route: $routes[routeIndex], label: .likes(routes[routeIndex].saves))
+                                    RouteCard(
+                                        route: $routes[routeIndex],
+                                        label: .likes(routes[routeIndex].saves),
+                                        navigation: RouteNavigation.info(routes[routeIndex])
+                                    )
                                         .environmentObject(auth)
                                 }
                             }

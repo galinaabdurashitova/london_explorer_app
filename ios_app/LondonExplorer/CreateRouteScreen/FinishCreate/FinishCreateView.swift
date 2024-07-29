@@ -40,9 +40,9 @@ struct FinishCreateView: View {
             .padding(.all, 20)
             
             Button(action: {
-                viewModel.saveRoute(userId: auth.profile.userId, userName: auth.profile.name)
+                viewModel.saveRoute(userId: auth.profile.id, userName: auth.profile.name)
                 isNavigationActive = true
-                path.append(viewModel.route)
+                path.append(CreateRoutePath.savedRoute(viewModel.route))
             }) {
                 ButtonView(
                     text: .constant("Save route"),
@@ -56,10 +56,6 @@ struct FinishCreateView: View {
                 )
             }
             .padding(.bottom, 20)
-            .navigationDestination(for: Route.self) { value in
-                SavedRouteView(route: value, tabSelection: $tabSelection, path: $path)
-                    .environmentObject(auth)
-            }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .tabBar)

@@ -79,6 +79,8 @@
 		2AA5B1502C0A1396001EC475 /* WidgetError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B14F2C0A1396001EC475 /* WidgetError.swift */; };
 		2AA5B1532C0A166E001EC475 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B1522C0A166E001EC475 /* Label.swift */; };
 		2AA5B1572C0A18BC001EC475 /* EmptyStateBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B1562C0A18BC001EC475 /* EmptyStateBanner.swift */; };
+		2AA9B8DE2C527D9E001F27B9 /* CreateRoutePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B8DD2C527D9E001F27B9 /* CreateRoutePath.swift */; };
+		2AA9B8E02C527DC6001F27B9 /* RouteNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B8DF2C527DC6001F27B9 /* RouteNavigation.swift */; };
 		2AC56A7E2C28384100F7249B /* EditRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC56A7D2C28384100F7249B /* EditRouteViewModel.swift */; };
 		2AC56A802C28C0F400F7249B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */; };
 		2AC56A842C28C31D00F7249B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A832C28C31D00F7249B /* FirebaseAuth */; };
@@ -205,6 +207,8 @@
 		2AA5B14F2C0A1396001EC475 /* WidgetError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetError.swift; sourceTree = "<group>"; };
 		2AA5B1522C0A166E001EC475 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		2AA5B1562C0A18BC001EC475 /* EmptyStateBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateBanner.swift; sourceTree = "<group>"; };
+		2AA9B8DD2C527D9E001F27B9 /* CreateRoutePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoutePath.swift; sourceTree = "<group>"; };
+		2AA9B8DF2C527DC6001F27B9 /* RouteNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteNavigation.swift; sourceTree = "<group>"; };
 		2AC56A7D2C28384100F7249B /* EditRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRouteViewModel.swift; sourceTree = "<group>"; };
 		2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AC56A882C28C51B00F7249B /* AttractionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionsService.swift; sourceTree = "<group>"; };
@@ -485,6 +489,8 @@
 			isa = PBXGroup;
 			children = (
 				2AA5B1522C0A166E001EC475 /* Label.swift */,
+				2AA9B8DD2C527D9E001F27B9 /* CreateRoutePath.swift */,
+				2AA9B8DF2C527DC6001F27B9 /* RouteNavigation.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -740,12 +746,14 @@
 				2AD4B9652C0CDAFC00B90C8A /* LoadingView.swift in Sources */,
 				2AA5B1362C09D7BB001EC475 /* FeedUpdate.swift in Sources */,
 				2A76D4B32C1621D2007908E0 /* DEPRICATED_RouteStopsView.swift in Sources */,
+				2AA9B8E02C527DC6001F27B9 /* RouteNavigation.swift in Sources */,
 				2AFD1F5D2C21DAEC0061060E /* CodableMKPolyline.swift in Sources */,
 				2AD4B9632C0CD98E00B90C8A /* LoadingStyle.swift in Sources */,
 				2AA5B13C2C09E5E5001EC475 /* User.swift in Sources */,
 				2A0E39F92C501E9500AC32A4 /* TEMP_UserStorage.swift in Sources */,
 				2AA5B1302C090A33001EC475 /* TextStyles.swift in Sources */,
 				2AE8A0352C14E674005E0F62 /* AttractionCard.swift in Sources */,
+				2AA9B8DE2C527D9E001F27B9 /* CreateRoutePath.swift in Sources */,
 				2A0E39E32C4DB68100AC32A4 /* FileManager.swift in Sources */,
 				2AA5B1572C0A18BC001EC475 /* EmptyStateBanner.swift in Sources */,
 				2AA5B1532C0A166E001EC475 /* Label.swift in Sources */,

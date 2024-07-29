@@ -10,13 +10,11 @@ import SwiftUI
 
 struct OnRouteWidget: View {
     @EnvironmentObject var auth: AuthController
-    @State var currentRoute: RouteProgress?
-    
-    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var routeProgress: RouteProgress?
+    @Binding var currentRoute: RouteProgress
     
     var body: some View {
         VStack (spacing: 20) {
-            if let routeProgress = currentRoute {
+//            if let currentRoute = currentRoute {
                 HStack {
                     SectionHeader(
                         headline: .constant("On a Route!")
@@ -25,23 +23,19 @@ struct OnRouteWidget: View {
                 }
                 
                 RouteProgressView(
-                    routeProgress:
-                        Binding<RouteProgress> (
-                            get: { return routeProgress },
-                            set: { _ in }
-                        )
+                    routeProgress: $currentRoute
                 )
                 .environmentObject(auth)
-            }
+//            }
         }
-        .onAppear {
-            currentRoute = routeProgress
-        }
+//        .onChange(of: routeProgress) { newValue in
+//            currentRoute = newValue
+//        }
     }
 }
 
 #Preview {
-    OnRouteWidget()
+    OnRouteWidget(currentRoute: .constant(MockData.RouteProgress[0]))
         .environmentObject(AuthController())
         .padding()
 }

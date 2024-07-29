@@ -19,10 +19,7 @@ struct RouteProgressView: View {
     }
     
     var body: some View {
-        NavigationLink(destination: {
-            OnRouteView(routeProgress: routeProgress)
-                .environmentObject(auth)
-        }) {
+        NavigationLink(value: routeProgress) {
             VStack (alignment: .leading, spacing: 3) {
                 HStack (spacing: 10) {
                     ZStack (alignment: .topLeading) {

@@ -10,8 +10,9 @@ import Foundation
 // ALL CURRENT STORAGES USED
 //@UserStorage(key: "LONDON_EXPLORER_USERS") var user: [User]
 //@RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
-//@RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
 //@CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
+
+//@RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
 
 extension FileManager {
     static func save<T: Encodable>(_ object: T, to filename: String) -> Bool {
@@ -23,6 +24,7 @@ extension FileManager {
         do {
             let data = try encoder.encode(object)
             try data.write(to: fileURL, options: [.atomicWrite, .completeFileProtection])
+            print("Data written to \(fileURL.path)")
             return true
         } catch {
             print("Error saving file: \(error)")
@@ -35,8 +37,18 @@ extension FileManager {
         guard let documentDirectory = urls.first else { return nil }
         let fileURL = documentDirectory.appendingPathComponent(filename)
 
-        guard let data = try? Data(contentsOf: fileURL) else { return nil }
+        guard let data = try? Data(contentsOf: fileURL) else {
+            print("No data found at \(fileURL.path)")
+            return nil
+        }
         let decoder = JSONDecoder()
-        return try? decoder.decode(T.self, from: data)
+        do {
+            let decodedData = try decoder.decode(T.self, from: data)
+            print("Data loaded from \(fileURL.path)")
+            return decodedData
+        } catch {
+            print("Error loading file: \(error)")
+            return nil
+        }
     }
 }

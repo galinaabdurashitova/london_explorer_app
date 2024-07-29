@@ -23,7 +23,7 @@ struct RouteView: View {
         return Double(headerHeight - scrollOffset * 2) / 100
     }
     
-    init(route: Binding<Route>) {
+    init(route: Route) {
         self._viewModel = StateObject(wrappedValue: RouteViewModel(route: route))
     }
     
@@ -52,7 +52,7 @@ struct RouteView: View {
                     RouteDataView(route: $viewModel.route)
                         .environmentObject(auth)
                     
-                    if auth.profile.userId == viewModel.route.userCreated.id {
+                    if auth.profile.id == viewModel.route.userCreated.id {
                         Button("Delete the route") {
                             confirmDelete = true
                         }
@@ -113,6 +113,6 @@ struct RouteView: View {
 }
 
 #Preview {
-    RouteView(route: .constant(MockData.Routes[0]))
+    RouteView(route: MockData.Routes[0])
         .environmentObject(AuthController())
 }

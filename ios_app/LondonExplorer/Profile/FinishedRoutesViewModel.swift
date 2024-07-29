@@ -11,6 +11,7 @@ import SwiftUI
 class FinishedRoutesViewModel: ObservableObject {
     @Published var finishedRoutes: [User.FinishedRoute] = []
     
+    private var usersRepository: UsersServiceProtocol = UsersService()
     private var routesService = RoutesService()
     private var auth: AuthController?
     
@@ -20,6 +21,7 @@ class FinishedRoutesViewModel: ObservableObject {
     
     func loadRoutes() {
         if let auth = auth {
+//            usersRepository.removeFinishedRoutes(userId: auth.profile.id)
             Task {
                 var routes = auth.profile.finishedRoutes
                 for routeIndex in routes.indices {

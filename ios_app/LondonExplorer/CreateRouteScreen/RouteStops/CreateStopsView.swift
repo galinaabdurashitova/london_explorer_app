@@ -61,7 +61,7 @@ struct CreateStopsView: View {
             }
             
             if viewModel.stops.count > 1 {
-                NavigationLink(value: viewModel.stops) {
+                NavigationLink(value: CreateRoutePath.finishCreate(viewModel.stops, viewModel.pathes)) {
                     ButtonView(
                         text: .constant("Continue"),
                         colour: Color.lightBlue,
@@ -69,9 +69,6 @@ struct CreateStopsView: View {
                         size: .L
                     )
                     .padding(.bottom, 20)
-                }
-                .navigationDestination(for: [Route.RouteStop].self) { value in
-                    FinishCreateView(stops: value, pathes: viewModel.pathes, tabSelection: $tabSelection, path: $path)
                 }
             }
         }

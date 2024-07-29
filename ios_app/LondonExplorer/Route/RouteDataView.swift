@@ -37,12 +37,8 @@ struct RouteDataView: View {
                 FirstButton
                 
                 SecondButton
-                NavigationLink(destination: {
-                    OnRouteView(route: route)
-                        .environmentObject(auth)
-                }) {
-                    ThirdButton
-                }
+
+                ThirdButton
             }
             
             HStack {
@@ -84,16 +80,13 @@ struct RouteDataView: View {
         .sheet(isPresented: $isEditSheetPresented) {
             EditRouteView(route: $route, isSheetPresented: $isEditSheetPresented)
         }
-        .disabled(auth.profile.userId == route.userCreated.id)
+        .disabled(auth.profile.id != route.userCreated.id)
     }
     
     private var ThirdButton: some View {
-//        NavigationLink(destination: {
-//            OnRouteView(route: route, auth: auth)
-//                .environmentObject(auth)
-//        }) {
+        NavigationLink(value: RouteNavigation.progress(route)) {
             RouteButton.start.view
-//        }
+        }
     }
 }
 

@@ -18,7 +18,7 @@ struct OnRouteView: View {
         self._viewModel = StateObject(wrappedValue: OnRouteViewModel(route: route))
     }
     
-    init(routeProgress: RouteProgress) {
+    init(routeProgress: Binding<RouteProgress>) {
         self._viewModel = StateObject(wrappedValue: OnRouteViewModel(routeProgress: routeProgress))
     }
     
@@ -42,6 +42,7 @@ struct OnRouteView: View {
                 }
             }
         }
+        .toolbar(.hidden, for: .tabBar)
         .onAppear {
             viewModel.setAuthController(auth)
         }
@@ -121,9 +122,15 @@ struct OnRouteView: View {
                         try viewModel.finishRoute()
                         self.presentationMode.wrappedValue.dismiss()
                     } catch {
-                        viewModel.error = true
+                        viewModel.error = error.localizedDescription
                     }
                 }
+            }
+        }
+        .sheet(isPresented: Binding<Bool>( get: { !viewModel.error.isEmpty }, set: { _ in })) {
+            VStack {
+                Text("Error saving progress: \(viewModel.error)")
+                    .foregroundColor(Color.redAccent)
             }
         }
         .popup(
@@ -290,5 +297,5 @@ struct OnRouteView: View {
 }
 
 #Preview {
-    OnRouteView(routeProgress: MockData.RouteProgress[0])
+    OnRouteView(routeProgress: .constant(MockData.RouteProgress[0]))
 }

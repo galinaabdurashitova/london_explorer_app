@@ -39,7 +39,8 @@ struct FinishedRoutesView: View {
             }
         }
         .toolbar(.visible, for: .tabBar)
-        .padding(.all, 20)
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
         .onAppear {
             viewModel.setAuthController(auth)
             viewModel.loadRoutes()

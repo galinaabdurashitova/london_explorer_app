@@ -36,8 +36,21 @@ struct ProfileView: View {
             .scrollClipDisabled()
             .padding(.top, 20)
             .padding(.horizontal, 20)
+            .navigationDestination(for: RouteNavigation.self) { value in
+                switch value {
+                case .info(let route):
+                    RouteView(route: route)
+                        .environmentObject(auth)
+                case .progress(let route):
+                    OnRouteView(route: route)
+                        .environmentObject(auth)
+                case .map(let route):
+                    MapRouteView(route: route)
+                }
+            }
         }
         .onAppear {
+            viewModel.user = auth.profile
             viewModel.loadRoutes()
         }
     }

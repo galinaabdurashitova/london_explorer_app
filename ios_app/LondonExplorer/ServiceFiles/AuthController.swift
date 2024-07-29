@@ -16,51 +16,49 @@ class AuthController: ObservableObject {
     
     private var usersRepository: UsersServiceProtocol = UsersService()
     
-    init(testProfile: Bool? = false) {
-        if let test = testProfile, test == true  {
-            DispatchQueue.main.async {
-                self.profile = MockData.Users[0]
-                self.isSignedIn = true
-            }
+    init(testProfile: Bool = false) {
+        if testProfile == true  {
+            self.setUserProfile()
         } else {
             observeAuthChanges()
         }
     }
     
-    private func fetchUserProfile(userId: String) async {
-        do {
-            let profile = try await usersRepository.fetchUser(userId: userId)
-            DispatchQueue.main.async {
-                self.profile = profile
-                self.isSignedIn = true
-            }
-        } catch {
-            print("Error while fetching the user profile: \(error)")
+    private func setUserProfile(user: User = MockData.Users[0]) {
+        DispatchQueue.main.async {
+            self.profile = user
+            self.isSignedIn = true
         }
     }
     
     private func observeAuthChanges() {
         Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            DispatchQueue.main.async {
-                self?.isSignedIn = user != nil
-                
-                guard let user = user else { return }
-                print("User \(user.uid) signed in.")
+            guard let user = user else { return }
+            guard let self = self else { return }
 
-                Task {
-                    await self?.fetchUserProfile(userId: user.uid)
+            Task {
+                do {
+                    let profile = try await self.usersRepository.fetchUser(userId: user.uid)
+                    self.setUserProfile(user: profile)
+                    print("User \(user.uid) signed in.")
+                } catch {
+                    print("Error while fetching the user profile: \(error)")
                 }
             }
         }
     }
     
+    
     func login(email: String, password: String) async throws {
         do {
             let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
             let user = authResult.user
-            print("User \(user.uid) signed in.")
             
-            await fetchUserProfile(userId: user.uid)
+            let profile = try await usersRepository.fetchUser(userId: user.uid)
+            
+            self.setUserProfile(user: profile)
+            
+            print("User \(user.uid) signed in.")
         } catch {
             print("Error signing in: \(error)")
             throw error
@@ -71,21 +69,13 @@ class AuthController: ObservableObject {
         do {
             let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
             let user = authResult.user
-            print("User \(user.uid) signed up.")
             
             let userProfile = User(userId: user.uid/*, email: email*/, name: name, userName: userName)
+            try await usersRepository.createUser(newUser: userProfile)
             
-            // Replace with actual async profile creation implementation
-            do {
-                try await usersRepository.createUser(newUser: userProfile)
-                
-                DispatchQueue.main.async {
-                    self.profile = userProfile
-                    self.isSignedIn = true
-                }
-            } catch {
-                throw NSError(domain: "AuthController", code: 999, userInfo: [NSLocalizedDescriptionKey: "Unexpected error"])
-            }
+            self.setUserProfile(user: userProfile)
+            
+            print("User \(user.uid) signed up.")
         } catch {
             print("Error signing up: \(error)")
             throw error
@@ -96,10 +86,7 @@ class AuthController: ObservableObject {
         do {
             try Auth.auth().signOut()
             
-            DispatchQueue.main.async {
-                self.isSignedIn = false
-                self.profile = User(userId: "", name: "", userName: "")
-            }
+            self.setUserProfile(user: User(userId: "", name: "", userName: ""))
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }

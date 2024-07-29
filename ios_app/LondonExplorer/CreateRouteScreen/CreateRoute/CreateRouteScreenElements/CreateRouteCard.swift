@@ -17,13 +17,9 @@ struct CreateRouteCard: View {
     var body: some View {
         ZStack {
             if networkMonitor.isConnected {
-//                NavigationLink(value: networkMonitor.isConnected) {
+                NavigationLink(value: CreateRoutePath.routeStops) {
                     CreateNewRouteCard
-//                }
-//                .navigationDestination(for: Bool.self) { _ in
-//                    CreateStopsView(tabSelection: $tabSelection, path: $path)
-//                        .environmentObject(auth)
-//                }
+                }
             } else {
                 NoInternetCard
             }

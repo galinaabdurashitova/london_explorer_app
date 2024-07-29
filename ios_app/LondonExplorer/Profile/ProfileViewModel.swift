@@ -22,7 +22,7 @@ class ProfileViewModel: ObservableObject {
     func loadRoutes() {
         Task {
             do {
-                if let userRoutes = try await routesService.fetchUserRoutes(userId: user.userId) {
+                if let userRoutes = try await routesService.fetchUserRoutes(userId: user.id) {
                     DispatchQueue.main.async {
                         self.routes = userRoutes.sorted(by: { $0.dateCreated > $1.dateCreated })
                     }

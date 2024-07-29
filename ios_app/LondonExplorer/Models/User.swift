@@ -8,8 +8,12 @@
 import Foundation
 import SwiftUI
 
-struct User: Codable {
-    var userId: String
+struct User: Codable, Identifiable, Hashable, Equatable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    var id: String
 //    var email: String
     var name: String
     var userName: String
@@ -21,7 +25,7 @@ struct User: Codable {
     var finishedRoutes: [FinishedRoute] = []
     var favRoutes: [String] = []
     
-    struct FinishedRoute: Codable {
+    struct FinishedRoute: Codable, Hashable, Equatable {
         var id: String
         var route: Route?
         var finishedDate: Date
@@ -43,7 +47,7 @@ struct User: Codable {
     }
     
     init(userId: String/*, email: String*/, name: String, userName: String, userDescription: String? = nil, image: UIImage = UIImage(imageLiteralResourceName: "User3DIcon"), awards: Int = 0, collectables: Int = 0, friends: [String] = [], finishedRoutes: [FinishedRoute] = [], favRoutes: [String] = []) {
-        self.userId = userId
+        self.id = userId
 //        self.email = email
         self.name = name
         self.userName = userName
@@ -59,7 +63,7 @@ struct User: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.userId = try container.decode(String.self, forKey: .userId)
+        self.id = try container.decode(String.self, forKey: .userId)
 //        self.email = try container.decode(String.self, forKey: .email)
         self.name = try container.decode(String.self, forKey: .name)
         self.userName = try container.decode(String.self, forKey: .userName)
@@ -75,7 +79,7 @@ struct User: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(userId, forKey: .userId)
+        try container.encode(id, forKey: .userId)
 //        try container.encode(email, forKey: .email)
         try container.encode(name, forKey: .name)
         try container.encode(userName, forKey: .userName)
@@ -84,6 +88,7 @@ struct User: Codable {
         try container.encode(awards, forKey: .awards)
         try container.encode(collectables, forKey: .collectables)
         try container.encode(friends, forKey: .friends)
+        try container.encode(finishedRoutes, forKey: .finishedRoutes)
         try container.encode(favRoutes, forKey: .favRoutes)
     }
 }
