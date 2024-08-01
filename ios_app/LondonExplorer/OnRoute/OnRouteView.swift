@@ -12,14 +12,14 @@ import MapKit
 struct OnRouteView: View {
     @EnvironmentObject var auth: AuthController
     @Environment(\.presentationMode) var presentationMode
-    @StateObject var viewModel: OnRouteViewModel
+    @ObservedObject var viewModel: OnRouteViewModel
     
     init(route: Route) {
-        self._viewModel = StateObject(wrappedValue: OnRouteViewModel(route: route))
+        self.viewModel = OnRouteViewModel(route: route)
     }
     
-    init(routeProgress: Binding<RouteProgress>) {
-        self._viewModel = StateObject(wrappedValue: OnRouteViewModel(routeProgress: routeProgress))
+    init(routeProgress: RouteProgress) {
+        self.viewModel = OnRouteViewModel(routeProgress: routeProgress)
     }
     
     var body: some View {
@@ -297,5 +297,6 @@ struct OnRouteView: View {
 }
 
 #Preview {
-    OnRouteView(routeProgress: .constant(MockData.RouteProgress[0]))
+    OnRouteView(routeProgress: MockData.RouteProgress[0])
+        .environmentObject(AuthController())
 }

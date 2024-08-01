@@ -11,7 +11,7 @@ import MapKit
 
 class OnRouteViewModel: ObservableObject {
     @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
-    @Binding var routeProgress: RouteProgress
+    @Published var routeProgress: RouteProgress
     @Published var currentCoordinate: CLLocationCoordinate2D?
     @Published var directionToStart: MKRoute?
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
@@ -27,11 +27,11 @@ class OnRouteViewModel: ObservableObject {
     private var usersService = UsersService()
     
     init(route: Route) {
-        self._routeProgress = .constant(RouteProgress(
+        self.routeProgress = RouteProgress(
             route: route,
             collectables: 0,
             stops: 0
-        ))
+        )
         
         if let savedRouteProgress = savedRouteProgress {
             if route.id == savedRouteProgress.route.id {
@@ -52,8 +52,8 @@ class OnRouteViewModel: ObservableObject {
         }
     }
     
-    init(routeProgress: Binding<RouteProgress>) {
-        self._routeProgress = routeProgress
+    init(routeProgress: RouteProgress) {
+        self.routeProgress = routeProgress
         
         Task {
             await screenSetup()

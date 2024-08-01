@@ -15,13 +15,7 @@ struct MainScreenView: View {
     @State var friendsFeed: [FriendUpdate] = MockData.FriendsFeed
     @State var onRoute: RouteProgress = MockData.RouteProgress[0]
     @State var friendsOnRoute: [RouteProgress] = MockData.RouteProgress
-    @State var isLoading: Bool = false
-    
-    
-    
-    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var routeProgress: RouteProgress?
-    @State var currentRoute: RouteProgress?
-    
+    @State var isLoading: Bool = true
     
     @State private var scrollOffset: CGFloat = 0
     
@@ -37,15 +31,10 @@ struct MainScreenView: View {
                 
                 ScrollView(showsIndicators: false) {
                     Spacer()
-                    if isLoading {
+                    if !isLoading {
                         VStack(spacing: 25) {
-                            if let currentRoute = currentRoute {
-                                OnRouteWidget(currentRoute: Binding(
-                                    get: { currentRoute },
-                                    set: { _ in }
-                                ))
+                                OnRouteWidget()
                                     .environmentObject(auth)
-                            }
                             if networkMonitor.isConnected {
 //                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
 //                                    .environmentObject(auth)
@@ -91,21 +80,14 @@ struct MainScreenView: View {
                 }
             }
             .navigationDestination(for: RouteProgress.self) { routeProgress in
-                OnRouteView(routeProgress: Binding(
-                    get: { routeProgress },
-                    set: { _ in }
-                ))
+                OnRouteView(routeProgress: routeProgress)
                     .environmentObject(auth)
             }
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                self.isLoading = true
+                self.isLoading = false
             }
-        }
-        
-        .onAppear {
-            currentRoute = routeProgress
         }
     }
 }
