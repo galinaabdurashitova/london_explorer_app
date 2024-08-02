@@ -24,10 +24,10 @@ extension FileManager {
         do {
             let data = try encoder.encode(object)
             try data.write(to: fileURL, options: [.atomicWrite, .completeFileProtection])
-            print("Data written to \(fileURL.path)")
+//            print("Data written to \(fileURL.path)")
             return true
         } catch {
-            print("Error saving file: \(error)")
+//            print("Error saving file: \(error)")
             return false
         }
     }
@@ -38,16 +38,16 @@ extension FileManager {
         let fileURL = documentDirectory.appendingPathComponent(filename)
 
         guard let data = try? Data(contentsOf: fileURL) else {
-            print("No data found at \(fileURL.path)")
+//            print("No data found at \(fileURL.path)")
             return nil
         }
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(T.self, from: data)
-            print("Data loaded from \(fileURL.path)")
+//            print("Data loaded from \(fileURL.path)")
             return decodedData
         } catch {
-            print("Error loading file: \(error)")
+//            print("Error loading file: \(error)")
             return nil
         }
     }

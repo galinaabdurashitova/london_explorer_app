@@ -10,11 +10,16 @@ import SwiftUI
 import MapKit
 
 class OnRouteViewModel: ObservableObject {
+    // Model used in the view variables
     @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
     @Published var routeProgress: RouteProgress
+    
+    // Map variables
     @Published var currentCoordinate: CLLocationCoordinate2D?
     @Published var directionToStart: MKRoute?
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
+    
+    // Variables for correct view work
     @Published var lastStop: Bool = false
     @Published var stopRoute: Bool = false
     @Published var showGreeting: Bool = false
@@ -23,10 +28,12 @@ class OnRouteViewModel: ObservableObject {
     @Published var error: String = ""
     @Published var isMapLoading: Bool = false
     
+    // Service variables
     private var auth: AuthController?
     private var locationManager = LocationManager()
     private var usersService = UsersService()
     
+    // Initializers
     init(route: Route) {
         self.routeProgress = RouteProgress(
             route: route,
@@ -49,7 +56,7 @@ class OnRouteViewModel: ObservableObject {
         }
     }
     
-    init(routeProgress: RouteProgress) {
+    init(routeProgress: RouteProgress) {    // Depricated
         self.routeProgress = routeProgress
     }
     
@@ -60,12 +67,17 @@ class OnRouteViewModel: ObservableObject {
             stops: 0
         )
         
-        loadRouteProgress()
+        self.loadRouteProgress()
     }
     
-    func loadRouteProgress() {
-        if let savedRouteProgress = savedRouteProgress {
-            routeProgress = savedRouteProgress
+    // Screen setup functions
+    func screenSetup() async {
+        locationManager.onLocationUpdate = { newCoordinate in
+            DispatchQueue.main.async { self.currentCoordinate = newCoordinate }
+            Task {
+                await self.getDirectionToStart(start: newCoordinate)
+                self.calculateRegion()
+            }
         }
     }
     
@@ -73,50 +85,83 @@ class OnRouteViewModel: ObservableObject {
         self.auth = auth
     }
     
-    func screenSetup() async {
-        locationManager.onLocationUpdate = { newCoordinate in
-            DispatchQueue.main.async {
-                self.currentCoordinate = newCoordinate
-            }
-            Task {
-                await self.getDirectionToStart(start: newCoordinate)
-                
-                DispatchQueue.main.async {
-                    self.calculateRegion()
-                }
-            }
-        }
+    // Route progress storing functions
+    func loadRouteProgress() {
+        if let savedRouteProgress = self.savedRouteProgress { self.routeProgress = savedRouteProgress }
     }
     
     func saveRoute() {
-        print("Previous number of stops")
-        print("in memory: \(savedRouteProgress?.stops)")
-        print("current: \(routeProgress.stops)")
-        
         self.savedRouteProgress = self.routeProgress
-        
-        print("Number of stops after saving")
-        print("in memory: \(savedRouteProgress?.stops)")
-        print("current: \(routeProgress.stops)")
     }
     
+    func eraseProgress() {
+        self.savedRouteProgress = nil
+    }
+    
+    // Route progress management functions
     func pause() {
         self.routeProgress.paused = true
         self.routeProgress.lastPauseTime = Date()
     }
     
     func resume() {
-        if let lastPauseTime = routeProgress.lastPauseTime {
-            routeProgress.pauseDuration += Date().timeIntervalSince(lastPauseTime)
+        if let lastPauseTime = self.routeProgress.lastPauseTime {
+            self.routeProgress.pauseDuration += Date().timeIntervalSince(lastPauseTime)
         }
-        routeProgress.paused = false
-        routeProgress.lastPauseTime = nil
+        self.routeProgress.paused = false
+        self.routeProgress.lastPauseTime = nil
     }
     
+    func changeStop(next: Bool = true) {
+        if next {
+            if self.routeProgress.stops < self.routeProgress.route.stops.count {
+                self.routeProgress.stops += 1
+            }
+        } else {
+            if self.routeProgress.stops > 0 {
+                self.routeProgress.stops -= 1
+            }
+        }
+        
+        if self.routeProgress.stops < self.routeProgress.route.stops.count {
+            self.calculateRegion()
+        } else {
+            self.lastStop = true
+            self.routeProgress.endTime = Date()
+        }
+        
+        self.saveRoute()
+    }
+    
+    func finishRoute() throws {
+        self.routeProgress.endTime = Date()
+        
+        Task {
+            do {
+                if let auth = auth {
+                    try await usersService.saveFinishedRoute(userId: auth.profile.id, route: self.routeProgress)
+                    auth.profile.finishedRoutes.append(
+                        User.FinishedRoute(
+                            id: self.routeProgress.route.id,
+                            finishedDate: self.routeProgress.endTime!,
+                            collectables: self.routeProgress.collectables
+                        )
+                    )
+                    self.eraseProgress()
+                } else {
+                    throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "Authorization error. Saving progress is impossible"])
+                }
+            } catch {
+                throw error
+            }
+        }
+    }
+    
+    // Map management functions
     func getDirectionToStart(start: CLLocationCoordinate2D) async {
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: start))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: routeProgress.route.stops[0].attraction.coordinates))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: self.routeProgress.route.stops[0].attraction.coordinates))
         request.transportType = .walking
         
         let directions = MKDirections(request: request)
@@ -127,12 +172,10 @@ class OnRouteViewModel: ObservableObject {
                     self.directionToStart = route
                 }
             } else {
-                // Debugging: Print out if no routes were found
                 print("No routes found")
             }
         } catch {
             print("Error calculating route: \(error.localizedDescription)")
-            // Print more detailed error information
             if let error = error as? MKError {
                 switch error.code {
                 case .placemarkNotFound:
@@ -157,14 +200,14 @@ class OnRouteViewModel: ObservableObject {
     func calculateRegion() {
         var coordinates: [CLLocationCoordinate2D] = []
         
-        if routeProgress.stops == 0, let currentCoordinate = currentCoordinate {
+        if self.routeProgress.stops == 0, let currentCoordinate = currentCoordinate {
             coordinates.append(currentCoordinate)
         } else {
-            coordinates.append(routeProgress.route.stops[routeProgress.stops - 1].attraction.coordinates)
+            coordinates.append(self.routeProgress.route.stops[routeProgress.stops - 1].attraction.coordinates)
         }
         
-        if routeProgress.stops < routeProgress.route.stops.count {
-            coordinates.append(routeProgress.route.stops[routeProgress.stops].attraction.coordinates)
+        if self.routeProgress.stops < self.routeProgress.route.stops.count {
+            coordinates.append(self.routeProgress.route.stops[routeProgress.stops].attraction.coordinates)
         }
         
         var minLat = coordinates.first?.latitude ?? 0
@@ -190,56 +233,8 @@ class OnRouteViewModel: ObservableObject {
             longitudeDelta: (maxLon - minLon) * 1.5
         )
         
-        self.mapRegion = MKCoordinateRegion(center: center, span: span)
-    }
-    
-    func changeStop(next: Bool = true) {
-        print("Button pressed ", next ? "next" : "back")
-        if next {
-            if self.routeProgress.stops < self.routeProgress.route.stops.count {
-                self.routeProgress.stops += 1
-                print("New stops No is \(self.routeProgress.stops)")
-            }
-        } else {
-            if self.routeProgress.stops > 0 {
-                self.routeProgress.stops -= 1
-                print("New stops No is \(self.routeProgress.stops)")
-            }
+        DispatchQueue.main.async {
+            self.mapRegion = MKCoordinateRegion(center: center, span: span)
         }
-        
-        if self.routeProgress.stops < self.routeProgress.route.stops.count {
-            print("Not last stop, recalculate region")
-            self.calculateRegion()
-            print("Region recalculated")
-        } else {
-            self.lastStop = true
-            self.routeProgress.endTime = Date()
-        }
-        
-        print("Saving the route")
-        self.saveRoute()
-        print("Route saved to memory")
-    }
-    
-    func finishRoute() throws {
-        self.routeProgress.endTime = Date()
-        
-        Task {
-            do {
-                if let auth = auth {
-                    try await usersService.saveFinishedRoute(userId: auth.profile.id, route: routeProgress)
-                    auth.profile.finishedRoutes.append(User.FinishedRoute(id: routeProgress.route.id, finishedDate: routeProgress.endTime!, collectables: routeProgress.collectables))
-                    eraseProgress()
-                } else {
-                    throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "Authorization error. Saving progress is impossible"])
-                }
-            } catch {
-                throw error
-            }
-        }
-    }
-    
-    func eraseProgress() {
-        savedRouteProgress = nil
     }
 }
