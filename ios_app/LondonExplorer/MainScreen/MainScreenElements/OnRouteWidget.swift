@@ -23,7 +23,19 @@ struct OnRouteWidget: View {
                 }
                 
                 NavigationLink(value: viewModel.routeProgress) {
-                    RouteProgressView(routeProgress: $viewModel.routeProgress)
+                    RouteProgressView(
+                        image: $viewModel.routeProgress.route.image,
+                        routeName: $viewModel.routeProgress.route.name,
+                        collectablesDone: $viewModel.routeProgress.collectables,
+                        collectablesTotal: $viewModel.routeProgress.route.collectables,
+                        stopsDone: $viewModel.routeProgress.stops,
+                        stopsTotal: Binding<Int>(
+                            get: {
+                                return viewModel.routeProgress.route.stops.count
+                            },
+                            set: { _ in }
+                        )
+                    )
                 }
             }
         }

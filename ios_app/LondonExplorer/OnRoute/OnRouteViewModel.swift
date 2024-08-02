@@ -54,10 +54,21 @@ class OnRouteViewModel: ObservableObject {
             self.greetingText = "Start \(route.name)"
             self.greetingSubText = "You're about to start the route! Get ready!"
         }
+        
+        self.isMapLoading = true
+        Task {
+            await self.screenSetup()
+            self.isMapLoading = false
+        }
     }
     
     init(routeProgress: RouteProgress) {    // Depricated
         self.routeProgress = routeProgress
+        self.isMapLoading = true
+        Task {
+            await self.screenSetup()
+            self.isMapLoading = false
+        }
     }
     
     init() {
@@ -68,6 +79,11 @@ class OnRouteViewModel: ObservableObject {
         )
         
         self.loadRouteProgress()
+        self.isMapLoading = true
+        Task {
+            await self.screenSetup()
+            self.isMapLoading = false
+        }
     }
     
     // Screen setup functions
@@ -76,8 +92,8 @@ class OnRouteViewModel: ObservableObject {
             DispatchQueue.main.async { self.currentCoordinate = newCoordinate }
             Task {
                 await self.getDirectionToStart(start: newCoordinate)
-                self.calculateRegion()
             }
+            self.calculateRegion()
         }
     }
     

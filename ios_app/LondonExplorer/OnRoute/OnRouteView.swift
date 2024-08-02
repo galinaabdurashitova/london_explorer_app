@@ -53,11 +53,6 @@ struct OnRouteView: View {
         .toolbar(.hidden, for: .tabBar)
         .onAppear {
             viewModel.setAuthController(auth)
-            viewModel.isMapLoading = true
-            Task {
-                await viewModel.screenSetup()
-                viewModel.isMapLoading = false
-            }
         }
     }
     

@@ -19,7 +19,7 @@ struct CurrentRouteStorage {
         get {
             if let loadedData = FileManager.load(filename, as: RouteProgress.self) {
 //                print("Loaded data from \(filename)")
-                return FileManager.load(filename, as: RouteProgress.self)
+                return loadedData
             } else {
 //                print("No data found for \(filename), returning default value")
                 return nil

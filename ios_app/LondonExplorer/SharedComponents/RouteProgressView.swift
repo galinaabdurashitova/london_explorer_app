@@ -9,11 +9,21 @@ import Foundation
 import SwiftUI
 
 struct RouteProgressView: View {
-    @Binding var routeProgress: RouteProgress
+    @Binding var image: UIImage
+    @Binding var routeName: String
+    @Binding var collectablesDone: Int
+    @Binding var collectablesTotal: Int
+    @Binding var stopsDone: Int
+    @Binding var stopsTotal: Int
     @Binding var user: User?
     
-    init(routeProgress: Binding<RouteProgress>, user: Binding<User?> = .constant(nil)) {
-        self._routeProgress = routeProgress
+    init(image: Binding<UIImage>, routeName: Binding<String>, collectablesDone: Binding<Int>, collectablesTotal: Binding<Int>, stopsDone: Binding<Int>, stopsTotal: Binding<Int>, user: Binding<User?> = .constant(nil)) {
+        self._image = image
+        self._routeName = routeName
+        self._collectablesDone = collectablesDone
+        self._collectablesTotal = collectablesTotal
+        self._stopsDone = stopsDone
+        self._stopsTotal = stopsTotal
         self._user = user
     }
     
@@ -21,7 +31,7 @@ struct RouteProgressView: View {
         VStack (alignment: .leading, spacing: 3) {
             HStack (spacing: 10) {
                 ZStack (alignment: .topLeading) {
-                    Image(uiImage: routeProgress.route.image)
+                    Image(uiImage: image)
                         .roundedFrame(width: ((UIScreen.main.bounds.width - 90) * 0.5), height: 120)
                     
                     Image("Route3DIcon")
@@ -41,18 +51,15 @@ struct RouteProgressView: View {
                         }
                     }
                     
-                    Text(routeProgress.route.name)
+                    Text(routeName)
                         .sectionCaption()
                         .multilineTextAlignment(.leading)
                     
                     RouteProgressStat(
-                        collectablesDone: $routeProgress.collectables,
-                        collectablesTotal: $routeProgress.route.collectables,
-                        stopsDone: $routeProgress.stops,
-                        stopsTotal: Binding<Int> (
-                            get: { return routeProgress.route.stops.count },
-                            set: { _ in }
-                        ),
+                        collectablesDone: $collectablesDone,
+                        collectablesTotal: $collectablesTotal,
+                        stopsDone: $stopsDone,
+                        stopsTotal: $stopsTotal,
                         align: .left
                     )
                 }
@@ -60,7 +67,7 @@ struct RouteProgressView: View {
                 .frame(height: 120)
             }
             
-            RouteProgressBar(num: $routeProgress.stops, total: routeProgress.route.stops.count)
+            RouteProgressBar(num: $stopsDone, total: stopsTotal)
         }
         .padding(20)
         .frame(height: 200)
@@ -74,20 +81,21 @@ struct RouteProgressView: View {
 #Preview {
     VStack (spacing: 25) {
         RouteProgressView(
-            routeProgress: Binding<RouteProgress> (
-                get: { return MockData.RouteProgress[0] },
-                set: { _ in }
-            )
+            image: .constant(MockData.Attractions[0].images[0]),
+            routeName: .constant("Some Route"),
+            collectablesDone: .constant(2),
+            collectablesTotal: .constant(5),
+            stopsDone: .constant(3),
+            stopsTotal: .constant(6)
         )
         RouteProgressView(
-            routeProgress: Binding<RouteProgress> (
-                get: { return MockData.RouteProgress[1] },
-                set: { _ in }
-            ),
-            user: Binding<User?> (
-                get: { return MockData.Users[0] },
-                set: { _ in }
-            )
+            image: .constant(MockData.Attractions[0].images[0]),
+            routeName: .constant("Some Route"),
+            collectablesDone: .constant(2),
+            collectablesTotal: .constant(5),
+            stopsDone: .constant(1),
+            stopsTotal: .constant(7),
+            user: .constant(MockData.Users[0])
         )
     }
     .padding()

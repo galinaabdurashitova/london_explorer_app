@@ -31,48 +31,13 @@ struct MainTabView: View {
                 }
                 .tag(0)
             
-            ScrollView {
-                VStack {
-//                    Text("Users")
-//                    ForEach(users) { user in
-//                        HStack (spacing: 5) {
-//                            Text(user.id)
-//                            Text(user.name)
-//                            Text(user.userName)
-//                            Text(user.finishedRoutes.description)
-//                        }
-//                    }
-//                    
-//                    Text("Saved routes")
-//                    ForEach(savedRoutes, id: \.id) { route in
-//                        HStack {
-//                            RouteCard(route: .constant(route), size: .S)
-//                        }
-//                    }
-//                    
-//                    Text("Finished routes")
-//                    ForEach(finishedRoutes, id: \.id) { route in
-//                        HStack {
-//                            RouteCard(route: .constant(route.route), size: .S)
-//                        }
-//                    }
-                    
-                    Text("Route progress")
-                    if let savedRouteProgress = routeProgress {
-                        RouteProgressView(routeProgress: .constant(savedRouteProgress))
-                    }
-                }
-                .padding()
-                .onAppear {
-                    routeProgress = savedRouteProgress
-                }
-            }
-                .environmentObject(networkMonitor)
-                .tabItem {
-                    Label("Browse", systemImage: "magnifyingglass")
-                        .environment(\.symbolVariants, .none)
-                }
-                .tag(1)
+//            ProgressView()
+//                .environmentObject(networkMonitor)
+//                .tabItem {
+//                    Label("Browse", systemImage: "magnifyingglass")
+//                        .environment(\.symbolVariants, .none)
+//                }
+//                .tag(1)
             
             CreateRouteView(tabSelection: $tabSelection)
                 .environmentObject(networkMonitor)
