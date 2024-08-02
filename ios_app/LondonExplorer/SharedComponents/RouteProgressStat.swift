@@ -14,7 +14,10 @@ struct RouteProgressStat: View {
         case right
     }
     
-    @Binding var routeProgress: RouteProgress
+    @Binding var collectablesDone: Int
+    @Binding var collectablesTotal: Int
+    @Binding var stopsDone: Int
+    @Binding var stopsTotal: Int
     @State var align: Align
     
     var body: some View {
@@ -24,7 +27,7 @@ struct RouteProgressStat: View {
                     Text("collectables").word()
                 }
                 
-                Text(String(routeProgress.collectables) + "/" + String(routeProgress.route.collectables))
+                Text(String(collectablesDone) + "/" + String(collectablesTotal))
                     .stat()
                 
                 if align == .left {
@@ -37,7 +40,7 @@ struct RouteProgressStat: View {
                     Text("stops").word()
                 }
                 
-                Text(String(routeProgress.stops) + "/" + String(routeProgress.route.stops.count))
+                Text(String(stopsDone) + "/" + String(stopsTotal))
                     .stat()
                 
                 if align == .left {
@@ -46,9 +49,6 @@ struct RouteProgressStat: View {
             }
         }
     }
-    
-    
-
 }
 
 extension Text {
@@ -67,7 +67,10 @@ extension Text {
 
 #Preview {
     RouteProgressStat(
-        routeProgress: .constant(MockData.RouteProgress[0]),
+        collectablesDone: .constant(2),
+        collectablesTotal: .constant(3),
+        stopsDone: .constant(2),
+        stopsTotal: .constant(4),
         align: .left
     )
 }

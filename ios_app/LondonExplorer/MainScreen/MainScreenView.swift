@@ -11,6 +11,7 @@ import SwiftUI
 struct MainScreenView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
+    @StateObject var onRouteViewModel: OnRouteViewModel = OnRouteViewModel()
     @State var routes: [Route] = MockData.Routes
     @State var friendsFeed: [FriendUpdate] = MockData.FriendsFeed
     @State var onRoute: RouteProgress = MockData.RouteProgress[0]
@@ -33,7 +34,7 @@ struct MainScreenView: View {
                     Spacer()
                     if !isLoading {
                         VStack(spacing: 25) {
-                                OnRouteWidget()
+                                OnRouteWidget(viewModel: onRouteViewModel)
                                     .environmentObject(auth)
                             if networkMonitor.isConnected {
 //                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
@@ -79,8 +80,8 @@ struct MainScreenView: View {
                     MapRouteView(route: route)
                 }
             }
-            .navigationDestination(for: RouteProgress.self) { routeProgress in
-                OnRouteView(routeProgress: routeProgress)
+            .navigationDestination(for: RouteProgress.self) { _ in
+                OnRouteView(viewModel: onRouteViewModel)
                     .environmentObject(auth)
             }
         }

@@ -22,29 +22,42 @@ struct OnRouteView: View {
         self.viewModel = OnRouteViewModel(routeProgress: routeProgress)
     }
     
+    init(viewModel: OnRouteViewModel) {
+        self.viewModel = viewModel
+    }
+    
     var body: some View {
         ZStack {
-            RouteMap
-            
-            if viewModel.showGreeting {
-                Color.white.opacity(0.1)
-                    .edgesIgnoringSafeArea(.all)
-                    .background(.ultraThinMaterial)
+            if viewModel.isMapLoading {
+                ProgressView()
+            } else {
+                RouteMap
                 
-                StartRouteGreeting(            
-                    text: viewModel.greetingText,
-                    subText: viewModel.greetingSubText
-                ) {
-                    viewModel.saveRoute()
-                    viewModel.showGreeting = false
-                } actionCancel: {
-                    self.presentationMode.wrappedValue.dismiss()
+                if viewModel.showGreeting {
+                    Color.white.opacity(0.1)
+                        .edgesIgnoringSafeArea(.all)
+                        .background(.ultraThinMaterial)
+                    
+                    StartRouteGreeting(
+                        text: viewModel.greetingText,
+                        subText: viewModel.greetingSubText
+                    ) {
+                        viewModel.saveRoute()
+                        viewModel.showGreeting = false
+                    } actionCancel: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }
         }
         .toolbar(.hidden, for: .tabBar)
         .onAppear {
             viewModel.setAuthController(auth)
+            viewModel.isMapLoading = true
+            Task {
+                await viewModel.screenSetup()
+                viewModel.isMapLoading = false
+            }
         }
     }
     
@@ -178,7 +191,16 @@ struct OnRouteView: View {
                     
                     Spacer()
                     
-                    RouteProgressStat(routeProgress: $viewModel.routeProgress, align: .right)
+                    RouteProgressStat(
+                        collectablesDone: $viewModel.routeProgress.collectables,
+                        collectablesTotal: $viewModel.routeProgress.route.collectables,
+                        stopsDone: $viewModel.routeProgress.stops,
+                        stopsTotal: Binding<Int> (
+                            get: { return viewModel.routeProgress.route.stops.count },
+                            set: { _ in }
+                        ),
+                        align: .right
+                    )
                 }
                 
                 if viewModel.routeProgress.stops < viewModel.routeProgress.route.stops.count {

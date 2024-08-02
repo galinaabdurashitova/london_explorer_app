@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct RouteProgressView: View {
-    @EnvironmentObject var auth: AuthController
     @Binding var routeProgress: RouteProgress
     @Binding var user: User?
     
@@ -19,50 +18,56 @@ struct RouteProgressView: View {
     }
     
     var body: some View {
-        NavigationLink(value: routeProgress) {
-            VStack (alignment: .leading, spacing: 3) {
-                HStack (spacing: 10) {
-                    ZStack (alignment: .topLeading) {
-                        Image(uiImage: routeProgress.route.image)
-                            .roundedFrame(width: ((UIScreen.main.bounds.width - 90) * 0.5), height: 120)
-                        
-                        Image("Route3DIcon")
-                            .icon(size: 60)
-                            .padding(.all, -17)
-                    }
+        VStack (alignment: .leading, spacing: 3) {
+            HStack (spacing: 10) {
+                ZStack (alignment: .topLeading) {
+                    Image(uiImage: routeProgress.route.image)
+                        .roundedFrame(width: ((UIScreen.main.bounds.width - 90) * 0.5), height: 120)
                     
-                    VStack (alignment: .leading, spacing: 8) {
-                        if let user = self.user {
-                            HStack (spacing: 4) {
-                                Image(uiImage: user.image)
-                                    .profilePicture(size: 22)
-                                Text(user.name)
-                                    .font(.system(size: 14, weight: .bold))
-                                Text("is on a")
-                                    .font(.system(size: 14, weight: .light))
-                            }
-                        }
-                        
-                        Text(routeProgress.route.name)
-                            .sectionCaption()
-                            .multilineTextAlignment(.leading)
-                        
-                        RouteProgressStat(routeProgress: $routeProgress, align: .left)
-                    }
-                    .foregroundColor(Color.black)
-                    .frame(height: 120)
+                    Image("Route3DIcon")
+                        .icon(size: 60)
+                        .padding(.all, -17)
                 }
                 
-                RouteProgressBar(num: $routeProgress.stops, total: routeProgress.route.stops.count)
+                VStack (alignment: .leading, spacing: 8) {
+                    if let user = self.user {
+                        HStack (spacing: 4) {
+                            Image(uiImage: user.image)
+                                .profilePicture(size: 22)
+                            Text(user.name)
+                                .font(.system(size: 14, weight: .bold))
+                            Text("is on a")
+                                .font(.system(size: 14, weight: .light))
+                        }
+                    }
+                    
+                    Text(routeProgress.route.name)
+                        .sectionCaption()
+                        .multilineTextAlignment(.leading)
+                    
+                    RouteProgressStat(
+                        collectablesDone: $routeProgress.collectables,
+                        collectablesTotal: $routeProgress.route.collectables,
+                        stopsDone: $routeProgress.stops,
+                        stopsTotal: Binding<Int> (
+                            get: { return routeProgress.route.stops.count },
+                            set: { _ in }
+                        ),
+                        align: .left
+                    )
+                }
+                .foregroundColor(Color.black)
+                .frame(height: 120)
             }
-            .padding(20)
-            .frame(height: 200)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8.0)
-                    .stroke(self.user == nil ? Color.redAccent : Color.blueAccent, lineWidth: 2.0)
-            )
+            
+            RouteProgressBar(num: $routeProgress.stops, total: routeProgress.route.stops.count)
         }
-        .disabled(user != nil)
+        .padding(20)
+        .frame(height: 200)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8.0)
+                .stroke(self.user == nil ? Color.redAccent : Color.blueAccent, lineWidth: 2.0)
+        )
     }
 }
 
@@ -85,6 +90,5 @@ struct RouteProgressView: View {
             )
         )
     }
-    .environmentObject(AuthController())
     .padding()
 }

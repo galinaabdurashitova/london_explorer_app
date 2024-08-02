@@ -21,6 +21,7 @@ class OnRouteViewModel: ObservableObject {
     @Published var greetingText: String = ""
     @Published var greetingSubText: String = ""
     @Published var error: String = ""
+    @Published var isMapLoading: Bool = false
     
     private var auth: AuthController?
     private var locationManager = LocationManager()
@@ -46,17 +47,25 @@ class OnRouteViewModel: ObservableObject {
             self.greetingText = "Start \(route.name)"
             self.greetingSubText = "You're about to start the route! Get ready!"
         }
-        
-        Task {
-            await screenSetup()
-        }
     }
     
     init(routeProgress: RouteProgress) {
         self.routeProgress = routeProgress
+    }
+    
+    init() {
+        self.routeProgress = RouteProgress(
+            route: MockData.Routes[0],
+            collectables: 0,
+            stops: 0
+        )
         
-        Task {
-            await screenSetup()
+        loadRouteProgress()
+    }
+    
+    func loadRouteProgress() {
+        if let savedRouteProgress = savedRouteProgress {
+            routeProgress = savedRouteProgress
         }
     }
     
@@ -66,16 +75,29 @@ class OnRouteViewModel: ObservableObject {
     
     func screenSetup() async {
         locationManager.onLocationUpdate = { newCoordinate in
+            DispatchQueue.main.async {
                 self.currentCoordinate = newCoordinate
+            }
             Task {
                 await self.getDirectionToStart(start: newCoordinate)
-                self.calculateRegion()
+                
+                DispatchQueue.main.async {
+                    self.calculateRegion()
+                }
             }
         }
     }
     
     func saveRoute() {
+        print("Previous number of stops")
+        print("in memory: \(savedRouteProgress?.stops)")
+        print("current: \(routeProgress.stops)")
+        
         self.savedRouteProgress = self.routeProgress
+        
+        print("Number of stops after saving")
+        print("in memory: \(savedRouteProgress?.stops)")
+        print("current: \(routeProgress.stops)")
     }
     
     func pause() {
@@ -168,30 +190,35 @@ class OnRouteViewModel: ObservableObject {
             longitudeDelta: (maxLon - minLon) * 1.5
         )
         
-        DispatchQueue.main.async {
-            self.mapRegion = MKCoordinateRegion(center: center, span: span)
-        }
+        self.mapRegion = MKCoordinateRegion(center: center, span: span)
     }
     
     func changeStop(next: Bool = true) {
+        print("Button pressed ", next ? "next" : "back")
         if next {
             if self.routeProgress.stops < self.routeProgress.route.stops.count {
                 self.routeProgress.stops += 1
+                print("New stops No is \(self.routeProgress.stops)")
             }
         } else {
             if self.routeProgress.stops > 0 {
                 self.routeProgress.stops -= 1
+                print("New stops No is \(self.routeProgress.stops)")
             }
         }
         
         if self.routeProgress.stops < self.routeProgress.route.stops.count {
+            print("Not last stop, recalculate region")
             self.calculateRegion()
+            print("Region recalculated")
         } else {
             self.lastStop = true
             self.routeProgress.endTime = Date()
         }
         
+        print("Saving the route")
         self.saveRoute()
+        print("Route saved to memory")
     }
     
     func finishRoute() throws {
