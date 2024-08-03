@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 struct EditRouteView: View {
-    @ObservedObject var viewModel: EditRouteViewModel
+    @StateObject var viewModel: EditRouteViewModel
     
     init(route: Binding<Route>, isSheetPresented: Binding<Bool>) {
-        self.viewModel = EditRouteViewModel(route: route, isSheetPresented: isSheetPresented)
+        self._viewModel = StateObject(wrappedValue: EditRouteViewModel(route: route, isSheetPresented: isSheetPresented))
     }
     
     var body: some View {

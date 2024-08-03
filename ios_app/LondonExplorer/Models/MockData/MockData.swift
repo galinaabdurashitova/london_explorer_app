@@ -71,7 +71,7 @@ class MockData {
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
             userCreated: 
                 Route.UserCreated(
-                    userId: "1",
+                    id: "1",
                     name: "Anna"
                 ),
             name: "Best London Route",
@@ -86,7 +86,7 @@ class MockData {
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
             userCreated:
                 Route.UserCreated(
-                    userId: "2",
+                    id: "2",
                     name: "Mary"
                 ),
             name: "London Secrets",
@@ -101,7 +101,7 @@ class MockData {
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
             userCreated:
                 Route.UserCreated(
-                    userId: "1",
+                    id: "1",
                     name: "Anna"
                 ),
             name: "Some Route Some Route Some Route",
@@ -116,7 +116,7 @@ class MockData {
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
             userCreated:
                 Route.UserCreated(
-                    userId: "2",
+                    id: "2",
                     name: "Mary"
                 ),
             name: "Best London Route",
@@ -132,7 +132,7 @@ class MockData {
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
             userCreated:
                 Route.UserCreated(
-                    userId: "1",
+                    id: "1",
                     name: "Anna"
                 ),
             name: "London Secrets",

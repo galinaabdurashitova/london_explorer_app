@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+
+
 struct CreateRouteView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
@@ -24,6 +26,7 @@ struct CreateRouteView: View {
                             headline: .constant("New Route"),
                             subheadline: .constant("You can create new route or choose from the existing")
                         )
+
                         Spacer()
                     }
                     
@@ -32,11 +35,38 @@ struct CreateRouteView: View {
                     
                     if networkMonitor.isConnected {
                         SuggestedRoutesCarousel(routes: $routes)
+                            .environmentObject(auth)
                     } else {
                         DownloadedRoutesWidget(routes: $routes)
+                            .environmentObject(auth)
                     }
                 }
                 .padding(.all, 20)
+            }
+            .navigationDestination(for: CreateRoutePath.self) { value in
+                switch value {
+                case .routeStops:
+                    CreateStopsView(tabSelection: $tabSelection, path: $path)
+                        .environmentObject(auth)
+                case .finishCreate(let stops, let pathes):
+                    FinishCreateView(stops: stops, pathes: pathes, tabSelection: $tabSelection, path: $path)
+                        .environmentObject(auth)
+                case .savedRoute(let route):
+                    SavedRouteView(route: route, tabSelection: $tabSelection, path: $path)
+                        .environmentObject(auth)
+                }
+            }
+            .navigationDestination(for: RouteNavigation.self) { value in
+                switch value {
+                case .info(let route):
+                    RouteView(route: route)
+                        .environmentObject(auth)
+                case .progress(let route):
+                    OnRouteView(viewModel: OnRouteViewModel(route: route))
+                        .environmentObject(auth)
+                case .map(let route):
+                    MapRouteView(route: route)
+                }
             }
         }
     }

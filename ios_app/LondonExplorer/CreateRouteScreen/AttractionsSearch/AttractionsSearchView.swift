@@ -11,13 +11,13 @@ import SwiftUI
 struct AttractionsSearchView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: AttractionSearchViewModel
+    @StateObject var viewModel: AttractionSearchViewModel
     @ObservedObject var routeViewModel: RouteStopsViewModel
 //    @Binding var chosenAttractions: [Route.RouteStop]
     
     init(routeViewModel: RouteStopsViewModel) {
         self.routeViewModel = routeViewModel
-        self.viewModel = AttractionSearchViewModel(stops: routeViewModel.stops)
+        self._viewModel = StateObject(wrappedValue: AttractionSearchViewModel(stops: routeViewModel.stops))
     }
     
     var body: some View {

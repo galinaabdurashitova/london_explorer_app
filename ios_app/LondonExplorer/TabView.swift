@@ -13,10 +13,18 @@ struct MainTabView: View {
     @EnvironmentObject var auth: AuthController
     @State var tabSelection = 0
     
+    @UserStorage(key: "LONDON_EXPLORER_USERS") var users: [User]
+    @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
+    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
+    @RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
+    
+    @State var routeProgress: RouteProgress?
+    
     var body: some View {
         TabView (selection: $tabSelection) {
             MainScreenView()
                 .environmentObject(networkMonitor)
+                .environmentObject(auth)
                 .tabItem {
                     Label("Home", systemImage: tabSelection == 0 ? "house.fill" :  "house")
                         .environment(\.symbolVariants, .none)

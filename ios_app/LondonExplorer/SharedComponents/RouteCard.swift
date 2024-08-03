@@ -9,24 +9,32 @@ import Foundation
 import SwiftUI
 
 struct RouteCard: View {
+    @EnvironmentObject var auth: AuthController
+    @Binding var route: Route
+    @State var label: CardLabel
+    var size: CardSize
+    var navigation: RouteNavigation
+    
     public enum CardSize {
         case S
         case M
         case L
     }
     
-    @Binding var route: Route
-    @State var label: CardLabel = .empty
-    var size: CardSize = .S
+    init(route: Binding<Route>, label: CardLabel = .empty, size: CardSize = .S, navigation: RouteNavigation? = nil) {
+        self._route = route
+        self.label = label
+        self.size = size
+        self.navigation = navigation ?? .info(route.wrappedValue)
+    }
     
     var body: some View {
-        NavigationLink(destination: {
-            RouteView(route: $route)
-        }) {
+        NavigationLink(value: navigation) {
             VStack (alignment: .leading, spacing: 10) {
                 ZStack (alignment: .topTrailing) {
                     Image(uiImage: route.image)
-                        .roundedHeightFrame(
+                        .roundedFrame(
+                            width: size == .S ? 156 : UIScreen.main.bounds.width - 40,
                             height: size == .L ? UIScreen.main.bounds.width * 0.8 : 156
                         )
                     
@@ -60,5 +68,6 @@ struct RouteCard: View {
         label: .download(Date()),
         size: .L
     )
+    .environmentObject(AuthController())
     .padding()
 }

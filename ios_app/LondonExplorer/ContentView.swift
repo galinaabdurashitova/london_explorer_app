@@ -26,5 +26,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(NetworkMonitor())
-        .environmentObject(AuthController())
+        .environmentObject(AuthController(testProfile: true))
 }

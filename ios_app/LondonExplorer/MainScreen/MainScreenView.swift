@@ -10,11 +10,13 @@ import SwiftUI
 
 struct MainScreenView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var auth: AuthController
+    @StateObject var onRouteViewModel: OnRouteViewModel = OnRouteViewModel()
     @State var routes: [Route] = MockData.Routes
     @State var friendsFeed: [FriendUpdate] = MockData.FriendsFeed
     @State var onRoute: RouteProgress = MockData.RouteProgress[0]
     @State var friendsOnRoute: [RouteProgress] = MockData.RouteProgress
-    @State var isLoading: Bool = false
+    @State var isLoading: Bool = true
     
     @State private var scrollOffset: CGFloat = 0
     
@@ -30,15 +32,19 @@ struct MainScreenView: View {
                 
                 ScrollView(showsIndicators: false) {
                     Spacer()
-                    if isLoading {
+                    if !isLoading {
                         VStack(spacing: 25) {
-                            OnRouteWidget()
+                                OnRouteWidget(viewModel: onRouteViewModel)
+                                    .environmentObject(auth)
                             if networkMonitor.isConnected {
-                                //                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
+//                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
+//                                    .environmentObject(auth)
                                 SuggestedRoutesCarousel(routes: $routes)
-                                FriendsFeed(friendsFeed: $friendsFeed)
+                                    .environmentObject(auth)
+//                                FriendsFeed(friendsFeed: $friendsFeed)
                             } else {
                                 DownloadedRoutesWidget(routes: $routes)
+                                    .environmentObject(auth)
                             }
                             
                             Spacer()
@@ -60,12 +66,28 @@ struct MainScreenView: View {
                     scrollOffset = max(0, -value)
                 }
             }
-            .toolbar(.visible, for: .tabBar)
             .padding(.top, 20)
+            .toolbar(.visible, for: .tabBar)
+            .navigationDestination(for: RouteNavigation.self) { value in
+                switch value {
+                case .info(let route):
+                    RouteView(route: route)
+                        .environmentObject(auth)
+                case .progress(let route):
+                    OnRouteView(route: route)
+                        .environmentObject(auth)
+                case .map(let route):
+                    MapRouteView(route: route)
+                }
+            }
+            .navigationDestination(for: RouteProgress.self) { _ in
+                OnRouteView(viewModel: onRouteViewModel)
+                    .environmentObject(auth)
+            }
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                self.isLoading = true
+                self.isLoading = false
             }
         }
     }
@@ -83,5 +105,6 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
 
 #Preview {
     MainScreenView()
+        .environmentObject(AuthController())
         .environmentObject(NetworkMonitor())
 }

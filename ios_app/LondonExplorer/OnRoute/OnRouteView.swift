@@ -10,6 +10,7 @@ import SwiftUI
 import MapKit
 
 struct OnRouteView: View {
+    @EnvironmentObject var auth: AuthController
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: OnRouteViewModel
     
@@ -21,25 +22,37 @@ struct OnRouteView: View {
         self.viewModel = OnRouteViewModel(routeProgress: routeProgress)
     }
     
+    init(viewModel: OnRouteViewModel) {
+        self.viewModel = viewModel
+    }
+    
     var body: some View {
         ZStack {
-            RouteMap
-            
-            if viewModel.showGreeting {
-                Color.white.opacity(0.1)
-                    .edgesIgnoringSafeArea(.all)
-                    .background(.ultraThinMaterial)
+            if viewModel.isMapLoading {
+                ProgressView()
+            } else {
+                RouteMap
                 
-                StartRouteGreeting(            
-                    text: viewModel.greetingText,
-                    subText: viewModel.greetingSubText
-                ) {
-                    viewModel.saveRoute()
-                    viewModel.showGreeting = false
-                } actionCancel: {
-                    self.presentationMode.wrappedValue.dismiss()
+                if viewModel.showGreeting {
+                    Color.white.opacity(0.1)
+                        .edgesIgnoringSafeArea(.all)
+                        .background(.ultraThinMaterial)
+                    
+                    StartRouteGreeting(
+                        text: viewModel.greetingText,
+                        subText: viewModel.greetingSubText
+                    ) {
+                        viewModel.saveRoute()
+                        viewModel.showGreeting = false
+                    } actionCancel: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }
+        }
+        .toolbar(.hidden, for: .tabBar)
+        .onAppear {
+            viewModel.setAuthController(auth)
         }
     }
     
@@ -113,9 +126,19 @@ struct OnRouteView: View {
         .overlay {
             if viewModel.lastStop {
                 FinishRoutePopup(isOpen: $viewModel.lastStop) {
-                    viewModel.finishRoute()
-                    self.presentationMode.wrappedValue.dismiss()
+                    do {
+                        try viewModel.finishRoute()
+                        self.presentationMode.wrappedValue.dismiss()
+                    } catch {
+                        viewModel.error = error.localizedDescription
+                    }
                 }
+            }
+        }
+        .sheet(isPresented: Binding<Bool>( get: { !viewModel.error.isEmpty }, set: { _ in })) {
+            VStack {
+                Text("Error saving progress: \(viewModel.error)")
+                    .foregroundColor(Color.redAccent)
             }
         }
         .popup(
@@ -163,7 +186,16 @@ struct OnRouteView: View {
                     
                     Spacer()
                     
-                    RouteProgressStat(routeProgress: $viewModel.routeProgress, align: .right)
+                    RouteProgressStat(
+                        collectablesDone: $viewModel.routeProgress.collectables,
+                        collectablesTotal: $viewModel.routeProgress.route.collectables,
+                        stopsDone: $viewModel.routeProgress.stops,
+                        stopsTotal: Binding<Int> (
+                            get: { return viewModel.routeProgress.route.stops.count },
+                            set: { _ in }
+                        ),
+                        align: .right
+                    )
                 }
                 
                 if viewModel.routeProgress.stops < viewModel.routeProgress.route.stops.count {
@@ -283,4 +315,5 @@ struct OnRouteView: View {
 
 #Preview {
     OnRouteView(routeProgress: MockData.RouteProgress[0])
+        .environmentObject(AuthController())
 }

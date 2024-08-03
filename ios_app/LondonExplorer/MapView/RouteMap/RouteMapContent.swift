@@ -13,10 +13,7 @@ struct RouteMapContent: View {
     @Binding var route: Route
     
     var body: some View {
-        NavigationLink(destination: {
-            MapRouteView(route: route)
-                .toolbar(.hidden, for: .tabBar)
-        }) {
+        NavigationLink(value: RouteNavigation.map(route)) {
             VStack {
                 HStack (spacing: 5) {
                     Spacer()

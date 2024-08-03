@@ -17,10 +17,20 @@ struct CurrentRouteStorage {
 
     var wrappedValue: RouteProgress? {
         get {
-            return FileManager.load(filename, as: RouteProgress.self)
+            if let loadedData = FileManager.load(filename, as: RouteProgress.self) {
+//                print("Loaded data from \(filename)")
+                return loadedData
+            } else {
+//                print("No data found for \(filename), returning default value")
+                return nil
+            }
         }
         set {
-            _ = FileManager.save(newValue, to: filename)
+            if FileManager.save(newValue, to: filename) {
+//                print("Successfully saved data to \(filename)")
+            } else {
+//                print("Failed to save data to \(filename)")
+            }
         }
     }
 }

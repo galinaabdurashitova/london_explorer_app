@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct FinishedRoutesView: View {
-    @RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
-//    @State var finishedRoutes: [RouteProgress] = []
+    @EnvironmentObject var auth: AuthController
+    @StateObject var viewModel: FinishedRoutesViewModel = FinishedRoutesViewModel()
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -23,28 +23,32 @@ struct FinishedRoutesView: View {
                     Spacer()
                 }
                 
-                ForEach(finishedRoutes, id: \.id) { route in
-                    if let finished = route.endTime {
+                ForEach(viewModel.finishedRoutes, id: \.id) { route in
+                    if let existingRoute = route.route {
                         RouteCard(
                             route: Binding<Route>(
-                                get: { route.route },
+                                get: { existingRoute },
                                 set: { _ in }
                             ),
-                            label: CardLabel.completed(finished),
+                            label: CardLabel.completed(route.finishedDate),
                             size: .M
                         )
+                        .environmentObject(auth)
                     }
                 }
             }
         }
         .toolbar(.visible, for: .tabBar)
-        .padding(.all, 20)
-//        .onAppear {
-//            finishedRoutes = finishedRoutesStorage
-//        }
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
+        .onAppear {
+            viewModel.setAuthController(auth)
+            viewModel.loadRoutes()
+        }
     }
 }
 
 #Preview {
     FinishedRoutesView()
+        .environmentObject(AuthController())
 }

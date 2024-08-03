@@ -9,8 +9,13 @@ import Foundation
 import SwiftUI
 
 struct RouteDataView: View {
+    @EnvironmentObject var auth: AuthController
     @Binding var route: Route
     @State var isEditSheetPresented: Bool = false
+    
+    init(route: Binding<Route>) {
+        self._route = route
+    }
     
     var body: some View {
         VStack(spacing: 25) {
@@ -32,7 +37,7 @@ struct RouteDataView: View {
                 FirstButton
                 
                 SecondButton
-                
+
                 ThirdButton
             }
             
@@ -75,12 +80,11 @@ struct RouteDataView: View {
         .sheet(isPresented: $isEditSheetPresented) {
             EditRouteView(route: $route, isSheetPresented: $isEditSheetPresented)
         }
+        .disabled(auth.profile.id != route.userCreated.id)
     }
     
     private var ThirdButton: some View {
-        NavigationLink(destination: {
-            OnRouteView(route: route)
-        }) {
+        NavigationLink(value: RouteNavigation.progress(route)) {
             RouteButton.start.view
         }
     }
@@ -90,5 +94,6 @@ struct RouteDataView: View {
     ScrollView(showsIndicators: false) {
         RouteDataView(route: .constant(MockData.Routes[0]))
     }
+    .environmentObject(AuthController())
     .padding()
 }
