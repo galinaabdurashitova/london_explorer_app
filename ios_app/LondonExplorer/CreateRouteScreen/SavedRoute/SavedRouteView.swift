@@ -26,7 +26,7 @@ struct SavedRouteView: View {
                         Spacer()
                     }
                     
-                    RouteDataView(route: $route)
+                    RouteDataView(viewModel: RouteViewModel(route: route))
                         .environmentObject(auth)
                         
                 }

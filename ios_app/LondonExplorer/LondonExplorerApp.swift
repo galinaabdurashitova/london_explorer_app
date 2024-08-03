@@ -10,8 +10,6 @@ import FirebaseCore
 
 @main
 struct LondonExplorerApp: App {
-    @StateObject var networkMonitor = NetworkMonitor()
-    @StateObject var auth = AuthController()
     
     init() {
         FirebaseApp.configure()
@@ -20,8 +18,6 @@ struct LondonExplorerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(networkMonitor)
-                .environmentObject(auth)
         }
     }
 }

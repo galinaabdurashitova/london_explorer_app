@@ -12,6 +12,7 @@ struct RouteView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var auth: AuthController
     @StateObject var viewModel: RouteViewModel
+    
     @State private var scrollOffset: CGFloat = 0
     @State private var confirmDelete: Bool = false
     
@@ -49,7 +50,7 @@ struct RouteView: View {
                 VStack(spacing: 25) {
                     Spacer().frame(height: 0)
                     
-                    RouteDataView(route: $viewModel.route)
+                    RouteDataView(viewModel: viewModel)
                         .environmentObject(auth)
                     
                     if auth.profile.id == viewModel.route.userCreated.id {

@@ -81,7 +81,6 @@
 		2AA5B1572C0A18BC001EC475 /* EmptyStateBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B1562C0A18BC001EC475 /* EmptyStateBanner.swift */; };
 		2AA9B8DE2C527D9E001F27B9 /* CreateRoutePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B8DD2C527D9E001F27B9 /* CreateRoutePath.swift */; };
 		2AA9B8E02C527DC6001F27B9 /* RouteNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B8DF2C527DC6001F27B9 /* RouteNavigation.swift */; };
-		2AC56A7E2C28384100F7249B /* EditRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC56A7D2C28384100F7249B /* EditRouteViewModel.swift */; };
 		2AC56A802C28C0F400F7249B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */; };
 		2AC56A842C28C31D00F7249B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A832C28C31D00F7249B /* FirebaseAuth */; };
 		2AC56A862C28C31D00F7249B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A852C28C31D00F7249B /* FirebaseStorage */; };
@@ -209,7 +208,6 @@
 		2AA5B1562C0A18BC001EC475 /* EmptyStateBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateBanner.swift; sourceTree = "<group>"; };
 		2AA9B8DD2C527D9E001F27B9 /* CreateRoutePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoutePath.swift; sourceTree = "<group>"; };
 		2AA9B8DF2C527DC6001F27B9 /* RouteNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteNavigation.swift; sourceTree = "<group>"; };
-		2AC56A7D2C28384100F7249B /* EditRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRouteViewModel.swift; sourceTree = "<group>"; };
 		2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AC56A882C28C51B00F7249B /* AttractionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionsService.swift; sourceTree = "<group>"; };
 		2AC56A8A2C28C6BF00F7249B /* ImagesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesRepository.swift; sourceTree = "<group>"; };
@@ -500,7 +498,6 @@
 			children = (
 				2AFD1F772C25E2AC0061060E /* DEPRICATED_EditRouteStopsView.swift */,
 				2AFD1F7B2C2744230061060E /* EditRouteView.swift */,
-				2AC56A7D2C28384100F7249B /* EditRouteViewModel.swift */,
 			);
 			path = EditRoute;
 			sourceTree = "<group>";
@@ -738,7 +735,6 @@
 				2AA5B1222C08D7C1001EC475 /* MockData.swift in Sources */,
 				2AA5B1432C0A017E001EC475 /* RouteProgressView.swift in Sources */,
 				2A0E39F12C4FF6E100AC32A4 /* FinishedRoutesView.swift in Sources */,
-				2AC56A7E2C28384100F7249B /* EditRouteViewModel.swift in Sources */,
 				2A76D4BB2C171846007908E0 /* RouteStopsViewModel.swift in Sources */,
 				2A0E39DB2C4D4D2B00AC32A4 /* AttractionViewModel.swift in Sources */,
 				2AD4B9612C0CC4A300B90C8A /* MainScreenHeader.swift in Sources */,

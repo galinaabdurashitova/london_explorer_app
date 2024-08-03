@@ -8,23 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var networkMonitor: NetworkMonitor
-    @EnvironmentObject var auth: AuthController
+    @StateObject var networkMonitor = NetworkMonitor()
+    @StateObject var auth = AuthController()
     
     var body: some View {
-        if auth.isSignedIn {
-            MainTabView()
-                .environmentObject(networkMonitor)
-                .environmentObject(auth)
-        } else {
-            AuthView()
-                .environmentObject(auth)
+        Group {
+            if auth.isSignedIn {
+                MainTabView()
+                    .environmentObject(networkMonitor)
+                    .environmentObject(auth)
+            } else {
+                AuthView()
+                    .environmentObject(auth)
+            }
         }
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(NetworkMonitor())
-        .environmentObject(AuthController(testProfile: true))
 }
