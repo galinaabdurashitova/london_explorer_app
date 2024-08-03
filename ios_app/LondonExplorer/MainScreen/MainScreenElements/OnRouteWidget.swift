@@ -39,9 +39,31 @@ struct OnRouteWidget: View {
                 }
             }
         }
+        .onChange(of: viewModel.savedRouteProgress) {
+            viewModel.loadRouteProgress()
+        }
         .onAppear {
             viewModel.loadRouteProgress()
         }
+    }
+}
+
+class OnRouteWidgetViewModel: ObservableObject {
+    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
+    @Published var routeProgress: RouteProgress
+    
+    init() {
+        self.routeProgress = RouteProgress(
+            route: MockData.Routes[0],
+            collectables: 0,
+            stops: 0
+        )
+        
+        self.loadRouteProgress()
+    }
+    
+    func loadRouteProgress() {
+        if let savedRouteProgress = self.savedRouteProgress { self.routeProgress = savedRouteProgress }
     }
 }
 

@@ -55,20 +55,13 @@ class OnRouteViewModel: ObservableObject {
             self.greetingSubText = "You're about to start the route! Get ready!"
         }
         
-        self.isMapLoading = true
-        Task {
-            await self.screenSetup()
-            self.isMapLoading = false
-        }
+        Task { await self.screenSetup() }
     }
     
     init(routeProgress: RouteProgress) {    // Depricated
         self.routeProgress = routeProgress
-        self.isMapLoading = true
-        Task {
-            await self.screenSetup()
-            self.isMapLoading = false
-        }
+        
+        Task { await self.screenSetup() }
     }
     
     init() {
@@ -79,22 +72,24 @@ class OnRouteViewModel: ObservableObject {
         )
         
         self.loadRouteProgress()
-        self.isMapLoading = true
-        Task {
-            await self.screenSetup()
-            self.isMapLoading = false
-        }
+        
+        Task { await self.screenSetup() }
     }
     
     // Screen setup functions
     func screenSetup() async {
+        self.isMapLoading = true
         locationManager.onLocationUpdate = { newCoordinate in
             DispatchQueue.main.async { self.currentCoordinate = newCoordinate }
             Task {
                 await self.getDirectionToStart(start: newCoordinate)
+                DispatchQueue.main.async {
+                    self.calculateRegion()
+                }
             }
-            self.calculateRegion()
         }
+        
+        self.isMapLoading = false
     }
     
     func setAuthController(_ auth: AuthController) {
@@ -249,8 +244,8 @@ class OnRouteViewModel: ObservableObject {
             longitudeDelta: (maxLon - minLon) * 1.5
         )
         
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             self.mapRegion = MKCoordinateRegion(center: center, span: span)
-        }
+//        }
     }
 }
