@@ -13,6 +13,7 @@ import SwiftUI
 struct CreateRouteView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var currentRoute: CurrentRouteManager
     @State var routes: [Route] = MockData.Routes
     @Binding var tabSelection: Int
     @State var path = NavigationPath()
@@ -31,14 +32,11 @@ struct CreateRouteView: View {
                     }
                     
                     YourRoutesCarousel(routes: $routes, tabSelection: $tabSelection, path: $path)
-                        .environmentObject(auth)
                     
                     if networkMonitor.isConnected {
                         SuggestedRoutesCarousel(routes: $routes)
-                            .environmentObject(auth)
                     } else {
                         DownloadedRoutesWidget(routes: $routes)
-                            .environmentObject(auth)
                     }
                 }
                 .padding(.all, 20)
@@ -47,23 +45,18 @@ struct CreateRouteView: View {
                 switch value {
                 case .routeStops:
                     CreateStopsView(tabSelection: $tabSelection, path: $path)
-                        .environmentObject(auth)
                 case .finishCreate(let stops, let pathes):
                     FinishCreateView(stops: stops, pathes: pathes, tabSelection: $tabSelection, path: $path)
-                        .environmentObject(auth)
                 case .savedRoute(let route):
                     SavedRouteView(route: route, tabSelection: $tabSelection, path: $path)
-                        .environmentObject(auth)
                 }
             }
             .navigationDestination(for: RouteNavigation.self) { value in
                 switch value {
                 case .info(let route):
                     RouteView(route: route)
-                        .environmentObject(auth)
                 case .progress(let route):
-                    OnRouteView(route: route, user: auth.profile)
-                        .environmentObject(auth)
+                    OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
                 case .map(let route):
                     MapRouteView(route: route)
                 }
@@ -76,4 +69,5 @@ struct CreateRouteView: View {
     CreateRouteView(tabSelection: .constant(2))
         .environmentObject(NetworkMonitor())
         .environmentObject(AuthController())
+        .environmentObject(CurrentRouteManager())
 }

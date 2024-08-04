@@ -42,8 +42,6 @@ struct RouteProgress: Identifiable, Codable, Hashable, Equatable {
         let elapsed = now.timeIntervalSince(startTime) - totalPauseDuration
         let hours = Int(elapsed) / 3600
         let minutes = Int(elapsed) / 60 % 60
-//        let seconds = Int(elapsed) % 60
-//        return String(format: "%01d:%02d:%02d", hours, minutes, seconds)
         return (String(format: "%01d", hours), String(format: "%02d", minutes))
     }
 }

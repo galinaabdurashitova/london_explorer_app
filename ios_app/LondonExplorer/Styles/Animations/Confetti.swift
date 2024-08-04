@@ -12,7 +12,7 @@ struct ConfettiAnimation: View {
     @State private var startAnimation = false
     private let confettiCount = 100
     @State private var animationAmount = Double.random(in: 0...360)
-    private var colors: [Color] = [.red, .green, .blue, .yellow, .orange, .purple]
+    private var colors: [Color] = [.redAccent, .greenAccent, .blueAccent, .yellowAccent, .orange, .purple]
     
     var body: some View {
         ZStack {

@@ -9,11 +9,9 @@ import Foundation
 import SwiftUI
 
 struct AttractionsSearchView: View {
-    @EnvironmentObject var networkMonitor: NetworkMonitor
     @Environment(\.presentationMode) var presentationMode
     @StateObject var viewModel: AttractionSearchViewModel
     @ObservedObject var routeViewModel: RouteStopsViewModel
-//    @Binding var chosenAttractions: [Route.RouteStop]
     
     init(routeViewModel: RouteStopsViewModel) {
         self.routeViewModel = routeViewModel
@@ -49,7 +47,7 @@ struct AttractionsSearchView: View {
             }
                 
                 
-            if viewModel.stops.count > 0, !viewModel.isLoading {
+            if viewModel.stops.count > 0, !viewModel.isLoading, viewModel.error == nil {
                 ButtonView(
                     text: .constant("Add (\(String(viewModel.stops.count)))"),
                     colour: Color.lightBlue,
@@ -206,5 +204,4 @@ struct AttractionsSearchView: View {
             pathes: [nil, nil, nil]
         )
     )
-    .environmentObject(NetworkMonitor())
 }

@@ -33,7 +33,6 @@ struct FinishedRoutesView: View {
                             label: CardLabel.completed(route.finishedDate),
                             size: .M
                         )
-                        .environmentObject(auth)
                     }
                 }
             }

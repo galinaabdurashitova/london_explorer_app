@@ -11,11 +11,6 @@ import SwiftUI
 struct RouteDataView: View {
     @EnvironmentObject var auth: AuthController
     @ObservedObject var viewModel: RouteViewModel
-//    @Binding var route: Route
-    
-//    init(route: Binding<Route>) {
-//        self._route = route
-//    }
     
     var body: some View {
         VStack(spacing: 25) {

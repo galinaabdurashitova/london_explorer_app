@@ -9,15 +9,12 @@ import Foundation
 import SwiftUI
 
 struct MainTabView: View {
-    @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
     @State var tabSelection = 0
     
     var body: some View {
         TabView (selection: $tabSelection) {
             MainScreenView(tabSelection: $tabSelection)
-                .environmentObject(networkMonitor)
-                .environmentObject(auth)
                 .tabItem {
                     Label("Home", systemImage: tabSelection == 0 ? "house.fill" :  "house")
                         .environment(\.symbolVariants, .none)
@@ -25,7 +22,6 @@ struct MainTabView: View {
                 .tag(0)
             
             TestStorageView()
-                .environmentObject(networkMonitor)
                 .tabItem {
                     Label("Browse", systemImage: "magnifyingglass")
                         .environment(\.symbolVariants, .none)
@@ -33,8 +29,6 @@ struct MainTabView: View {
                 .tag(1)
             
             CreateRouteView(tabSelection: $tabSelection)
-                .environmentObject(networkMonitor)
-                .environmentObject(auth)
                 .tabItem {
                     Label("New Route", systemImage: "plus")
                         .environment(\.symbolVariants, .none)
@@ -50,8 +44,6 @@ struct MainTabView: View {
 //                .tag(3)
             
             ProfileView(user: auth.profile, tabSelection: $tabSelection)
-                .environmentObject(networkMonitor)
-                .environmentObject(auth)
                 .tabItem {
                     Label("Profile", systemImage: tabSelection == 4 ? "person.fill" : "person")
                         .environment(\.symbolVariants, .none)
@@ -66,4 +58,5 @@ struct MainTabView: View {
     MainTabView()
         .environmentObject(NetworkMonitor())
         .environmentObject(AuthController())
+        .environmentObject(CurrentRouteManager())
 }

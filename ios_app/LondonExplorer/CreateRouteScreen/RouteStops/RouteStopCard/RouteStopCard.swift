@@ -9,64 +9,6 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct DeleteCardDropDelegate: DropDelegate {
-    @Binding var current: Route.RouteStop?
-    @ObservedObject var viewModel: RouteStopsViewModel
-    
-    func dropEntered(info: DropInfo) {
-        withAnimation {
-            viewModel.deleteIconSize = 35
-        }
-    }
-    
-    func performDrop(info: DropInfo) -> Bool {
-        guard let current = current else { return false }
-        viewModel.deleteStop(stop: current)
-        
-        viewModel.draggingItem = nil
-        
-        Task {
-            await viewModel.recalculate()
-        }
-        
-        return true
-    }
-}
-
-struct RouteStopCardDropDelegate: DropDelegate {
-    let item: Route.RouteStop
-    @Binding var current: Route.RouteStop?
-    @Binding var stops: [Route.RouteStop]
-    @ObservedObject var viewModel: RouteStopsViewModel
-    
-    func dropEntered(info: DropInfo) {
-        guard let current = current else { return }
-        if current != item, let fromIndex = stops.firstIndex(of: current), let toIndex = stops.firstIndex(of: item) {
-            withAnimation {
-                stops.move(fromOffsets: IndexSet(integer: fromIndex), toOffset: toIndex > fromIndex ? toIndex + 1 : toIndex)
-            }
-        }
-    }
-
-    func performDrop(info: DropInfo) -> Bool {
-        guard let current = current else { return false }
-        defer { self.current = nil }
-        guard let fromIndex = stops.firstIndex(of: current), let toIndex = stops.firstIndex(of: item) else { return false }
-        
-        withAnimation {
-            stops.move(fromOffsets: IndexSet(integer: fromIndex), toOffset: toIndex > fromIndex ? toIndex + 1 : toIndex)
-        }
-        
-        viewModel.draggingItem = nil
-        
-        Task {
-            await viewModel.recalculate()
-        }
-        
-        return true
-    }
-}
-
 struct RouteStopCard: View {
     @ObservedObject var viewModel: RouteStopsViewModel
     @Binding var stop: Route.RouteStop
@@ -136,14 +78,8 @@ struct RouteStopCard: View {
             stops: MockData.RouteStops,
             pathes: [nil, nil, nil]
         ),
-        stop: Binding<Route.RouteStop> (
-            get: { return MockData.RouteStops[0] },
-            set: { _ in }
-        ),
-        isDragged: Binding<Route.RouteStop?> (
-            get: { return nil },
-            set: { _ in }
-        )
+        stop: .constant(MockData.RouteStops[0]),
+        isDragged: .constant(nil)
     )
     .padding()
 }

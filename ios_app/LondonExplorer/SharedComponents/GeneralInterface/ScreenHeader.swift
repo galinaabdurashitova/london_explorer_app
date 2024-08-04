@@ -32,12 +32,7 @@ struct ScreenHeader: View {
 
 #Preview {
     ScreenHeader(
-        headline: Binding<String> (
-            get: { return "This is a screen header" },
-            set: { _ in }
-        ), subheadline: Binding<String?> (
-            get: { return "This is a screen subheadline" },
-            set: { _ in }
-        )
+        headline: .constant("This is a screen header"),
+        subheadline: .constant("This is a screen subheadline")
     )
 }

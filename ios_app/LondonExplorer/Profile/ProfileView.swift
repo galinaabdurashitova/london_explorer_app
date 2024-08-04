@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var currentRoute: CurrentRouteManager
     @StateObject var viewModel: ProfileViewModel
     @Binding var tabSelection: Int
     
@@ -40,10 +41,8 @@ struct ProfileView: View {
                 switch value {
                 case .info(let route):
                     RouteView(route: route)
-                        .environmentObject(auth)
                 case .progress(let route):
-                    OnRouteView(route: route, user: auth.profile)
-                        .environmentObject(auth)
+                    OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
                 case .map(let route):
                     MapRouteView(route: route)
                 }
@@ -52,7 +51,6 @@ struct ProfileView: View {
                 switch value {
                 case .finishedRoutes:
                     FinishedRoutesView()
-                        .environmentObject(auth)
                 }
             }
         }
@@ -157,7 +155,6 @@ struct ProfileView: View {
             if viewModel.routes.count > 0 {
                 ForEach($viewModel.routes, id: \.id) { route in
                     RouteCard(route: route, size: .M)
-                        .environmentObject(auth)
                 }
             } else {
                 Button(action: {
@@ -173,4 +170,5 @@ struct ProfileView: View {
 #Preview {
     ProfileView(user: MockData.Users[0], tabSelection: .constant(4))
         .environmentObject(AuthController(testProfile: true))
+        .environmentObject(CurrentRouteManager())
 }

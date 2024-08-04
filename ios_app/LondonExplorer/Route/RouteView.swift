@@ -11,6 +11,7 @@ import SwiftUI
 struct RouteView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var currentRoute: CurrentRouteManager
     @StateObject var viewModel: RouteViewModel
     
     @State private var scrollOffset: CGFloat = 0
@@ -49,7 +50,6 @@ struct RouteView: View {
                     Spacer().frame(height: 0)
                     
                     RouteDataView(viewModel: viewModel)
-                        .environmentObject(auth)
                     
                     if auth.profile.id == viewModel.route.userCreated.id {
                         Button("Delete the route") {
@@ -82,8 +82,13 @@ struct RouteView: View {
             text: "Are you sure you want to delete this route?",
             buttonText: "Delete the route"
         ) {
-            viewModel.deleteRoute()
-            self.presentationMode.wrappedValue.dismiss()
+            do {
+                try viewModel.deleteRoute()
+                currentRoute.routeDeletion(route: viewModel.route)
+                self.presentationMode.wrappedValue.dismiss()
+            } catch {
+                viewModel.error = error.localizedDescription
+            }
         }
     }
     
@@ -114,4 +119,5 @@ struct RouteView: View {
 #Preview {
     RouteView(route: MockData.Routes[0])
         .environmentObject(AuthController())
+        .environmentObject(CurrentRouteManager())
 }

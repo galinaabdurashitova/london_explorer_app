@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 
 struct CreateStopsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var auth: AuthController
+//    @EnvironmentObject var auth: AuthController
     @StateObject var viewModel: RouteStopsViewModel
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath

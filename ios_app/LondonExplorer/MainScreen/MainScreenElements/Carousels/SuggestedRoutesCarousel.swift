@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct SuggestedRoutesCarousel: View {
-    @EnvironmentObject var auth: AuthController
     @Binding var routes: [Route]
     var lines: Int
     
@@ -43,7 +42,6 @@ struct SuggestedRoutesCarousel: View {
                                         label: .likes(routes[routeIndex].saves),
                                         navigation: RouteNavigation.info(routes[routeIndex])
                                     )
-                                        .environmentObject(auth)
                                 }
                             }
                         }
@@ -67,10 +65,7 @@ struct SuggestedRoutesCarousel: View {
 
 #Preview {
     SuggestedRoutesCarousel(
-        routes: Binding<[Route]> (
-            get: { return MockData.Routes },
-            set: { _ in }
-        ),
+        routes: .constant(MockData.Routes),
         lines: 3
     )
     .environmentObject(AuthController())

@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var networkMonitor = NetworkMonitor()
     @StateObject var auth = AuthController()
+    @StateObject var currentRoute = CurrentRouteManager()
     
     var body: some View {
         Group {
@@ -17,6 +18,10 @@ struct ContentView: View {
                 MainTabView()
                     .environmentObject(networkMonitor)
                     .environmentObject(auth)
+                    .environmentObject(currentRoute)
+                    .onAppear {
+                        currentRoute.getMyRouteProgress(user: auth.profile)
+                    }
             } else {
                 AuthView()
                     .environmentObject(auth)

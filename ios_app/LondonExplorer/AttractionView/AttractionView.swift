@@ -9,12 +9,8 @@ import Foundation
 import SwiftUI
 
 struct AttractionView: View {
-    //@EnvironmentObject var networkMonitor: NetworkMonitor
     @Environment(\.presentationMode) var presentationMode
-//    @ObservedObject var viewModel: AttractionSearchViewModel
     @StateObject var viewModel: AttractionViewModel
-//    @Binding var stops: [Route.RouteStop]
-//    @State var attraction: Attraction
     @State private var scrollOffset: CGFloat = 0
     
     private var allowAdd: Bool
@@ -146,5 +142,4 @@ struct AttractionView: View {
 
 #Preview {
     AttractionView(attraction: .constant(MockData.Attractions[0]), allowAdd: true)
-    //.environmentObject(NetworkMonitor())
 }

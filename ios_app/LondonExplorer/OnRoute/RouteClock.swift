@@ -18,7 +18,6 @@ struct RouteClock: View {
     
     init(routeProgress: Binding<RouteProgress>) {
         self._routeProgress = routeProgress
-//        self.time = routeProgress.wrappedValue.elapsedTime()
         self.hours = routeProgress.wrappedValue.elapsedTime().0
         self.minutes = routeProgress.wrappedValue.elapsedTime().1
     }
@@ -55,11 +54,5 @@ struct RouteClock: View {
 }
 
 #Preview {
-    RouteClock(
-        routeProgress: 
-            Binding<RouteProgress>(
-                get: { MockData.RouteProgress[0] },
-                set: { _ in }
-            )
-    )
+    RouteClock(routeProgress: .constant(MockData.RouteProgress[0]))
 }

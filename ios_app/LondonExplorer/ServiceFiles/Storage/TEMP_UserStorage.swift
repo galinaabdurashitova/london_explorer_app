@@ -26,11 +26,7 @@ struct UserStorage<T: Codable> {
             }
         }
         set {
-            if FileManager.save(newValue, to: filename) {
-//                print("Successfully saved data to \(filename)")
-            } else {
-//                print("Failed to save data to \(filename)")
-            }
+            _ = FileManager.save(newValue, to: filename)
         }
     }
     
@@ -38,7 +34,6 @@ struct UserStorage<T: Codable> {
         if T.self == Array<User>.self {
             return [User]()
         }
-        // Add other default value cases as needed
-        return ""  // Default for other types if needed
+        return ""  
     }
 }

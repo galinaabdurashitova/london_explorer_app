@@ -43,11 +43,6 @@ struct AttractionCard: View {
 }
 
 #Preview {
-    AttractionCard(
-        attraction: Binding<Attraction> (
-            get: { return MockData.Attractions[0] },
-            set: { _ in }
-        )
-    )
-    .padding()
+    AttractionCard(attraction: .constant(MockData.Attractions[0]))
+        .padding()
 }

@@ -10,21 +10,12 @@ import SwiftUI
 
 struct RouteStopsList: View {
     @Binding var route: Route
-    @State var useTestData: Bool
     
-    // Function used for test view separately - for the preview
-    func buildRoute() async {
-        route.pathes = await MockData.calculateRoute(stops: route.stops).compactMap {
-            $0 != nil ? CodableMKRoute(from: $0!) : nil
-        }
-    }
-    
-    init(route: Binding<Route>, useTestData: Bool = false) {
+    init(route: Binding<Route>) {
         _route = route
-        self.useTestData = useTestData
     }
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], useTestData: Bool = false) {
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
         _route = Binding<Route> (
             get: {
                 return Route(
@@ -40,7 +31,6 @@ struct RouteStopsList: View {
             },
             set: { _ in }
         )
-        self.useTestData = useTestData
     }
     
     var body: some View {
@@ -96,23 +86,12 @@ struct RouteStopsList: View {
                 }
             }
         }
-        .onAppear {
-            if useTestData {
-                Task {
-                    await buildRoute()
-                }
-            }
-        }
     }
 }
 
 #Preview {
     RouteStopsList(
-        route: Binding<Route> (
-            get: { return MockData.Routes[0] },
-            set: { _ in }
-        ),
-        useTestData: true
+        route: .constant(MockData.Routes[0])
     )
     .padding()
 }

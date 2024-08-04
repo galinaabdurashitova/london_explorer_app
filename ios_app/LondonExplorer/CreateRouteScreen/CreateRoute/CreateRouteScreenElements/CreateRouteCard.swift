@@ -10,7 +10,6 @@ import SwiftUI
 
 struct CreateRouteCard: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
-    @EnvironmentObject var auth: AuthController
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     

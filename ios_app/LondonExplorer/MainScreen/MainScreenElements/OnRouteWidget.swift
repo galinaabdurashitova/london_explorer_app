@@ -9,15 +9,12 @@ import Foundation
 import SwiftUI
 
 struct OnRouteWidget: View {
-    @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var currentRoute: CurrentRouteManager
     @Binding var tabSelection: Int
-    @State var routeProgress: RouteProgress?
-    
-    @CurrentRoutesStorage(key: "LONDON_EXPLORER_CURRENT_ROUTES") var savedRoutesProgress: [RouteProgress]
     
     var body: some View {
         VStack (spacing: 20) {
-            if let routeProgress = routeProgress {
+            if let routeProgress = currentRoute.routeProgress {
                 HStack {
                     SectionHeader(
                         headline: .constant("On a Route!")
@@ -52,42 +49,6 @@ struct OnRouteWidget: View {
                             set: { _ in }
                         )
                     )
-                    .onDisappear {
-                        if !savedRoutesProgress.isEmpty {
-                            if let routeProgress = savedRoutesProgress.first(where: {
-                                $0.user.id == auth.profile.id
-                            }) {
-                                self.routeProgress =  routeProgress
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .onChange(of: savedRoutesProgress) {
-            if !savedRoutesProgress.isEmpty {
-                if let routeProgress = savedRoutesProgress.first(where: {
-                    $0.user.id == auth.profile.id
-                }) {
-                    self.routeProgress =  routeProgress
-                }
-            }
-        }
-        .onChange(of: tabSelection) {
-            if !savedRoutesProgress.isEmpty {
-                if let routeProgress = savedRoutesProgress.first(where: {
-                    $0.user.id == auth.profile.id
-                }) {
-                    self.routeProgress =  routeProgress
-                }
-            }
-        }
-        .onAppear {
-            if !savedRoutesProgress.isEmpty {
-                if let routeProgress = savedRoutesProgress.first(where: {
-                    $0.user.id == auth.profile.id
-                }) {
-                    self.routeProgress =  routeProgress
                 }
             }
         }
@@ -97,5 +58,6 @@ struct OnRouteWidget: View {
 #Preview {
     OnRouteWidget(tabSelection: .constant(0))
         .environmentObject(AuthController())
+        .environmentObject(CurrentRouteManager())
         .padding()
 }

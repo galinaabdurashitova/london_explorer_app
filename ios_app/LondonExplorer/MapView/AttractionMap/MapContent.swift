@@ -43,11 +43,6 @@ struct MapContent: View {
 }
 
 #Preview {
-    MapContent(
-        attraction: Binding<Attraction> (
-            get: { return MockData.Attractions[0] },
-            set: { _ in }
-        )
-    )
-    .padding()
+    MapContent(attraction: .constant(MockData.Attractions[0]))
+        .padding()
 }

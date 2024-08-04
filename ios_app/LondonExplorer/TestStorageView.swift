@@ -8,6 +8,14 @@
 import Foundation
 import SwiftUI
 
+// ALL CURRENT STORAGES USED
+//@UserStorage(key: "LONDON_EXPLORER_USERS") var user: [User]
+//@RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
+//@CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
+//@CurrentRoutesStorage(key: "LONDON_EXPLORER_CURRENT_ROUTES") var savedRouteProgress: [RouteProgress]
+
+//@RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
+
 struct TestStorageView: View {
     
     @UserStorage(key: "LONDON_EXPLORER_USERS") var users: [User]
@@ -23,9 +31,14 @@ struct TestStorageView: View {
             VStack {
                 Text("Users")
                 ForEach(users) { user in
-                    HStack {
+                    VStack {
                         Text(user.name)
                         Text(user.userName)
+                        VStack {
+                            ForEach(user.finishedRoutes, id: \.id) { route in
+                                Text(route.id)
+                            }
+                        }
                     }
                 }
             }
@@ -34,6 +47,7 @@ struct TestStorageView: View {
             VStack {
                 Text("Saved routes")
                 ForEach(savedRoutes, id: \.id) { route in
+                    Text(route.id)
                     RouteCard(route: Binding(get: { route }, set: { _ in }))
                 }
             }
@@ -81,5 +95,6 @@ struct TestStorageView: View {
                 }
             }
         }
+        .padding()
     }
 }

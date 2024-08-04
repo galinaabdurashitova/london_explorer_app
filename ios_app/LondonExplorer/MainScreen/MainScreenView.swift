@@ -11,6 +11,7 @@ import SwiftUI
 struct MainScreenView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var currentRoute: CurrentRouteManager
     @Binding var tabSelection: Int
     @State var routes: [Route] = MockData.Routes
     @State var friendsFeed: [FriendUpdate] = MockData.FriendsFeed
@@ -35,16 +36,12 @@ struct MainScreenView: View {
                     if !isLoading {
                         VStack(spacing: 25) {
                                 OnRouteWidget(tabSelection: $tabSelection)
-                                    .environmentObject(auth)
                             if networkMonitor.isConnected {
 //                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
-//                                    .environmentObject(auth)
                                 SuggestedRoutesCarousel(routes: $routes)
-                                    .environmentObject(auth)
 //                                FriendsFeed(friendsFeed: $friendsFeed)
                             } else {
                                 DownloadedRoutesWidget(routes: $routes)
-                                    .environmentObject(auth)
                             }
                             
                             Spacer()
@@ -72,17 +69,14 @@ struct MainScreenView: View {
                 switch value {
                 case .info(let route):
                     RouteView(route: route)
-                        .environmentObject(auth)
                 case .progress(let route):
-                    OnRouteView(route: route, user: auth.profile)
-                        .environmentObject(auth)
+                    OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
                 case .map(let route):
                     MapRouteView(route: route)
                 }
             }
             .navigationDestination(for: RouteProgress.self) { routeProgress in
                 OnRouteView(routeProgress: routeProgress)
-                    .environmentObject(auth)
             }
         }
         .onAppear {
@@ -107,4 +101,5 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
     MainScreenView(tabSelection: .constant(0))
         .environmentObject(AuthController())
         .environmentObject(NetworkMonitor())
+        .environmentObject(CurrentRouteManager())
 }

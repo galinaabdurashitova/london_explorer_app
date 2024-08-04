@@ -51,11 +51,6 @@ struct AttractionSheetContent: View {
 }
 
 #Preview {
-    AttractionSheetContent(
-        attraction: Binding<Attraction> (
-            get: { return MockData.Attractions[0] },
-            set: { _ in }
-        )
-    )
-    .padding()
+    AttractionSheetContent(attraction: .constant(MockData.Attractions[0]))
+        .padding()
 }

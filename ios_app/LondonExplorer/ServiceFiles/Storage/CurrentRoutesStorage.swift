@@ -30,7 +30,7 @@ struct CurrentRoutesStorage<T: Codable> {
     
     private func defaultValue() -> Any {
         if T.self == Array<RouteProgress>.self {
-            return [User]()
+            return [RouteProgress]()
         }
         // Add other default value cases as needed
         return ""  // Default for other types if needed

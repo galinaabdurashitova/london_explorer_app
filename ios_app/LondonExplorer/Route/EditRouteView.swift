@@ -9,12 +9,7 @@ import Foundation
 import SwiftUI
 
 struct EditRouteView: View {
-//    @StateObject var viewModel: EditRouteViewModel
     @ObservedObject var viewModel: RouteViewModel
-    
-//    init(route: Binding<Route>, isSheetPresented: Binding<Bool>) {
-//        self._viewModel = StateObject(wrappedValue: EditRouteViewModel(route: route, isSheetPresented: isSheetPresented))
-//    }
     
     var body: some View {
         VStack(spacing: 25) {
