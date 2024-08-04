@@ -27,7 +27,7 @@ struct CustomTextField: View {
             if isSecure {
                 SecureField(fillerText, text: $textVariable)
                     .font(.system(size: 16, weight: .regular))
-                    .onChange(of: textVariable) { newValue in
+                    .onChange(of: textVariable) { _, newValue in
                         if newValue.count > maxLength {
                             shakeAndHighlight()
                             textVariable = String(newValue.prefix(maxLength))
@@ -36,7 +36,7 @@ struct CustomTextField: View {
             } else {
                 TextField(fillerText, text: $textVariable, axis: height != nil ? .vertical : .horizontal)
                     .font(.system(size: 16, weight: .regular))
-                    .onChange(of: textVariable) { newValue in
+                    .onChange(of: textVariable) { _, newValue in
                         if newValue.count > maxLength {
                             shakeAndHighlight()
                             textVariable = String(newValue.prefix(maxLength))
@@ -44,7 +44,7 @@ struct CustomTextField: View {
                     }
             }
             
-            if let height = height {
+            if height != nil {
                 Spacer()
             }
         }

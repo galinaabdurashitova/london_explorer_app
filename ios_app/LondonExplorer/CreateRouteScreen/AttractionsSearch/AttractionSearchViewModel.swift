@@ -36,9 +36,11 @@ class AttractionSearchViewModel: ObservableObject {
                 
                 for attraction in fetchedAttractions {
                     var newAttraction = attraction
-                    await fetchAttractionImages(attraction: &newAttraction)
+                    await fetchAttractionImage(attraction: &newAttraction)
                     if !newAttraction.images.isEmpty {
-                        attractions.append(newAttraction)
+                        DispatchQueue.main.async {
+                            self.attractions.append(newAttraction)
+                        }
                     }
                 }
                 
@@ -50,7 +52,22 @@ class AttractionSearchViewModel: ObservableObject {
                 print("Error: \(error)")
             }
             
-            isLoading = false
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
+    }
+    
+    func fetchAttractionImage(attraction: inout Attraction) async {
+        do {
+            var images = try await imagesRep.getAttractionImage(attractionId: attraction.id)
+            attraction.images = images
+        } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
+            print("Listing failed for attraction \(attraction.id): \(message)")
+        } catch ImagesRepository.ImageRepositoryError.downloadFailed(let itemName, let message) {
+            print("Download failed for \(itemName): \(message)")
+        } catch {
+            print("Unexpected error: \(error.localizedDescription)")
         }
     }
     

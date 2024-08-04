@@ -10,21 +10,16 @@ import SwiftUI
 
 struct RouteDataView: View {
     @EnvironmentObject var auth: AuthController
-    @Binding var route: Route
-    @State var isEditSheetPresented: Bool = false
-    
-    init(route: Binding<Route>) {
-        self._route = route
-    }
+    @ObservedObject var viewModel: RouteViewModel
     
     var body: some View {
         VStack(spacing: 25) {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(route.name)
+                    Text(viewModel.route.name)
                         .screenHeadline()
                     
-                    RouteLabelRow(route: route)
+                    RouteLabelRow(route: viewModel.route)
                 }
                 
                 Spacer()
@@ -42,18 +37,18 @@ struct RouteDataView: View {
             }
             
             HStack {
-                Text(route.description)
+                Text(viewModel.route.description)
                 Spacer()
             }
             
-            RouteMapContent(route: $route)
+            RouteMapContent(route: $viewModel.route)
             
             HStack {
                 SectionHeader(headline: .constant("Stops"))
                 Spacer()
             }
             
-            RouteStopsList(route: $route)
+            RouteStopsList(route: $viewModel.route)
         }
     }
     
@@ -68,7 +63,7 @@ struct RouteDataView: View {
     
     private var SecondButton: some View {
         Button(action: {
-            isEditSheetPresented = true
+            viewModel.isEditSheetPresented = true
         }) {
             RouteButton.edit.view
         }
@@ -77,14 +72,14 @@ struct RouteDataView: View {
                 .frame(width: 1),
             alignment: .trailing
         )
-        .sheet(isPresented: $isEditSheetPresented) {
-            EditRouteView(route: $route, isSheetPresented: $isEditSheetPresented)
+        .sheet(isPresented: $viewModel.isEditSheetPresented) {
+            EditRouteView(viewModel: viewModel)
         }
-        .disabled(auth.profile.id != route.userCreated.id)
+        .disabled(auth.profile.id != viewModel.route.userCreated.id)
     }
     
     private var ThirdButton: some View {
-        NavigationLink(value: RouteNavigation.progress(route)) {
+        NavigationLink(value: RouteNavigation.progress(viewModel.route)) {
             RouteButton.start.view
         }
     }
@@ -92,7 +87,7 @@ struct RouteDataView: View {
 
 #Preview {
     ScrollView(showsIndicators: false) {
-        RouteDataView(route: .constant(MockData.Routes[0]))
+        RouteDataView(viewModel: RouteViewModel(route: MockData.Routes[0]))
     }
     .environmentObject(AuthController())
     .padding()

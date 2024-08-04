@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct RouteCard: View {
-    @EnvironmentObject var auth: AuthController
     @Binding var route: Route
     @State var label: CardLabel
     var size: CardSize
@@ -61,13 +60,9 @@ struct RouteCard: View {
 
 #Preview {
     RouteCard(
-        route: Binding<Route> (
-            get: { return MockData.Routes[3] },
-            set: { _ in }
-        ),
+        route: .constant(MockData.Routes[3]),
         label: .download(Date()),
         size: .L
     )
-    .environmentObject(AuthController())
     .padding()
 }

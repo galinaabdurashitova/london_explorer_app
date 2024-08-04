@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 struct OnRouteWidget: View {
-    @EnvironmentObject var auth: AuthController
-    @ObservedObject var viewModel: OnRouteViewModel
+    @EnvironmentObject var currentRoute: CurrentRouteManager
+    @Binding var tabSelection: Int
     
     var body: some View {
         VStack (spacing: 20) {
-            if viewModel.savedRouteProgress != nil {
+            if let routeProgress = currentRoute.routeProgress {
                 HStack {
                     SectionHeader(
                         headline: .constant("On a Route!")
@@ -22,53 +22,42 @@ struct OnRouteWidget: View {
                     Spacer()
                 }
                 
-                NavigationLink(value: viewModel.routeProgress) {
+                NavigationLink(value: routeProgress) {
                     RouteProgressView(
-                        image: $viewModel.routeProgress.route.image,
-                        routeName: $viewModel.routeProgress.route.name,
-                        collectablesDone: $viewModel.routeProgress.collectables,
-                        collectablesTotal: $viewModel.routeProgress.route.collectables,
-                        stopsDone: $viewModel.routeProgress.stops,
+                        image: Binding<UIImage>(
+                            get: { return routeProgress.route.image },
+                            set: { _ in }
+                        ),
+                        routeName: Binding<String>(
+                            get: { return routeProgress.route.name },
+                            set: { _ in }
+                        ),
+                        collectablesDone: Binding<Int>(
+                            get: { return routeProgress.collectables },
+                            set: { _ in }
+                        ),
+                        collectablesTotal: Binding<Int>(
+                            get: { return routeProgress.route.collectables },
+                            set: { _ in }
+                        ),
+                        stopsDone: Binding<Int>(
+                            get: { return routeProgress.stops },
+                            set: { _ in }
+                        ),
                         stopsTotal: Binding<Int>(
-                            get: {
-                                return viewModel.routeProgress.route.stops.count
-                            },
+                            get: { return routeProgress.route.stops.count },
                             set: { _ in }
                         )
                     )
                 }
             }
         }
-        .onChange(of: viewModel.savedRouteProgress) {
-            viewModel.loadRouteProgress()
-        }
-        .onAppear {
-            viewModel.loadRouteProgress()
-        }
-    }
-}
-
-class OnRouteWidgetViewModel: ObservableObject {
-    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
-    @Published var routeProgress: RouteProgress
-    
-    init() {
-        self.routeProgress = RouteProgress(
-            route: MockData.Routes[0],
-            collectables: 0,
-            stops: 0
-        )
-        
-        self.loadRouteProgress()
-    }
-    
-    func loadRouteProgress() {
-        if let savedRouteProgress = self.savedRouteProgress { self.routeProgress = savedRouteProgress }
     }
 }
 
 #Preview {
-    OnRouteWidget(viewModel: OnRouteViewModel())
+    OnRouteWidget(tabSelection: .constant(0))
         .environmentObject(AuthController())
+        .environmentObject(CurrentRouteManager())
         .padding()
 }

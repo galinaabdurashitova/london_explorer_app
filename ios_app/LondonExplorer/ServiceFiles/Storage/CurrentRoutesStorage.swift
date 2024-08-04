@@ -1,14 +1,14 @@
 //
-//  UserStorage.swift
+//  CurrentRoutesStorage.swift
 //  LondonExplorer
 //
-//  Created by Galina Abdurashitova on 23.07.2024.
+//  Created by Galina Abdurashitova on 04.08.2024.
 //
 
 import Foundation
 
 @propertyWrapper
-struct UserStorage<T: Codable> {
+struct CurrentRoutesStorage<T: Codable> {
     private let filename: String
 
     init(key: String) {
@@ -18,10 +18,8 @@ struct UserStorage<T: Codable> {
     var wrappedValue: T {
         get {
             if let loadedValue: T = FileManager.load(filename, as: T.self) {
-//                print("Loaded data from \(filename)")
                 return loadedValue
             } else {
-//                print("No data found for \(filename), returning default value")
                 return (defaultValue() as! T)
             }
         }
@@ -31,9 +29,10 @@ struct UserStorage<T: Codable> {
     }
     
     private func defaultValue() -> Any {
-        if T.self == Array<User>.self {
-            return [User]()
+        if T.self == Array<RouteProgress>.self {
+            return [RouteProgress]()
         }
-        return ""  
+        // Add other default value cases as needed
+        return ""  // Default for other types if needed
     }
 }

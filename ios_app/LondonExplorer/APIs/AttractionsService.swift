@@ -69,6 +69,7 @@ class AttractionsService: AttractionsServiceProtocol {
                             longitude: attraction.longitude
                         ),
                         images: [],
+                        finishedImagesDownload: false,
                         categories: attraction.categories.compactMap { Attraction.Category(rawValue: $0) }
                     )
                     responseAttractions.append(newAttraction)

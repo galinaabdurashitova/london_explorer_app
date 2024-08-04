@@ -7,13 +7,6 @@
 
 import Foundation
 
-// ALL CURRENT STORAGES USED
-//@UserStorage(key: "LONDON_EXPLORER_USERS") var user: [User]
-//@RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
-//@CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
-
-//@RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
-
 extension FileManager {
     static func save<T: Encodable>(_ object: T, to filename: String) -> Bool {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -27,7 +20,7 @@ extension FileManager {
 //            print("Data written to \(fileURL.path)")
             return true
         } catch {
-//            print("Error saving file: \(error)")
+            print("Error saving file: \(error)")
             return false
         }
     }
@@ -47,7 +40,7 @@ extension FileManager {
 //            print("Data loaded from \(fileURL.path)")
             return decodedData
         } catch {
-//            print("Error loading file: \(error)")
+            print("Error loading file: \(error)")
             return nil
         }
     }

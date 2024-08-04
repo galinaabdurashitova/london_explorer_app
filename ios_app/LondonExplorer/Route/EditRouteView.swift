@@ -9,11 +9,7 @@ import Foundation
 import SwiftUI
 
 struct EditRouteView: View {
-    @StateObject var viewModel: EditRouteViewModel
-    
-    init(route: Binding<Route>, isSheetPresented: Binding<Bool>) {
-        self._viewModel = StateObject(wrappedValue: EditRouteViewModel(route: route, isSheetPresented: isSheetPresented))
-    }
+    @ObservedObject var viewModel: RouteViewModel
     
     var body: some View {
         VStack(spacing: 25) {
@@ -42,9 +38,9 @@ struct EditRouteView: View {
             }
             
             VStack(alignment: .leading, spacing: 10) {
-                CustomTextField(fieldText: .constant("Route Name"), fillerText: .constant("Type route name here..."), textVariable: $viewModel.name, maxLength: 64)
+                CustomTextField(fieldText: .constant("Route Name"), fillerText: .constant("Type route name here..."), textVariable: $viewModel.newName, maxLength: 64)
                 
-                CustomTextField(fieldText: .constant("Route Description"), fillerText: .constant("Fill in route description..."), textVariable: $viewModel.description, height: 200, maxLength: 32000)
+                CustomTextField(fieldText: .constant("Route Description"), fillerText: .constant("Fill in route description..."), textVariable: $viewModel.newDescription, height: 200, maxLength: 32000)
             }
             
             Spacer()
@@ -54,9 +50,6 @@ struct EditRouteView: View {
 }
 
 #Preview {
-    EditRouteView(
-        route: .constant(MockData.Routes[0]),
-        isSheetPresented: .constant(true)
-    )
-    .padding()
+    EditRouteView(viewModel: RouteViewModel(route: MockData.Routes[0]))
+        .padding()
 }

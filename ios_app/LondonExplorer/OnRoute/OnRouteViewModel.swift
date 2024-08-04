@@ -11,7 +11,6 @@ import MapKit
 
 class OnRouteViewModel: ObservableObject {
     // Model used in the view variables
-    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
     @Published var routeProgress: RouteProgress
     
     // Map variables
@@ -34,13 +33,14 @@ class OnRouteViewModel: ObservableObject {
     private var usersService = UsersService()
     
     // Initializers
-    init(route: Route) {
+    init(route: Route, user: User, savedRouteProgress: RouteProgress?) {
         self.routeProgress = RouteProgress(
             route: route,
             collectables: 0,
-            stops: 0
+            stops: 0,
+            user: user
         )
-        
+    
         if let savedRouteProgress = savedRouteProgress {
             if route.id == savedRouteProgress.route.id {
                 self.routeProgress = savedRouteProgress
@@ -58,20 +58,8 @@ class OnRouteViewModel: ObservableObject {
         Task { await self.screenSetup() }
     }
     
-    init(routeProgress: RouteProgress) {    // Depricated
+    init(routeProgress: RouteProgress) {
         self.routeProgress = routeProgress
-        
-        Task { await self.screenSetup() }
-    }
-    
-    init() {
-        self.routeProgress = RouteProgress(
-            route: MockData.Routes[0],
-            collectables: 0,
-            stops: 0
-        )
-        
-        self.loadRouteProgress()
         
         Task { await self.screenSetup() }
     }
@@ -94,19 +82,6 @@ class OnRouteViewModel: ObservableObject {
     
     func setAuthController(_ auth: AuthController) {
         self.auth = auth
-    }
-    
-    // Route progress storing functions
-    func loadRouteProgress() {
-        if let savedRouteProgress = self.savedRouteProgress { self.routeProgress = savedRouteProgress }
-    }
-    
-    func saveRoute() {
-        self.savedRouteProgress = self.routeProgress
-    }
-    
-    func eraseProgress() {
-        self.savedRouteProgress = nil
     }
     
     // Route progress management functions
@@ -140,8 +115,6 @@ class OnRouteViewModel: ObservableObject {
             self.lastStop = true
             self.routeProgress.endTime = Date()
         }
-        
-        self.saveRoute()
     }
     
     func finishRoute() throws {
@@ -158,7 +131,6 @@ class OnRouteViewModel: ObservableObject {
                             collectables: self.routeProgress.collectables
                         )
                     )
-                    self.eraseProgress()
                 } else {
                     throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "Authorization error. Saving progress is impossible"])
                 }

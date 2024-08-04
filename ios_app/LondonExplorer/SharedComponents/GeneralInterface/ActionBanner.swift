@@ -38,4 +38,5 @@ struct ActionBanner: View {
 
 #Preview {
     ActionBanner(text: "Some text", actionText: "More text")
+        .padding()
 }

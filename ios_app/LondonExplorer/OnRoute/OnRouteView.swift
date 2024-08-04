@@ -11,19 +11,16 @@ import MapKit
 
 struct OnRouteView: View {
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var currentRoute: CurrentRouteManager
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: OnRouteViewModel
+    @StateObject var viewModel: OnRouteViewModel
     
-    init(route: Route) {
-        self.viewModel = OnRouteViewModel(route: route)
+    init(route: Route, user: User, savedRouteProgress: RouteProgress?) {
+        self._viewModel = StateObject(wrappedValue: OnRouteViewModel(route: route, user: user, savedRouteProgress: savedRouteProgress))
     }
     
     init(routeProgress: RouteProgress) {
-        self.viewModel = OnRouteViewModel(routeProgress: routeProgress)
-    }
-    
-    init(viewModel: OnRouteViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: OnRouteViewModel(routeProgress: routeProgress))
     }
     
     var body: some View {
@@ -42,7 +39,7 @@ struct OnRouteView: View {
                         text: viewModel.greetingText,
                         subText: viewModel.greetingSubText
                     ) {
-                        viewModel.saveRoute()
+                        currentRoute.routeProgress = viewModel.routeProgress
                         viewModel.showGreeting = false
                     } actionCancel: {
                         self.presentationMode.wrappedValue.dismiss()
@@ -128,6 +125,7 @@ struct OnRouteView: View {
                 FinishRoutePopup(isOpen: $viewModel.lastStop) {
                     do {
                         try viewModel.finishRoute()
+                        currentRoute.routeProgress = nil
                         self.presentationMode.wrappedValue.dismiss()
                     } catch {
                         viewModel.error = error.localizedDescription
@@ -146,7 +144,7 @@ struct OnRouteView: View {
             text: "Are you sure you want to stop the route? Your progress won't be saved",
             buttonText: "Stop the route"
         ) {
-            viewModel.eraseProgress()
+            currentRoute.routeProgress = nil
             self.presentationMode.wrappedValue.dismiss()
         }
     }
@@ -237,7 +235,7 @@ struct OnRouteView: View {
             Spacer()
             
             NavigationLink(destination: {
-                AttractionView(attraction: viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction, allowAdd: false)
+                AttractionView(attraction: $viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction, allowAdd: false)
             }) {
                 HStack (spacing: 5) {
                     Text("Details")
@@ -270,6 +268,7 @@ struct OnRouteView: View {
                     viewModel.stopRoute = true
                 } else {
                     viewModel.pause()
+                    currentRoute.routeProgress = viewModel.routeProgress
                 }
             }) {
                 VStack (spacing: 3) {
@@ -295,8 +294,10 @@ struct OnRouteView: View {
             Button(action: {
                 if viewModel.routeProgress.paused {
                     viewModel.resume()
+                    currentRoute.routeProgress = viewModel.routeProgress
                 } else {
                     viewModel.changeStop()
+                    currentRoute.routeProgress = viewModel.routeProgress
                 }
             }) {
                 VStack (spacing: 3) {
@@ -316,4 +317,5 @@ struct OnRouteView: View {
 #Preview {
     OnRouteView(routeProgress: MockData.RouteProgress[0])
         .environmentObject(AuthController())
+        .environmentObject(CurrentRouteManager())
 }

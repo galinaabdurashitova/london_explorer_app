@@ -89,10 +89,7 @@ struct ButtonView: View {
 
 #Preview {
     ButtonView(
-        text: Binding<String> (
-            get: { return "Button" },
-            set: { _ in }
-        ),
+        text: .constant("Button"),
         colour: Color.red,
         textColour: Color.white,
         size: .L,

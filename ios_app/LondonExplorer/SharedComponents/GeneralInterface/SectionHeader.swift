@@ -32,12 +32,7 @@ struct SectionHeader: View {
 
 #Preview {
     SectionHeader(
-        headline: Binding<String> (
-            get: { return "This is a section header" },
-            set: { _ in }
-        ), subheadline: Binding<String?> (
-            get: { return "This is a section subheadline" },
-            set: { _ in }
-        )
+        headline: .constant("This is a section header"),
+        subheadline:  .constant("This is a section subheadline")
     )
 }

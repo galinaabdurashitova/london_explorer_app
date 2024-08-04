@@ -33,16 +33,23 @@ class AuthController: ObservableObject {
     
     private func observeAuthChanges() {
         Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            guard let user = user else { return }
-            guard let self = self else { return }
-
-            Task {
-                do {
-                    let profile = try await self.usersRepository.fetchUser(userId: user.uid)
-                    self.setUserProfile(user: profile)
-                    print("User \(user.uid) signed in.")
-                } catch {
-                    print("Error while fetching the user profile: \(error)")
+            DispatchQueue.main.async {
+                guard let user = user else {
+                    DispatchQueue.main.async {
+                        self?.isSignedIn = false
+                    }
+                    return
+                }
+                guard let self = self else { return }
+                
+                Task {
+                    do {
+                        let profile = try await self.usersRepository.fetchUser(userId: user.uid)
+                        self.setUserProfile(user: profile)
+                        print("User \(user.uid) signed in.")
+                    } catch {
+                        print("Error while fetching the user profile: \(error)")
+                    }
                 }
             }
         }
@@ -86,7 +93,10 @@ class AuthController: ObservableObject {
         do {
             try Auth.auth().signOut()
             
-            self.setUserProfile(user: User(userId: "", name: "", userName: ""))
+            DispatchQueue.main.async {
+                self.isSignedIn = false
+                self.setUserProfile(user: User(userId: "", name: "", userName: ""))
+            }
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }

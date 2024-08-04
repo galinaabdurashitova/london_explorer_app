@@ -21,6 +21,47 @@ class ImagesRepository: ObservableObject {
         case downloadFailed(String, String)
     }
     
+    func getAttractionImage(attractionId: String) async throws -> [UIImage] {
+//        if let cachedAttraction = attractionImagesCache[attraction] {
+//            return cachedAttraction
+//        }
+        
+        let imageRef = storageRef.child("attractions/" + attractionId)
+        
+        do {
+            let result = try await imageRef.listAll()
+            var images = [UIImage]()
+            
+            if result.items.count > 0 {
+                let item = result.items[0]
+                do {
+                    let data = try await getData(from: item)
+                    if let image = UIImage(data: data) {
+                        images.append(image)
+                        
+                        // It causes crashes - need a fix
+//                        if var cachedAttraction = attractionImagesCache[attraction] {
+//                            cachedAttraction.append(image)
+//                            attractionImagesCache[attraction] = cachedAttraction
+//                        } else {
+//                            attractionImagesCache[attraction] = [image]
+//                        }
+                    }
+                } catch {
+                    print("Failed to download image \(item.name): \(error.localizedDescription)")
+                }
+            }
+            
+            if images.isEmpty {
+                throw ImageRepositoryError.downloadFailed(attractionId, "No images were successfully downloaded.")
+            }
+            
+            return images
+        } catch {
+            throw ImageRepositoryError.listingFailed(error.localizedDescription)
+        }
+    }
+    
     func getAttractionImages(attractionId: String) async throws -> [UIImage] {
 //        if let cachedAttraction = attractionImagesCache[attraction] {
 //            return cachedAttraction

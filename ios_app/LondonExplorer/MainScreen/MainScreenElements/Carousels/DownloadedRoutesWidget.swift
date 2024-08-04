@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct DownloadedRoutesWidget: View {
-    @EnvironmentObject var auth: AuthController
     @Binding var routes: [Route]
     
     var body: some View {
@@ -26,7 +25,6 @@ struct DownloadedRoutesWidget: View {
                 ForEach($routes) { route in
                     if let download = route.downloadDate.wrappedValue {
                         RouteCard(route: route, label: .download(download), size: .M)
-                            .environmentObject(auth)
                     }
                 }
             }
@@ -36,12 +34,7 @@ struct DownloadedRoutesWidget: View {
 
 
 #Preview {
-    DownloadedRoutesWidget(
-        routes: Binding<[Route]> (
-            get: { return MockData.Routes },
-            set: { _ in }
-        )
-    )
-    .environmentObject(AuthController())
-    .padding()
+    DownloadedRoutesWidget(routes: .constant(MockData.Routes))
+        .environmentObject(AuthController())
+        .padding()
 }

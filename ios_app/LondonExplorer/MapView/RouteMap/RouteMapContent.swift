@@ -39,11 +39,6 @@ struct RouteMapContent: View {
 }
 
 #Preview {
-    RouteMapContent(
-        route: Binding<Route> (
-            get: { return MockData.Routes[0] },
-            set: { _ in }
-        )
-    )
-    .padding()
+    RouteMapContent(route: .constant(MockData.Routes[0]))
+        .padding()
 }

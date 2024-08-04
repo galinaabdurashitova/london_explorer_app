@@ -58,12 +58,14 @@ class UsersService: UsersServiceProtocol {
             throw ServiceError.serverError(404)
         }
         
+        // Save finished route to users profile
         if let savedRouteIndex = userProfile.finishedRoutes.firstIndex(where: { $0.id == route.route.id }) {
             userProfile.finishedRoutes[savedRouteIndex] = User.FinishedRoute(id: route.route.id, finishedDate: endDate, collectables: route.collectables)
         } else {
             userProfile.finishedRoutes.append(User.FinishedRoute(id: route.route.id, finishedDate: endDate, collectables: route.collectables))
         }
         
+        // Save updated users profile
         if let index = users.firstIndex(where: { $0.id == userProfile.id }) {
             users[index] = userProfile
         } else {

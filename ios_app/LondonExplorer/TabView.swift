@@ -9,39 +9,26 @@ import Foundation
 import SwiftUI
 
 struct MainTabView: View {
-    @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
     @State var tabSelection = 0
     
-    @UserStorage(key: "LONDON_EXPLORER_USERS") var users: [User]
-    @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
-    @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
-    @RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
-    
-    @State var routeProgress: RouteProgress?
-    
     var body: some View {
         TabView (selection: $tabSelection) {
-            MainScreenView()
-                .environmentObject(networkMonitor)
-                .environmentObject(auth)
+            MainScreenView(tabSelection: $tabSelection)
                 .tabItem {
                     Label("Home", systemImage: tabSelection == 0 ? "house.fill" :  "house")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(0)
             
-//            ProgressView()
-//                .environmentObject(networkMonitor)
-//                .tabItem {
-//                    Label("Browse", systemImage: "magnifyingglass")
-//                        .environment(\.symbolVariants, .none)
-//                }
-//                .tag(1)
+            TestStorageView()
+                .tabItem {
+                    Label("Browse", systemImage: "magnifyingglass")
+                        .environment(\.symbolVariants, .none)
+                }
+                .tag(1)
             
             CreateRouteView(tabSelection: $tabSelection)
-                .environmentObject(networkMonitor)
-                .environmentObject(auth)
                 .tabItem {
                     Label("New Route", systemImage: "plus")
                         .environment(\.symbolVariants, .none)
@@ -57,8 +44,6 @@ struct MainTabView: View {
 //                .tag(3)
             
             ProfileView(user: auth.profile, tabSelection: $tabSelection)
-                .environmentObject(networkMonitor)
-                .environmentObject(auth)
                 .tabItem {
                     Label("Profile", systemImage: tabSelection == 4 ? "person.fill" : "person")
                         .environment(\.symbolVariants, .none)
@@ -73,4 +58,5 @@ struct MainTabView: View {
     MainTabView()
         .environmentObject(NetworkMonitor())
         .environmentObject(AuthController())
+        .environmentObject(CurrentRouteManager())
 }

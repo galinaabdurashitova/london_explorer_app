@@ -9,11 +9,9 @@ import Foundation
 import SwiftUI
 
 struct AttractionsSearchView: View {
-    @EnvironmentObject var networkMonitor: NetworkMonitor
     @Environment(\.presentationMode) var presentationMode
     @StateObject var viewModel: AttractionSearchViewModel
     @ObservedObject var routeViewModel: RouteStopsViewModel
-//    @Binding var chosenAttractions: [Route.RouteStop]
     
     init(routeViewModel: RouteStopsViewModel) {
         self.routeViewModel = routeViewModel
@@ -31,7 +29,7 @@ struct AttractionsSearchView: View {
                     
                     SearchBar
                     
-                    if viewModel.isLoading {
+                    if viewModel.isLoading && viewModel.attractions.count < 1 {
                         loading
                     } else if viewModel.error != nil {
                         ErrorScreen() {
@@ -49,7 +47,7 @@ struct AttractionsSearchView: View {
             }
                 
                 
-            if viewModel.stops.count > 0, !viewModel.isLoading {
+            if viewModel.stops.count > 0, !viewModel.isLoading, viewModel.error == nil {
                 ButtonView(
                     text: .constant("Add (\(String(viewModel.stops.count)))"),
                     colour: Color.lightBlue,
@@ -127,11 +125,11 @@ struct AttractionsSearchView: View {
     
     private var AttractionsList: some View {
         VStack (spacing: 5) {
-            ForEach($viewModel.filteredAttractions) { attraction in
+            ForEach(viewModel.filters.isEmpty && viewModel.searchText.isEmpty ? $viewModel.attractions : $viewModel.filteredAttractions) { attraction in
                 HStack (spacing: 5) {
                     NavigationLink(
                         destination: {
-                            AttractionView(stops: $viewModel.stops, attraction: attraction.wrappedValue, allowAdd: true)
+                            AttractionView(stops: $viewModel.stops, attraction: attraction, allowAdd: true)
                     }) {
                         AttractionCard(attraction: attraction)
                     }
@@ -206,5 +204,4 @@ struct AttractionsSearchView: View {
             pathes: [nil, nil, nil]
         )
     )
-    .environmentObject(NetworkMonitor())
 }

@@ -40,12 +40,7 @@ struct FriendsFeed: View {
 
 #Preview {
     ScrollView {
-        FriendsFeed(
-            friendsFeed: Binding<[FriendUpdate]> (
-                get: { return MockData.FriendsFeed },
-                set: { _ in }
-            )
-        )
+        FriendsFeed(friendsFeed: .constant(MockData.FriendsFeed))
     }
     .padding()
 }

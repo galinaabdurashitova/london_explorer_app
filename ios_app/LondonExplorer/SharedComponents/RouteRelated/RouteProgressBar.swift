@@ -40,10 +40,7 @@ struct RouteProgressBar: View {
 
 #Preview {
     RouteProgressBar(
-        num: Binding<Int> (
-            get: { return 20 },
-            set: { _ in }
-        ),
+        num: .constant(20),
         total: 100
     )
     .padding()

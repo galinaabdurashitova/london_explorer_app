@@ -11,7 +11,9 @@ import SwiftUI
 struct RouteView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var currentRoute: CurrentRouteManager
     @StateObject var viewModel: RouteViewModel
+    
     @State private var scrollOffset: CGFloat = 0
     @State private var confirmDelete: Bool = false
     
@@ -31,9 +33,7 @@ struct RouteView: View {
         VStack(spacing: -60) {
             ZStack (alignment: .topLeading) {
                 ImagesSlidesHeader(
-                    images: viewModel.route.stops.compactMap { stop in
-                        stop.attraction.images.first
-                    }
+                    images: $viewModel.images
                 )
                 .frame(height: headerHeight)
                 .clipped()
@@ -49,8 +49,7 @@ struct RouteView: View {
                 VStack(spacing: 25) {
                     Spacer().frame(height: 0)
                     
-                    RouteDataView(route: $viewModel.route)
-                        .environmentObject(auth)
+                    RouteDataView(viewModel: viewModel)
                     
                     if auth.profile.id == viewModel.route.userCreated.id {
                         Button("Delete the route") {
@@ -83,8 +82,13 @@ struct RouteView: View {
             text: "Are you sure you want to delete this route?",
             buttonText: "Delete the route"
         ) {
-            viewModel.deleteRoute()
-            self.presentationMode.wrappedValue.dismiss()
+            do {
+                try viewModel.deleteRoute()
+                currentRoute.routeDeletion(route: viewModel.route)
+                self.presentationMode.wrappedValue.dismiss()
+            } catch {
+                viewModel.error = error.localizedDescription
+            }
         }
     }
     
@@ -115,4 +119,5 @@ struct RouteView: View {
 #Preview {
     RouteView(route: MockData.Routes[0])
         .environmentObject(AuthController())
+        .environmentObject(CurrentRouteManager())
 }

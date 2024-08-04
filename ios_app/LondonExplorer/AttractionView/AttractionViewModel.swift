@@ -10,11 +10,14 @@ import SwiftUI
 
 class AttractionViewModel: ObservableObject {
     @Binding var stops: [Route.RouteStop]
-    @Published var attraction: Attraction
+    @Binding var attraction: Attraction
     
-    init(stops: Binding<[Route.RouteStop]>, attraction: Attraction) {
+    private let imagesRep: ImagesRepository = ImagesRepository()
+    
+    init(stops: Binding<[Route.RouteStop]>, attraction: Binding<Attraction>) {
         self._stops = stops
-        self.attraction = attraction
+        self._attraction = attraction
+        Task { await fetchAttractionImages() }
     }
     
     func toggleAttracation(attraction: Attraction) {
@@ -34,6 +37,25 @@ class AttractionViewModel: ObservableObject {
     func updateStopNumbers() {
         for index in stops.indices {
             stops[index].stepNo = index + 1
+        }
+    }
+    
+    func fetchAttractionImages() async {
+        if !attraction.finishedImagesDownload {
+            do {
+                var images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
+                
+                DispatchQueue.main.async {
+                    self.attraction.images = images
+                    self.attraction.finishedImagesDownload = true
+                }
+            } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
+                print("Listing failed for attraction \(attraction.id): \(message)")
+            } catch ImagesRepository.ImageRepositoryError.downloadFailed(let itemName, let message) {
+                print("Download failed for \(itemName): \(message)")
+            } catch {
+                print("Unexpected error: \(error.localizedDescription)")
+            }
         }
     }
 }

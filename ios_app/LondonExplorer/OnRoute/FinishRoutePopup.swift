@@ -51,7 +51,7 @@ struct FinishRoutePopup: View {
                             yOffset = 0
                         }
                     }
-                    .onChange(of: isOpen) { newValue in
+                    .onChange(of: isOpen) { _, newValue in
                         withAnimation(.easeInOut(duration: 0.2)) {
                             yOffset = newValue ? 0 : UIScreen.main.bounds.height
                         }

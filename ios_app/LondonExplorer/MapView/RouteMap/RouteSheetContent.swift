@@ -11,14 +11,6 @@ import MapKit
 
 struct RouteSheetContent: View {
     @Binding var route: Route
-    @State var useTestData: Bool = false
-    
-    // Function used for test view separately - for the preview
-    func buildRoute() async {
-        route.pathes = await MockData.calculateRoute(stops: route.stops).compactMap {
-            $0 != nil ? CodableMKRoute(from: $0!) : nil
-        }
-    }
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -55,23 +47,10 @@ struct RouteSheetContent: View {
             }
         }
         .scrollClipDisabled()
-        .onAppear {
-            if useTestData {
-                Task {
-                    await buildRoute()
-                }
-            }
-        }
     }
 }
 
 #Preview {
-    RouteSheetContent(
-        route: Binding<Route> (
-            get: { return MockData.Routes[0] },
-            set: { _ in }
-        ),
-        useTestData: true
-    )
-    .padding()
+    RouteSheetContent(route: .constant(MockData.Routes[0]))
+        .padding()
 }

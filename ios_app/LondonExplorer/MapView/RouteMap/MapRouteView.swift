@@ -13,21 +13,12 @@ struct MapRouteView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var route: Route
     @State var showSheet: Bool = true
-    @State var useTestData: Bool = false
     
-    // Function used for test view separately - for the preview
-    func buildRoute() async {
-        route.pathes = await MockData.calculateRoute(stops: route.stops).compactMap {
-            $0 != nil ? CodableMKRoute(from: $0!) : nil
-        }
-    }
-    
-    init(route: Route, useTestData: Bool = false) {
+    init(route: Route) {
         self.route = route
-        self.useTestData = useTestData
     }
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], routeName: String = "", useTestData: Bool = false) {
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], routeName: String = "") {
         self.route = Route(
             dateCreated: Date(),
             userCreated: Route.UserCreated(id: ""),
@@ -38,7 +29,6 @@ struct MapRouteView: View {
             stops: stops,
             pathes: pathes
         )
-        self.useTestData = useTestData
     }
     
     var body: some View {
@@ -86,19 +76,9 @@ struct MapRouteView: View {
                 .interactiveDismissDisabled()
                 .presentationContentInteraction(.scrolls)
         }
-        .onAppear {
-            if useTestData {
-                Task {
-                    await buildRoute()
-                }
-            }
-        }
     }
 }
 
 #Preview {
-    MapRouteView(
-        route: MockData.Routes[0],
-        useTestData: true
-    )
+    MapRouteView(route: MockData.Routes[0])
 }

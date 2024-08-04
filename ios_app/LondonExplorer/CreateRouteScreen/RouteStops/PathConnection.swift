@@ -43,10 +43,7 @@ struct PathConnection: View {
 
 #Preview {
     PathConnection(
-        isLoading: Binding<Bool> (
-            get: { return false },
-            set: { _ in }
-        ),
+        isLoading: .constant(false),
         path: .constant(CodableMKRoute(from: MKRoute()))
     )
     .padding()
