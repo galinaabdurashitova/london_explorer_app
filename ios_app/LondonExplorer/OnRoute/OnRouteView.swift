@@ -251,6 +251,7 @@ struct OnRouteView: View {
         HStack (spacing: 2) {
             Button(action: {
                 viewModel.changeStop(next: false)
+                currentRoute.routeProgress = viewModel.routeProgress
             }) {
                 VStack (spacing: 3) {
                     Image(systemName: "backward")

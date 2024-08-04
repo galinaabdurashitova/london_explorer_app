@@ -10,6 +10,7 @@ import SwiftUI
 
 struct RouteDataView: View {
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var currentRoute: CurrentRouteManager
     @ObservedObject var viewModel: RouteViewModel
     
     var body: some View {
@@ -80,7 +81,13 @@ struct RouteDataView: View {
     
     private var ThirdButton: some View {
         NavigationLink(value: RouteNavigation.progress(viewModel.route)) {
-            RouteButton.start.view
+            if let currentRoute = currentRoute.routeProgress, currentRoute.route.id == viewModel.route.id {
+                RouteButton.current.view
+            } else if let finishedRoute = auth.profile.finishedRoutes.first(where: { $0.id == viewModel.route.id }) {
+                RouteButton.completed(finishedRoute.finishedDate).view
+            } else {
+                RouteButton.start.view
+            }
         }
     }
 }
@@ -90,5 +97,6 @@ struct RouteDataView: View {
         RouteDataView(viewModel: RouteViewModel(route: MockData.Routes[0]))
     }
     .environmentObject(AuthController())
+    .environmentObject(CurrentRouteManager())
     .padding()
 }
