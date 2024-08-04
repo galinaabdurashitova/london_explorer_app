@@ -11,7 +11,7 @@ import SwiftUI
 struct MainScreenView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
-    @StateObject var onRouteViewModel: OnRouteViewModel = OnRouteViewModel()
+    @Binding var tabSelection: Int
     @State var routes: [Route] = MockData.Routes
     @State var friendsFeed: [FriendUpdate] = MockData.FriendsFeed
     @State var onRoute: RouteProgress = MockData.RouteProgress[0]
@@ -34,7 +34,7 @@ struct MainScreenView: View {
                     Spacer()
                     if !isLoading {
                         VStack(spacing: 25) {
-                                OnRouteWidget(viewModel: onRouteViewModel)
+                                OnRouteWidget(tabSelection: $tabSelection)
                                     .environmentObject(auth)
                             if networkMonitor.isConnected {
 //                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
@@ -74,14 +74,14 @@ struct MainScreenView: View {
                     RouteView(route: route)
                         .environmentObject(auth)
                 case .progress(let route):
-                    OnRouteView(route: route)
+                    OnRouteView(route: route, user: auth.profile)
                         .environmentObject(auth)
                 case .map(let route):
                     MapRouteView(route: route)
                 }
             }
-            .navigationDestination(for: RouteProgress.self) { _ in
-                OnRouteView(viewModel: onRouteViewModel)
+            .navigationDestination(for: RouteProgress.self) { routeProgress in
+                OnRouteView(routeProgress: routeProgress)
                     .environmentObject(auth)
             }
         }
@@ -104,7 +104,7 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
 
 
 #Preview {
-    MainScreenView()
+    MainScreenView(tabSelection: .constant(0))
         .environmentObject(AuthController())
         .environmentObject(NetworkMonitor())
 }

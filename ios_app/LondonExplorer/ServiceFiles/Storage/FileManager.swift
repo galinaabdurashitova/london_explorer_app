@@ -11,6 +11,7 @@ import Foundation
 //@UserStorage(key: "LONDON_EXPLORER_USERS") var user: [User]
 //@RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
 //@CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
+//@CurrentRoutesStorage(key: "LONDON_EXPLORER_CURRENT_ROUTES") var savedRouteProgress: [RouteProgress]
 
 //@RoutesStorage(key: "LONDON_EXPLORER_FINISHED_ROUTES") var finishedRoutes: [RouteProgress]
 

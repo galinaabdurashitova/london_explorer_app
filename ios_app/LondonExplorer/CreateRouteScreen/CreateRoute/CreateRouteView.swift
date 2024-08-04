@@ -62,7 +62,7 @@ struct CreateRouteView: View {
                     RouteView(route: route)
                         .environmentObject(auth)
                 case .progress(let route):
-                    OnRouteView(viewModel: OnRouteViewModel(route: route))
+                    OnRouteView(route: route, user: auth.profile)
                         .environmentObject(auth)
                 case .map(let route):
                     MapRouteView(route: route)

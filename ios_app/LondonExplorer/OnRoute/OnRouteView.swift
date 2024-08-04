@@ -12,19 +12,19 @@ import MapKit
 struct OnRouteView: View {
     @EnvironmentObject var auth: AuthController
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: OnRouteViewModel
+    @StateObject var viewModel: OnRouteViewModel
     
-    init(route: Route) {
-        self.viewModel = OnRouteViewModel(route: route)
+    init(route: Route, user: User) {
+        self._viewModel = StateObject(wrappedValue: OnRouteViewModel(route: route, user: user))
     }
     
     init(routeProgress: RouteProgress) {
-        self.viewModel = OnRouteViewModel(routeProgress: routeProgress)
+        self._viewModel = StateObject(wrappedValue: OnRouteViewModel(routeProgress: routeProgress))
     }
     
-    init(viewModel: OnRouteViewModel) {
-        self.viewModel = viewModel
-    }
+//    init(viewModel: OnRouteViewModel) {
+//        self.viewModel = viewModel
+//    }
     
     var body: some View {
         ZStack {

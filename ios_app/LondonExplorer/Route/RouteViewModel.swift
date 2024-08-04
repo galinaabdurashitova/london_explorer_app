@@ -10,6 +10,7 @@ import SwiftUI
 
 class RouteViewModel: ObservableObject {
     @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
+    @CurrentRoutesStorage(key: "LONDON_EXPLORER_CURRENT_ROUTES") var savedRoutesProgress: [RouteProgress]
     @Published var route: Route
     @Published var isEditSheetPresented: Bool = false
     @Published var newName: String
@@ -61,6 +62,10 @@ class RouteViewModel: ObservableObject {
                         self.savedRouteProgress = nil
                     }
                 }
+                
+                let newRPArray = savedRoutesProgress.filter { $0.route.id != route.id }
+                savedRoutesProgress.removeAll()
+                savedRoutesProgress = newRPArray
             } catch {
                 print("Error deleting route")
             }

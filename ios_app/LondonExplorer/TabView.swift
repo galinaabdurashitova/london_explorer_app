@@ -15,7 +15,7 @@ struct MainTabView: View {
     
     var body: some View {
         TabView (selection: $tabSelection) {
-            MainScreenView()
+            MainScreenView(tabSelection: $tabSelection)
                 .environmentObject(networkMonitor)
                 .environmentObject(auth)
                 .tabItem {
@@ -24,13 +24,13 @@ struct MainTabView: View {
                 }
                 .tag(0)
             
-//            ProgressView()
-//                .environmentObject(networkMonitor)
-//                .tabItem {
-//                    Label("Browse", systemImage: "magnifyingglass")
-//                        .environment(\.symbolVariants, .none)
-//                }
-//                .tag(1)
+            TestStorageView()
+                .environmentObject(networkMonitor)
+                .tabItem {
+                    Label("Browse", systemImage: "magnifyingglass")
+                        .environment(\.symbolVariants, .none)
+                }
+                .tag(1)
             
             CreateRouteView(tabSelection: $tabSelection)
                 .environmentObject(networkMonitor)

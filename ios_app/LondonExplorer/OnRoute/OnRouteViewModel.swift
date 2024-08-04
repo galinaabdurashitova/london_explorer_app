@@ -12,6 +12,7 @@ import MapKit
 class OnRouteViewModel: ObservableObject {
     // Model used in the view variables
     @CurrentRouteStorage(key: "LONDON_EXPLORER_CURRENT_ROUTE") var savedRouteProgress: RouteProgress?
+    @CurrentRoutesStorage(key: "LONDON_EXPLORER_CURRENT_ROUTES") var savedRoutesProgress: [RouteProgress]
     @Published var routeProgress: RouteProgress
     
     // Map variables
@@ -34,15 +35,16 @@ class OnRouteViewModel: ObservableObject {
     private var usersService = UsersService()
     
     // Initializers
-    init(route: Route/*, user: User*/) {
+    init(route: Route, user: User) {
         self.routeProgress = RouteProgress(
             route: route,
             collectables: 0,
-            stops: 0//,
-//            user: user
+            stops: 0,
+            user: user
         )
         
-        if let savedRouteProgress = savedRouteProgress {
+//        if let savedRouteProgress = savedRouteProgress {
+        if let savedRouteProgress = getMyRouteProgress(user: user) {
             if route.id == savedRouteProgress.route.id {
                 self.routeProgress = savedRouteProgress
             } else {
@@ -65,16 +67,28 @@ class OnRouteViewModel: ObservableObject {
         Task { await self.screenSetup() }
     }
     
-    init() {
-        self.routeProgress = RouteProgress(
-            route: MockData.Routes[0],
-            collectables: 0,
-            stops: 0
-        )
+    func getMyRouteProgress(user: User) -> RouteProgress? {
+        if !savedRoutesProgress.isEmpty {
+            if let routeProgress = savedRoutesProgress.first(where: {
+                $0.user.id == user.id
+            }) {
+                return routeProgress
+            }
+        }
         
-        self.loadRouteProgress()
-        
-        Task { await self.screenSetup() }
+        return nil
+    }
+    
+    func getMyRouteProgressIndex() -> Int? {
+        guard let auth = self.auth else { return nil }
+        if !savedRoutesProgress.isEmpty {
+            if let routeProgress = savedRoutesProgress.firstIndex(where: {
+                $0.user.id == auth.profile.id
+            }) {
+                return routeProgress
+            }
+        }
+        return nil
     }
     
     // Screen setup functions
@@ -98,16 +112,29 @@ class OnRouteViewModel: ObservableObject {
     }
     
     // Route progress storing functions
-    func loadRouteProgress() {
-        if let savedRouteProgress = self.savedRouteProgress { self.routeProgress = savedRouteProgress }
+    func loadRouteProgress(user: User) {
+//        if let savedRouteProgress = self.savedRouteProgress { self.routeProgress = savedRouteProgress }
+        if let savedRouteProgress = getMyRouteProgress(user: user) {
+            self.routeProgress = savedRouteProgress
+        }
     }
     
     func saveRoute() {
-        self.savedRouteProgress = self.routeProgress
+//        self.savedRouteProgress = self.routeProgress
+        
+        if let savedRouteIndex = getMyRouteProgressIndex() {
+            savedRoutesProgress[savedRouteIndex] = routeProgress
+        } else {
+            savedRoutesProgress.append(routeProgress)
+        }
     }
     
     func eraseProgress() {
-        self.savedRouteProgress = nil
+//        self.savedRouteProgress = nil
+        guard let auth = self.auth else { return }
+        savedRoutesProgress.removeAll(where: {
+            $0.user.id == auth.profile.id
+        })
     }
     
     // Route progress management functions

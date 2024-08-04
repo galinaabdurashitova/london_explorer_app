@@ -29,7 +29,7 @@ struct RouteProgress: Identifiable, Codable, Hashable, Equatable {
     var route: Route
     var collectables: Int
     var stops: Int
-    var user: User?
+    var user: User
     var startTime: Date = Date()
     var endTime: Date?
     var paused: Bool = false
