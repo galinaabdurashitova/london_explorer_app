@@ -47,6 +47,13 @@ struct ProfileView: View {
                 case .map(let route):
                     MapRouteView(route: route)
                 }
+            }            
+            .navigationDestination(for: ProfileNavigation.self) { value in
+                switch value {
+                case .finishedRoutes:
+                    FinishedRoutesView()
+                        .environmentObject(auth)
+                }
             }
         }
         .onAppear {
@@ -111,10 +118,7 @@ struct ProfileView: View {
         HStack(spacing: 10) {
             StatIcon(icon: "Trophy3DIcon", number: viewModel.user.awards, word: "awards", colour: Color.redAccent)
             
-            NavigationLink(destination: {
-                FinishedRoutesView()
-                    .environmentObject(auth)
-            }) {
+            NavigationLink(value: ProfileNavigation.finishedRoutes) {
                 StatIcon(icon: "Route3DIcon", number: viewModel.user.finishedRoutes.count, word: "routes finished", colour: Color.greenAccent)
             }
             

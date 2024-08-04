@@ -237,7 +237,7 @@ struct OnRouteView: View {
             Spacer()
             
             NavigationLink(destination: {
-                AttractionView(attraction: viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction, allowAdd: false)
+                AttractionView(attraction: $viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction, allowAdd: false)
             }) {
                 HStack (spacing: 5) {
                     Text("Details")

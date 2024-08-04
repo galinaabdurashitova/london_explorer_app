@@ -34,11 +34,12 @@ class OnRouteViewModel: ObservableObject {
     private var usersService = UsersService()
     
     // Initializers
-    init(route: Route) {
+    init(route: Route/*, user: User*/) {
         self.routeProgress = RouteProgress(
             route: route,
             collectables: 0,
-            stops: 0
+            stops: 0//,
+//            user: user
         )
         
         if let savedRouteProgress = savedRouteProgress {

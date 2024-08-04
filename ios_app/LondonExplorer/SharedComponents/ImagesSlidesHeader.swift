@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ImagesSlidesHeader: View {
-    @State var images: [UIImage]
+    @Binding var images: [UIImage]
     
     var body: some View {
         TabView {
@@ -27,6 +27,6 @@ struct ImagesSlidesHeader: View {
 
 #Preview {
     ImagesSlidesHeader(
-        images: MockData.Attractions[0].images
+        images: .constant(MockData.Attractions[0].images)
     )
 }

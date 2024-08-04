@@ -31,7 +31,7 @@ struct AttractionsSearchView: View {
                     
                     SearchBar
                     
-                    if viewModel.isLoading {
+                    if viewModel.isLoading && viewModel.attractions.count < 1 {
                         loading
                     } else if viewModel.error != nil {
                         ErrorScreen() {
@@ -127,11 +127,11 @@ struct AttractionsSearchView: View {
     
     private var AttractionsList: some View {
         VStack (spacing: 5) {
-            ForEach($viewModel.filteredAttractions) { attraction in
+            ForEach(viewModel.filters.isEmpty && viewModel.searchText.isEmpty ? $viewModel.attractions : $viewModel.filteredAttractions) { attraction in
                 HStack (spacing: 5) {
                     NavigationLink(
                         destination: {
-                            AttractionView(stops: $viewModel.stops, attraction: attraction.wrappedValue, allowAdd: true)
+                            AttractionView(stops: $viewModel.stops, attraction: attraction, allowAdd: true)
                     }) {
                         AttractionCard(attraction: attraction)
                     }

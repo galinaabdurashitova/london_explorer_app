@@ -14,6 +14,7 @@ class RouteViewModel: ObservableObject {
     @Published var isEditSheetPresented: Bool = false
     @Published var newName: String
     @Published var newDescription: String
+    @Published var images: [UIImage]
     
     private var routesService = RoutesService()
     
@@ -21,6 +22,9 @@ class RouteViewModel: ObservableObject {
         self.route = route
         self.newName = route.name
         self.newDescription = route.description
+        self.images = route.stops.compactMap { stop in
+            stop.attraction.images.first
+        }
     }
     
     func saveEditRoute() {

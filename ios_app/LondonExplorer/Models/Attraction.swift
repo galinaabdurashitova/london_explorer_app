@@ -17,6 +17,7 @@ struct Attraction: Identifiable, Equatable, Codable, Hashable {
     var address: String
     var coordinates: CLLocationCoordinate2D
     var images: [UIImage] = []
+    var finishedImagesDownload: Bool
     var categories: [Category]
     
     static func == (lhs: Attraction, rhs: Attraction) -> Bool {
@@ -32,6 +33,7 @@ struct Attraction: Identifiable, Equatable, Codable, Hashable {
         hasher.combine(coordinates.latitude)
         hasher.combine(coordinates.longitude)
         hasher.combine(images.map { $0.pngData()?.hashValue ?? 0 })
+        hasher.combine(finishedImagesDownload)
         hasher.combine(categories)
     }
     
@@ -89,10 +91,11 @@ struct Attraction: Identifiable, Equatable, Codable, Hashable {
         case address
         case coordinates
         case images
+        case finishedImagesDownload
         case categories
     }
     
-    init(id: String, name: String, shortDescription: String, fullDescription: String, address: String, coordinates: CLLocationCoordinate2D, images: [UIImage], categories: [Category]) {
+    init(id: String, name: String, shortDescription: String, fullDescription: String, address: String, coordinates: CLLocationCoordinate2D, images: [UIImage], finishedImagesDownload: Bool = true, categories: [Category]) {
         self.id = id
         self.name = name
         self.shortDescription = shortDescription
@@ -100,6 +103,7 @@ struct Attraction: Identifiable, Equatable, Codable, Hashable {
         self.address = address
         self.coordinates = coordinates
         self.images = images
+        self.finishedImagesDownload = finishedImagesDownload
         self.categories = categories
     }
     
@@ -113,6 +117,7 @@ struct Attraction: Identifiable, Equatable, Codable, Hashable {
         self.address = try container.decode(String.self, forKey: .address)
         self.coordinates = try container.decode(CLLocationCoordinate2D.self, forKey: .coordinates)
         self.images = (try container.decode([Data].self, forKey: .images)).compactMap { UIImage(data: $0) }
+        self.finishedImagesDownload = try container.decode(Bool.self, forKey: .finishedImagesDownload)
         self.categories = try container.decode([Category].self, forKey: .categories)
     }
     
@@ -126,6 +131,7 @@ struct Attraction: Identifiable, Equatable, Codable, Hashable {
         try container.encode(address, forKey: .address)
         try container.encode(coordinates, forKey: .coordinates)
         try container.encode(images.compactMap { $0.jpegData(compressionQuality: 1.0) }, forKey: .images)
+        try container.encode(finishedImagesDownload, forKey: .finishedImagesDownload)
         try container.encode(categories, forKey: .categories)
     }
 }

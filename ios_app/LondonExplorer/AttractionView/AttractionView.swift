@@ -27,7 +27,7 @@ struct AttractionView: View {
         return Double(headerHeight - scrollOffset * 2) / 100
     }
     
-    init(stops: Binding<[Route.RouteStop]> = .constant([]), attraction: Attraction, allowAdd: Bool) {
+    init(stops: Binding<[Route.RouteStop]> = .constant([]), attraction: Binding<Attraction>, allowAdd: Bool) {
         self._viewModel = StateObject(wrappedValue: AttractionViewModel(stops: stops, attraction: attraction))
         self.allowAdd = allowAdd
     }
@@ -35,7 +35,7 @@ struct AttractionView: View {
     var body: some View {
         VStack (spacing: -60) {
             ZStack (alignment: .topLeading) {
-                ImagesSlidesHeader(images: viewModel.attraction.images)
+                ImagesSlidesHeader(images: $viewModel.attraction.images)
                     .frame(height: headerHeight)
                     .clipped()
                     .padding(.vertical, 0)
@@ -84,6 +84,9 @@ struct AttractionView: View {
             if allowAdd {
                 AddButton
             }
+        }
+        .onAppear {
+            Task { await viewModel.fetchAttractionImages() }
         }
         .animation(.easeInOut, value: headerHeight)
         .navigationBarBackButtonHidden(true)
@@ -142,6 +145,6 @@ struct AttractionView: View {
 
 
 #Preview {
-    AttractionView(attraction: MockData.Attractions[0], allowAdd: true)
+    AttractionView(attraction: .constant(MockData.Attractions[0]), allowAdd: true)
     //.environmentObject(NetworkMonitor())
 }

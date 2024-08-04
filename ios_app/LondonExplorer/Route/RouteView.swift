@@ -32,9 +32,7 @@ struct RouteView: View {
         VStack(spacing: -60) {
             ZStack (alignment: .topLeading) {
                 ImagesSlidesHeader(
-                    images: viewModel.route.stops.compactMap { stop in
-                        stop.attraction.images.first
-                    }
+                    images: $viewModel.images
                 )
                 .frame(height: headerHeight)
                 .clipped()
