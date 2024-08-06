@@ -118,10 +118,16 @@ struct CreateStopsView: View {
                             )
                     )
                 } else {
-                    NavigationLink(destination: {
-                        MapRouteView(stops: viewModel.stops, pathes: viewModel.pathes)
-                            .toolbar(.hidden, for: .tabBar)
-                    }) {
+                    NavigationLink(value: RouteNavigation.map(Route(
+                        dateCreated: Date(),
+                        userCreated: Route.UserCreated(id: ""),
+                        name: "New Route",
+                        description: "",
+                        image: viewModel.stops.count > 0 ? viewModel.stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
+                        collectables: 0,
+                        stops: viewModel.stops,
+                        pathes: viewModel.pathes
+                    ))) {
                         MapLinkButton()
                     }
                 }

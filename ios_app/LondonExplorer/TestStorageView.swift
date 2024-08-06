@@ -36,7 +36,7 @@ struct TestStorageView: View {
                         Text(user.userName)
                         VStack {
                             ForEach(user.finishedRoutes, id: \.id) { route in
-                                Text(route.id)
+                                Text(route.routeId)
                             }
                         }
                     }

@@ -7,10 +7,16 @@
 
 import Foundation
 
+enum AttractionNavigation: Hashable {
+    case info
+    case map
+}
+
 enum RouteNavigation: Hashable {
     case info(Route)
     case progress(Route)
     case map(Route)
+    case finishedRoute(User.FinishedRoute)
 }
 
 enum CreateRoutePath: Hashable {

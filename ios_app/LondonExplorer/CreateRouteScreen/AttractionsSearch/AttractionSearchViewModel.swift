@@ -22,10 +22,10 @@ class AttractionSearchViewModel: ObservableObject {
     private let imagesRep: ImagesRepository = ImagesRepository()
     
     init(stops: [Route.RouteStop] = []) {
-        self.attractions = []
+        self.attractions = MockData.Attractions //[]
         self.filteredAttractions = []
         self.stops = stops
-        self.fetchAttractions()
+//        self.fetchAttractions()
     }
     
     func fetchAttractions() {

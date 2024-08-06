@@ -102,10 +102,7 @@ struct FinishCreateView: View {
                 Spacer()
                 
                 if viewModel.route.stops.count > 0 {
-                    NavigationLink(destination: {
-                        MapRouteView(route: viewModel.route)
-                            .toolbar(.hidden, for: .tabBar)
-                    }) {
+                    NavigationLink(value: RouteNavigation.map(viewModel.route)) {
                         MapLinkButton()
                     }
                 }

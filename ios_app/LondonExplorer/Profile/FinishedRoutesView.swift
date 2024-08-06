@@ -31,7 +31,8 @@ struct FinishedRoutesView: View {
                                 set: { _ in }
                             ),
                             label: CardLabel.completed(route.finishedDate),
-                            size: .M
+                            size: .M,
+                            navigation: RouteNavigation.finishedRoute(route)
                         )
                     }
                 }

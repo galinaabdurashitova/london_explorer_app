@@ -83,7 +83,7 @@ struct RouteDataView: View {
         NavigationLink(value: RouteNavigation.progress(viewModel.route)) {
             if let currentRoute = currentRoute.routeProgress, currentRoute.route.id == viewModel.route.id {
                 RouteButton.current.view
-            } else if let finishedRoute = auth.profile.finishedRoutes.first(where: { $0.id == viewModel.route.id }) {
+            } else if let finishedRoute = auth.profile.finishedRoutes.first(where: { $0.routeId == viewModel.route.id }) {
                 RouteButton.completed(finishedRoute.finishedDate).view
             } else {
                 RouteButton.start.view
