@@ -11,6 +11,7 @@ struct ContentView: View {
     @StateObject var networkMonitor = NetworkMonitor()
     @StateObject var auth = AuthController()
     @StateObject var currentRoute = CurrentRouteManager()
+    @StateObject var globalSettings = GlobalSettings()
     
     var body: some View {
         Group {
@@ -19,6 +20,7 @@ struct ContentView: View {
                     .environmentObject(networkMonitor)
                     .environmentObject(auth)
                     .environmentObject(currentRoute)
+                    .environmentObject(globalSettings)
                     .onAppear {
                         currentRoute.getMyRouteProgress(user: auth.profile)
                     }

@@ -21,11 +21,15 @@ class AttractionSearchViewModel: ObservableObject {
     private let service: AttractionsServiceProtocol = AttractionsService()
     private let imagesRep: ImagesRepository = ImagesRepository()
     
-    init(stops: [Route.RouteStop] = []) {
-        self.attractions = MockData.Attractions //[]
-        self.filteredAttractions = []
+    init(stops: [Route.RouteStop] = [], useTestData: Bool = false) {
         self.stops = stops
-//        self.fetchAttractions()
+        self.filteredAttractions = []
+        if useTestData {
+            self.attractions = MockData.Attractions
+        } else {
+            self.attractions = []
+            self.fetchAttractions()
+        }
     }
     
     func fetchAttractions() {

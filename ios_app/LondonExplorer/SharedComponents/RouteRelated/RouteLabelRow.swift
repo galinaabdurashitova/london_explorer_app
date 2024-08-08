@@ -22,7 +22,7 @@ struct RouteLabelRow: View {
     
     init(route: Route) {
         self.stops = route.stops.count
-        self.collectables = route.collectables
+        self.collectables = route.collectables.count
         self.seconds = route.pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) + Double(route.stops.count * 15 * 60)
     }
     

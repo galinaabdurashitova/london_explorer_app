@@ -37,7 +37,7 @@ struct OnRouteWidget: View {
                             set: { _ in }
                         ),
                         collectablesTotal: Binding<Int>(
-                            get: { return routeProgress.route.collectables },
+                            get: { return routeProgress.route.collectables.count },
                             set: { _ in }
                         ),
                         stopsDone: Binding<Int>(

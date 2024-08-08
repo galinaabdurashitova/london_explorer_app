@@ -53,6 +53,8 @@ struct ProfileView: View {
                 switch value {
                 case .finishedRoutes:
                     FinishedRoutesView()
+                case .settings:
+                    SettingsView()
                 }
             }
         }
@@ -78,11 +80,11 @@ struct ProfileView: View {
                     
                     Spacer()
                     
-                    Button(action: {
-                        auth.signOut()
-                    }) {
-                        Image(systemName: "rectangle.portrait.and.arrow.right")//"gearshape")
-                            .icon(size: 30, colour: Color.black.opacity(0.3))
+                    if viewModel.user == auth.profile {
+                        NavigationLink(value: ProfileNavigation.settings) {
+                            Image(systemName: "gearshape")
+                                .icon(size: 30, colour: Color.black.opacity(0.3))
+                        }
                     }
                 }
                 

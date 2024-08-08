@@ -17,8 +17,8 @@ struct FinishCreateView: View {
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
-        self._viewModel = StateObject(wrappedValue: FinishCreateViewModel(stops: stops, pathes: pathes))
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [CLLocationCoordinate2D], tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
+        self._viewModel = StateObject(wrappedValue: FinishCreateViewModel(stops: stops, pathes: pathes, collectables: collectables))
         self._tabSelection = tabSelection
         self._path = path
     }
@@ -117,6 +117,7 @@ struct FinishCreateView: View {
     FinishCreateView(
         stops: MockData.RouteStops,
         pathes: [nil, nil, nil],
+        collectables: [],
         tabSelection: .constant(2),
         path: .constant(NavigationPath())
     )

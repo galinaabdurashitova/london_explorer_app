@@ -186,7 +186,10 @@ struct OnRouteView: View {
                     
                     RouteProgressStat(
                         collectablesDone: $viewModel.routeProgress.collectables,
-                        collectablesTotal: $viewModel.routeProgress.route.collectables,
+                        collectablesTotal: Binding<Int> (
+                            get: { return viewModel.routeProgress.route.collectables.count },
+                            set: { _ in }
+                        ),
                         stopsDone: $viewModel.routeProgress.stops,
                         stopsTotal: Binding<Int> (
                             get: { return viewModel.routeProgress.route.stops.count },

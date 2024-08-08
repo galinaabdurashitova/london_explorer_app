@@ -60,7 +60,7 @@ struct TestStorageView: View {
                         image: Binding(get: { savedRouteProgress.route.image }, set: { _ in }),
                         routeName: Binding(get: { savedRouteProgress.route.name }, set: { _ in }),
                         collectablesDone: Binding(get: { savedRouteProgress.collectables }, set: { _ in }),
-                        collectablesTotal: Binding(get: { savedRouteProgress.route.collectables }, set: { _ in }),
+                        collectablesTotal: Binding(get: { savedRouteProgress.route.collectables.count }, set: { _ in }),
                         stopsDone: Binding(get: { savedRouteProgress.stops }, set: { _ in }),
                         stopsTotal: Binding(get: { savedRouteProgress.route.stops.count }, set: { _ in })
                     )
@@ -74,7 +74,7 @@ struct TestStorageView: View {
                         image: Binding(get: { savedRouteProgress.route.image }, set: { _ in }),
                         routeName: Binding(get: { savedRouteProgress.route.name }, set: { _ in }),
                         collectablesDone: Binding(get: { savedRouteProgress.collectables }, set: { _ in }),
-                        collectablesTotal: Binding(get: { savedRouteProgress.route.collectables }, set: { _ in }),
+                        collectablesTotal: Binding(get: { savedRouteProgress.route.collectables.count }, set: { _ in }),
                         stopsDone: Binding(get: { savedRouteProgress.stops }, set: { _ in }),
                         stopsTotal: Binding(get: { savedRouteProgress.route.stops.count }, set: { _ in })
                     )
@@ -88,7 +88,7 @@ struct TestStorageView: View {
                         image: Binding(get: { savedRouteProgress.route.image }, set: { _ in }),
                         routeName: Binding(get: { savedRouteProgress.route.name }, set: { _ in }),
                         collectablesDone: Binding(get: { savedRouteProgress.collectables }, set: { _ in }),
-                        collectablesTotal: Binding(get: { savedRouteProgress.route.collectables }, set: { _ in }),
+                        collectablesTotal: Binding(get: { savedRouteProgress.route.collectables.count }, set: { _ in }),
                         stopsDone: Binding(get: { savedRouteProgress.stops }, set: { _ in }),
                         stopsTotal: Binding(get: { savedRouteProgress.route.stops.count }, set: { _ in })
                     )

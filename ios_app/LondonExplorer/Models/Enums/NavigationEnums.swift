@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+import MapKit
 
 enum AttractionNavigation: Hashable {
     case info
@@ -21,10 +23,11 @@ enum RouteNavigation: Hashable {
 
 enum CreateRoutePath: Hashable {
     case routeStops
-    case finishCreate([Route.RouteStop], [CodableMKRoute?])
+    case finishCreate([Route.RouteStop], [CodableMKRoute?], [CLLocationCoordinate2D])
     case savedRoute(Route)
 }
 
 enum ProfileNavigation: Hashable {
     case finishedRoutes
+    case settings
 }
