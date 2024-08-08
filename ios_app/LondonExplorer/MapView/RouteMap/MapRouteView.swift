@@ -14,6 +14,8 @@ struct MapRouteView: View {
     @State var route: Route
     @State var showSheet: Bool = true
     
+    private var collectablesColors: [Color] = [.blueAccent, .yellowAccent, .greenAccent, .redAccent]
+    
     init(route: Route) {
         self.route = route
     }
@@ -25,7 +27,7 @@ struct MapRouteView: View {
             name: routeName.isEmpty ? "New Route" : routeName,
             description: "",
             image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
-            collectables: 0,
+            collectables: [],
             stops: stops,
             pathes: pathes
         )
@@ -52,6 +54,12 @@ struct MapRouteView: View {
                     .annotationTitles(.hidden)
                     
                 }
+                
+                ForEach(route.collectables.indices, id: \.self) { index in
+                    Annotation("Collectable", coordinate: route.collectables[index]) {
+                        collactableAnnotation(index: index)
+                    }
+                }
             }
             .onTapGesture {
                 showSheet = true
@@ -77,8 +85,20 @@ struct MapRouteView: View {
                 .presentationContentInteraction(.scrolls)
         }
     }
+    
+    private func collactableAnnotation(index: Int) -> some View {
+        Image("Treasures3DIcon")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 25)
+            .shadow(color: Color.white.opacity(0.8), radius: 4)
+            .padding(.all, 10)
+            .background(collectablesColors[index % 4].opacity(1))
+            .cornerRadius(100)
+            .shadow(radius: 5)
+    }
 }
 
 #Preview {
-    MapRouteView(route: MockData.Routes[0])
+    MapRouteView(route: MockData.Routes[1])
 }

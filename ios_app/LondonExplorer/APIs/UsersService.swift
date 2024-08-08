@@ -59,11 +59,12 @@ class UsersService: UsersServiceProtocol {
         }
         
         // Save finished route to users profile
-        if let savedRouteIndex = userProfile.finishedRoutes.firstIndex(where: { $0.id == route.route.id }) {
-            userProfile.finishedRoutes[savedRouteIndex] = User.FinishedRoute(id: route.route.id, finishedDate: endDate, collectables: route.collectables)
-        } else {
-            userProfile.finishedRoutes.append(User.FinishedRoute(id: route.route.id, finishedDate: endDate, collectables: route.collectables))
-        }
+//        if let savedRouteIndex = userProfile.finishedRoutes.firstIndex(where: { $0.routeId == route.route.id }) {
+//            userProfile.finishedRoutes[savedRouteIndex] = User.FinishedRoute(routeId: route.route.id, finishedDate: endDate, collectables: route.collectables)
+//        } else {
+        userProfile.finishedRoutes.append(User.FinishedRoute(routeId: route.route.id, finishedDate: endDate, collectables: route.collectables))
+        userProfile.finishedRoutes.sort { $0.finishedDate > $1.finishedDate }
+//        }
         
         // Save updated users profile
         if let index = users.firstIndex(where: { $0.id == userProfile.id }) {

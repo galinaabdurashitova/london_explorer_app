@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 
 struct CreateStopsView: View {
     @Environment(\.presentationMode) var presentationMode
-//    @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var globalSettings: GlobalSettings
     @StateObject var viewModel: RouteStopsViewModel
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
@@ -61,7 +61,10 @@ struct CreateStopsView: View {
             }
             
             if viewModel.stops.count > 1 {
-                NavigationLink(value: CreateRoutePath.finishCreate(viewModel.stops, viewModel.pathes)) {
+                Button(action: {
+                    viewModel.generateCollectables()
+                    path.append(CreateRoutePath.finishCreate(viewModel.stops, viewModel.pathes, viewModel.collectables))
+                }) {
                     ButtonView(
                         text: .constant("Continue"),
                         colour: Color.lightBlue,
@@ -81,7 +84,7 @@ struct CreateStopsView: View {
         }
         .fullScreenCover(isPresented: $showAttractionSearchView) {
             NavigationStack {
-                AttractionsSearchView(routeViewModel: viewModel)
+                AttractionsSearchView(routeViewModel: viewModel, useTestData: globalSettings.useMockData)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -118,10 +121,16 @@ struct CreateStopsView: View {
                             )
                     )
                 } else {
-                    NavigationLink(destination: {
-                        MapRouteView(stops: viewModel.stops, pathes: viewModel.pathes)
-                            .toolbar(.hidden, for: .tabBar)
-                    }) {
+                    NavigationLink(value: RouteNavigation.map(Route(
+                        dateCreated: Date(),
+                        userCreated: Route.UserCreated(id: ""),
+                        name: "New Route",
+                        description: "",
+                        image: viewModel.stops.count > 0 ? viewModel.stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
+                        collectables: [],
+                        stops: viewModel.stops,
+                        pathes: viewModel.pathes
+                    ))) {
                         MapLinkButton()
                     }
                 }
@@ -192,5 +201,5 @@ struct CreateStopsView: View {
         tabSelection: .constant(2),
         path: .constant(NavigationPath())
     )
-    .environmentObject(AuthController())
+    .environmentObject(GlobalSettings())
 }

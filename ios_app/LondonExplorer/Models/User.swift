@@ -26,7 +26,8 @@ struct User: Codable, Identifiable, Hashable, Equatable {
     var favRoutes: [String] = []
     
     struct FinishedRoute: Codable, Hashable, Equatable {
-        var id: String
+        var id = UUID()
+        var routeId: String
         var route: Route?
         var finishedDate: Date
         var collectables: Int

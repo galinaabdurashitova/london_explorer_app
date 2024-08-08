@@ -13,9 +13,9 @@ struct AttractionsSearchView: View {
     @StateObject var viewModel: AttractionSearchViewModel
     @ObservedObject var routeViewModel: RouteStopsViewModel
     
-    init(routeViewModel: RouteStopsViewModel) {
+    init(routeViewModel: RouteStopsViewModel, useTestData: Bool = false) {
         self.routeViewModel = routeViewModel
-        self._viewModel = StateObject(wrappedValue: AttractionSearchViewModel(stops: routeViewModel.stops))
+        self._viewModel = StateObject(wrappedValue: AttractionSearchViewModel(stops: routeViewModel.stops, useTestData: useTestData))
     }
     
     var body: some View {

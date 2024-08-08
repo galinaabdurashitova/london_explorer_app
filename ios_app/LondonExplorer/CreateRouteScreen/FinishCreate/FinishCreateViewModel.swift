@@ -14,17 +14,21 @@ class FinishCreateViewModel: ObservableObject {
     
     private var routesService = RoutesService()
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [CLLocationCoordinate2D]) {
         self.route = Route(
             dateCreated: Date(),
             userCreated: Route.UserCreated(id: ""),
             name: "",
             description: "",
             image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
-            collectables: 0,
+            collectables: collectables,
             stops: stops,
             pathes: pathes
         )
+        
+        for randomPoint in route.collectables {
+            print("\(randomPoint.latitude), \(randomPoint.longitude)")
+        }
     }
     
     func saveRoute(userId: String, userName: String) {

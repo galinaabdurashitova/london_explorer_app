@@ -45,8 +45,8 @@ struct CreateRouteView: View {
                 switch value {
                 case .routeStops:
                     CreateStopsView(tabSelection: $tabSelection, path: $path)
-                case .finishCreate(let stops, let pathes):
-                    FinishCreateView(stops: stops, pathes: pathes, tabSelection: $tabSelection, path: $path)
+                case .finishCreate(let stops, let pathes, let collectables):
+                    FinishCreateView(stops: stops, pathes: pathes, collectables: collectables, tabSelection: $tabSelection, path: $path)
                 case .savedRoute(let route):
                     SavedRouteView(route: route, tabSelection: $tabSelection, path: $path)
                 }
@@ -59,6 +59,8 @@ struct CreateRouteView: View {
                     OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
                 case .map(let route):
                     MapRouteView(route: route)
+                case .finishedRoute(let finishedRoute):
+                    if let route = finishedRoute.route { RouteView(route: route) }
                 }
             }
         }

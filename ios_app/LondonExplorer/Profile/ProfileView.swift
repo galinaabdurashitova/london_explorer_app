@@ -45,12 +45,16 @@ struct ProfileView: View {
                     OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
                 case .map(let route):
                     MapRouteView(route: route)
+                case .finishedRoute(let finishedRoute):
+                    if let route = finishedRoute.route { RouteView(route: route) }
                 }
             }            
             .navigationDestination(for: ProfileNavigation.self) { value in
                 switch value {
                 case .finishedRoutes:
                     FinishedRoutesView()
+                case .settings:
+                    SettingsView()
                 }
             }
         }
@@ -76,11 +80,11 @@ struct ProfileView: View {
                     
                     Spacer()
                     
-                    Button(action: {
-                        auth.signOut()
-                    }) {
-                        Image(systemName: "rectangle.portrait.and.arrow.right")//"gearshape")
-                            .icon(size: 30, colour: Color.black.opacity(0.3))
+                    if viewModel.user == auth.profile {
+                        NavigationLink(value: ProfileNavigation.settings) {
+                            Image(systemName: "gearshape")
+                                .icon(size: 30, colour: Color.black.opacity(0.3))
+                        }
                     }
                 }
                 

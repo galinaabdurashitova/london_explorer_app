@@ -17,7 +17,7 @@ struct Route: Identifiable, Codable, Hashable {
     var description: String
     var image: UIImage
     var saves: Int = 0
-    var collectables: Int
+    var collectables: [CLLocationCoordinate2D]
     var downloadDate: Date?
     var stops: [RouteStop] = [] 
     {
@@ -61,7 +61,7 @@ struct Route: Identifiable, Codable, Hashable {
         case pathes
     }
     
-    init(id: String = UUID().uuidString, dateCreated: Date, userCreated: UserCreated, name: String, description: String, image: UIImage, saves: Int = 0, collectables: Int, downloadDate: Date? = nil, stops: [RouteStop], pathes: [CodableMKRoute?]
+    init(id: String = UUID().uuidString, dateCreated: Date, userCreated: UserCreated, name: String, description: String, image: UIImage, saves: Int = 0, collectables: [CLLocationCoordinate2D], downloadDate: Date? = nil, stops: [RouteStop], pathes: [CodableMKRoute?]
     ) {
         self.id = id
         self.dateCreated = dateCreated
@@ -86,7 +86,7 @@ struct Route: Identifiable, Codable, Hashable {
         self.description = try container.decode(String.self, forKey: .description)
         self.image = UIImage(data: try container.decode(Data.self, forKey: .image)) ?? UIImage(imageLiteralResourceName: "default")
         self.saves = try container.decode(Int.self, forKey: .saves)
-        self.collectables = try container.decode(Int.self, forKey: .collectables)
+        self.collectables = try container.decode([CLLocationCoordinate2D].self, forKey: .collectables)
         self.downloadDate = try container.decode(Date?.self, forKey: .downloadDate)
         self.stops = try container.decode([RouteStop].self, forKey: .stops)
         self.pathes = try container.decode([CodableMKRoute?].self, forKey: .pathes)

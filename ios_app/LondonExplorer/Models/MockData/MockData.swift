@@ -78,7 +78,12 @@ class MockData {
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
             saves: 212,
-            collectables: 5,
+            collectables: [
+                CLLocationCoordinate2D(latitude: 51.51606596804756, longitude: -0.1207032745398544),
+                CLLocationCoordinate2D(latitude: 51.5154046934602, longitude:  -0.12538290000351276),
+                CLLocationCoordinate2D(latitude: 51.501324012606865, longitude: -0.12401221244365833),
+                CLLocationCoordinate2D(latitude: 51.51968000393714, longitude: -0.12275441790985948)
+            ],
             stops: RouteStops
             , pathes: [nil, nil, nil]
         ),
@@ -93,7 +98,13 @@ class MockData {
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
             saves: 52,
-            collectables: 7,
+            collectables: [
+                CLLocationCoordinate2D(latitude: 51.498762278960335, longitude: -0.1263361765911308),
+                CLLocationCoordinate2D(latitude: 51.50937123247818, longitude: -0.12743665028792597),
+                CLLocationCoordinate2D(latitude: 51.51919253774111, longitude: -0.13056578773788566),
+                CLLocationCoordinate2D(latitude: 51.516036179656275, longitude: -0.12470830890801224),
+                CLLocationCoordinate2D(latitude: 51.51876242989569, longitude: -0.10812954588346282)
+            ],
             stops: RouteStops
             , pathes: [nil, nil, nil]
         ),
@@ -108,7 +119,7 @@ class MockData {
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "LondonStreet"),
             saves: 103,
-            collectables: 5,
+            collectables: [], //5,
             stops: RouteStops
             , pathes: [nil, nil, nil]
         ),
@@ -123,7 +134,7 @@ class MockData {
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
             saves: 212,
-            collectables: 5,
+            collectables: [], //5,
             downloadDate: Date(),
             stops: RouteStops
             , pathes: [nil, nil, nil]
@@ -139,7 +150,7 @@ class MockData {
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
             saves: 52,
-            collectables: 5,
+            collectables: [], //5,
             stops: RouteStops
             , pathes: [nil, nil, nil]
         )

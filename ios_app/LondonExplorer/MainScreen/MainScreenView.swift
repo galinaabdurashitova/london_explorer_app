@@ -73,6 +73,8 @@ struct MainScreenView: View {
                     OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
                 case .map(let route):
                     MapRouteView(route: route)
+                case .finishedRoute(let finishedRoute):
+                    if let route = finishedRoute.route { RouteView(route: route) }
                 }
             }
             .navigationDestination(for: RouteProgress.self) { routeProgress in

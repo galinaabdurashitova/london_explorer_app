@@ -104,7 +104,7 @@ class ImagesRepository: ObservableObject {
     
     private func getData(from reference: StorageReference) async throws -> Data {
         return try await withCheckedThrowingContinuation { continuation in
-            reference.getData(maxSize: 1 * 1024 * 1024) { data, error in
+            reference.getData(maxSize: 5 * 1024 * 1024) { data, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let data = data {

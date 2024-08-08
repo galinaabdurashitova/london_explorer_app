@@ -103,6 +103,9 @@
 		2AFB40EB2C5FEBF5005AEF8B /* CurrentRouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB40EA2C5FEBF5005AEF8B /* CurrentRouteManager.swift */; };
 		2AFB40EE2C6009AC005AEF8B /* RouteStopCardDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB40ED2C6009AC005AEF8B /* RouteStopCardDropDelegate.swift */; };
 		2AFB40F02C6009C8005AEF8B /* DeleteCardDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB40EF2C6009C8005AEF8B /* DeleteCardDropDelegate.swift */; };
+		2AFB413B2C63DC79005AEF8B /* Collectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB413A2C63DC79005AEF8B /* Collectable.swift */; };
+		2AFB413D2C63F1A8005AEF8B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */; };
+		2AFB413F2C63F27F005AEF8B /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB413E2C63F27F005AEF8B /* GlobalSettings.swift */; };
 		2AFD1F562C21B26C0061060E /* ImageCodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F552C21B26C0061060E /* ImageCodableExtension.swift */; };
 		2AFD1F592C21DAA40061060E /* CoordinatesCodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F582C21DAA40061060E /* CoordinatesCodableExtension.swift */; };
 		2AFD1F5B2C21DAC80061060E /* CodableMKRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F5A2C21DAC80061060E /* CodableMKRoute.swift */; };
@@ -231,6 +234,9 @@
 		2AFB40EA2C5FEBF5005AEF8B /* CurrentRouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRouteManager.swift; sourceTree = "<group>"; };
 		2AFB40ED2C6009AC005AEF8B /* RouteStopCardDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteStopCardDropDelegate.swift; sourceTree = "<group>"; };
 		2AFB40EF2C6009C8005AEF8B /* DeleteCardDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCardDropDelegate.swift; sourceTree = "<group>"; };
+		2AFB413A2C63DC79005AEF8B /* Collectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collectable.swift; sourceTree = "<group>"; };
+		2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		2AFB413E2C63F27F005AEF8B /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		2AFD1F552C21B26C0061060E /* ImageCodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCodableExtension.swift; sourceTree = "<group>"; };
 		2AFD1F582C21DAA40061060E /* CoordinatesCodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatesCodableExtension.swift; sourceTree = "<group>"; };
 		2AFD1F5A2C21DAC80061060E /* CodableMKRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableMKRoute.swift; sourceTree = "<group>"; };
@@ -269,6 +275,7 @@
 				2A0E39DF2C4D76AD00AC32A4 /* LocationManager.swift */,
 				2A8506912C0A8A65003A3117 /* NetworkMonitor.swift */,
 				2AFB40EA2C5FEBF5005AEF8B /* CurrentRouteManager.swift */,
+				2AFB413E2C63F27F005AEF8B /* GlobalSettings.swift */,
 			);
 			path = ServiceFiles;
 			sourceTree = "<group>";
@@ -446,6 +453,7 @@
 				2AA5B1242C08D885001EC475 /* Route.swift */,
 				2AA5B1392C09E52B001EC475 /* RouteProgress.swift */,
 				2AA5B13B2C09E5E5001EC475 /* User.swift */,
+				2AFB413A2C63DC79005AEF8B /* Collectable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -671,6 +679,7 @@
 				2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */,
 				2A0E39F02C4FF6E100AC32A4 /* FinishedRoutesView.swift */,
 				2A0E3A0A2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift */,
+				2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -839,6 +848,8 @@
 				2AA5B1382C09E4FD001EC475 /* OnRouteWidget.swift in Sources */,
 				2AC56A8D2C2987B900F7249B /* ErrorScreen.swift in Sources */,
 				2A76D4A52C15C944007908E0 /* MapContent.swift in Sources */,
+				2AFB413D2C63F1A8005AEF8B /* SettingsView.swift in Sources */,
+				2AFB413B2C63DC79005AEF8B /* Collectable.swift in Sources */,
 				2AA5B1502C0A1396001EC475 /* WidgetError.swift in Sources */,
 				2AA5B1452C0A02BA001EC475 /* FriendsOnRouteWidget.swift in Sources */,
 				2AA5B1252C08D885001EC475 /* Route.swift in Sources */,
@@ -854,6 +865,7 @@
 				2A0E39EB2C4EF07300AC32A4 /* RouteClock.swift in Sources */,
 				2A76D4B72C1624D6007908E0 /* RouteStopCard.swift in Sources */,
 				2A76D4C82C1A0A35007908E0 /* MapRouteView.swift in Sources */,
+				2AFB413F2C63F27F005AEF8B /* GlobalSettings.swift in Sources */,
 				2AE8A03C2C14F3C1005E0F62 /* AttractionView.swift in Sources */,
 				2A76D4AC2C15F2D7007908E0 /* AttractionSheetContent.swift in Sources */,
 				2A76D4D72C205DE5007908E0 /* FinishCreateViewModel.swift in Sources */,

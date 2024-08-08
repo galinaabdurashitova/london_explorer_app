@@ -25,7 +25,7 @@ class FinishedRoutesViewModel: ObservableObject {
                 var routes = auth.profile.finishedRoutes
                 for routeIndex in routes.indices {
                     do {
-                        let route = try await routesService.fetchRoute(routeId: routes[routeIndex].id)
+                        let route = try await routesService.fetchRoute(routeId: routes[routeIndex].routeId)
                         routes[routeIndex].route = route
                     } catch {
                         print("Error fetching route \(routes[routeIndex].id)")
