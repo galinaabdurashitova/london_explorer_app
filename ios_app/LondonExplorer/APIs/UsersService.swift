@@ -11,7 +11,6 @@ protocol UsersServiceProtocol {
     func fetchUser(userId: String) async throws -> User
     func createUser(newUser: User) async throws
     func saveFinishedRoute(userId: String, route: RouteProgress) async throws
-    func removeFinishedRoutes(userId: String)
 //    func saveFavRoute(userId: String, routeId: String) async throws -> Bool
 //    func deleteFavRoute(userId: String, routeId: String) async throws -> Bool
 }
@@ -19,7 +18,25 @@ protocol UsersServiceProtocol {
 class UsersService: UsersServiceProtocol {
     private let baseURL = URL(string: "http://localhost:8080/api/users")!
     
-    @UserStorage(key: "LONDON_EXPLORER_USERS") var users: [User]
+    struct UserWrapper: Codable {
+        var userId: String
+        var email: String
+        var name: String
+        var userName: String
+        var description: String?
+        var awards: Int
+        var collectables: Int
+        var friends: [String] = []
+        var finishedRoutes: [FinishedRoute] = []
+        var favRoutes: [String] = []
+        
+        struct FinishedRoute: Codable {
+            var finishedRouteId: String = UUID().uuidString
+            var routeId: String
+            var finishedDate: String
+            var collectables: Int
+        }
+    }
     
     enum ServiceError: Error {
         case noData
@@ -28,57 +45,151 @@ class UsersService: UsersServiceProtocol {
     }
     
     func fetchUser(userId: String) async throws -> User {
-        if var user = self.users.first(where: {
-            $0.id == userId
-        }) {
-            return user
-        } else {
+        let url = baseURL.appending(queryItems: [URLQueryItem(name: "userId", value: userId)])
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ServiceError.invalidResponse
+        }
+        
+        switch httpResponse.statusCode {
+        case 200..<300:
+            break
+        case 400:
+            throw ServiceError.serverError(400)
+        case 404:
             throw ServiceError.serverError(404)
+        case 500:
+            throw ServiceError.serverError(500)
+        default:
+            throw ServiceError.serverError(httpResponse.statusCode)
+        }
+        
+        do {
+            let user = try JSONDecoder().decode(UserWrapper.self, from: data)
+            var finishedRoutes: [User.FinishedRoute] = []
+            
+            for route in user.finishedRoutes {
+                if let finishedDate = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toDate(from: route.finishedDate) {
+                    finishedRoutes.append(
+                        User.FinishedRoute(
+                            id: route.finishedRouteId,
+                            routeId: route.routeId,
+                            finishedDate: finishedDate,
+                            collectables: route.collectables
+                        )
+                    )
+                } else {
+                    print("Failed to convert finished date \(route.finishedDate) for finished route \(route.finishedRouteId)")
+                }
+            }
+            
+            return User(
+                userId: user.userId,
+                email: user.email,
+                name: user.name,
+                userName: user.userName,
+                userDescription: user.description,
+                awards: user.awards,
+                collectables: user.collectables,
+                friends: user.friends,
+                finishedRoutes: finishedRoutes.sorted { $0.finishedDate > $1.finishedDate },
+                favRoutes: user.favRoutes
+            )
+        } catch let error {
+            if let decodingError = error as? DecodingError {
+                throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Decoding error: \(decodingError.localizedDescription)"])
+            } else {
+                throw error
+            }
         }
     }
     
     func createUser(newUser: User) async throws {
-        if self.users.contains(where: { $0.id == newUser.id }) {
-            throw ServiceError.serverError(409) // User already exists
-        }
-
-        self.users.append(newUser)
-
-        if !self.users.contains(where: { $0.id == newUser.id }) {
-            throw ServiceError.serverError(500) // User was not added
+        var request = URLRequest(url: baseURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let newUserWrapped = UserWrapper(
+            userId: newUser.id,
+            email: newUser.email,
+            name: newUser.name,
+            userName: newUser.userName,
+            awards: newUser.awards,
+            collectables: newUser.collectables
+        )
+        
+        do {
+            let jsonData = try JSONEncoder().encode(newUserWrapped)
+            request.httpBody = jsonData
+            
+            let (responseData, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw ServiceError.invalidResponse
+            }
+            
+            switch httpResponse.statusCode {
+            case 200..<300:
+                break
+            case 400:
+                throw ServiceError.serverError(400)
+            case 404:
+                throw ServiceError.serverError(404)
+            case 500:
+                throw ServiceError.serverError(500)
+            default:
+                throw ServiceError.serverError(httpResponse.statusCode)
+            }
+            
+        } catch let encodingError as EncodingError {
+            throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Encoding error: \(encodingError.localizedDescription)"])
+        } catch {
+            throw error
         }
     }
     
     func saveFinishedRoute(userId: String, route: RouteProgress) async throws {
-        guard let endDate = route.endTime else {
-            throw ServiceError.serverError(400)
-        }
+        guard let endTime = route.endTime else { throw ServiceError.serverError(400) }
         
-        guard var userProfile = users.first(where: { $0.id == userId }) else {
-            throw ServiceError.serverError(404)
-        }
+        let url = baseURL.appendingPathComponent("\(userId)/finishedRoutes")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        // Save finished route to users profile
-//        if let savedRouteIndex = userProfile.finishedRoutes.firstIndex(where: { $0.routeId == route.route.id }) {
-//            userProfile.finishedRoutes[savedRouteIndex] = User.FinishedRoute(routeId: route.route.id, finishedDate: endDate, collectables: route.collectables)
-//        } else {
-        userProfile.finishedRoutes.append(User.FinishedRoute(routeId: route.route.id, finishedDate: endDate, collectables: route.collectables))
-        userProfile.finishedRoutes.sort { $0.finishedDate > $1.finishedDate }
-//        }
+        let newFinishedRouteWrapped = UserWrapper.FinishedRoute(
+            routeId: route.route.id,
+            finishedDate: DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toString(from: endTime),
+            collectables: route.collectables
+        )
         
-        // Save updated users profile
-        if let index = users.firstIndex(where: { $0.id == userProfile.id }) {
-            users[index] = userProfile
-        } else {
-            throw ServiceError.serverError(500)
-        }
-    }
-    
-    func removeFinishedRoutes(userId: String) {
-        if let index = users.firstIndex(where: { $0.id == userId }) {
-            var user = users[index]
-            user.finishedRoutes.removeAll()
-            users[index] = user
+        do {
+            let jsonData = try JSONEncoder().encode(newFinishedRouteWrapped)
+            request.httpBody = jsonData
+            
+            let (responseData, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw ServiceError.invalidResponse
+            }
+            
+            switch httpResponse.statusCode {
+            case 200..<300:
+                break
+            case 400:
+                throw ServiceError.serverError(400)
+            case 404:
+                throw ServiceError.serverError(404)
+            case 500:
+                throw ServiceError.serverError(500)
+            default:
+                throw ServiceError.serverError(httpResponse.statusCode)
+            }
+            
+        } catch let encodingError as EncodingError {
+            throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Encoding error: \(encodingError.localizedDescription)"])
+        } catch {
+            throw error
         }
     }
 }

@@ -25,7 +25,7 @@ struct ProfileView: View {
                 VStack(alignment: .leading, spacing: 25) {
                     Header
                     
-                    if let description = viewModel.user.userDescription {
+                    if let description = viewModel.user.description {
                         Text(description)
                     }
                     

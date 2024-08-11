@@ -12,6 +12,7 @@ import FirebaseAuth
 
 class AuthController: ObservableObject {
     @Published var isSignedIn = false
+    @Published var isStarting = false
     @Published var profile: User = User(userId: "", name: "", userName: "")
     
     private var usersRepository: UsersServiceProtocol = UsersService()
@@ -20,7 +21,9 @@ class AuthController: ObservableObject {
         if testProfile == true  {
             self.setUserProfile()
         } else {
+            isStarting = true
             observeAuthChanges()
+            isStarting = false
         }
     }
     
@@ -77,7 +80,7 @@ class AuthController: ObservableObject {
             let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
             let user = authResult.user
             
-            let userProfile = User(userId: user.uid/*, email: email*/, name: name, userName: userName)
+            let userProfile = User(userId: user.uid, email: email, name: name, userName: userName)
             try await usersRepository.createUser(newUser: userProfile)
             
             self.setUserProfile(user: userProfile)

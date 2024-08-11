@@ -120,23 +120,27 @@ class OnRouteViewModel: ObservableObject {
     func finishRoute() throws {
         self.routeProgress.endTime = Date()
         
+        guard let auth = auth else {
+            throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "Authorization error. Saving progress is impossible"])
+        }
+
         Task {
             do {
-                if let auth = auth {
-                    try await usersService.saveFinishedRoute(userId: auth.profile.id, route: self.routeProgress)
-                    auth.profile = try await usersService.fetchUser(userId: auth.profile.id)
-//                    auth.profile.finishedRoutes.append(
-//                        User.FinishedRoute(
-//                            id: self.routeProgress.route.id,
-//                            finishedDate: self.routeProgress.endTime!,
-//                            collectables: self.routeProgress.collectables
-//                        )
-//                    )
-                } else {
-                    throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "Authorization error. Saving progress is impossible"])
-                }
+                try await usersService.saveFinishedRoute(userId: auth.profile.id, route: self.routeProgress)
             } catch {
+                print("Error saving finished route: \(error.localizedDescription)")
                 throw error
+            }
+        }
+        
+        DispatchQueue.main.async {
+            Task {
+                do {
+                    auth.profile = try await self.usersService.fetchUser(userId: auth.profile.id)
+                } catch {
+                    print("Error fetching user: \(error.localizedDescription)")
+                    throw error
+                }
             }
         }
     }

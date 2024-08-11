@@ -14,10 +14,10 @@ struct User: Codable, Identifiable, Hashable, Equatable {
     }
     
     var id: String
-//    var email: String
+    var email: String
     var name: String
     var userName: String
-    var userDescription: String?
+    var description: String?
     var image: UIImage
     var awards: Int = 0
     var collectables: Int = 0
@@ -26,7 +26,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
     var favRoutes: [String] = []
     
     struct FinishedRoute: Codable, Hashable, Equatable {
-        var id = UUID()
+        var id: String = UUID().uuidString
         var routeId: String
         var route: Route?
         var finishedDate: Date
@@ -35,7 +35,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
     
     enum CodingKeys: String, CodingKey {
         case userId
-//        case email
+        case email
         case name
         case userName
         case userDescription
@@ -47,12 +47,12 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         case favRoutes
     }
     
-    init(userId: String/*, email: String*/, name: String, userName: String, userDescription: String? = nil, image: UIImage = UIImage(imageLiteralResourceName: "User3DIcon"), awards: Int = 0, collectables: Int = 0, friends: [String] = [], finishedRoutes: [FinishedRoute] = [], favRoutes: [String] = []) {
+    init(userId: String, email: String = "", name: String, userName: String, userDescription: String? = nil, image: UIImage = UIImage(imageLiteralResourceName: "User3DIcon"), awards: Int = 0, collectables: Int = 0, friends: [String] = [], finishedRoutes: [FinishedRoute] = [], favRoutes: [String] = []) {
         self.id = userId
-//        self.email = email
+        self.email = email
         self.name = name
         self.userName = userName
-        self.userDescription = userDescription
+        self.description = userDescription
         self.image = image
         self.awards = awards
         self.collectables = collectables
@@ -65,10 +65,10 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try container.decode(String.self, forKey: .userId)
-//        self.email = try container.decode(String.self, forKey: .email)
+        self.email = try container.decode(String.self, forKey: .email)
         self.name = try container.decode(String.self, forKey: .name)
         self.userName = try container.decode(String.self, forKey: .userName)
-        self.userDescription = try container.decode(String?.self, forKey: .userDescription)
+        self.description = try container.decode(String?.self, forKey: .userDescription)
         self.image = UIImage(data: try container.decode(Data.self, forKey: .image)) ?? UIImage(imageLiteralResourceName: "default")
         self.awards = try container.decode(Int.self, forKey: .awards)
         self.collectables = try container.decode(Int.self, forKey: .collectables)
@@ -81,10 +81,10 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(id, forKey: .userId)
-//        try container.encode(email, forKey: .email)
+        try container.encode(email, forKey: .email)
         try container.encode(name, forKey: .name)
         try container.encode(userName, forKey: .userName)
-        try container.encode(userDescription, forKey: .userDescription)
+        try container.encode(description, forKey: .userDescription)
         try container.encode(image.jpegData(compressionQuality: 1.0), forKey: .image)
         try container.encode(awards, forKey: .awards)
         try container.encode(collectables, forKey: .collectables)

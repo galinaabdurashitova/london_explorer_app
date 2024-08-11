@@ -52,7 +52,7 @@ class AttractionSearchViewModel: ObservableObject {
                     self.filteredAttractions = self.attractions
                 }
             } catch {
-                self.error = error.localizedDescription
+                DispatchQueue.main.async { self.error = error.localizedDescription }
                 print("Error: \(error)")
             }
             
