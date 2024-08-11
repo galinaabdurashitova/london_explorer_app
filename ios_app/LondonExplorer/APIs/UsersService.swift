@@ -17,7 +17,7 @@ protocol UsersServiceProtocol {
 }
 
 class UsersService: UsersServiceProtocol {
-    private let baseURL = URL(string: "https://c490973c-0f21-4e71-866e-f8e4c353507b-00-3j1hu3pc5bvs1.kirk.replit.dev/api/users")!
+    private let baseURL = URL(string: "http://localhost:8080/api/users")!
     
     @UserStorage(key: "LONDON_EXPLORER_USERS") var users: [User]
     

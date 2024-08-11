@@ -65,13 +65,11 @@ public class UserController {
             return ResponseEntity.status(404).body("User not found");
         }
 
-        if (finishedRoute.getRouteId() == null || finishedRoute.getFinishedDate() == null) {
-            return ResponseEntity.status(400).body("Missing parameters: "
-                    + finishedRoute.getRouteId() + ", "
-                    + finishedRoute.getFinishedDate() + ", "
-                    + finishedRoute.getCollectables()
-            );
+        if (finishedRoute.getFinishedRouteId() == null || finishedRoute.getRouteId() == null || finishedRoute.getFinishedDate() == null) {
+            return ResponseEntity.status(400).body("Missing parameters");
         }
+
+        finishedRoute.setUserId(userId);
 
         finishedRouteService.saveFinishedRoute(finishedRoute);
         return ResponseEntity.ok().build();

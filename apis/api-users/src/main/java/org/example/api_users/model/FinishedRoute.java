@@ -1,5 +1,6 @@
 package org.example.api_users.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 
@@ -10,6 +11,7 @@ public class FinishedRoute {
     @Column(name = "finished_route_id", length = 16)
     private String finishedRouteId;
 
+    @JsonIgnore
     @Column(name = "user_id", length = 28, nullable = false)
     private String userId;
 
