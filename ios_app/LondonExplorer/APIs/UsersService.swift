@@ -18,32 +18,6 @@ protocol UsersServiceProtocol {
 class UsersService: UsersServiceProtocol {
     private let baseURL = URL(string: "http://localhost:8080/api/users")!
     
-    struct UserWrapper: Codable {
-        var userId: String
-        var email: String
-        var name: String
-        var userName: String
-        var description: String?
-        var awards: Int
-        var collectables: Int
-        var friends: [String] = []
-        var finishedRoutes: [FinishedRoute] = []
-        var favRoutes: [String] = []
-        
-        struct FinishedRoute: Codable {
-            var finishedRouteId: String = UUID().uuidString
-            var routeId: String
-            var finishedDate: String
-            var collectables: Int
-        }
-    }
-    
-    enum ServiceError: Error {
-        case noData
-        case invalidResponse
-        case serverError(Int)
-    }
-    
     func fetchUser(userId: String) async throws -> User {
         let url = baseURL.appending(queryItems: [URLQueryItem(name: "userId", value: userId)])
         let (data, response) = try await URLSession.shared.data(from: url)
@@ -67,6 +41,39 @@ class UsersService: UsersServiceProtocol {
         
         do {
             let user = try JSONDecoder().decode(UserWrapper.self, from: data)
+            var userAwards: [User.UserAward] = []
+            
+            for award in user.awards {
+                if let awardDate = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toDate(from: award.awardDate), let awardType = AwardTypes(rawValue: award.award) {
+                    userAwards.append(
+                        User.UserAward(
+                            id: award.awardId,
+                            type: awardType,
+                            level: award.awardLevel,
+                            date: awardDate
+                        )
+                    )
+                } else {
+                    print("Failed to convert award date \(award.awardDate) or award type for award \(award.award)")
+                }
+            }
+            
+            var userCollectables: [User.UserCollectable] = []
+            
+            for collectable in user.collectables {
+                if let collectableType = Collectable(rawValue: collectable.collectable) {
+                    userCollectables.append(
+                        User.UserCollectable(
+                            id: collectable.collectableId,
+                            type: collectableType,
+                            finishedRouteId: collectable.finishedRouteId
+                        )
+                    )
+                } else {
+                    print("Failed to convert collectable type for collectable \(collectable.collectable)")
+                }
+            }
+            
             var finishedRoutes: [User.FinishedRoute] = []
             
             for route in user.finishedRoutes {
@@ -90,11 +97,10 @@ class UsersService: UsersServiceProtocol {
                 name: user.name,
                 userName: user.userName,
                 userDescription: user.description,
-                awards: user.awards,
-                collectables: user.collectables,
+                awards: userAwards,
+                collectables: userCollectables,
                 friends: user.friends,
-                finishedRoutes: finishedRoutes.sorted { $0.finishedDate > $1.finishedDate },
-                favRoutes: user.favRoutes
+                finishedRoutes: finishedRoutes.sorted { $0.finishedDate > $1.finishedDate }
             )
         } catch let error {
             if let decodingError = error as? DecodingError {
@@ -114,16 +120,14 @@ class UsersService: UsersServiceProtocol {
             userId: newUser.id,
             email: newUser.email,
             name: newUser.name,
-            userName: newUser.userName,
-            awards: newUser.awards,
-            collectables: newUser.collectables
+            userName: newUser.userName
         )
         
         do {
             let jsonData = try JSONEncoder().encode(newUserWrapped)
             request.httpBody = jsonData
             
-            let (responseData, response) = try await URLSession.shared.data(for: request)
+            let (_, response) = try await URLSession.shared.data(for: request)
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw ServiceError.invalidResponse
@@ -157,17 +161,26 @@ class UsersService: UsersServiceProtocol {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let newFinishedRouteWrapped = UserWrapper.FinishedRoute(
+        var newCollectables: [FinishedRouteWrapper.UserCollectable] = []
+        
+        for collectable in route.newCollectables {
+            newCollectables.append(
+                FinishedRouteWrapper.UserCollectable(userCollectableId: collectable.id, collectable: collectable.type.rawValue)
+            )
+        }
+        
+        let newFinishedRouteWrapped = FinishedRouteWrapper(
             routeId: route.route.id,
             finishedDate: DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toString(from: endTime),
-            collectables: route.collectables
+            collectables: route.collectables,
+            userCollectables: newCollectables
         )
         
         do {
             let jsonData = try JSONEncoder().encode(newFinishedRouteWrapped)
             request.httpBody = jsonData
             
-            let (responseData, response) = try await URLSession.shared.data(for: request)
+            let (_, response) = try await URLSession.shared.data(for: request)
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw ServiceError.invalidResponse

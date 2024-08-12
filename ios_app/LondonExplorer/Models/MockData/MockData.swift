@@ -77,13 +77,8 @@ class MockData {
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
-            saves: 212,
-            collectables: [
-                CLLocationCoordinate2D(latitude: 51.51606596804756, longitude: -0.1207032745398544),
-                CLLocationCoordinate2D(latitude: 51.5154046934602, longitude:  -0.12538290000351276),
-                CLLocationCoordinate2D(latitude: 51.501324012606865, longitude: -0.12401221244365833),
-                CLLocationCoordinate2D(latitude: 51.51968000393714, longitude: -0.12275441790985948)
-            ],
+            saves: [],
+            collectables: [],
             stops: RouteStops
             , pathes: [nil, nil, nil]
         ),
@@ -97,14 +92,8 @@ class MockData {
             name: "London Secrets",
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
-            saves: 52,
-            collectables: [
-                CLLocationCoordinate2D(latitude: 51.498762278960335, longitude: -0.1263361765911308),
-                CLLocationCoordinate2D(latitude: 51.50937123247818, longitude: -0.12743665028792597),
-                CLLocationCoordinate2D(latitude: 51.51919253774111, longitude: -0.13056578773788566),
-                CLLocationCoordinate2D(latitude: 51.516036179656275, longitude: -0.12470830890801224),
-                CLLocationCoordinate2D(latitude: 51.51876242989569, longitude: -0.10812954588346282)
-            ],
+            saves: [],
+            collectables: [],
             stops: RouteStops
             , pathes: [nil, nil, nil]
         ),
@@ -118,7 +107,7 @@ class MockData {
             name: "Some Route Some Route Some Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "LondonStreet"),
-            saves: 103,
+            saves: [],
             collectables: [], //5,
             stops: RouteStops
             , pathes: [nil, nil, nil]
@@ -133,7 +122,7 @@ class MockData {
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
-            saves: 212,
+            saves: [],
             collectables: [], //5,
             downloadDate: Date(),
             stops: RouteStops
@@ -149,7 +138,7 @@ class MockData {
             name: "London Secrets",
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
-            saves: 52,
+            saves: [],
             collectables: [], //5,
             stops: RouteStops
             , pathes: [nil, nil, nil]
@@ -187,7 +176,7 @@ class MockData {
     
     public static var RouteProgress: [RouteProgress] = [
         LondonExplorer.RouteProgress(route: Routes[2], collectables: 3, stops: 0, user: Users[0], startTime: Calendar.current.date(from: DateComponents(year: 2024, month: 7, day: 22, hour: 10, minute: 0)) ?? Date()),
-        LondonExplorer.RouteProgress(route: Routes[2], collectables: 3, stops: 3, user: Users[0]),
+        LondonExplorer.RouteProgress(route: Routes[2], collectables: 4, stops: 3, user: Users[0]),
         LondonExplorer.RouteProgress(route: Routes[1], collectables: 2, stops: 1, user: Users[1])
     ]
     

@@ -13,24 +13,7 @@ protocol AttractionsServiceProtocol {
 }
 
 class AttractionsService: AttractionsServiceProtocol {
-    private let baseURL = URL(string: "https://c490973c-0f21-4e71-866e-f8e4c353507b-00-3j1hu3pc5bvs1.kirk.replit.dev/api/attractions")!
-    
-    struct AttractionWrapper: Identifiable, Equatable, Codable, Hashable {
-        var id: String
-        var name: String
-        var shortDescription: String
-        var fullDescription: String
-        var address: String
-        var latitude: Double
-        var longitude: Double
-        var categories: [String]
-    }
-    
-    enum ServiceError: Error {
-        case noData
-        case invalidResponse
-        case serverError(Int)
-    }
+    private let baseURL = URL(string: "http://attractions-api-gmabdurashitova.replit.app/api/attractions")!
     
     func fetchAttractions() async throws -> [Attraction] {
         let (data, response) = try await URLSession.shared.data(from: baseURL)
@@ -53,12 +36,12 @@ class AttractionsService: AttractionsServiceProtocol {
         }
 
         do {
-            var attractions = try JSONDecoder().decode([AttractionWrapper].self, from: data)
+            let attractions = try JSONDecoder().decode([AttractionWrapper].self, from: data)
             var responseAttractions: [Attraction] = []
             
-            for attraction in attractions {
+            for attraction in attractions[0..<20] {
                 if !attraction.categories.isEmpty {
-                    var newAttraction = Attraction(
+                    let newAttraction = Attraction(
                         id: attraction.id,
                         name: attraction.name,
                         shortDescription: attraction.shortDescription,

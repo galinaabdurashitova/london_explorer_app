@@ -43,7 +43,7 @@ class AttractionViewModel: ObservableObject {
     func fetchAttractionImages() async {
         if !attraction.finishedImagesDownload {
             do {
-                var images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
+                let images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
                 
                 DispatchQueue.main.async {
                     self.attraction.images = images

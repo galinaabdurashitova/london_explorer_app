@@ -14,7 +14,7 @@ class FinishCreateViewModel: ObservableObject {
     
     private var routesService = RoutesService()
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [CLLocationCoordinate2D]) {
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [Route.RouteCollectable]) {
         self.route = Route(
             dateCreated: Date(),
             userCreated: Route.UserCreated(id: ""),
@@ -25,10 +25,6 @@ class FinishCreateViewModel: ObservableObject {
             stops: stops,
             pathes: pathes
         )
-        
-        for randomPoint in route.collectables {
-            print("\(randomPoint.latitude), \(randomPoint.longitude)")
-        }
     }
     
     func saveRoute(userId: String, userName: String) {

@@ -12,7 +12,7 @@ import MapKit
 class RouteStopsViewModel: ObservableObject {
     @Published var stops: [Route.RouteStop]
     @Published var pathes: [CodableMKRoute?]
-    @Published var collectables: [CLLocationCoordinate2D]
+    @Published var collectables: [Route.RouteCollectable]
     @Published var isLoading: Bool = false
     @Published var draggingItem: Route.RouteStop?
     @Published var deleteIconSize: Double = 25
@@ -115,12 +115,14 @@ class RouteStopsViewModel: ObservableObject {
         let maxCollectables = stops.count + 3
         let collectablesCount = Int.random(in: minCollectables...maxCollectables)
         
-        var generatedCollectables: [CLLocationCoordinate2D] = []
+        var generatedCollectables: [Route.RouteCollectable] = []
         
         for _ in 0..<collectablesCount {
-            if let path = pathes.randomElement() ?? nil {
+            if let path = pathes.randomElement() ?? nil, let collectable = Collectable.allCases.randomElement() ?? nil {
                 if let randomPoint = getRandomPointOnPath(route: path) {
-                    generatedCollectables.append(randomPoint)
+                    generatedCollectables.append(
+                        Route.RouteCollectable(location: randomPoint, type: collectable)
+                    )
                 }
             }
         }

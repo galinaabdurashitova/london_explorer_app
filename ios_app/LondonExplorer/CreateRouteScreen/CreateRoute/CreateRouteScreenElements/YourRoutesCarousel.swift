@@ -28,7 +28,7 @@ struct YourRoutesCarousel: View {
                     CreateRouteCard(tabSelection: $tabSelection, path: $path)
                     
                     ForEach($routes) { route in
-                        RouteCard(route: route, label: .likes(route.saves.wrappedValue))
+                        RouteCard(route: route, label: .likes(route.saves.count))
                     }
                 }
             }

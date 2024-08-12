@@ -23,7 +23,7 @@ enum RouteNavigation: Hashable {
 
 enum CreateRoutePath: Hashable {
     case routeStops
-    case finishCreate([Route.RouteStop], [CodableMKRoute?], [CLLocationCoordinate2D])
+    case finishCreate([Route.RouteStop], [CodableMKRoute?], [Route.RouteCollectable])
     case savedRoute(Route)
 }
 

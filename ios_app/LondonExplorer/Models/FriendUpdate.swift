@@ -27,8 +27,8 @@ struct FriendUpdate: Identifiable {
             return Image("Medal3DIcon")
         case .routeCompleted:
             return Image("RouteDone3DIcon")
-        default:
-            return Image("Start3DIcon")
+//        default:
+//            return Image("Start3DIcon")
         }
     }
     

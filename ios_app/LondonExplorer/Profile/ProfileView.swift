@@ -66,8 +66,13 @@ struct ProfileView: View {
     
     private var Header: some View {
         HStack(spacing: 15) {
-            Image(uiImage: viewModel.user.image)
-                .profilePicture(size: 120)
+            if let image = viewModel.user.image {
+                Image(uiImage: image)
+                    .profilePicture(size: 120)
+            } else {
+                Image("User3DIcon")
+                    .profilePicture(size: 120)
+            }
             
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
@@ -118,13 +123,13 @@ struct ProfileView: View {
     
     private var UserStatIcons: some View {
         HStack(spacing: 10) {
-            StatIcon(icon: "Trophy3DIcon", number: viewModel.user.awards, word: "awards", colour: Color.redAccent)
+            StatIcon(icon: "Trophy3DIcon", number: viewModel.user.awards.count, word: "awards", colour: Color.redAccent)
             
             NavigationLink(value: ProfileNavigation.finishedRoutes) {
                 StatIcon(icon: "Route3DIcon", number: viewModel.user.finishedRoutes.count, word: "routes finished", colour: Color.greenAccent)
             }
             
-            StatIcon(icon: "Treasures3DIcon", number: viewModel.user.collectables, word: "collectables", colour: Color.blueAccent)
+            StatIcon(icon: "Treasures3DIcon", number: viewModel.user.collectables.count, word: "collectables", colour: Color.blueAccent)
         }
     }
     

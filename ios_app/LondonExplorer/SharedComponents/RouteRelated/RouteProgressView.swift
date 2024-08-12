@@ -42,8 +42,14 @@ struct RouteProgressView: View {
                 VStack (alignment: .leading, spacing: 8) {
                     if let user = self.user {
                         HStack (spacing: 4) {
-                            Image(uiImage: user.image)
-                                .profilePicture(size: 22)
+                            if let image = user.image {
+                                Image(uiImage: image)
+                                    .profilePicture(size: 22)
+                            } else {
+                                Image("User3DIcon")
+                                    .profilePicture(size: 22)
+                            }
+                            
                             Text(user.name)
                                 .font(.system(size: 14, weight: .bold))
                             Text("is on a")

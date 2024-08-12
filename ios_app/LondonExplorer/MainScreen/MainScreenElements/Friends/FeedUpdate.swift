@@ -13,8 +13,13 @@ struct FeedUpdate: View {
     
     var body: some View {
         HStack {
-            Image(uiImage: update.friend.image)
-                .profilePicture(size: 50)
+            if let image = update.friend.image {
+                Image(uiImage: image)
+                    .profilePicture(size: 50)
+            } else {
+                Image("User3DIcon")
+                    .profilePicture(size: 50)
+            }
             VStack (alignment: .leading, spacing: 2) {
                 Text(update.formattedDate)
                     .font(.system(size: 10, weight: .semibold))

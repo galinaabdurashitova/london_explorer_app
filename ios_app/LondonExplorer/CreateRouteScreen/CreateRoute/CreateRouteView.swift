@@ -8,8 +8,6 @@
 import Foundation
 import SwiftUI
 
-
-
 struct CreateRouteView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
