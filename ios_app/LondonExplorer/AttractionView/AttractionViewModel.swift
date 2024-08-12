@@ -24,7 +24,7 @@ class AttractionViewModel: ObservableObject {
         if let index = stops.firstIndex(where: { $0.attraction == attraction }) {
             stops.remove(at: index)
             updateStopNumbers()
-        } else {
+        } else if stops.count < 10 {
             stops.append(
                 Route.RouteStop(
                     stepNo: stops.count + 1,

@@ -34,11 +34,12 @@ struct TestStorageView: View {
                     VStack {
                         Text(user.name)
                         Text(user.userName)
-                        VStack {
-                            ForEach(user.finishedRoutes, id: \.id) { route in
-                                Text(route.routeId)
-                            }
-                        }
+//                        VStack {
+//                            ForEach(user.finishedRoutes, id: \.id) { route in
+//                                Text(route.id.uuidString)
+//                                Text(route.routeId)
+//                            }
+//                        }
                     }
                 }
             }

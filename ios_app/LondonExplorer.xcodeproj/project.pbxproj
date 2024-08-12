@@ -26,6 +26,7 @@
 		2A0E3A072C51800100AC32A4 /* UsersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E3A062C51800100AC32A4 /* UsersService.swift */; };
 		2A0E3A092C51801200AC32A4 /* RoutesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E3A082C51801100AC32A4 /* RoutesService.swift */; };
 		2A0E3A0B2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E3A0A2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift */; };
+		2A17571C2C6943A700D4DFB1 /* DateConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17571B2C6943A700D4DFB1 /* DateConverter.swift */; };
 		2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */; };
 		2A58EA932C40778100F9A4C0 /* OnRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */; };
 		2A58EA952C40788200F9A4C0 /* RouteAttractionAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */; };
@@ -157,6 +158,7 @@
 		2A0E3A062C51800100AC32A4 /* UsersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersService.swift; sourceTree = "<group>"; };
 		2A0E3A082C51801100AC32A4 /* RoutesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesService.swift; sourceTree = "<group>"; };
 		2A0E3A0A2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedRoutesViewModel.swift; sourceTree = "<group>"; };
+		2A17571B2C6943A700D4DFB1 /* DateConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateConverter.swift; sourceTree = "<group>"; };
 		2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteView.swift; sourceTree = "<group>"; };
 		2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteViewModel.swift; sourceTree = "<group>"; };
 		2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteAttractionAnnotation.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				2A8506912C0A8A65003A3117 /* NetworkMonitor.swift */,
 				2AFB40EA2C5FEBF5005AEF8B /* CurrentRouteManager.swift */,
 				2AFB413E2C63F27F005AEF8B /* GlobalSettings.swift */,
+				2A17571B2C6943A700D4DFB1 /* DateConverter.swift */,
 			);
 			path = ServiceFiles;
 			sourceTree = "<group>";
@@ -835,6 +838,7 @@
 				2AFB40EE2C6009AC005AEF8B /* RouteStopCardDropDelegate.swift in Sources */,
 				2A76D4D52C1F6C05007908E0 /* CustomTextField.swift in Sources */,
 				2A0E3A072C51800100AC32A4 /* UsersService.swift in Sources */,
+				2A17571C2C6943A700D4DFB1 /* DateConverter.swift in Sources */,
 				2A76D4D12C1CBB70007908E0 /* FinishCreateView.swift in Sources */,
 				2A0E39FB2C50227D00AC32A4 /* TabView.swift in Sources */,
 				2AA5B12E2C0909BC001EC475 /* SuggestedRoutesCarousel.swift in Sources */,

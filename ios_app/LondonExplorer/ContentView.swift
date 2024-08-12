@@ -24,6 +24,16 @@ struct ContentView: View {
                     .onAppear {
                         currentRoute.getMyRouteProgress(user: auth.profile)
                     }
+            } else if auth.isStarting {
+                VStack {
+                    HStack {
+                        LondonExplorerLogo(scrollOffset: 50)
+                        Image("Bus3DIcon")
+                    }
+                    
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                }
             } else {
                 AuthView()
                     .environmentObject(auth)

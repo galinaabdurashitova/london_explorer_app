@@ -52,7 +52,7 @@ class AttractionSearchViewModel: ObservableObject {
                     self.filteredAttractions = self.attractions
                 }
             } catch {
-                self.error = error.localizedDescription
+                DispatchQueue.main.async { self.error = error.localizedDescription }
                 print("Error: \(error)")
             }
             
@@ -120,7 +120,7 @@ class AttractionSearchViewModel: ObservableObject {
         if let index = stops.firstIndex(where: { $0.attraction == attraction }) {
             stops.remove(at: index)
             updateStopNumbers()
-        } else {
+        } else if stops.count < 10 {
             stops.append(
                 Route.RouteStop(
                     stepNo: stops.count + 1,
