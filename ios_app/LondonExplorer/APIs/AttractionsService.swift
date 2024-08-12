@@ -13,7 +13,7 @@ protocol AttractionsServiceProtocol {
 }
 
 class AttractionsService: AttractionsServiceProtocol {
-    private let baseURL = URL(string: "https://c490973c-0f21-4e71-866e-f8e4c353507b-00-3j1hu3pc5bvs1.kirk.replit.dev/api/attractions")!
+    private let baseURL = URL(string: "https://attractions-api-gmabdurashitova.replit.app/api/attractions")!
     
     struct AttractionWrapper: Identifiable, Equatable, Codable, Hashable {
         var id: String
@@ -56,7 +56,7 @@ class AttractionsService: AttractionsServiceProtocol {
             var attractions = try JSONDecoder().decode([AttractionWrapper].self, from: data)
             var responseAttractions: [Attraction] = []
             
-            for attraction in attractions {
+            for attraction in attractions[0..<20] {
                 if !attraction.categories.isEmpty {
                     var newAttraction = Attraction(
                         id: attraction.id,
