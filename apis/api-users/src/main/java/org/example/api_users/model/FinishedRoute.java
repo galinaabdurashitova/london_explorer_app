@@ -8,14 +8,14 @@ import java.sql.Timestamp;
 @Table(name = "finished_routes")
 public class FinishedRoute {
     @Id
-    @Column(name = "finished_route_id", length = 16)
+    @Column(name = "finished_route_id", length = 36)
     private String finishedRouteId;
 
     @JsonIgnore
     @Column(name = "user_id", length = 28, nullable = false)
     private String userId;
 
-    @Column(name = "route_id", length = 16, nullable = false)
+    @Column(name = "route_id", length = 36, nullable = false)
     private String routeId;
 
     @Column(name = "finished_day")

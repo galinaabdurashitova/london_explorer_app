@@ -16,8 +16,8 @@ struct Route: Identifiable, Codable, Hashable {
     var name: String
     var description: String
     var image: UIImage
-    var saves: Int = 0
-    var collectables: [CLLocationCoordinate2D]
+    var saves: [String]
+    var collectables: [RouteCollectable]
     var downloadDate: Date?
     var stops: [RouteStop] = [] 
     {
@@ -30,10 +30,17 @@ struct Route: Identifiable, Codable, Hashable {
         }
     }
     var pathes: [CodableMKRoute?] = []
+    var routeTime: Double
     
     struct UserCreated: Identifiable, Equatable, Codable, Hashable {
         var id: String
         var name: String?
+    }
+    
+    struct RouteCollectable: Codable, Hashable {
+        var id: String = UUID().uuidString
+        var location: CLLocationCoordinate2D
+        var type: Collectable
     }
     
     struct RouteStop: Identifiable, Equatable, Codable, Hashable {
@@ -45,7 +52,6 @@ struct Route: Identifiable, Codable, Hashable {
             lhs.id == rhs.id
         }
     }
-
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -59,9 +65,10 @@ struct Route: Identifiable, Codable, Hashable {
         case downloadDate
         case stops
         case pathes
+        case routeTime
     }
     
-    init(id: String = UUID().uuidString, dateCreated: Date, userCreated: UserCreated, name: String, description: String, image: UIImage, saves: Int = 0, collectables: [CLLocationCoordinate2D], downloadDate: Date? = nil, stops: [RouteStop], pathes: [CodableMKRoute?]
+    init(id: String = UUID().uuidString, dateCreated: Date, userCreated: UserCreated, name: String, description: String, image: UIImage, saves: [String] = [], collectables: [RouteCollectable], downloadDate: Date? = nil, stops: [RouteStop], pathes: [CodableMKRoute?]
     ) {
         self.id = id
         self.dateCreated = dateCreated
@@ -74,6 +81,7 @@ struct Route: Identifiable, Codable, Hashable {
         self.downloadDate = downloadDate
         self.stops = stops
         self.pathes = pathes//.compactMap { $0 != nil ? CodableMKRoute(from: $0!) : nil }
+        self.routeTime = pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) + Double(stops.count * 15 * 60)
     }
 
     init(from decoder: Decoder) throws {
@@ -85,11 +93,12 @@ struct Route: Identifiable, Codable, Hashable {
         self.name = try container.decode(String.self, forKey: .name)
         self.description = try container.decode(String.self, forKey: .description)
         self.image = UIImage(data: try container.decode(Data.self, forKey: .image)) ?? UIImage(imageLiteralResourceName: "default")
-        self.saves = try container.decode(Int.self, forKey: .saves)
-        self.collectables = try container.decode([CLLocationCoordinate2D].self, forKey: .collectables)
+        self.saves = try container.decode([String].self, forKey: .saves)
+        self.collectables = try container.decode([RouteCollectable].self, forKey: .collectables)
         self.downloadDate = try container.decode(Date?.self, forKey: .downloadDate)
         self.stops = try container.decode([RouteStop].self, forKey: .stops)
         self.pathes = try container.decode([CodableMKRoute?].self, forKey: .pathes)
+        self.routeTime = try container.decode(Double.self, forKey: .routeTime)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -106,5 +115,6 @@ struct Route: Identifiable, Codable, Hashable {
         try container.encode(downloadDate, forKey: .downloadDate)
         try container.encode(stops, forKey: .stops)
         try container.encode(pathes, forKey: .pathes)
+        try container.encode(routeTime, forKey: .routeTime)
     }
 }

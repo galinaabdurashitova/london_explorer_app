@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "friends")
 public class Friend {
     @Id
-    @Column(name = "friendship_id", length = 16)
+    @Column(name = "friendship_id", length = 36)
     private String friendshipId;
 
     @Column(name = "user_1_id", length = 28, nullable = false)

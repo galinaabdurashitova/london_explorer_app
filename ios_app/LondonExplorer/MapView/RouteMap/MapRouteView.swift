@@ -56,7 +56,7 @@ struct MapRouteView: View {
                 }
                 
                 ForEach(route.collectables.indices, id: \.self) { index in
-                    Annotation("Collectable", coordinate: route.collectables[index]) {
+                    Annotation("Collectable", coordinate: route.collectables[index].location) {
                         collactableAnnotation(index: index)
                     }
                 }

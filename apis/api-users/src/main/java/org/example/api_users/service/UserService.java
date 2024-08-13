@@ -1,5 +1,7 @@
 package org.example.api_users.service;
 
+import org.example.api_users.model.UserAward;
+import org.example.api_users.model.UserCollectable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.example.api_users.model.User;
@@ -27,23 +29,19 @@ public class UserService {
         return userRepository.existsById(userId);
     }
 
-    public int countUserAwards(String userId) {
-        return userRepository.countUserAwards(userId);
-    }
-
-    public int countUserCollectables(String userId) {
-        return userRepository.countUserCollectables(userId);
-    }
-
     public List<String> findUserFriends(String userId) {
         return userRepository.findUserFriends(userId);
     }
 
-    public List<String> findFavouriteRoutes(String userId) {
-        return userRepository.findFavouriteRoutes(userId);
-    }
-
     public List<FinishedRoute> findFinishedRoutes(String userId) {
         return userRepository.findFinishedRoutes(userId);
+    }
+
+    public List<UserAward> findUserAwards(String userId) {
+        return userRepository.findUserAwards(userId);
+    }
+
+    public List<UserCollectable> findUserCollectables(String userId) {
+        return userRepository.findUserCollectables(userId);
     }
 }

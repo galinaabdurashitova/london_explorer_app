@@ -18,12 +18,24 @@ struct User: Codable, Identifiable, Hashable, Equatable {
     var name: String
     var userName: String
     var description: String?
-    var image: UIImage
-    var awards: Int = 0
-    var collectables: Int = 0
-    var friends: [String] = []
-    var finishedRoutes: [FinishedRoute] = []
-    var favRoutes: [String] = []
+    var image: UIImage?
+    var awards: [UserAward]
+    var collectables: [UserCollectable]
+    var friends: [String]
+    var finishedRoutes: [FinishedRoute]
+    
+    struct UserAward: Codable, Hashable, Equatable {
+        var id: String = UUID().uuidString
+        var type: AwardTypes
+        var level: Int
+        var date: Date
+    }
+    
+    struct UserCollectable: Codable, Hashable, Equatable {
+        var id: String = UUID().uuidString
+        var type: Collectable
+        var finishedRouteId: String
+    }
     
     struct FinishedRoute: Codable, Hashable, Equatable {
         var id: String = UUID().uuidString
@@ -44,10 +56,9 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         case collectables
         case friends
         case finishedRoutes
-        case favRoutes
     }
     
-    init(userId: String, email: String = "", name: String, userName: String, userDescription: String? = nil, image: UIImage = UIImage(imageLiteralResourceName: "User3DIcon"), awards: Int = 0, collectables: Int = 0, friends: [String] = [], finishedRoutes: [FinishedRoute] = [], favRoutes: [String] = []) {
+    init(userId: String, email: String = "", name: String, userName: String, userDescription: String? = nil, image: UIImage? = nil, awards: [UserAward] = [], collectables: [UserCollectable] = [], friends: [String] = [], finishedRoutes: [FinishedRoute] = []) {
         self.id = userId
         self.email = email
         self.name = name
@@ -58,7 +69,6 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         self.collectables = collectables
         self.friends = friends
         self.finishedRoutes = finishedRoutes
-        self.favRoutes = favRoutes
     }
     
     init(from decoder: Decoder) throws {
@@ -69,12 +79,11 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         self.name = try container.decode(String.self, forKey: .name)
         self.userName = try container.decode(String.self, forKey: .userName)
         self.description = try container.decode(String?.self, forKey: .userDescription)
-        self.image = UIImage(data: try container.decode(Data.self, forKey: .image)) ?? UIImage(imageLiteralResourceName: "default")
-        self.awards = try container.decode(Int.self, forKey: .awards)
-        self.collectables = try container.decode(Int.self, forKey: .collectables)
+        self.image = UIImage(data: try container.decode(Data.self, forKey: .image)) ?? nil
+        self.awards = try container.decode([UserAward].self, forKey: .awards)
+        self.collectables = try container.decode([UserCollectable].self, forKey: .collectables)
         self.friends = try container.decode([String].self, forKey: .friends)
         self.finishedRoutes = try container.decode([FinishedRoute].self, forKey: .finishedRoutes)
-        self.favRoutes = try container.decode([String].self, forKey: .favRoutes)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -85,11 +94,12 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         try container.encode(name, forKey: .name)
         try container.encode(userName, forKey: .userName)
         try container.encode(description, forKey: .userDescription)
-        try container.encode(image.jpegData(compressionQuality: 1.0), forKey: .image)
+        if let image = image {
+            try container.encode(image.jpegData(compressionQuality: 1.0), forKey: .image)
+        }
         try container.encode(awards, forKey: .awards)
         try container.encode(collectables, forKey: .collectables)
         try container.encode(friends, forKey: .friends)
         try container.encode(finishedRoutes, forKey: .finishedRoutes)
-        try container.encode(favRoutes, forKey: .favRoutes)
     }
 }

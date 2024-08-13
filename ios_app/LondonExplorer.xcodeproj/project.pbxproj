@@ -27,6 +27,12 @@
 		2A0E3A092C51801200AC32A4 /* RoutesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E3A082C51801100AC32A4 /* RoutesService.swift */; };
 		2A0E3A0B2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E3A0A2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift */; };
 		2A17571C2C6943A700D4DFB1 /* DateConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17571B2C6943A700D4DFB1 /* DateConverter.swift */; };
+		2A1757212C6A861900D4DFB1 /* Award.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757202C6A861900D4DFB1 /* Award.swift */; };
+		2A1757242C6AC25000D4DFB1 /* UserWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757232C6AC25000D4DFB1 /* UserWrapper.swift */; };
+		2A1757262C6AC26C00D4DFB1 /* AttractionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757252C6AC26C00D4DFB1 /* AttractionWrapper.swift */; };
+		2A1757282C6AC28B00D4DFB1 /* ServiceErrorEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757272C6AC28B00D4DFB1 /* ServiceErrorEnum.swift */; };
+		2A17572A2C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757292C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift */; };
+		2A17572C2C6AC6B800D4DFB1 /* OnRouteMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17572B2C6AC6B800D4DFB1 /* OnRouteMap.swift */; };
 		2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */; };
 		2A58EA932C40778100F9A4C0 /* OnRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */; };
 		2A58EA952C40788200F9A4C0 /* RouteAttractionAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */; };
@@ -159,6 +165,12 @@
 		2A0E3A082C51801100AC32A4 /* RoutesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesService.swift; sourceTree = "<group>"; };
 		2A0E3A0A2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedRoutesViewModel.swift; sourceTree = "<group>"; };
 		2A17571B2C6943A700D4DFB1 /* DateConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateConverter.swift; sourceTree = "<group>"; };
+		2A1757202C6A861900D4DFB1 /* Award.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Award.swift; sourceTree = "<group>"; };
+		2A1757232C6AC25000D4DFB1 /* UserWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserWrapper.swift; sourceTree = "<group>"; };
+		2A1757252C6AC26C00D4DFB1 /* AttractionWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionWrapper.swift; sourceTree = "<group>"; };
+		2A1757272C6AC28B00D4DFB1 /* ServiceErrorEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceErrorEnum.swift; sourceTree = "<group>"; };
+		2A1757292C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedRouteWrapper.swift; sourceTree = "<group>"; };
+		2A17572B2C6AC6B800D4DFB1 /* OnRouteMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteMap.swift; sourceTree = "<group>"; };
 		2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteView.swift; sourceTree = "<group>"; };
 		2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteViewModel.swift; sourceTree = "<group>"; };
 		2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteAttractionAnnotation.swift; sourceTree = "<group>"; };
@@ -312,6 +324,17 @@
 			path = AuthViews;
 			sourceTree = "<group>";
 		};
+		2A1757222C6AC23E00D4DFB1 /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				2A1757252C6AC26C00D4DFB1 /* AttractionWrapper.swift */,
+				2A1757272C6AC28B00D4DFB1 /* ServiceErrorEnum.swift */,
+				2A1757232C6AC25000D4DFB1 /* UserWrapper.swift */,
+				2A1757292C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
 		2A58EA8F2C40768C00F9A4C0 /* OnRoute */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,6 +343,7 @@
 				2A0E39E62C4E931200AC32A4 /* FinishRoutePopup.swift */,
 				2A0E39EA2C4EF07300AC32A4 /* RouteClock.swift */,
 				2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */,
+				2A17572B2C6AC6B800D4DFB1 /* OnRouteMap.swift */,
 			);
 			path = OnRoute;
 			sourceTree = "<group>";
@@ -451,12 +475,13 @@
 				2AFD1F572C21DA820061060E /* Codables */,
 				2AA5B1512C0A165B001EC475 /* Enums */,
 				2AA5B1202C08D79B001EC475 /* MockData */,
-				2AA5B1262C08E17E001EC475 /* FriendUpdate.swift */,
 				2AE8A02E2C14BDB2005E0F62 /* Attraction.swift */,
+				2A1757202C6A861900D4DFB1 /* Award.swift */,
+				2AFB413A2C63DC79005AEF8B /* Collectable.swift */,
+				2AA5B1262C08E17E001EC475 /* FriendUpdate.swift */,
 				2AA5B1242C08D885001EC475 /* Route.swift */,
 				2AA5B1392C09E52B001EC475 /* RouteProgress.swift */,
 				2AA5B13B2C09E5E5001EC475 /* User.swift */,
-				2AFB413A2C63DC79005AEF8B /* Collectable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -497,6 +522,7 @@
 		2AC56A872C28C50E00F7249B /* APIs */ = {
 			isa = PBXGroup;
 			children = (
+				2A1757222C6AC23E00D4DFB1 /* DTOs */,
 				2AC56A882C28C51B00F7249B /* AttractionsService.swift */,
 				2AC56A8A2C28C6BF00F7249B /* ImagesRepository.swift */,
 				2A0E3A082C51801100AC32A4 /* RoutesService.swift */,
@@ -770,6 +796,7 @@
 				2A76D4B52C162306007908E0 /* MapLinkButton.swift in Sources */,
 				2A0E39ED2C4F110B00AC32A4 /* StartRouteGreeting.swift in Sources */,
 				2AFD1F6D2C248D250061060E /* RouteView.swift in Sources */,
+				2A1757212C6A861900D4DFB1 /* Award.swift in Sources */,
 				2AFD1F6F2C2497580061060E /* RouteViewModel.swift in Sources */,
 				2AFB40F02C6009C8005AEF8B /* DeleteCardDropDelegate.swift in Sources */,
 				2AA5B13A2C09E52B001EC475 /* RouteProgress.swift in Sources */,
@@ -778,6 +805,7 @@
 				2A76D4B92C170A6B007908E0 /* PathConnection.swift in Sources */,
 				2AFD1F6B2C2481930061060E /* RouteMapContent.swift in Sources */,
 				2A76D4D32C1F6A65007908E0 /* RouteLabelRow.swift in Sources */,
+				2A1757262C6AC26C00D4DFB1 /* AttractionWrapper.swift in Sources */,
 				2AFD1F5F2C237E820061060E /* RoutesStorage.swift in Sources */,
 				2A0E39DD2C4D59E300AC32A4 /* RouteProgressStat.swift in Sources */,
 				2A76D4BF2C172AAD007908E0 /* BackButton.swift in Sources */,
@@ -800,6 +828,7 @@
 				2AD4B9632C0CD98E00B90C8A /* LoadingStyle.swift in Sources */,
 				2AA5B13C2C09E5E5001EC475 /* User.swift in Sources */,
 				2AA9B92B2C5FB12E001F27B9 /* TestStorageView.swift in Sources */,
+				2A1757242C6AC25000D4DFB1 /* UserWrapper.swift in Sources */,
 				2A0E39F92C501E9500AC32A4 /* TEMP_UserStorage.swift in Sources */,
 				2AA5B1302C090A33001EC475 /* TextStyles.swift in Sources */,
 				2AE8A0352C14E674005E0F62 /* AttractionCard.swift in Sources */,
@@ -831,6 +860,7 @@
 				2A8506922C0A8A65003A3117 /* NetworkMonitor.swift in Sources */,
 				2A0E39EF2C4FF4FA00AC32A4 /* ActionBanner.swift in Sources */,
 				2A0E39E02C4D76AD00AC32A4 /* LocationManager.swift in Sources */,
+				2A17572A2C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift in Sources */,
 				2AC56A8B2C28C6BF00F7249B /* ImagesRepository.swift in Sources */,
 				2AA5B1192C08B8CC001EC475 /* MainScreenView.swift in Sources */,
 				2AA5B1292C090417001EC475 /* LondonExplorerLogo.swift in Sources */,
@@ -856,6 +886,7 @@
 				2AFB413B2C63DC79005AEF8B /* Collectable.swift in Sources */,
 				2AA5B1502C0A1396001EC475 /* WidgetError.swift in Sources */,
 				2AA5B1452C0A02BA001EC475 /* FriendsOnRouteWidget.swift in Sources */,
+				2A1757282C6AC28B00D4DFB1 /* ServiceErrorEnum.swift in Sources */,
 				2AA5B1252C08D885001EC475 /* Route.swift in Sources */,
 				2AA5B1342C0923BD001EC475 /* FriendsFeed.swift in Sources */,
 				2A76D4A72C15D13D007908E0 /* ImagesSlidesHeader.swift in Sources */,
@@ -866,6 +897,7 @@
 				2AA9B9292C5FA10D001F27B9 /* CurrentRoutesStorage.swift in Sources */,
 				2AA5B10B2C08B890001EC475 /* LondonExplorerApp.swift in Sources */,
 				2AE8A02F2C14BDB2005E0F62 /* Attraction.swift in Sources */,
+				2A17572C2C6AC6B800D4DFB1 /* OnRouteMap.swift in Sources */,
 				2A0E39EB2C4EF07300AC32A4 /* RouteClock.swift in Sources */,
 				2A76D4B72C1624D6007908E0 /* RouteStopCard.swift in Sources */,
 				2A76D4C82C1A0A35007908E0 /* MapRouteView.swift in Sources */,

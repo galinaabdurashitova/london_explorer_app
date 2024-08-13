@@ -27,7 +27,7 @@ struct RouteProgress: Identifiable, Codable, Hashable, Equatable {
     
     var id = UUID()
     var route: Route
-    var collectables: Int
+    var collectables: [Route.RouteCollectable] = []
     var stops: Int
     var user: User
     var startTime: Date = Date()

@@ -1,13 +1,13 @@
 package org.example.api_users.controller;
 
+import org.example.api_users.dto.*;
+import org.example.api_users.model.*;
+import org.example.api_users.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.example.api_users.model.User;
-import org.example.api_users.model.FinishedRoute;
-import org.example.api_users.service.UserService;
-import org.example.api_users.service.FinishedRouteService;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +36,9 @@ public class UserController {
         response.put("name", user.get().getName());
         response.put("userName", user.get().getUserName());
         response.put("description", user.get().getDescription());
-        response.put("awards", userService.countUserAwards(userId));
-        response.put("collectables", userService.countUserCollectables(userId));
+        response.put("awards", userService.findUserAwards(userId));
+        response.put("collectables", userService.findUserCollectables(userId));
         response.put("friends", userService.findUserFriends(userId));
-        response.put("favRoutes", userService.findFavouriteRoutes(userId));
         response.put("finishedRoutes", userService.findFinishedRoutes(userId));
 
         return ResponseEntity.ok(response);
@@ -60,18 +59,42 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/finishedRoutes")
-    public ResponseEntity<?> saveFinishedRoute(@PathVariable String userId, @RequestBody FinishedRoute finishedRoute) {
+    public ResponseEntity<?> saveFinishedRoute(@PathVariable String userId, @RequestBody FinishedRouteRequest request) {
         if (!userService.userExists(userId)) {
             return ResponseEntity.status(404).body("User not found");
         }
 
-        if (finishedRoute.getFinishedRouteId() == null || finishedRoute.getRouteId() == null || finishedRoute.getFinishedDate() == null) {
+        if (request.getFinishedRouteId() == null || request.getRouteId() == null || request.getFinishedDate() == null) {
             return ResponseEntity.status(400).body("Missing parameters");
         }
 
-        finishedRoute.setUserId(userId);
-
+        // Save the FinishedRoute
+        FinishedRoute finishedRoute = new FinishedRoute(
+                request.getFinishedRouteId(),
+                userId,
+                request.getRouteId(),
+                request.getFinishedDate(),
+                request.getUserCollectables().size()
+        );
         finishedRouteService.saveFinishedRoute(finishedRoute);
+
+        // Save the UserCollectables
+        if (request.getUserCollectables() != null) {
+            for (UserCollectableRequest collectable : request.getUserCollectables()) {
+                boolean exists = finishedRouteService.userCollectableExists(userId, collectable.getCollectable());
+
+                if (!exists) {
+                    UserCollectable userCollectable = new UserCollectable(
+                            collectable.getUserCollectableId(),
+                            userId,
+                            collectable.getCollectable(),
+                            request.getFinishedRouteId()
+                    );
+                    finishedRouteService.saveUserCollectable(userCollectable);
+                }
+            }
+        }
+
         return ResponseEntity.ok().build();
     }
 }

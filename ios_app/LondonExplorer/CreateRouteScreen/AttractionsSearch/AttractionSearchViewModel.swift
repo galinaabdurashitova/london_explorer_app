@@ -36,7 +36,7 @@ class AttractionSearchViewModel: ObservableObject {
         self.isLoading = true
         Task {
             do {
-                var fetchedAttractions = try await service.fetchAttractions()
+                let fetchedAttractions = try await service.fetchAttractions()
                 
                 for attraction in fetchedAttractions {
                     var newAttraction = attraction
@@ -64,7 +64,7 @@ class AttractionSearchViewModel: ObservableObject {
     
     func fetchAttractionImage(attraction: inout Attraction) async {
         do {
-            var images = try await imagesRep.getAttractionImage(attractionId: attraction.id)
+            let images = try await imagesRep.getAttractionImage(attractionId: attraction.id)
             attraction.images = images
         } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
             print("Listing failed for attraction \(attraction.id): \(message)")
@@ -77,7 +77,7 @@ class AttractionSearchViewModel: ObservableObject {
     
     func fetchAttractionImages(attraction: inout Attraction) async {
         do {
-            var images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
+            let images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
             attraction.images = images
         } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
             print("Listing failed for attraction \(attraction.id): \(message)")

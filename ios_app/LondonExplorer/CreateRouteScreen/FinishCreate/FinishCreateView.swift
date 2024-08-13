@@ -17,7 +17,7 @@ struct FinishCreateView: View {
     @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [CLLocationCoordinate2D], tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [Route.RouteCollectable], tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
         self._viewModel = StateObject(wrappedValue: FinishCreateViewModel(stops: stops, pathes: pathes, collectables: collectables))
         self._tabSelection = tabSelection
         self._path = path

@@ -36,7 +36,7 @@ class OnRouteViewModel: ObservableObject {
     init(route: Route, user: User, savedRouteProgress: RouteProgress?) {
         self.routeProgress = RouteProgress(
             route: route,
-            collectables: 0,
+            collectables: [],
             stops: 0,
             user: user
         )

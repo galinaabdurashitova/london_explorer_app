@@ -39,7 +39,7 @@ struct SuggestedRoutesCarousel: View {
                                 if let routeIndex = indexForColumnRow(column: column, row: row), routeIndex < routes.count {
                                     RouteCard(
                                         route: $routes[routeIndex],
-                                        label: .likes(routes[routeIndex].saves),
+                                        label: .likes(routes[routeIndex].saves.count),
                                         navigation: RouteNavigation.info(routes[routeIndex])
                                     )
                                 }

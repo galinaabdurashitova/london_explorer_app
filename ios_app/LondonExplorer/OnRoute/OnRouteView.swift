@@ -185,7 +185,10 @@ struct OnRouteView: View {
                     Spacer()
                     
                     RouteProgressStat(
-                        collectablesDone: $viewModel.routeProgress.collectables,
+                        collectablesDone: Binding<Int> (
+                            get: { return viewModel.routeProgress.collectables.count },
+                            set: { _ in }
+                        ),
                         collectablesTotal: Binding<Int> (
                             get: { return viewModel.routeProgress.route.collectables.count },
                             set: { _ in }
