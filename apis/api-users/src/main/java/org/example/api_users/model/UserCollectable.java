@@ -1,5 +1,6 @@
 package org.example.api_users.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,6 +10,7 @@ public class UserCollectable {
     @Column(name = "user_collectable_id", length = 36)
     private String userCollectableId;
 
+    @JsonIgnore
     @Column(name = "user_id", length = 28, nullable = false)
     private String userId;
 

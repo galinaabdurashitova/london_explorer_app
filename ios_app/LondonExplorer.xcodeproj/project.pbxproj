@@ -33,6 +33,7 @@
 		2A1757282C6AC28B00D4DFB1 /* ServiceErrorEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757272C6AC28B00D4DFB1 /* ServiceErrorEnum.swift */; };
 		2A17572A2C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757292C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift */; };
 		2A17572C2C6AC6B800D4DFB1 /* OnRouteMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17572B2C6AC6B800D4DFB1 /* OnRouteMap.swift */; };
+		2A17572E2C6B672600D4DFB1 /* OnRouteStatWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17572D2C6B672600D4DFB1 /* OnRouteStatWindow.swift */; };
 		2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */; };
 		2A58EA932C40778100F9A4C0 /* OnRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */; };
 		2A58EA952C40788200F9A4C0 /* RouteAttractionAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */; };
@@ -171,6 +172,7 @@
 		2A1757272C6AC28B00D4DFB1 /* ServiceErrorEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceErrorEnum.swift; sourceTree = "<group>"; };
 		2A1757292C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedRouteWrapper.swift; sourceTree = "<group>"; };
 		2A17572B2C6AC6B800D4DFB1 /* OnRouteMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteMap.swift; sourceTree = "<group>"; };
+		2A17572D2C6B672600D4DFB1 /* OnRouteStatWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteStatWindow.swift; sourceTree = "<group>"; };
 		2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteView.swift; sourceTree = "<group>"; };
 		2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteViewModel.swift; sourceTree = "<group>"; };
 		2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteAttractionAnnotation.swift; sourceTree = "<group>"; };
@@ -338,12 +340,13 @@
 		2A58EA8F2C40768C00F9A4C0 /* OnRoute */ = {
 			isa = PBXGroup;
 			children = (
+				2A0E39E62C4E931200AC32A4 /* FinishRoutePopup.swift */,
+				2A17572B2C6AC6B800D4DFB1 /* OnRouteMap.swift */,
 				2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */,
 				2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */,
-				2A0E39E62C4E931200AC32A4 /* FinishRoutePopup.swift */,
 				2A0E39EA2C4EF07300AC32A4 /* RouteClock.swift */,
 				2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */,
-				2A17572B2C6AC6B800D4DFB1 /* OnRouteMap.swift */,
+				2A17572D2C6B672600D4DFB1 /* OnRouteStatWindow.swift */,
 			);
 			path = OnRoute;
 			sourceTree = "<group>";
@@ -879,6 +882,7 @@
 				2AFD1F622C237F3E0061060E /* SavedRouteView.swift in Sources */,
 				2AA5B13F2C09F673001EC475 /* ImageStyles.swift in Sources */,
 				2AFD1F562C21B26C0061060E /* ImageCodableExtension.swift in Sources */,
+				2A17572E2C6B672600D4DFB1 /* OnRouteStatWindow.swift in Sources */,
 				2AA5B1382C09E4FD001EC475 /* OnRouteWidget.swift in Sources */,
 				2AC56A8D2C2987B900F7249B /* ErrorScreen.swift in Sources */,
 				2A76D4A52C15C944007908E0 /* MapContent.swift in Sources */,

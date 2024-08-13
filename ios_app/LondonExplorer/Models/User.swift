@@ -51,7 +51,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         case name
         case userName
         case userDescription
-        case image
+//        case image
         case awards
         case collectables
         case friends
@@ -79,7 +79,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         self.name = try container.decode(String.self, forKey: .name)
         self.userName = try container.decode(String.self, forKey: .userName)
         self.description = try container.decode(String?.self, forKey: .userDescription)
-        self.image = UIImage(data: try container.decode(Data.self, forKey: .image)) ?? nil
+//        self.image = UIImage(data: try container.decode(Data.self, forKey: .image)) ?? nil
         self.awards = try container.decode([UserAward].self, forKey: .awards)
         self.collectables = try container.decode([UserCollectable].self, forKey: .collectables)
         self.friends = try container.decode([String].self, forKey: .friends)
@@ -94,9 +94,9 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         try container.encode(name, forKey: .name)
         try container.encode(userName, forKey: .userName)
         try container.encode(description, forKey: .userDescription)
-        if let image = image {
-            try container.encode(image.jpegData(compressionQuality: 1.0), forKey: .image)
-        }
+//        if let image = image {
+//            try container.encode(image.jpegData(compressionQuality: 1.0), forKey: .image)
+//        }
         try container.encode(awards, forKey: .awards)
         try container.encode(collectables, forKey: .collectables)
         try container.encode(friends, forKey: .friends)

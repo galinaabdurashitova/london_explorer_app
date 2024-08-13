@@ -64,7 +64,7 @@ class UsersService: UsersServiceProtocol {
                 if let collectableType = Collectable(rawValue: collectable.collectable) {
                     userCollectables.append(
                         User.UserCollectable(
-                            id: collectable.collectableId,
+                            id: collectable.userCollectableId,
                             type: collectableType,
                             finishedRouteId: collectable.finishedRouteId
                         )

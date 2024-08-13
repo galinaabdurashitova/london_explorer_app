@@ -12,7 +12,7 @@ struct UserWrapper: Codable {
     var email: String
     var name: String
     var userName: String
-    var description: String?
+    var description: String? = nil
     var awards: [UserAward] = []
     var collectables: [UserCollectable] = []
     var friends: [String] = []
@@ -26,7 +26,7 @@ struct UserWrapper: Codable {
     }
     
     struct UserCollectable: Codable {
-        var collectableId: String = UUID().uuidString
+        var userCollectableId: String = UUID().uuidString
         var collectable: String
         var finishedRouteId: String
     }

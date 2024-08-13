@@ -1,5 +1,6 @@
 package org.example.api_users.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -10,7 +11,8 @@ public class UserAward {
     @Id
     @Column(name = "user_award_id", length = 36)
     private String userAwardId;
-
+    
+    @JsonIgnore
     @Column(name = "user_id", length = 28, nullable = false)
     private String userId;
 
