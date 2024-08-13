@@ -163,7 +163,7 @@ class UsersService: UsersServiceProtocol {
         
         var newCollectables: [FinishedRouteWrapper.UserCollectable] = []
         
-        for collectable in route.newCollectables {
+        for collectable in route.collectables {
             newCollectables.append(
                 FinishedRouteWrapper.UserCollectable(userCollectableId: collectable.id, collectable: collectable.type.rawValue)
             )
@@ -172,7 +172,6 @@ class UsersService: UsersServiceProtocol {
         let newFinishedRouteWrapped = FinishedRouteWrapper(
             routeId: route.route.id,
             finishedDate: DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toString(from: endTime),
-            collectables: route.collectables,
             userCollectables: newCollectables
         )
         

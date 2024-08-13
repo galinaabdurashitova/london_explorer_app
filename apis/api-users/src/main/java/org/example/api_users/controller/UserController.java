@@ -74,20 +74,24 @@ public class UserController {
                 userId,
                 request.getRouteId(),
                 request.getFinishedDate(),
-                request.getCollectables()
+                request.getUserCollectables().size()
         );
         finishedRouteService.saveFinishedRoute(finishedRoute);
 
         // Save the UserCollectables
         if (request.getUserCollectables() != null) {
             for (UserCollectableRequest collectable : request.getUserCollectables()) {
-                UserCollectable userCollectable = new UserCollectable(
-                        collectable.getUserCollectableId(),
-                        userId,
-                        collectable.getCollectable(),
-                        request.getFinishedRouteId()
-                );
-                finishedRouteService.saveUserCollectable(userCollectable);
+                boolean exists = finishedRouteService.userCollectableExists(userId, collectable.getCollectable());
+
+                if (!exists) {
+                    UserCollectable userCollectable = new UserCollectable(
+                            collectable.getUserCollectableId(),
+                            userId,
+                            collectable.getCollectable(),
+                            request.getFinishedRouteId()
+                    );
+                    finishedRouteService.saveUserCollectable(userCollectable);
+                }
             }
         }
 

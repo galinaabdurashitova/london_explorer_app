@@ -2,7 +2,7 @@ package org.example.api_users.controller;
 
 import org.example.api_users.dto.FinishedRouteRequest;
 import org.example.api_users.dto.UserCollectableRequest;
-import org.example.api_users.model.FinishedRoute;
+import org.example.api_users.model.*;
 import org.example.api_users.service.FinishedRouteService;
 import org.example.api_users.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -15,11 +15,9 @@ import org.springframework.http.ResponseEntity;
 
 import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
+import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
 
@@ -37,7 +35,7 @@ public class UserControllerTest {
         String userId = "testUserId";
         String finishedRouteId = "testFinishedRouteId";
         String routeId = "testRouteId";
-        String finishedDate = "2024-08-12 12:34:56";
+        Timestamp finishedDate = Timestamp.valueOf("2024-08-12 12:34:56");
 
         UserCollectableRequest collectableRequest = new UserCollectableRequest();
         collectableRequest.setUserCollectableId("collectableId1");
@@ -47,7 +45,6 @@ public class UserControllerTest {
         request.setFinishedRouteId(finishedRouteId);
         request.setRouteId(routeId);
         request.setFinishedDate(finishedDate);
-        request.setCollectables(10);
         request.setUserCollectables(Collections.singletonList(collectableRequest));
 
         when(userService.userExists(userId)).thenReturn(true);
@@ -80,4 +77,34 @@ public class UserControllerTest {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+
+    @Test
+    public void testSaveFinishedRouteWithDuplicateUserCollectable() {
+        String userId = "testUserId";
+        String finishedRouteId = "testFinishedRouteId";
+        String routeId = "testRouteId";
+        Timestamp finishedDate = Timestamp.valueOf("2024-08-12 12:34:56");
+        String collectable = "collectable1";
+
+        UserCollectableRequest collectableRequest = new UserCollectableRequest();
+        collectableRequest.setUserCollectableId("collectableId1");
+        collectableRequest.setCollectable(collectable);
+
+        FinishedRouteRequest request = new FinishedRouteRequest();
+        request.setFinishedRouteId(finishedRouteId);
+        request.setRouteId(routeId);
+        request.setFinishedDate(finishedDate);
+        request.setUserCollectables(Collections.singletonList(collectableRequest));
+
+        when(userService.userExists(userId)).thenReturn(true);
+        when(finishedRouteService.userCollectableExists(userId, collectable)).thenReturn(true);
+
+        ResponseEntity<?> responseEntity = userController.saveFinishedRoute(userId, request);
+
+        // Verify that no new UserCollectable was saved
+        verify(finishedRouteService, never()).saveUserCollectable(any(UserCollectable.class));
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
 }

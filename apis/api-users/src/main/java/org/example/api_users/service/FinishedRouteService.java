@@ -21,5 +21,9 @@ public class FinishedRouteService {
     public void saveUserCollectable(UserCollectable userCollectable) {
         userCollectableRepository.save(userCollectable);
     }
+
+    public boolean userCollectableExists(String userId, String collectable) {
+        return userCollectableRepository.existsByUserIdAndCollectable(userId, collectable);
+    }
 }
 

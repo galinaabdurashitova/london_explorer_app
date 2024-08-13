@@ -11,7 +11,6 @@ struct FinishedRouteWrapper: Codable {
     var finishedRouteId: String = UUID().uuidString
     var routeId: String
     var finishedDate: String
-    var collectables: Int
     var userCollectables: [UserCollectable]
     
     struct UserCollectable: Codable {

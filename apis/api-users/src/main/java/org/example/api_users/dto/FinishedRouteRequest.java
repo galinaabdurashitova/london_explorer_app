@@ -7,7 +7,6 @@ public class FinishedRouteRequest {
     private String finishedRouteId;
     private String routeId;
     private Timestamp finishedDate;
-    private int collectables;
     private List<UserCollectableRequest> userCollectables;
 
     // Getters and Setters
@@ -34,14 +33,6 @@ public class FinishedRouteRequest {
 
     public void setFinishedDate(Timestamp finishedDate) {
         this.finishedDate = finishedDate;
-    }
-
-    public int getCollectables() {
-        return collectables;
-    }
-
-    public void setCollectables(int collectables) {
-        this.collectables = collectables;
     }
 
     public List<UserCollectableRequest> getUserCollectables() {

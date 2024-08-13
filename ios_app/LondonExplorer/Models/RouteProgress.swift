@@ -17,7 +17,6 @@ struct RouteProgress: Identifiable, Codable, Hashable, Equatable {
         hasher.combine(id)
         hasher.combine(route)
         hasher.combine(collectables)
-        hasher.combine(newCollectables)
         hasher.combine(stops)
         hasher.combine(user)
         hasher.combine(startTime)
@@ -28,8 +27,7 @@ struct RouteProgress: Identifiable, Codable, Hashable, Equatable {
     
     var id = UUID()
     var route: Route
-    var collectables: Int
-    var newCollectables: [Route.RouteCollectable] = []
+    var collectables: [Route.RouteCollectable] = []
     var stops: Int
     var user: User
     var startTime: Date = Date()
