@@ -68,6 +68,7 @@ class MockData {
     
     public static var Routes: [Route] = [
         Route(
+            id: "1",
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
             userCreated: 
                 Route.UserCreated(
@@ -170,8 +171,56 @@ class MockData {
     ]
     
     public static var Users: [User] = [
-        User(userId: "1"/*, email: "anna@traveler.com"*/, name: "Anna", userName: "annabanana", userDescription: "Traveler girl", image: UIImage(imageLiteralResourceName: "Anna")),
-        User(userId: "2"/*, email: "mary@traveler.com"*/, name: "Mary", userName: "mary_mary", image: UIImage(imageLiteralResourceName: "Mary"))
+        User(
+            userId: "1",
+            email: "anna@traveler.com",
+            name: "Anna",
+            userName: "annabanana",
+            userDescription: "Traveler girl",
+            image: UIImage(imageLiteralResourceName: "Anna"),
+            collectables: [
+                User.UserCollectable(
+                    id: "11",
+                    type: Collectable.bigBen,
+                    finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "12",
+                    type: Collectable.bulldog,
+                    finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "13",
+                    type: Collectable.bus,
+                    finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "14",
+                    type: Collectable.fishAndChips,
+                    finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "15",
+                    type: Collectable.newspaper,
+                    finishedRouteId: "111"
+                )
+            ],
+            finishedRoutes: [
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    finishedDate: Date(),
+                    collectables: 5
+                )
+            ]
+        ),
+        User(
+            userId: "2",
+            email: "mary@traveler.com",
+            name: "Mary",
+            userName: "mary_mary",
+            image: UIImage(imageLiteralResourceName: "Mary")
+        )
     ]
     
     public static var RouteProgress: [RouteProgress] = [

@@ -53,6 +53,8 @@ struct ProfileView: View {
                 switch value {
                 case .finishedRoutes:
                     FinishedRoutesView()
+                case .collectables:
+                    ProfileCollectablesView(user: viewModel.user)
                 case .settings:
                     SettingsView()
                 }
@@ -129,7 +131,9 @@ struct ProfileView: View {
                 StatIcon(icon: "Route3DIcon", number: viewModel.user.finishedRoutes.count, word: "routes finished", colour: Color.greenAccent)
             }
             
-            StatIcon(icon: "Treasures3DIcon", number: viewModel.user.collectables.count, word: "collectables", colour: Color.blueAccent)
+            NavigationLink(value: ProfileNavigation.collectables) {
+                StatIcon(icon: "Treasures3DIcon", number: viewModel.user.collectables.count, word: "collectables", colour: Color.blueAccent)
+            }
         }
     }
     

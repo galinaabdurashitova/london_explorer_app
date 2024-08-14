@@ -11,8 +11,6 @@ protocol UsersServiceProtocol {
     func fetchUser(userId: String) async throws -> User
     func createUser(newUser: User) async throws
     func saveFinishedRoute(userId: String, route: RouteProgress) async throws
-//    func saveFavRoute(userId: String, routeId: String) async throws -> Bool
-//    func deleteFavRoute(userId: String, routeId: String) async throws -> Bool
 }
 
 class UsersService: UsersServiceProtocol {

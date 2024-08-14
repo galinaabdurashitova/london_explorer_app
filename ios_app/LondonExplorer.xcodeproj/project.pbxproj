@@ -34,6 +34,7 @@
 		2A17572A2C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757292C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift */; };
 		2A17572C2C6AC6B800D4DFB1 /* OnRouteMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17572B2C6AC6B800D4DFB1 /* OnRouteMap.swift */; };
 		2A17572E2C6B672600D4DFB1 /* OnRouteStatWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17572D2C6B672600D4DFB1 /* OnRouteStatWindow.swift */; };
+		2A3CF4F42C6BFC6E00B1B769 /* ProfileCollectablesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3CF4F32C6BFC6E00B1B769 /* ProfileCollectablesView.swift */; };
 		2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */; };
 		2A58EA932C40778100F9A4C0 /* OnRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */; };
 		2A58EA952C40788200F9A4C0 /* RouteAttractionAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */; };
@@ -173,6 +174,7 @@
 		2A1757292C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedRouteWrapper.swift; sourceTree = "<group>"; };
 		2A17572B2C6AC6B800D4DFB1 /* OnRouteMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteMap.swift; sourceTree = "<group>"; };
 		2A17572D2C6B672600D4DFB1 /* OnRouteStatWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteStatWindow.swift; sourceTree = "<group>"; };
+		2A3CF4F32C6BFC6E00B1B769 /* ProfileCollectablesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectablesView.swift; sourceTree = "<group>"; };
 		2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteView.swift; sourceTree = "<group>"; };
 		2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteViewModel.swift; sourceTree = "<group>"; };
 		2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteAttractionAnnotation.swift; sourceTree = "<group>"; };
@@ -712,6 +714,7 @@
 				2A0E39F02C4FF6E100AC32A4 /* FinishedRoutesView.swift */,
 				2A0E3A0A2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift */,
 				2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */,
+				2A3CF4F32C6BFC6E00B1B769 /* ProfileCollectablesView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -880,6 +883,7 @@
 				2AA5B1322C090EE4001EC475 /* SectionHeader.swift in Sources */,
 				2A0E39F32C4FF75200AC32A4 /* CurrentRouteStorage.swift in Sources */,
 				2AFD1F622C237F3E0061060E /* SavedRouteView.swift in Sources */,
+				2A3CF4F42C6BFC6E00B1B769 /* ProfileCollectablesView.swift in Sources */,
 				2AA5B13F2C09F673001EC475 /* ImageStyles.swift in Sources */,
 				2AFD1F562C21B26C0061060E /* ImageCodableExtension.swift in Sources */,
 				2A17572E2C6B672600D4DFB1 /* OnRouteStatWindow.swift in Sources */,

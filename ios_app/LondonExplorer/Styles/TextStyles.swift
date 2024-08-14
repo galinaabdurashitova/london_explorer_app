@@ -29,13 +29,13 @@ extension Text {
             .font(.system(size: 14, weight: .medium))
     }
     
-    func subheadline() -> some View {
+    func subheadline(_ alignment: TextAlignment = .leading) -> some View {
         self
             .font(.system(size: 14))
             .opacity(0.5)
             .lineLimit(2)
             .truncationMode(.tail)
-            .multilineTextAlignment(.leading)
+            .multilineTextAlignment(alignment)
     }
     
     func screenHeadline() -> some View {
