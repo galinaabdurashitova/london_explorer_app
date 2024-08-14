@@ -26,6 +26,7 @@ class OnRouteViewModel: ObservableObject {
     @Published var greetingSubText: String = ""
     @Published var error: String = ""
     @Published var isMapLoading: Bool = false
+    @Published var collected: Route.RouteCollectable?
     
     // Service variables
     private var auth: AuthController?
@@ -143,6 +144,25 @@ class OnRouteViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    // Collectables management functions
+    func isAppearCollectable(collectable: Route.RouteCollectable) -> Bool {
+        if let currentCoordinate = self.currentCoordinate {
+            let location1 = CLLocation(latitude: currentCoordinate.latitude, longitude: currentCoordinate.longitude)
+            let location2 = CLLocation(latitude: collectable.location.latitude, longitude: collectable.location.longitude)
+            
+            return location1.distance(from: location2) < 750 // Collectable appear in this amount of meters
+        }
+        return false
+    }
+    
+    func collectCollectable() {
+        if let collectedItem = self.collected, !self.routeProgress.collectables.contains(collectedItem) {
+            self.routeProgress.collectables.append(collectedItem)
+        }
+        
+        withAnimation(.easeInOut) { self.collected = nil }
     }
     
     // Map management functions

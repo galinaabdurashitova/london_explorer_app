@@ -57,7 +57,7 @@ struct MapRouteView: View {
                 
                 ForEach(route.collectables.indices, id: \.self) { index in
                     Annotation("Collectable", coordinate: route.collectables[index].location) {
-                        collactableAnnotation(index: index)
+                        CollectableAnnotation(index: Binding<Int?>( get: { index }, set: { _ in }))
                     }
                 }
             }
@@ -84,18 +84,6 @@ struct MapRouteView: View {
                 .interactiveDismissDisabled()
                 .presentationContentInteraction(.scrolls)
         }
-    }
-    
-    private func collactableAnnotation(index: Int) -> some View {
-        Image("Treasures3DIcon")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 25)
-            .shadow(color: Color.white.opacity(0.8), radius: 4)
-            .padding(.all, 10)
-            .background(collectablesColors[index % 4].opacity(1))
-            .cornerRadius(100)
-            .shadow(radius: 5)
     }
 }
 
