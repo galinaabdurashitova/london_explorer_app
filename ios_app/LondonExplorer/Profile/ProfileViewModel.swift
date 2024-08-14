@@ -11,12 +11,24 @@ import SwiftUI
 class ProfileViewModel: ObservableObject {
     @Published var routes: [Route] = []
     @Published var user: User
+    @Published var error: String = ""
     
-    private var routesService = RoutesService()
+    private var userService: UsersServiceProtocol = UsersService()
+    private var routesService: RoutesServiceProtocol = RoutesService()
     
     init(user: User) {
         self.user = user
         self.loadRoutes()
+    }
+    
+    func fetchUser() {
+        Task {
+            do {
+                self.user = try await userService.fetchUser(userId: user.id)
+            } catch {
+                self.error = error.localizedDescription
+            }
+        }
     }
     
     func loadRoutes() {

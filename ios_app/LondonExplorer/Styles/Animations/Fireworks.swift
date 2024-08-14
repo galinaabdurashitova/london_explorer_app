@@ -8,118 +8,57 @@
 import Foundation
 import SwiftUI
 
-struct FireworksView: View {
-    @State private var fireworks = [Firework]()
-    @State private var particles = [Particle]()
-    @State var screenSize: CGSize = UIScreen.main.bounds.size
+struct Fireworks: View {
+    @State private var animate: Bool = false
+    @State private var opacity: Double = 1
 
-    let colors: [Color] = [.red, .yellow, .blue, .green, .orange, .purple, .pink]
+    let colors: [Color] = [.red, .blue, .green, .yellow, .orange, .pink, .purple, .cyan]
+    let confettiCount = 60
 
     var body: some View {
         ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
-            ForEach(fireworks) { firework in
-                Circle()
-                    .fill(firework.color)
-                    .frame(width: firework.size, height: firework.size)
-                    .position(firework.position)
-            }
-            ForEach(particles) { particle in
-                Circle()
-                    .fill(particle.color)
-                    .frame(width: particle.size, height: particle.size)
-                    .position(particle.position)
-                    .opacity(particle.opacity)
+            ForEach(0..<confettiCount, id: \.self) { index in
+                ConfettiPiece(color: colors[index % colors.count])
+                    .rotationEffect(Angle.degrees(animate ? Double.random(in: 0...360) : 0))
+                    .offset(x: animate ? randomOffset().width : 0, y: animate ? randomOffset().height : 0)
+                    .scaleEffect(animate ? 2 : 0.1)
+                    .opacity(opacity) // Start fully opaque, fade out
+                    .animation(
+                        Animation.easeOut(duration: 2.5).delay(Double(index) * 0.02),
+                        value: animate
+                    )
             }
         }
         .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                launchFirework()
+            animate.toggle()
+            withAnimation(Animation.easeInOut(duration: 1.5).delay(0.5)) {
+                opacity = 0
             }
         }
     }
 
-    func launchFirework() {
-        let initialPosition = CGPoint(x: CGFloat.random(in: 50...screenSize.width - 50), y: screenSize.height)
-        
-        let firework = Firework(
-            color: colors.randomElement() ?? .white,
-            size: 6,
-            position: initialPosition
-        )
-        
-        fireworks.append(firework)
-        animateFirework(firework)
-    }
-
-    func animateFirework(_ firework: Firework) {
-        let explosionHeight = CGFloat.random(in: screenSize.height * 0.3...screenSize.height * 0.7)
-        
-        withAnimation(Animation.easeOut(duration: 1.5)) {
-            if let index = fireworks.firstIndex(of: firework) {
-                fireworks[index].position = CGPoint(x: firework.position.x, y: explosionHeight)
-            }
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            if let index = fireworks.firstIndex(of: firework) {
-                let explosionPosition = fireworks[index].position
-                fireworks.remove(at: index)
-                explodeFirework(at: explosionPosition, color: firework.color)
-            }
-        }
-    }
-
-    func explodeFirework(at position: CGPoint, color: Color) {
-        let numberOfParticles = 20
-        
-        for _ in 0..<numberOfParticles {
-            let angle = Double.random(in: 0...2 * .pi)
-            let distance = CGFloat.random(in: 50...150)
-            let xOffset = cos(angle) * distance
-            let yOffset = sin(angle) * distance
-            let particlePosition = CGPoint(x: position.x + xOffset, y: position.y + yOffset)
-            
-            let particle = Particle(
-                color: color,
-                size: CGFloat.random(in: 3...6),
-                position: position,
-                targetPosition: particlePosition,
-                opacity: 1
-            )
-            
-            particles.append(particle)
-            
-            withAnimation(Animation.easeOut(duration: 1.0)) {
-                if let index = particles.firstIndex(of: particle) {
-                    particles[index].position = particle.targetPosition
-                    particles[index].opacity = 0
-                }
-            }
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            particles.removeAll { $0.opacity == 0 }
-        }
+    func randomOffset() -> CGSize {
+        let rangeX: ClosedRange<CGFloat> = -150...150
+        let rangeY: ClosedRange<CGFloat> = -200...200
+        return CGSize(width: CGFloat.random(in: rangeX), height: CGFloat.random(in: rangeY))
     }
 }
 
-struct Firework: Identifiable, Equatable {
-    let id = UUID()
-    var color: Color
-    var size: CGFloat
-    var position: CGPoint
-}
+struct ConfettiPiece: View {
+    let color: Color
 
-struct Particle: Identifiable, Equatable {
-    let id = UUID()
-    var color: Color
-    var size: CGFloat
-    var position: CGPoint
-    var targetPosition: CGPoint
-    var opacity: Double
+    var body: some View {
+        Group {
+            Rectangle()
+                .fill(color)
+                .frame(width: 30, height: 15)
+//            Circle()
+//                .fill(color)
+//                .frame(width: 20, height: 10)
+        }
+    }
 }
 
 #Preview {
-    FireworksView()
+    Fireworks()
 }

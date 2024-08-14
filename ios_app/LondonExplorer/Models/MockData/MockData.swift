@@ -68,6 +68,7 @@ class MockData {
     
     public static var Routes: [Route] = [
         Route(
+            id: "1",
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
             userCreated: 
                 Route.UserCreated(
@@ -78,7 +79,24 @@ class MockData {
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
             saves: [],
-            collectables: [],
+            collectables: [
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.51606596804756, longitude: -0.1207032745398544),
+                    type: Collectable.bigBen
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.5154046934602, longitude:  -0.12538290000351276),
+                    type: Collectable.bulldog
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.501324012606865, longitude: -0.12401221244365833),
+                    type: Collectable.bus
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.51968000393714, longitude: -0.12275441790985948),
+                    type: Collectable.cricketBat
+                )
+            ],
             stops: RouteStops
             , pathes: [nil, nil, nil]
         ),
@@ -93,7 +111,28 @@ class MockData {
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
             saves: [],
-            collectables: [],
+            collectables: [
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.498762278960335, longitude: -0.1263361765911308),
+                    type: Collectable.fishAndChips
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.50937123247818, longitude: -0.12743665028792597),
+                    type: Collectable.guardian
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.51919253774111, longitude: -0.13056578773788566),
+                    type: Collectable.lamp
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.516036179656275, longitude: -0.12470830890801224),
+                    type: Collectable.lions
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.51876242989569, longitude: -0.10812954588346282),
+                    type: Collectable.newspaper
+                )
+            ],
             stops: RouteStops
             , pathes: [nil, nil, nil]
         ),
@@ -108,7 +147,28 @@ class MockData {
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "LondonStreet"),
             saves: [],
-            collectables: [], //5,
+            collectables: [
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.498762278960335, longitude: -0.1263361765911308),
+                    type: Collectable.fishAndChips
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.50937123247818, longitude: -0.12743665028792597),
+                    type: Collectable.guardian
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.51919253774111, longitude: -0.13056578773788566),
+                    type: Collectable.lamp
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 51.516036179656275, longitude: -0.12470830890801224),
+                    type: Collectable.lions
+                ),
+                Route.RouteCollectable(
+                    location: CLLocationCoordinate2D(latitude: 37.3346203, longitude: -122.0084025),
+                    type: Collectable.newspaper
+                )
+            ],
             stops: RouteStops
             , pathes: [nil, nil, nil]
         ),
@@ -170,12 +230,60 @@ class MockData {
     ]
     
     public static var Users: [User] = [
-        User(userId: "1"/*, email: "anna@traveler.com"*/, name: "Anna", userName: "annabanana", userDescription: "Traveler girl", image: UIImage(imageLiteralResourceName: "Anna")),
-        User(userId: "2"/*, email: "mary@traveler.com"*/, name: "Mary", userName: "mary_mary", image: UIImage(imageLiteralResourceName: "Mary"))
+        User(
+            userId: "1",
+            email: "anna@traveler.com",
+            name: "Anna",
+            userName: "annabanana",
+            userDescription: "Traveler girl",
+            image: UIImage(imageLiteralResourceName: "Anna"),
+            collectables: [
+                User.UserCollectable(
+                    id: "11",
+                    type: Collectable.bigBen,
+                    finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "12",
+                    type: Collectable.bulldog,
+                    finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "13",
+                    type: Collectable.bus,
+                    finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "14",
+                    type: Collectable.fishAndChips,
+                    finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "15",
+                    type: Collectable.newspaper,
+                    finishedRouteId: "111"
+                )
+            ],
+            finishedRoutes: [
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    finishedDate: Date(),
+                    collectables: 5
+                )
+            ]
+        ),
+        User(
+            userId: "2",
+            email: "mary@traveler.com",
+            name: "Mary",
+            userName: "mary_mary",
+            image: UIImage(imageLiteralResourceName: "Mary")
+        )
     ]
     
     public static var RouteProgress: [RouteProgress] = [
-        LondonExplorer.RouteProgress(route: Routes[2], collectables: [], stops: 0, user: Users[0], startTime: Calendar.current.date(from: DateComponents(year: 2024, month: 7, day: 22, hour: 10, minute: 0)) ?? Date()),
+        LondonExplorer.RouteProgress(route: Routes[2], collectables: [], stops: 2, user: Users[0], startTime: Calendar.current.date(from: DateComponents(year: 2024, month: 7, day: 22, hour: 10, minute: 0)) ?? Date()),
         LondonExplorer.RouteProgress(route: Routes[2], collectables: [], stops: 3, user: Users[0]),
         LondonExplorer.RouteProgress(route: Routes[1], collectables: [], stops: 1, user: Users[1])
     ]
