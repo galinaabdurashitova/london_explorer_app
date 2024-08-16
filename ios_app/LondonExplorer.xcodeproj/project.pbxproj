@@ -18,9 +18,7 @@
 		2A0E39ED2C4F110B00AC32A4 /* StartRouteGreeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */; };
 		2A0E39EF2C4FF4FA00AC32A4 /* ActionBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39EE2C4FF4FA00AC32A4 /* ActionBanner.swift */; };
 		2A0E39F12C4FF6E100AC32A4 /* FinishedRoutesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39F02C4FF6E100AC32A4 /* FinishedRoutesView.swift */; };
-		2A0E39F32C4FF75200AC32A4 /* CurrentRouteStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39F22C4FF75200AC32A4 /* CurrentRouteStorage.swift */; };
 		2A0E39F72C5016E200AC32A4 /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39F62C5016E200AC32A4 /* AuthController.swift */; };
-		2A0E39F92C501E9500AC32A4 /* TEMP_UserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39F82C501E9500AC32A4 /* TEMP_UserStorage.swift */; };
 		2A0E39FB2C50227D00AC32A4 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E39FA2C50227D00AC32A4 /* TabView.swift */; };
 		2A0E3A052C5043C400AC32A4 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E3A042C5043C400AC32A4 /* AuthView.swift */; };
 		2A0E3A072C51800100AC32A4 /* UsersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E3A062C51800100AC32A4 /* UsersService.swift */; };
@@ -160,9 +158,7 @@
 		2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartRouteGreeting.swift; sourceTree = "<group>"; };
 		2A0E39EE2C4FF4FA00AC32A4 /* ActionBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBanner.swift; sourceTree = "<group>"; };
 		2A0E39F02C4FF6E100AC32A4 /* FinishedRoutesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedRoutesView.swift; sourceTree = "<group>"; };
-		2A0E39F22C4FF75200AC32A4 /* CurrentRouteStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRouteStorage.swift; sourceTree = "<group>"; };
 		2A0E39F62C5016E200AC32A4 /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
-		2A0E39F82C501E9500AC32A4 /* TEMP_UserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEMP_UserStorage.swift; sourceTree = "<group>"; };
 		2A0E39FA2C50227D00AC32A4 /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		2A0E3A042C5043C400AC32A4 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		2A0E3A062C51800100AC32A4 /* UsersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersService.swift; sourceTree = "<group>"; };
@@ -292,34 +288,29 @@
 		2A0E39DE2C4D769200AC32A4 /* ServiceFiles */ = {
 			isa = PBXGroup;
 			children = (
-				2A0E39E12C4DB66200AC32A4 /* Storage */,
-				2A0E39F62C5016E200AC32A4 /* AuthController.swift */,
-				2A0E39DF2C4D76AD00AC32A4 /* LocationManager.swift */,
-				2A8506912C0A8A65003A3117 /* NetworkMonitor.swift */,
-				2AFB40EA2C5FEBF5005AEF8B /* CurrentRouteManager.swift */,
-				2AFB413E2C63F27F005AEF8B /* GlobalSettings.swift */,
+				2A16D7A22C6F5DE600736532 /* EnvironmentObjects */,
+				2A0E39E12C4DB66200AC32A4 /* LocalStorage */,
 				2A17571B2C6943A700D4DFB1 /* DateConverter.swift */,
+				2A0E39DF2C4D76AD00AC32A4 /* LocationManager.swift */,
 			);
 			path = ServiceFiles;
 			sourceTree = "<group>";
 		};
-		2A0E39E12C4DB66200AC32A4 /* Storage */ = {
+		2A0E39E12C4DB66200AC32A4 /* LocalStorage */ = {
 			isa = PBXGroup;
 			children = (
-				2A0E39F22C4FF75200AC32A4 /* CurrentRouteStorage.swift */,
+				2AA9B9282C5FA10D001F27B9 /* CurrentRoutesStorage.swift */,
 				2A0E39E22C4DB68100AC32A4 /* FileManager.swift */,
 				2AFD1F5E2C237E820061060E /* RoutesStorage.swift */,
-				2A0E39F82C501E9500AC32A4 /* TEMP_UserStorage.swift */,
-				2AA9B9282C5FA10D001F27B9 /* CurrentRoutesStorage.swift */,
 			);
-			path = Storage;
+			path = LocalStorage;
 			sourceTree = "<group>";
 		};
 		2A0E39FC2C5022DB00AC32A4 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
-				2A0E39E42C4E520800AC32A4 /* Fireworks.swift */,
 				2A0E39E82C4EC38A00AC32A4 /* Confetti.swift */,
+				2A0E39E42C4E520800AC32A4 /* Fireworks.swift */,
 			);
 			path = Animations;
 			sourceTree = "<group>";
@@ -336,13 +327,102 @@
 			isa = PBXGroup;
 			children = (
 				2A0E39E62C4E931200AC32A4 /* FinishRoutePopup.swift */,
+				2A16D79A2C6D282600736532 /* OnRouteMap.swift */,
 				2A17572D2C6B672600D4DFB1 /* OnRouteStatWindow.swift */,
 				2A0E39EA2C4EF07300AC32A4 /* RouteClock.swift */,
-				2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */,
-				2A16D79A2C6D282600736532 /* OnRouteMap.swift */,
-				2A16D79E2C6D504D00736532 /* CollectedCollectableView.swift */,
 			);
 			path = OnRouteViewElements;
+			sourceTree = "<group>";
+		};
+		2A16D7A02C6F5C8B00736532 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2AE8A03A2C14F395005E0F62 /* AttractionView */,
+				2A0E39FD2C50237E00AC32A4 /* AuthViews */,
+				2AE8A01E2C13A1D4005E0F62 /* CreateRouteScreen */,
+				2AA5B11A2C08B90F001EC475 /* MainScreen */,
+				2A76D4A82C15D5A2007908E0 /* MapView */,
+				2A58EA8F2C40768C00F9A4C0 /* OnRouteView */,
+				2AFD1F722C249EE30061060E /* ProfileScreen */,
+				2AFD1F632C247F690061060E /* RouteView */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2A16D7A12C6F5D5C00736532 /* MapsElements */ = {
+			isa = PBXGroup;
+			children = (
+				2A16D79C2C6D486600736532 /* CollectableAnnotation.swift */,
+				2A76D4B42C162306007908E0 /* MapLinkButton.swift */,
+				2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */,
+			);
+			path = MapsElements;
+			sourceTree = "<group>";
+		};
+		2A16D7A22C6F5DE600736532 /* EnvironmentObjects */ = {
+			isa = PBXGroup;
+			children = (
+				2A0E39F62C5016E200AC32A4 /* AuthController.swift */,
+				2AFB40EA2C5FEBF5005AEF8B /* CurrentRouteManager.swift */,
+				2AFB413E2C63F27F005AEF8B /* GlobalSettings.swift */,
+				2A8506912C0A8A65003A3117 /* NetworkMonitor.swift */,
+			);
+			path = EnvironmentObjects;
+			sourceTree = "<group>";
+		};
+		2A16D7A32C6F5E5300736532 /* AttractionCategories */ = {
+			isa = PBXGroup;
+			children = (
+				2AE8A0362C14E8D3005E0F62 /* AttractionCategoriesCarousel.swift */,
+				2A76D4AF2C160C2D007908E0 /* CategoryLabel.swift */,
+			);
+			path = AttractionCategories;
+			sourceTree = "<group>";
+		};
+		2A16D7A42C6F5F0000736532 /* PopUps */ = {
+			isa = PBXGroup;
+			children = (
+				2A16D79E2C6D504D00736532 /* CollectedCollectableView.swift */,
+				2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */,
+			);
+			path = PopUps;
+			sourceTree = "<group>";
+		};
+		2A16D7A52C6F5F3D00736532 /* FinishedRoutes */ = {
+			isa = PBXGroup;
+			children = (
+				2A0E39F02C4FF6E100AC32A4 /* FinishedRoutesView.swift */,
+				2A0E3A0A2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift */,
+			);
+			path = FinishedRoutes;
+			sourceTree = "<group>";
+		};
+		2A16D7A62C6F5F4B00736532 /* MainProfile */ = {
+			isa = PBXGroup;
+			children = (
+				2AFD1F732C249F4D0061060E /* ProfileView.swift */,
+				2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */,
+			);
+			path = MainProfile;
+			sourceTree = "<group>";
+		};
+		2A16D7A72C6F5F5900736532 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				2A3CF4F32C6BFC6E00B1B769 /* ProfileCollectablesView.swift */,
+				2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		2A16D7A82C6F5F9F00736532 /* RouteViewElements */ = {
+			isa = PBXGroup;
+			children = (
+				2AFD1F7B2C2744230061060E /* EditRouteView.swift */,
+				2AFD1F662C247FDF0061060E /* RouteButton.swift */,
+				2AFD1F642C247FA60061060E /* RouteDataView.swift */,
+			);
+			path = RouteViewElements;
 			sourceTree = "<group>";
 		};
 		2A1757222C6AC23E00D4DFB1 /* DTOs */ = {
@@ -356,20 +436,20 @@
 			path = DTOs;
 			sourceTree = "<group>";
 		};
-		2A58EA8F2C40768C00F9A4C0 /* OnRoute */ = {
+		2A58EA8F2C40768C00F9A4C0 /* OnRouteView */ = {
 			isa = PBXGroup;
 			children = (
 				2A16D7992C6D27B900736532 /* OnRouteViewElements */,
+				2A16D7A42C6F5F0000736532 /* PopUps */,
 				2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */,
 				2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */,
 			);
-			path = OnRoute;
+			path = OnRouteView;
 			sourceTree = "<group>";
 		};
 		2A76D4A82C15D5A2007908E0 /* MapView */ = {
 			isa = PBXGroup;
 			children = (
-				2A76D4B42C162306007908E0 /* MapLinkButton.swift */,
 				2AFD1F682C24814A0061060E /* AttractionMap */,
 				2AFD1F692C24815C0061060E /* RouteMap */,
 			);
@@ -380,9 +460,9 @@
 			isa = PBXGroup;
 			children = (
 				2AFB40EC2C600991005AEF8B /* RouteStopCard */,
+				2AFD1F792C25E4770061060E /* CreateStopsView.swift */,
 				2A76D4B82C170A6B007908E0 /* PathConnection.swift */,
 				2A76D4BA2C171846007908E0 /* RouteStopsViewModel.swift */,
-				2AFD1F792C25E4770061060E /* CreateStopsView.swift */,
 			);
 			path = RouteStops;
 			sourceTree = "<group>";
@@ -415,27 +495,20 @@
 		2AA5B1092C08B890001EC475 /* LondonExplorer */ = {
 			isa = PBXGroup;
 			children = (
-				2AC56A872C28C50E00F7249B /* APIs */,
+				2AA5B1102C08B891001EC475 /* Preview Content */,
 				2AA5B10E2C08B891001EC475 /* Assets.xcassets */,
-				2AE8A03A2C14F395005E0F62 /* AttractionView */,
-				2A0E39FD2C50237E00AC32A4 /* AuthViews */,
-				2AA5B10C2C08B890001EC475 /* ContentView.swift */,
-				2AE8A01E2C13A1D4005E0F62 /* CreateRouteScreen */,
 				2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */,
 				2AA5B11F2C08BDB5001EC475 /* Info.plist */,
 				2AA5B10A2C08B890001EC475 /* LondonExplorerApp.swift */,
-				2AA5B11A2C08B90F001EC475 /* MainScreen */,
-				2A76D4A82C15D5A2007908E0 /* MapView */,
+				2AA5B10C2C08B890001EC475 /* ContentView.swift */,
+				2A0E39FA2C50227D00AC32A4 /* TabView.swift */,
+				2AC56A872C28C50E00F7249B /* APIs */,
 				2AA5B1232C08D803001EC475 /* Models */,
-				2A58EA8F2C40768C00F9A4C0 /* OnRoute */,
-				2AA5B1102C08B891001EC475 /* Preview Content */,
-				2AFD1F722C249EE30061060E /* Profile */,
-				2AFD1F632C247F690061060E /* Route */,
+				2A16D7A02C6F5C8B00736532 /* Screens */,
 				2A0E39DE2C4D769200AC32A4 /* ServiceFiles */,
 				2AA5B12A2C09049D001EC475 /* SharedComponents */,
 				2AA5B13D2C09F662001EC475 /* Styles */,
-				2A0E39FA2C50227D00AC32A4 /* TabView.swift */,
-				2AA9B92A2C5FB12E001F27B9 /* TestStorageView.swift */,
+				2AA5B1202C08D79B001EC475 /* MockData */,
 			);
 			path = LondonExplorer;
 			sourceTree = "<group>";
@@ -482,6 +555,7 @@
 		2AA5B1202C08D79B001EC475 /* MockData */ = {
 			isa = PBXGroup;
 			children = (
+				2AA9B92A2C5FB12E001F27B9 /* TestStorageView.swift */,
 				2AA5B1212C08D7C1001EC475 /* MockData.swift */,
 			);
 			path = MockData;
@@ -492,7 +566,6 @@
 			children = (
 				2AFD1F572C21DA820061060E /* Codables */,
 				2AA5B1512C0A165B001EC475 /* Enums */,
-				2AA5B1202C08D79B001EC475 /* MockData */,
 				2AE8A02E2C14BDB2005E0F62 /* Attraction.swift */,
 				2A1757202C6A861900D4DFB1 /* Award.swift */,
 				2AFB413A2C63DC79005AEF8B /* Collectable.swift */,
@@ -507,7 +580,9 @@
 		2AA5B12A2C09049D001EC475 /* SharedComponents */ = {
 			isa = PBXGroup;
 			children = (
+				2A16D7A32C6F5E5300736532 /* AttractionCategories */,
 				2AFB40F32C6011C1005AEF8B /* GeneralInterface */,
+				2A16D7A12C6F5D5C00736532 /* MapsElements */,
 				2AFB40F22C6011B5005AEF8B /* RouteRelated */,
 				2A76D4A62C15D13D007908E0 /* ImagesSlidesHeader.swift */,
 				2AA5B1282C090417001EC475 /* LondonExplorerLogo.swift */,
@@ -521,9 +596,9 @@
 				2A0E39FC2C5022DB00AC32A4 /* Animations */,
 				2AA5B11E2C08BA83001EC475 /* Fonts */,
 				2AA5B13E2C09F673001EC475 /* ImageStyles.swift */,
-				2AA5B12F2C090A33001EC475 /* TextStyles.swift */,
-				2AD4B9622C0CD98E00B90C8A /* LoadingStyle.swift */,
 				2AA9B9262C5F9BDC001F27B9 /* JustifiedText.swift */,
+				2AD4B9622C0CD98E00B90C8A /* LoadingStyle.swift */,
+				2AA5B12F2C090A33001EC475 /* TextStyles.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -602,10 +677,8 @@
 		2AE8A03A2C14F395005E0F62 /* AttractionView */ = {
 			isa = PBXGroup;
 			children = (
-				2AE8A0362C14E8D3005E0F62 /* AttractionCategoriesCarousel.swift */,
 				2AE8A03B2C14F3C1005E0F62 /* AttractionView.swift */,
 				2A0E39DA2C4D4D2B00AC32A4 /* AttractionViewModel.swift */,
-				2A76D4AF2C160C2D007908E0 /* CategoryLabel.swift */,
 			);
 			path = AttractionView;
 			sourceTree = "<group>";
@@ -613,9 +686,9 @@
 		2AFB40EC2C600991005AEF8B /* RouteStopCard */ = {
 			isa = PBXGroup;
 			children = (
+				2AFB40EF2C6009C8005AEF8B /* DeleteCardDropDelegate.swift */,
 				2A76D4B62C1624D6007908E0 /* RouteStopCard.swift */,
 				2AFB40ED2C6009AC005AEF8B /* RouteStopCardDropDelegate.swift */,
-				2AFB40EF2C6009C8005AEF8B /* DeleteCardDropDelegate.swift */,
 			);
 			path = RouteStopCard;
 			sourceTree = "<group>";
@@ -686,16 +759,14 @@
 			path = SavedRoute;
 			sourceTree = "<group>";
 		};
-		2AFD1F632C247F690061060E /* Route */ = {
+		2AFD1F632C247F690061060E /* RouteView */ = {
 			isa = PBXGroup;
 			children = (
-				2AFD1F7B2C2744230061060E /* EditRouteView.swift */,
-				2AFD1F662C247FDF0061060E /* RouteButton.swift */,
-				2AFD1F642C247FA60061060E /* RouteDataView.swift */,
+				2A16D7A82C6F5F9F00736532 /* RouteViewElements */,
 				2AFD1F6C2C248D250061060E /* RouteView.swift */,
 				2AFD1F6E2C2497580061060E /* RouteViewModel.swift */,
 			);
-			path = Route;
+			path = RouteView;
 			sourceTree = "<group>";
 		};
 		2AFD1F682C24814A0061060E /* AttractionMap */ = {
@@ -711,26 +782,21 @@
 		2AFD1F692C24815C0061060E /* RouteMap */ = {
 			isa = PBXGroup;
 			children = (
-				2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */,
 				2A76D4C72C1A0A35007908E0 /* MapRouteView.swift */,
 				2A76D4C22C18F7E5007908E0 /* RouteSheetContent.swift */,
 				2AFD1F6A2C2481930061060E /* RouteMapContent.swift */,
-				2A16D79C2C6D486600736532 /* CollectableAnnotation.swift */,
 			);
 			path = RouteMap;
 			sourceTree = "<group>";
 		};
-		2AFD1F722C249EE30061060E /* Profile */ = {
+		2AFD1F722C249EE30061060E /* ProfileScreen */ = {
 			isa = PBXGroup;
 			children = (
-				2A0E39F02C4FF6E100AC32A4 /* FinishedRoutesView.swift */,
-				2A0E3A0A2C51A78A00AC32A4 /* FinishedRoutesViewModel.swift */,
-				2A3CF4F32C6BFC6E00B1B769 /* ProfileCollectablesView.swift */,
-				2AFD1F732C249F4D0061060E /* ProfileView.swift */,
-				2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */,
-				2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */,
+				2A16D7A52C6F5F3D00736532 /* FinishedRoutes */,
+				2A16D7A62C6F5F4B00736532 /* MainProfile */,
+				2A16D7A72C6F5F5900736532 /* Subviews */,
 			);
-			path = Profile;
+			path = ProfileScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -851,7 +917,6 @@
 				2AA5B13C2C09E5E5001EC475 /* User.swift in Sources */,
 				2AA9B92B2C5FB12E001F27B9 /* TestStorageView.swift in Sources */,
 				2A1757242C6AC25000D4DFB1 /* UserWrapper.swift in Sources */,
-				2A0E39F92C501E9500AC32A4 /* TEMP_UserStorage.swift in Sources */,
 				2AA5B1302C090A33001EC475 /* TextStyles.swift in Sources */,
 				2AE8A0352C14E674005E0F62 /* AttractionCard.swift in Sources */,
 				2A0E39E32C4DB68100AC32A4 /* FileManager.swift in Sources */,
@@ -897,7 +962,6 @@
 				2AA5B14E2C0A11C9001EC475 /* DownloadedRoutesWidget.swift in Sources */,
 				2AFD1F7A2C25E4770061060E /* CreateStopsView.swift in Sources */,
 				2AA5B1322C090EE4001EC475 /* SectionHeader.swift in Sources */,
-				2A0E39F32C4FF75200AC32A4 /* CurrentRouteStorage.swift in Sources */,
 				2AFD1F622C237F3E0061060E /* SavedRouteView.swift in Sources */,
 				2A3CF4F42C6BFC6E00B1B769 /* ProfileCollectablesView.swift in Sources */,
 				2AA5B13F2C09F673001EC475 /* ImageStyles.swift in Sources */,
