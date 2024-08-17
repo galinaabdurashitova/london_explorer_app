@@ -41,7 +41,5 @@ public class UserService {
         return userRepository.findUserAwards(userId);
     }
 
-    public List<UserCollectable> findUserCollectables(String userId) {
-        return userRepository.findUserCollectables(userId);
-    }
+    public List<UserCollectable> findUserCollectables(String userId) { return userRepository.findUserCollectables(userId); }
 }

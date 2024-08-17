@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,6 +23,9 @@ public class UserController {
 
     @Autowired
     private FinishedRouteService finishedRouteService;
+
+    @Autowired
+    private UserAwardService userAwardService;
 
     @GetMapping
     public ResponseEntity<?> getUserInfo(@RequestParam String userId) {
@@ -94,6 +98,47 @@ public class UserController {
                 }
             }
         }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{userId}/awards")
+    public ResponseEntity<?> saveUserAward(@PathVariable String userId, @RequestBody UserAwardRequest request) {
+        if (request.getUserAwardId() == null || request.getAward() == null || request.getAwardDate() == null) {
+            return ResponseEntity.status(400).body("Missing parameters");
+        }
+
+        int savedLevel = userAwardService.getPreviousLevelsNumber(userId, request.getAward());
+
+        if (request.getAwardLevel() <= savedLevel || request.getAwardLevel() > 3 || request.getAwardLevel() < 1) {
+            return ResponseEntity.status(400).body("Wrong level");
+        }
+
+        int levelsDifference = request.getAwardLevel() - savedLevel;
+
+        for (int i = 1; i < levelsDifference; i++) {
+            String uuid = UUID.randomUUID().toString();
+
+            UserAward previousLevelAward = new UserAward(
+                    uuid,
+                    userId,
+                    request.getAward(),
+                    request.getAwardLevel() - levelsDifference + i,
+                    request.getAwardDate()
+            );
+
+            userAwardService.saveUserAward(previousLevelAward);
+        }
+
+        UserAward userAward = new UserAward(
+                request.getUserAwardId(),
+                userId,
+                request.getAward(),
+                request.getAwardLevel(),
+                request.getAwardDate()
+        );
+
+        userAwardService.saveUserAward(userAward);
 
         return ResponseEntity.ok().build();
     }
