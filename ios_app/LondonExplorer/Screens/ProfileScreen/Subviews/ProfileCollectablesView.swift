@@ -17,8 +17,8 @@ struct ProfileCollectablesView: View {
             VStack(alignment: .center, spacing: 25) {
                 HStack {
                     ScreenHeader(
-                        headline: .constant("Collectables"),
-                        subheadline: user.id == auth.profile.id ? .constant("See your collectables") : .constant("See \(user.name)'s collectables")
+                        headline: user.id == auth.profile.id ? .constant("Your collectables") : .constant("\(user.name)'s collectables"),
+                        subheadline: user.id == auth.profile.id ? .constant("You found \(String(user.collectables.count))/20 collectables") : .constant("\(user.name) found \(String(user.collectables.count))/20 collectables")
                     )
                     
                     Spacer()

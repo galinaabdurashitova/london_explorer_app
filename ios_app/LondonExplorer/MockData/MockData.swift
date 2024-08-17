@@ -97,8 +97,8 @@ class MockData {
                     type: Collectable.cricketBat
                 )
             ],
-            stops: RouteStops
-            , pathes: [nil, nil, nil]
+            stops: RouteStops,
+            pathes: [nil, nil, nil]
         ),
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
@@ -237,6 +237,19 @@ class MockData {
             userName: "annabanana",
             userDescription: "Traveler girl",
             image: UIImage(imageLiteralResourceName: "Anna"),
+            awards: [
+                User.UserAward(type: AwardTypes.attractionsVisited, level: 3, date: Date()),
+                User.UserAward(type: AwardTypes.attractionsVisited, level: 2, date: Date()),
+                User.UserAward(type: AwardTypes.attractionsVisited, level: 1, date: Date()),
+                User.UserAward(type: AwardTypes.collectables, level: 1, date: Date()),
+                User.UserAward(type: AwardTypes.friends, level: 1, date: Date()),
+                User.UserAward(type: AwardTypes.kilometers, level: 1, date: Date()),
+                User.UserAward(type: AwardTypes.minutes, level: 3, date: Date()),
+                User.UserAward(type: AwardTypes.minutes, level: 2, date: Date()),
+                User.UserAward(type: AwardTypes.minutes, level: 1, date: Date()),
+                User.UserAward(type: AwardTypes.routesFinished, level: 1, date: Date()),
+                User.UserAward(type: AwardTypes.routesFinished, level: 2, date: Date())
+            ],
             collectables: [
                 User.UserCollectable(
                     id: "11",
@@ -262,12 +275,93 @@ class MockData {
                     id: "15",
                     type: Collectable.newspaper,
                     finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "15",
+                    type: Collectable.lamp,
+                    finishedRouteId: "111"
+                ),
+                User.UserCollectable(
+                    id: "15",
+                    type: Collectable.lions,
+                    finishedRouteId: "111"
                 )
             ],
             finishedRoutes: [
                 User.FinishedRoute(
                     id: "111",
                     routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
+                    finishedDate: Date(),
+                    collectables: 5
+                ),
+                User.FinishedRoute(
+                    id: "111",
+                    routeId: "1",
+                    route: MockData.Routes[0],
                     finishedDate: Date(),
                     collectables: 5
                 )

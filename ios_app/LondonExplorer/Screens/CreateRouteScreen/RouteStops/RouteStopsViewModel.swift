@@ -88,8 +88,10 @@ class RouteStopsViewModel: ObservableObject {
     }
     
     func updateStopNumbers() {
-        for index in stops.indices {
-            stops[index].stepNo = index + 1
+        DispatchQueue.main.async {
+            for index in self.stops.indices {
+                self.stops[index].stepNo = index + 1
+            }
         }
     }
     

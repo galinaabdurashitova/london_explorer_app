@@ -15,15 +15,11 @@ struct RouteProgressBar: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack (alignment: .leading) {
-                Rectangle()
-                    .frame(width: geometry.size.width, height: 8)
-                    .cornerRadius(10)
-                    .foregroundColor(Color.lightBlue)
-                
-                Rectangle()
-                    .frame(width: geometry.size.width * self.getPercent(), height: 8)
-                    .cornerRadius(10)
-                    .foregroundColor(Color.redAccent)
+                ProgressBar(
+                    num: Binding(get: { Double(num) }, set: { _ in } ),
+                    total: Binding(get: { Double(total) }, set: { _ in } ),
+                    colour: .constant(Color.redAccent)
+                )
                 
                 Image("Bus3DIcon")
                     .icon(size: 56)

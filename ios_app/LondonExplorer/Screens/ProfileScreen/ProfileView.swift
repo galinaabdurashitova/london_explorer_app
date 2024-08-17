@@ -34,6 +34,10 @@ struct ProfileView: View {
                     YourRoutes
                 }
             }
+            .refreshable {
+                viewModel.fetchUser()
+                viewModel.loadRoutes()
+            }
             .scrollClipDisabled()
             .padding(.top, 20)
             .padding(.horizontal, 20)
@@ -55,6 +59,8 @@ struct ProfileView: View {
                     FinishedRoutesView()
                 case .collectables:
                     ProfileCollectablesView(user: viewModel.user)
+                case .awards:
+                    AwardsView(user: viewModel.user)
                 case .settings:
                     SettingsView()
                 }
@@ -126,7 +132,9 @@ struct ProfileView: View {
     
     private var UserStatIcons: some View {
         HStack(spacing: 10) {
-            StatIcon(icon: "Trophy3DIcon", number: viewModel.user.awards.count, word: "awards", colour: Color.redAccent)
+            NavigationLink(value: ProfileNavigation.awards) {
+                StatIcon(icon: "Trophy3DIcon", number: viewModel.user.awards.count, word: "awards", colour: Color.redAccent)
+            }
             
             NavigationLink(value: ProfileNavigation.finishedRoutes) {
                 StatIcon(icon: "Route3DIcon", number: viewModel.user.finishedRoutes.count, word: "routes finished", colour: Color.greenAccent)

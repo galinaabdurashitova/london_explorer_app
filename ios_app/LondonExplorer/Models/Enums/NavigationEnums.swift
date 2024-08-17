@@ -30,5 +30,6 @@ enum CreateRoutePath: Hashable {
 enum ProfileNavigation: Hashable {
     case finishedRoutes
     case collectables
+    case awards
     case settings
 }

@@ -27,8 +27,11 @@
 		2A16D79B2C6D282600736532 /* OnRouteMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A16D79A2C6D282600736532 /* OnRouteMap.swift */; };
 		2A16D79D2C6D486600736532 /* CollectableAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A16D79C2C6D486600736532 /* CollectableAnnotation.swift */; };
 		2A16D79F2C6D504D00736532 /* CollectedCollectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A16D79E2C6D504D00736532 /* CollectedCollectableView.swift */; };
+		2A16D7B32C6FC87E00736532 /* AwardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A16D7B22C6FC87E00736532 /* AwardsView.swift */; };
+		2A16D7B52C6FD89000736532 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A16D7B42C6FD89000736532 /* ProgressBar.swift */; };
+		2A16D7B72C6FDCBE00736532 /* AwardLevelEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A16D7B62C6FDCBE00736532 /* AwardLevelEnum.swift */; };
 		2A17571C2C6943A700D4DFB1 /* DateConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17571B2C6943A700D4DFB1 /* DateConverter.swift */; };
-		2A1757212C6A861900D4DFB1 /* Award.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757202C6A861900D4DFB1 /* Award.swift */; };
+		2A1757212C6A861900D4DFB1 /* AwardEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757202C6A861900D4DFB1 /* AwardEnum.swift */; };
 		2A1757242C6AC25000D4DFB1 /* UserWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757232C6AC25000D4DFB1 /* UserWrapper.swift */; };
 		2A1757262C6AC26C00D4DFB1 /* AttractionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757252C6AC26C00D4DFB1 /* AttractionWrapper.swift */; };
 		2A1757282C6AC28B00D4DFB1 /* ServiceErrorEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1757272C6AC28B00D4DFB1 /* ServiceErrorEnum.swift */; };
@@ -85,7 +88,7 @@
 		2AA5B1452C0A02BA001EC475 /* FriendsOnRouteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B1442C0A02BA001EC475 /* FriendsOnRouteWidget.swift */; };
 		2AA5B14E2C0A11C9001EC475 /* DownloadedRoutesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B14D2C0A11C9001EC475 /* DownloadedRoutesWidget.swift */; };
 		2AA5B1502C0A1396001EC475 /* WidgetError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B14F2C0A1396001EC475 /* WidgetError.swift */; };
-		2AA5B1532C0A166E001EC475 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B1522C0A166E001EC475 /* Label.swift */; };
+		2AA5B1532C0A166E001EC475 /* CardLabelEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B1522C0A166E001EC475 /* CardLabelEnum.swift */; };
 		2AA5B1572C0A18BC001EC475 /* EmptyStateBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5B1562C0A18BC001EC475 /* EmptyStateBanner.swift */; };
 		2AA9B8E02C527DC6001F27B9 /* NavigationEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B8DF2C527DC6001F27B9 /* NavigationEnums.swift */; };
 		2AA9B9272C5F9BDC001F27B9 /* JustifiedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B9262C5F9BDC001F27B9 /* JustifiedText.swift */; };
@@ -112,7 +115,7 @@
 		2AFB40EB2C5FEBF5005AEF8B /* CurrentRouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB40EA2C5FEBF5005AEF8B /* CurrentRouteManager.swift */; };
 		2AFB40EE2C6009AC005AEF8B /* RouteStopCardDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB40ED2C6009AC005AEF8B /* RouteStopCardDropDelegate.swift */; };
 		2AFB40F02C6009C8005AEF8B /* DeleteCardDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB40EF2C6009C8005AEF8B /* DeleteCardDropDelegate.swift */; };
-		2AFB413B2C63DC79005AEF8B /* Collectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB413A2C63DC79005AEF8B /* Collectable.swift */; };
+		2AFB413B2C63DC79005AEF8B /* CollectableEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB413A2C63DC79005AEF8B /* CollectableEnum.swift */; };
 		2AFB413D2C63F1A8005AEF8B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */; };
 		2AFB413F2C63F27F005AEF8B /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFB413E2C63F27F005AEF8B /* GlobalSettings.swift */; };
 		2AFD1F562C21B26C0061060E /* ImageCodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFD1F552C21B26C0061060E /* ImageCodableExtension.swift */; };
@@ -167,8 +170,11 @@
 		2A16D79A2C6D282600736532 /* OnRouteMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteMap.swift; sourceTree = "<group>"; };
 		2A16D79C2C6D486600736532 /* CollectableAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectableAnnotation.swift; sourceTree = "<group>"; };
 		2A16D79E2C6D504D00736532 /* CollectedCollectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectedCollectableView.swift; sourceTree = "<group>"; };
+		2A16D7B22C6FC87E00736532 /* AwardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardsView.swift; sourceTree = "<group>"; };
+		2A16D7B42C6FD89000736532 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		2A16D7B62C6FDCBE00736532 /* AwardLevelEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardLevelEnum.swift; sourceTree = "<group>"; };
 		2A17571B2C6943A700D4DFB1 /* DateConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateConverter.swift; sourceTree = "<group>"; };
-		2A1757202C6A861900D4DFB1 /* Award.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Award.swift; sourceTree = "<group>"; };
+		2A1757202C6A861900D4DFB1 /* AwardEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardEnum.swift; sourceTree = "<group>"; };
 		2A1757232C6AC25000D4DFB1 /* UserWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserWrapper.swift; sourceTree = "<group>"; };
 		2A1757252C6AC26C00D4DFB1 /* AttractionWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionWrapper.swift; sourceTree = "<group>"; };
 		2A1757272C6AC28B00D4DFB1 /* ServiceErrorEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceErrorEnum.swift; sourceTree = "<group>"; };
@@ -227,7 +233,7 @@
 		2AA5B1442C0A02BA001EC475 /* FriendsOnRouteWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsOnRouteWidget.swift; sourceTree = "<group>"; };
 		2AA5B14D2C0A11C9001EC475 /* DownloadedRoutesWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedRoutesWidget.swift; sourceTree = "<group>"; };
 		2AA5B14F2C0A1396001EC475 /* WidgetError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetError.swift; sourceTree = "<group>"; };
-		2AA5B1522C0A166E001EC475 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		2AA5B1522C0A166E001EC475 /* CardLabelEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardLabelEnum.swift; sourceTree = "<group>"; };
 		2AA5B1562C0A18BC001EC475 /* EmptyStateBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateBanner.swift; sourceTree = "<group>"; };
 		2AA9B8DF2C527DC6001F27B9 /* NavigationEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationEnums.swift; sourceTree = "<group>"; };
 		2AA9B9262C5F9BDC001F27B9 /* JustifiedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustifiedText.swift; sourceTree = "<group>"; };
@@ -252,7 +258,7 @@
 		2AFB40EA2C5FEBF5005AEF8B /* CurrentRouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRouteManager.swift; sourceTree = "<group>"; };
 		2AFB40ED2C6009AC005AEF8B /* RouteStopCardDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteStopCardDropDelegate.swift; sourceTree = "<group>"; };
 		2AFB40EF2C6009C8005AEF8B /* DeleteCardDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCardDropDelegate.swift; sourceTree = "<group>"; };
-		2AFB413A2C63DC79005AEF8B /* Collectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collectable.swift; sourceTree = "<group>"; };
+		2AFB413A2C63DC79005AEF8B /* CollectableEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectableEnum.swift; sourceTree = "<group>"; };
 		2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2AFB413E2C63F27F005AEF8B /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		2AFD1F552C21B26C0061060E /* ImageCodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCodableExtension.swift; sourceTree = "<group>"; };
@@ -397,20 +403,12 @@
 			path = FinishedRoutes;
 			sourceTree = "<group>";
 		};
-		2A16D7A62C6F5F4B00736532 /* MainProfile */ = {
-			isa = PBXGroup;
-			children = (
-				2AFD1F732C249F4D0061060E /* ProfileView.swift */,
-				2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */,
-			);
-			path = MainProfile;
-			sourceTree = "<group>";
-		};
 		2A16D7A72C6F5F5900736532 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
 				2A3CF4F32C6BFC6E00B1B769 /* ProfileCollectablesView.swift */,
 				2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */,
+				2A16D7B22C6FC87E00736532 /* AwardsView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -567,8 +565,6 @@
 				2AFD1F572C21DA820061060E /* Codables */,
 				2AA5B1512C0A165B001EC475 /* Enums */,
 				2AE8A02E2C14BDB2005E0F62 /* Attraction.swift */,
-				2A1757202C6A861900D4DFB1 /* Award.swift */,
-				2AFB413A2C63DC79005AEF8B /* Collectable.swift */,
 				2AA5B1262C08E17E001EC475 /* FriendUpdate.swift */,
 				2AA5B1242C08D885001EC475 /* Route.swift */,
 				2AA5B1392C09E52B001EC475 /* RouteProgress.swift */,
@@ -586,6 +582,7 @@
 				2AFB40F22C6011B5005AEF8B /* RouteRelated */,
 				2A76D4A62C15D13D007908E0 /* ImagesSlidesHeader.swift */,
 				2AA5B1282C090417001EC475 /* LondonExplorerLogo.swift */,
+				2A16D7B42C6FD89000736532 /* ProgressBar.swift */,
 			);
 			path = SharedComponents;
 			sourceTree = "<group>";
@@ -606,7 +603,10 @@
 		2AA5B1512C0A165B001EC475 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
-				2AA5B1522C0A166E001EC475 /* Label.swift */,
+				2A1757202C6A861900D4DFB1 /* AwardEnum.swift */,
+				2A16D7B62C6FDCBE00736532 /* AwardLevelEnum.swift */,
+				2AA5B1522C0A166E001EC475 /* CardLabelEnum.swift */,
+				2AFB413A2C63DC79005AEF8B /* CollectableEnum.swift */,
 				2AA9B8DF2C527DC6001F27B9 /* NavigationEnums.swift */,
 			);
 			path = Enums;
@@ -793,8 +793,9 @@
 			isa = PBXGroup;
 			children = (
 				2A16D7A52C6F5F3D00736532 /* FinishedRoutes */,
-				2A16D7A62C6F5F4B00736532 /* MainProfile */,
 				2A16D7A72C6F5F5900736532 /* Subviews */,
+				2AFD1F732C249F4D0061060E /* ProfileView.swift */,
+				2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */,
 			);
 			path = ProfileScreen;
 			sourceTree = "<group>";
@@ -883,7 +884,7 @@
 				2A16D79B2C6D282600736532 /* OnRouteMap.swift in Sources */,
 				2A0E39ED2C4F110B00AC32A4 /* StartRouteGreeting.swift in Sources */,
 				2AFD1F6D2C248D250061060E /* RouteView.swift in Sources */,
-				2A1757212C6A861900D4DFB1 /* Award.swift in Sources */,
+				2A1757212C6A861900D4DFB1 /* AwardEnum.swift in Sources */,
 				2AFD1F6F2C2497580061060E /* RouteViewModel.swift in Sources */,
 				2AFB40F02C6009C8005AEF8B /* DeleteCardDropDelegate.swift in Sources */,
 				2AA5B13A2C09E52B001EC475 /* RouteProgress.swift in Sources */,
@@ -917,11 +918,12 @@
 				2AA5B13C2C09E5E5001EC475 /* User.swift in Sources */,
 				2AA9B92B2C5FB12E001F27B9 /* TestStorageView.swift in Sources */,
 				2A1757242C6AC25000D4DFB1 /* UserWrapper.swift in Sources */,
+				2A16D7B32C6FC87E00736532 /* AwardsView.swift in Sources */,
 				2AA5B1302C090A33001EC475 /* TextStyles.swift in Sources */,
 				2AE8A0352C14E674005E0F62 /* AttractionCard.swift in Sources */,
 				2A0E39E32C4DB68100AC32A4 /* FileManager.swift in Sources */,
 				2AA5B1572C0A18BC001EC475 /* EmptyStateBanner.swift in Sources */,
-				2AA5B1532C0A166E001EC475 /* Label.swift in Sources */,
+				2AA5B1532C0A166E001EC475 /* CardLabelEnum.swift in Sources */,
 				2AFD1F672C247FDF0061060E /* RouteButton.swift in Sources */,
 				2AA5B10D2C08B890001EC475 /* ContentView.swift in Sources */,
 				2AFD1F762C249F7F0061060E /* ProfileViewModel.swift in Sources */,
@@ -947,6 +949,7 @@
 				2A8506922C0A8A65003A3117 /* NetworkMonitor.swift in Sources */,
 				2A0E39EF2C4FF4FA00AC32A4 /* ActionBanner.swift in Sources */,
 				2A0E39E02C4D76AD00AC32A4 /* LocationManager.swift in Sources */,
+				2A16D7B52C6FD89000736532 /* ProgressBar.swift in Sources */,
 				2A17572A2C6AC2A300D4DFB1 /* FinishedRouteWrapper.swift in Sources */,
 				2AC56A8B2C28C6BF00F7249B /* ImagesRepository.swift in Sources */,
 				2AA5B1192C08B8CC001EC475 /* MainScreenView.swift in Sources */,
@@ -971,7 +974,7 @@
 				2AC56A8D2C2987B900F7249B /* ErrorScreen.swift in Sources */,
 				2A76D4A52C15C944007908E0 /* MapContent.swift in Sources */,
 				2AFB413D2C63F1A8005AEF8B /* SettingsView.swift in Sources */,
-				2AFB413B2C63DC79005AEF8B /* Collectable.swift in Sources */,
+				2AFB413B2C63DC79005AEF8B /* CollectableEnum.swift in Sources */,
 				2AA5B1502C0A1396001EC475 /* WidgetError.swift in Sources */,
 				2AA5B1452C0A02BA001EC475 /* FriendsOnRouteWidget.swift in Sources */,
 				2A1757282C6AC28B00D4DFB1 /* ServiceErrorEnum.swift in Sources */,
@@ -983,6 +986,7 @@
 				2A76D4C12C1736C1007908E0 /* AttractionListButton.swift in Sources */,
 				2A76D4CE2C1B9653007908E0 /* PopUp.swift in Sources */,
 				2AA9B9292C5FA10D001F27B9 /* CurrentRoutesStorage.swift in Sources */,
+				2A16D7B72C6FDCBE00736532 /* AwardLevelEnum.swift in Sources */,
 				2A16D79D2C6D486600736532 /* CollectableAnnotation.swift in Sources */,
 				2AA5B10B2C08B890001EC475 /* LondonExplorerApp.swift in Sources */,
 				2AE8A02F2C14BDB2005E0F62 /* Attraction.swift in Sources */,

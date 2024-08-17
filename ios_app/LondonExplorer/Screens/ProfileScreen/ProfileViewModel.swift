@@ -22,11 +22,13 @@ class ProfileViewModel: ObservableObject {
     }
     
     func fetchUser() {
-        Task {
-            do {
-                self.user = try await userService.fetchUser(userId: user.id)
-            } catch {
-                self.error = error.localizedDescription
+        DispatchQueue.main.async {
+            Task {
+                do {
+                    self.user = try await self.userService.fetchUser(userId: self.user.id)
+                } catch {
+                    self.error = error.localizedDescription
+                }
             }
         }
     }
