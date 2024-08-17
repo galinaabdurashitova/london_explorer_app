@@ -36,7 +36,7 @@ public class UserAwardRequest {
         return awardDate;
     }
 
-    public void setAwardDateDate(Timestamp awardDate) {
+    public void setAwardDate(Timestamp awardDate) {
         this.awardDate = awardDate;
     }
 }

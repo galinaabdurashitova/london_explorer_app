@@ -103,42 +103,46 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/awards")
-    public ResponseEntity<?> saveUserAward(@PathVariable String userId, @RequestBody UserAwardRequest request) {
-        if (request.getUserAwardId() == null || request.getAward() == null || request.getAwardDate() == null) {
-            return ResponseEntity.status(400).body("Missing parameters");
+    public ResponseEntity<?> saveUserAward(@PathVariable String userId, @RequestBody List<UserAwardRequest> requests) {
+        for (UserAwardRequest request : requests) {
+            if (request.getUserAwardId() == null || request.getAward() == null || request.getAwardDate() == null) {
+                return ResponseEntity.status(400).body("Missing parameters");
+            }
+
+            int savedLevel = userAwardService.getPreviousLevelsNumber(userId, request.getAward());
+
+            if (request.getAwardLevel() <= savedLevel || request.getAwardLevel() > 3 || request.getAwardLevel() < 1) {
+                return ResponseEntity.status(400).body("Wrong level");
+            }
         }
 
-        int savedLevel = userAwardService.getPreviousLevelsNumber(userId, request.getAward());
+        for (UserAwardRequest request : requests) {
+            int levelsDifference = request.getAwardLevel() - userAwardService.getPreviousLevelsNumber(userId, request.getAward());
 
-        if (request.getAwardLevel() <= savedLevel || request.getAwardLevel() > 3 || request.getAwardLevel() < 1) {
-            return ResponseEntity.status(400).body("Wrong level");
-        }
+            for (int i = 1; i < levelsDifference; i++) {
+                String uuid = UUID.randomUUID().toString();
 
-        int levelsDifference = request.getAwardLevel() - savedLevel;
+                UserAward previousLevelAward = new UserAward(
+                        uuid,
+                        userId,
+                        request.getAward(),
+                        request.getAwardLevel() - levelsDifference + i,
+                        request.getAwardDate()
+                );
 
-        for (int i = 1; i < levelsDifference; i++) {
-            String uuid = UUID.randomUUID().toString();
+                userAwardService.saveUserAward(previousLevelAward);
+            }
 
-            UserAward previousLevelAward = new UserAward(
-                    uuid,
+            UserAward userAward = new UserAward(
+                    request.getUserAwardId(),
                     userId,
                     request.getAward(),
-                    request.getAwardLevel() - levelsDifference + i,
+                    request.getAwardLevel(),
                     request.getAwardDate()
             );
 
-            userAwardService.saveUserAward(previousLevelAward);
+            userAwardService.saveUserAward(userAward);
         }
-
-        UserAward userAward = new UserAward(
-                request.getUserAwardId(),
-                userId,
-                request.getAward(),
-                request.getAwardLevel(),
-                request.getAwardDate()
-        );
-
-        userAwardService.saveUserAward(userAward);
 
         return ResponseEntity.ok().build();
     }

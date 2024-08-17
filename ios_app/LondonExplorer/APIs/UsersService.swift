@@ -11,6 +11,7 @@ protocol UsersServiceProtocol {
     func fetchUser(userId: String) async throws -> User
     func createUser(newUser: User) async throws
     func saveFinishedRoute(userId: String, route: RouteProgress) async throws
+    func saveUserAward(userId: String, award: User.UserAward) async throws
 }
 
 class UsersService: UsersServiceProtocol {
@@ -201,5 +202,13 @@ class UsersService: UsersServiceProtocol {
         } catch {
             throw error
         }
+    }
+    
+    func saveUserAward(userId: String, award: User.UserAward) async throws {
+        let url = baseURL.appendingPathComponent("\(userId)/awards")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
     }
 }
