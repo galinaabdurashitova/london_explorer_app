@@ -16,6 +16,7 @@ class AuthController: ObservableObject {
     @Published var profile: User = User(userId: "", name: "", userName: "")
     
     private var usersRepository: UsersServiceProtocol = UsersService()
+    private var routesRepository: RoutesServiceProtocol = RoutesService()
     
     init(testProfile: Bool = false) {
         if testProfile == true  {
@@ -27,10 +28,47 @@ class AuthController: ObservableObject {
         }
     }
     
+    func reloadUser() {
+        DispatchQueue.main.async {
+            Task {
+                do {
+                    self.profile = try await self.usersRepository.fetchUser(userId: self.profile.id)
+                    await self.getFinishedRoutes()
+                } catch {
+                    print("Error while fetching the user profile: \(error)")
+                }
+            }
+        }
+    }
+    
+    func getFinishedRoutes() async {
+        print("Start loading finished routes")
+        for routeIndex in self.profile.finishedRoutes.indices {
+            print("Finished route \(routeIndex)")
+            do {
+                let route = try await self.routesRepository.fetchRoute(routeId: self.profile.finishedRoutes[routeIndex].routeId)
+                print("Route fetched:")
+                print("Route name: \(route.name)")
+                print("Stops count: \(route.stops.count)")
+                print("Time: \(route.routeTime)")
+                
+                DispatchQueue.main.async {
+                    self.profile.finishedRoutes[routeIndex].route = route
+                    print("Now route saved:")
+                    print("Route name: \(self.profile.finishedRoutes[routeIndex].route?.name)")
+                    print("Stops count: \(self.profile.finishedRoutes[routeIndex].route?.stops.count)")
+                    print("Time: \(self.profile.finishedRoutes[routeIndex].route?.routeTime)")
+                }
+            } catch {
+                print("Error fetching route \(self.profile.finishedRoutes[routeIndex].id)")
+            }
+        }
+    }
+    
     private func setUserProfile(user: User = MockData.Users[0]) {
         DispatchQueue.main.async {
             self.profile = user
-            self.isSignedIn = true
+            Task { await self.getFinishedRoutes() }
         }
     }
     
@@ -49,6 +87,7 @@ class AuthController: ObservableObject {
                     do {
                         let profile = try await self.usersRepository.fetchUser(userId: user.uid)
                         self.setUserProfile(user: profile)
+                        self.isSignedIn = true
                         print("User \(user.uid) signed in.")
                     } catch {
                         print("Error while fetching the user profile: \(error)")
@@ -67,6 +106,7 @@ class AuthController: ObservableObject {
             let profile = try await usersRepository.fetchUser(userId: user.uid)
             
             self.setUserProfile(user: profile)
+            self.isSignedIn = true
             
             print("User \(user.uid) signed in.")
         } catch {
@@ -84,6 +124,7 @@ class AuthController: ObservableObject {
             try await usersRepository.createUser(newUser: userProfile)
             
             self.setUserProfile(user: userProfile)
+            self.isSignedIn = true
             
             print("User \(user.uid) signed up.")
         } catch {

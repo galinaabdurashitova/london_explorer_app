@@ -67,7 +67,6 @@ struct ProfileView: View {
             }
         }
         .onAppear {
-            viewModel.user = auth.profile
             viewModel.fetchUser()
             viewModel.loadRoutes()
         }

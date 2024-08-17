@@ -18,6 +18,9 @@ public class FinishedRoute {
     @Column(name = "route_id", length = 36, nullable = false)
     private String routeId;
 
+    @Column(name = "spent_minutes", nullable = false)
+    private double spentMinutes;
+
     @Column(name = "finished_day")
     private Timestamp finishedDate;
 
@@ -28,10 +31,11 @@ public class FinishedRoute {
         // Empty constructor needed for JPA
     }
 
-    public FinishedRoute(String finishedRouteId, String userId, String routeId, Timestamp finishedDate, int collectables) {
+    public FinishedRoute(String finishedRouteId, String userId, String routeId, double spentMinutes, Timestamp finishedDate, int collectables) {
         this.finishedRouteId = finishedRouteId;
         this.userId = userId;
         this.routeId = routeId;
+        this.spentMinutes = spentMinutes;
         this.finishedDate = finishedDate;
         this.collectables = collectables;
     }
@@ -60,6 +64,14 @@ public class FinishedRoute {
 
     public void setRouteId(String routeId) {
         this.routeId = routeId;
+    }
+
+    public double getSpentMinutes() {
+        return spentMinutes;
+    }
+
+    public void setSpentMinutes(double spentMinutes) {
+        this.spentMinutes = spentMinutes;
     }
 
     public Timestamp getFinishedDate() {

@@ -68,6 +68,7 @@ struct AwardsView: View {
                 }
                     
                 awardProgressBar(award: award, colour: getColour(index: index))
+                    .frame(maxWidth: .infinity)
             }
         }
         .padding(.vertical, 15)

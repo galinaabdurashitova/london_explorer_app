@@ -42,23 +42,23 @@ enum AwardLevel: Int {
     }
     
     @ViewBuilder
-    func getImage(award: AwardTypes, colour: Color = Color.clear) -> some View {
+    func getImage(award: AwardTypes, colour: Color = Color.clear, sizeMultiply: Double = 1) -> some View {
         ZStack {
             Circle()
                 .fill(colour)
-                .frame(width: 100)
+                .frame(width: 100 * sizeMultiply)
                 .opacity(0.2)
             
             if self == .zero {
                 award.image
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 80)
+                    .frame(width: 80 * sizeMultiply)
             } else {
                 Image(self.imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 80)
+                    .frame(width: 80 * sizeMultiply)
             }
             
             if self.rawValue > 0 {
@@ -71,7 +71,7 @@ enum AwardLevel: Int {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 }
-                .frame(width: 40)
+                .frame(width: 40 * sizeMultiply)
                 .padding(.bottom, self.cardPadding)
             }
         }

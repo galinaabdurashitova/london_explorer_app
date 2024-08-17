@@ -76,8 +76,7 @@ enum AwardTypes: String, Codable, CaseIterable {
         case .friends:
             return Double(user.friends.count)
         case .minutes:
-            let totalRouteTime = user.finishedRoutes.compactMap { $0.route?.routeTime }.reduce(0, +)
-            return Double(totalRouteTime / 60)
+            return user.finishedRoutes.compactMap { $0.spentMinutes }.reduce(0, +)
         case .kilometers:
             let totalDistance = user.finishedRoutes.compactMap { $0.route?.pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) }.reduce(0, +)
             return Double(totalDistance) / 1000
@@ -85,6 +84,29 @@ enum AwardTypes: String, Codable, CaseIterable {
             return 0
         case .collectables:
             return Double(user.collectables.count)
+        }
+    }
+    
+    func getNewPoints(user: User, routeProgress: RouteProgress) -> Double {
+        switch self {
+        case .routesFinished:
+            return self.getPoints(user: user) + 1
+        case .attractionsVisited:
+            return self.getPoints(user: user) + Double(routeProgress.route.stops.count)
+        case .routesPublished:
+            return 0
+        case .friends:
+            return Double(user.friends.count)
+        case .minutes:
+            return self.getPoints(user: user) + routeProgress.totalElapsedMinutes()
+        case .kilometers:
+            let newKilometers = routeProgress.route.pathes.compactMap({ $0?.expectedTravelTime }).reduce(0, +) / 1000
+            return self.getPoints(user: user) + newKilometers
+        case .likedRoute:
+            return 0
+        case .collectables:
+            let newCollectables = routeProgress.collectables.filter{ !user.collectables.compactMap{ $0.type }.contains($0.type) }
+            return self.getPoints(user: user) + Double(newCollectables.count)
         }
     }
     
@@ -114,5 +136,15 @@ enum AwardTypes: String, Codable, CaseIterable {
         } else {
             return false
         }
+    }
+    
+    func getLevelForPoints(points: Double) -> Int {
+        for i in 1...3 {
+            if points < self.getLevelPoints(level: i) {
+                return i - 1
+            }
+        }
+        
+        return 3
     }
 }

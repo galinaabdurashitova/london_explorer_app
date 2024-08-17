@@ -10,6 +10,7 @@ import Foundation
 struct FinishedRouteWrapper: Codable {
     var finishedRouteId: String = UUID().uuidString
     var routeId: String
+    var spentMinutes: Double
     var finishedDate: String
     var userCollectables: [UserCollectable]
     

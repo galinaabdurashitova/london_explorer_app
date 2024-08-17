@@ -35,6 +35,7 @@ class ProfileViewModel: ObservableObject {
     
     func loadRoutes() {
         Task {
+            // Get created routes
             do {
                 if let userRoutes = try await routesService.fetchUserRoutes(userId: user.id) {
                     DispatchQueue.main.async {
@@ -43,6 +44,20 @@ class ProfileViewModel: ObservableObject {
                 }
             } catch {
                 //
+            }
+            
+            // Get finished routes
+            for routeIndex in user.finishedRoutes.indices {
+                do {
+                    if user.finishedRoutes[routeIndex].route == nil {
+                        let route = try await routesService.fetchRoute(routeId: user.finishedRoutes[routeIndex].routeId)
+                        DispatchQueue.main.async {
+                            self.user.finishedRoutes[routeIndex].route = route
+                        }
+                    }
+                } catch {
+                    print("Error fetching route \(user.finishedRoutes[routeIndex].id)")
+                }
             }
         }
     }

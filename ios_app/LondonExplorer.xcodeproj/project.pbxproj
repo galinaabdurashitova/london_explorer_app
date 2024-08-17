@@ -332,7 +332,6 @@
 		2A16D7992C6D27B900736532 /* OnRouteViewElements */ = {
 			isa = PBXGroup;
 			children = (
-				2A0E39E62C4E931200AC32A4 /* FinishRoutePopup.swift */,
 				2A16D79A2C6D282600736532 /* OnRouteMap.swift */,
 				2A17572D2C6B672600D4DFB1 /* OnRouteStatWindow.swift */,
 				2A0E39EA2C4EF07300AC32A4 /* RouteClock.swift */,
@@ -388,6 +387,7 @@
 		2A16D7A42C6F5F0000736532 /* PopUps */ = {
 			isa = PBXGroup;
 			children = (
+				2A0E39E62C4E931200AC32A4 /* FinishRoutePopup.swift */,
 				2A16D79E2C6D504D00736532 /* CollectedCollectableView.swift */,
 				2A0E39EC2C4F110B00AC32A4 /* StartRouteGreeting.swift */,
 			);

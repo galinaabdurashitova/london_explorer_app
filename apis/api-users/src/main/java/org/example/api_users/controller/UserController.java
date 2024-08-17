@@ -77,6 +77,7 @@ public class UserController {
                 request.getFinishedRouteId(),
                 userId,
                 request.getRouteId(),
+                request.getSpentMinutes(),
                 request.getFinishedDate(),
                 request.getUserCollectables().size()
         );

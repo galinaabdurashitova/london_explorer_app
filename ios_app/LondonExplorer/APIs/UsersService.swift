@@ -11,7 +11,7 @@ protocol UsersServiceProtocol {
     func fetchUser(userId: String) async throws -> User
     func createUser(newUser: User) async throws
     func saveFinishedRoute(userId: String, route: RouteProgress) async throws
-    func saveUserAward(userId: String, award: User.UserAward) async throws
+    func saveUserAward(userId: String, awards: [User.UserAward]) async throws
 }
 
 class UsersService: UsersServiceProtocol {
@@ -46,7 +46,7 @@ class UsersService: UsersServiceProtocol {
                 if let awardDate = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toDate(from: award.awardDate), let awardType = AwardTypes(rawValue: award.award) {
                     userAwards.append(
                         User.UserAward(
-                            id: award.awardId,
+                            id: award.userAwardId,
                             type: awardType,
                             level: award.awardLevel,
                             date: awardDate
@@ -81,6 +81,7 @@ class UsersService: UsersServiceProtocol {
                         User.FinishedRoute(
                             id: route.finishedRouteId,
                             routeId: route.routeId,
+                            spentMinutes: route.spentMinutes,
                             finishedDate: finishedDate,
                             collectables: route.collectables
                         )
@@ -170,6 +171,7 @@ class UsersService: UsersServiceProtocol {
         
         let newFinishedRouteWrapped = FinishedRouteWrapper(
             routeId: route.route.id,
+            spentMinutes: route.totalElapsedMinutes(),
             finishedDate: DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toString(from: endTime),
             userCollectables: newCollectables
         )
@@ -204,11 +206,52 @@ class UsersService: UsersServiceProtocol {
         }
     }
     
-    func saveUserAward(userId: String, award: User.UserAward) async throws {
+    func saveUserAward(userId: String, awards: [User.UserAward]) async throws {
         let url = baseURL.appendingPathComponent("\(userId)/awards")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
+        var newAwards: [UserWrapper.UserAward] = []
+        
+        for award in awards {
+            let newAward = UserWrapper.UserAward(
+                userAwardId: award.id,
+                award: award.type.rawValue,
+                awardLevel: award.level,
+                awardDate: DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toString(from: award.date)
+            )
+            
+            newAwards.append(newAward)
+        }
+        
+        do {
+            let jsonData = try JSONEncoder().encode(newAwards)
+            request.httpBody = jsonData
+            
+            let (_, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw ServiceError.invalidResponse
+            }
+            
+            switch httpResponse.statusCode {
+            case 200..<300:
+                break
+            case 400:
+                throw ServiceError.serverError(400)
+            case 404:
+                throw ServiceError.serverError(404)
+            case 500:
+                throw ServiceError.serverError(500)
+            default:
+                throw ServiceError.serverError(httpResponse.statusCode)
+            }
+            
+        } catch let encodingError as EncodingError {
+            throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Encoding error: \(encodingError.localizedDescription)"])
+        } catch {
+            throw error
+        }
     }
 }

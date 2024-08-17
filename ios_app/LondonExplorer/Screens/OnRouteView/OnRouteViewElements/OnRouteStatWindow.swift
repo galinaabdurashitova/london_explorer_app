@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct OnRouteStatWindow: View {
+    @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
     @ObservedObject var viewModel: OnRouteViewModel
     
@@ -100,7 +101,7 @@ struct OnRouteStatWindow: View {
     private var Buttons: some View {
         HStack (spacing: 2) {
             Button(action: {
-                viewModel.changeStop(next: false)
+                viewModel.changeStop(next: false, user: auth.profile)
                 currentRoute.routeProgress = viewModel.routeProgress
             }) {
                 VStack (spacing: 3) {
@@ -147,7 +148,7 @@ struct OnRouteStatWindow: View {
                     viewModel.resume()
                     currentRoute.routeProgress = viewModel.routeProgress
                 } else {
-                    viewModel.changeStop()
+                    viewModel.changeStop(user: auth.profile)
                     currentRoute.routeProgress = viewModel.routeProgress
                 }
             }) {

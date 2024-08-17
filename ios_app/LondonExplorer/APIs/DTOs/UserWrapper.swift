@@ -19,7 +19,7 @@ struct UserWrapper: Codable {
     var finishedRoutes: [FinishedRoute] = []
     
     struct UserAward: Codable {
-        var awardId: String = UUID().uuidString
+        var userAwardId: String = UUID().uuidString
         var award: String
         var awardLevel: Int
         var awardDate: String
@@ -34,6 +34,7 @@ struct UserWrapper: Codable {
     struct FinishedRoute: Codable {
         var finishedRouteId: String = UUID().uuidString
         var routeId: String
+        var spentMinutes: Double
         var finishedDate: String
         var collectables: Int
     }

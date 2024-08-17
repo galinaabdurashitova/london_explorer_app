@@ -71,7 +71,7 @@ public class UserServiceTest {
     @Test
     public void testFindFinishedRoutes() {
         String userId = "SHrUmpceW6bDkRBLIlS0koDjyNH2";
-        FinishedRoute mockFinishedRoute = new FinishedRoute("944F0FA9-256B-4568-92D7-855FA473FAE0", userId, "29751B98-FDF0-485D-B03E-3BD12CA0884C", null, 0);
+        FinishedRoute mockFinishedRoute = new FinishedRoute("944F0FA9-256B-4568-92D7-855FA473FAE0", userId, "29751B98-FDF0-485D-B03E-3BD12CA0884C", 0.0, null, 0);
 
         when(userRepository.findFinishedRoutes(userId)).thenReturn(Collections.singletonList(mockFinishedRoute));
 

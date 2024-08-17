@@ -292,6 +292,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -299,6 +300,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -306,6 +308,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -313,6 +316,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -320,6 +324,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -327,6 +332,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -334,6 +340,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -341,6 +348,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -348,6 +356,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -355,6 +364,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 ),
@@ -362,6 +372,7 @@ class MockData {
                     id: "111",
                     routeId: "1",
                     route: MockData.Routes[0],
+                    spentMinutes: 5,
                     finishedDate: Date(),
                     collectables: 5
                 )

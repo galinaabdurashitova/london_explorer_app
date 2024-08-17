@@ -6,6 +6,7 @@ import java.util.List;
 public class FinishedRouteRequest {
     private String finishedRouteId;
     private String routeId;
+    private double spentMinutes;
     private Timestamp finishedDate;
     private List<UserCollectableRequest> userCollectables;
 
@@ -25,6 +26,14 @@ public class FinishedRouteRequest {
 
     public void setRouteId(String routeId) {
         this.routeId = routeId;
+    }
+
+    public double getSpentMinutes() {
+        return spentMinutes;
+    }
+
+    public void setSpentMinutes(double spentMinutes) {
+        this.spentMinutes = spentMinutes;
     }
 
     public Timestamp getFinishedDate() {

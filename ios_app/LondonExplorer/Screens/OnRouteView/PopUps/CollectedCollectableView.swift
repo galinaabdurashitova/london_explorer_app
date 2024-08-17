@@ -53,8 +53,6 @@ struct CollectedCollectableView: View {
                     size: .L
                 ) {
                     action()
-//                    auth.profile.collectables.compactMap{ $0.type }.contains(collectable) || viewModel.routeProgress.collectables.compactMap{ $0.type }.contains(collectable)
-//                    withAnimation(.easeInOut) { viewModel.collected = nil }
                 }
             }
             .padding(.all, 20)

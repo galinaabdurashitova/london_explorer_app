@@ -41,6 +41,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         var id: String = UUID().uuidString
         var routeId: String
         var route: Route?
+        var spentMinutes: Double
         var finishedDate: Date
         var collectables: Int
     }

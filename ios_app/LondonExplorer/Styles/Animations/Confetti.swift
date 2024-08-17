@@ -18,10 +18,10 @@ struct ConfettiAnimation: View {
         ZStack {
             ForEach(0..<confettiCount, id: \.self) { index in
                 ConfettiView
-                    .offset(x: CGFloat.random(in: -150...150), y: self.startAnimation ? UIScreen.main.bounds.height : -UIScreen.main.bounds.height)
+                    .offset(x: CGFloat.random(in: -400...400), y: self.startAnimation ? UIScreen.main.bounds.height : -UIScreen.main.bounds.height)
                     .scaleEffect(CGFloat.random(in: 0.5...1.5))
                     .animation(
-                        Animation.linear(duration: Double.random(in: 6...10))
+                        Animation.linear(duration: Double.random(in: 3...9))
                             .repeatForever(autoreverses: false)
                             .delay(Double(index) * 0.05)
                     )
@@ -37,7 +37,7 @@ struct ConfettiAnimation: View {
             .foregroundColor(colors.randomElement())
             .rotationEffect(.degrees(animationAmount))
             .animation(
-                Animation.linear(duration: Double.random(in: 6...10))
+                Animation.linear(duration: Double.random(in: 3...9))
 //                    .repeatForever(autoreverses: false)
             )
             .onAppear {

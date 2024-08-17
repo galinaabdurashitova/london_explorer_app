@@ -59,14 +59,12 @@ struct OnRouteView: View {
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .tabBar)
-        .onAppear {
-            viewModel.setAuthController(auth)
-        }
         .overlay {
             if viewModel.lastStop {
-                FinishRoutePopup(isOpen: $viewModel.lastStop) {
+                FinishRoutePopup(isOpen: $viewModel.lastStop, awards: viewModel.awarded) {
                     do {
-                        try viewModel.finishRoute()
+                        try viewModel.finishRoute(userId: auth.profile.id)
+                        auth.reloadUser()
                         currentRoute.routeProgress = nil
                         self.presentationMode.wrappedValue.dismiss()
                     } catch {

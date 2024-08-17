@@ -10,15 +10,15 @@ import SwiftUI
 import MapKit
 
 class OnRouteViewModel: ObservableObject {
-    // Model used in the view variables
+    /// Model used in the view variables
     @Published var routeProgress: RouteProgress
     
-    // Map variables
+    /// Map variables
     @Published var currentCoordinate: CLLocationCoordinate2D?
     @Published var directionToStart: MKRoute?
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
     
-    // Variables for correct view work
+    /// Variables for correct view work
     @Published var lastStop: Bool = false
     @Published var stopRoute: Bool = false
     @Published var showGreeting: Bool = false
@@ -27,13 +27,13 @@ class OnRouteViewModel: ObservableObject {
     @Published var error: String = ""
     @Published var isMapLoading: Bool = false
     @Published var collected: Route.RouteCollectable?
+    @Published var awarded: [User.UserAward] = []
     
-    // Service variables
-    private var auth: AuthController?
+    /// Service variables
     private var locationManager = LocationManager()
     private var usersService = UsersService()
     
-    // Initializers
+    /// Initializers
     init(route: Route, user: User, savedRouteProgress: RouteProgress?) {
         self.routeProgress = RouteProgress(
             route: route,
@@ -52,8 +52,19 @@ class OnRouteViewModel: ObservableObject {
             }
         } else {
             self.showGreeting = true
-            self.greetingText = "Start \(route.name)"
-            self.greetingSubText = "You're about to start the route! Get ready!"
+            
+            if let lastRoute = user.finishedRoutes.first(where: { $0.routeId == route.id }) {
+                if lastRoute.collectables < route.collectables.count {
+                    self.greetingText = "Ready to find them all?"
+                    self.greetingSubText = "Last time you found \(lastRoute.collectables) collectable on \(route.name), there are \(route.collectables.count - lastRoute.collectables) more!"
+                } else {
+                    self.greetingText = "Ready to repeat?"
+                    self.greetingSubText = "You found all collectables on \(route.name), but you can still enjoy the walk!"
+                }
+            } else {
+                self.greetingText = "Start \(route.name)"
+                self.greetingSubText = "You're about to start the route! Get ready!"
+            }
         }
         
         Task { await self.screenSetup() }
@@ -65,7 +76,7 @@ class OnRouteViewModel: ObservableObject {
         Task { await self.screenSetup() }
     }
     
-    // Screen setup functions
+    /// Screen setup functions
     func screenSetup() async {
         self.isMapLoading = true
         locationManager.onLocationUpdate = { newCoordinate in
@@ -81,11 +92,7 @@ class OnRouteViewModel: ObservableObject {
         self.isMapLoading = false
     }
     
-    func setAuthController(_ auth: AuthController) {
-        self.auth = auth
-    }
-    
-    // Route progress management functions
+    /// Route progress management functions
     func pause() {
         self.routeProgress.paused = true
         self.routeProgress.lastPauseTime = Date()
@@ -99,7 +106,7 @@ class OnRouteViewModel: ObservableObject {
         self.routeProgress.lastPauseTime = nil
     }
     
-    func changeStop(next: Bool = true) {
+    func changeStop(next: Bool = true, user: User) {
         if next {
             if self.routeProgress.stops < self.routeProgress.route.stops.count {
                 self.routeProgress.stops += 1
@@ -115,38 +122,44 @@ class OnRouteViewModel: ObservableObject {
         } else {
             self.lastStop = true
             self.routeProgress.endTime = Date()
+            self.getAwards(user: user)
         }
     }
     
-    func finishRoute() throws {
+    func finishRoute(userId: String) throws {
         self.routeProgress.endTime = Date()
-        
-        guard let auth = auth else {
-            throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "Authorization error. Saving progress is impossible"])
-        }
 
         Task {
             do {
-                try await usersService.saveFinishedRoute(userId: auth.profile.id, route: self.routeProgress)
+                try await usersService.saveFinishedRoute(userId: userId, route: self.routeProgress)
+                try await usersService.saveUserAward(userId: userId, awards: self.awarded)
             } catch {
                 print("Error saving finished route: \(error.localizedDescription)")
                 throw error
             }
         }
-        
+    }
+    
+    /// Awards
+    func getAwards(user: User) {
         DispatchQueue.main.async {
-            Task {
-                do {
-                    auth.profile = try await self.usersService.fetchUser(userId: auth.profile.id)
-                } catch {
-                    print("Error fetching user: \(error.localizedDescription)")
-                    throw error
+            for award in AwardTypes.allCases.filter({ $0.trigger.contains(.finishedRoute) }) {
+                print("Check award \(award.rawValue)")
+                let userLevel = award.getUserLevel(user: user)
+                print("Current user level \(userLevel)")
+                let userPoints = award.getNewPoints(user: user, routeProgress: self.routeProgress)
+                print("New user points \(userPoints)")
+                let newUserLevel = award.getLevelForPoints(points: userPoints)
+                print("New user level \(newUserLevel)")
+                
+                if newUserLevel > userLevel {
+                    self.awarded.append(User.UserAward(type: award, level: newUserLevel, date: Date()))
                 }
             }
         }
     }
     
-    // Collectables management functions
+    /// Collectables management functions
     func isAppearCollectable(collectable: Route.RouteCollectable) -> Bool {
         if let currentCoordinate = self.currentCoordinate {
             let location1 = CLLocation(latitude: currentCoordinate.latitude, longitude: currentCoordinate.longitude)
@@ -165,7 +178,7 @@ class OnRouteViewModel: ObservableObject {
         withAnimation(.easeInOut) { self.collected = nil }
     }
     
-    // Map management functions
+    /// Map management functions
     func getDirectionToStart(start: CLLocationCoordinate2D) async {
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: start))

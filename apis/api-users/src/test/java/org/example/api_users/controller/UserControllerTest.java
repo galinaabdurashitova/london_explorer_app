@@ -110,6 +110,7 @@ public class UserControllerTest {
         FinishedRouteRequest request = new FinishedRouteRequest();
         request.setFinishedRouteId("testFinishedRouteId");
         request.setRouteId("testRouteId");
+        request.setSpentMinutes(2.0);
         request.setFinishedDate(Timestamp.valueOf("2024-08-12 12:34:56"));
         request.setUserCollectables(Collections.emptyList());
 
