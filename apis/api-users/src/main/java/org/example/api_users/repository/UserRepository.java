@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, String> {
 
-    @Query("SELECT f.user2Id FROM Friend f WHERE f.user1Id = :userId OR f.user2Id = :userId")
+    @Query("SELECT f.user2Id FROM Friend f " +
+            "WHERE f.user1Id = :userId AND EXISTS (" +
+            "SELECT 1 FROM Friend f2 " +
+            "WHERE f2.user1Id = f.user2Id AND f2.user2Id = :userId)")
     List<String> findUserFriends(@Param("userId") String userId);
 
     @Query("SELECT fr FROM FinishedRoute fr WHERE fr.userId = :userId")
@@ -20,4 +23,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("SELECT uc FROM UserCollectable uc WHERE uc.userId = :userId")
     List<UserCollectable> findUserCollectables(@Param("userId") String userId);
+
+    List<User> findByUserIdIn(List<String> userIds);
 }

@@ -18,7 +18,7 @@ class UsersService: UsersServiceProtocol {
     private let baseURL = URL(string: "http://localhost:8080/api/users")!
     
     func fetchUser(userId: String) async throws -> User {
-        let url = baseURL.appending(queryItems: [URLQueryItem(name: "userId", value: userId)])
+        let url = baseURL.appendingPathComponent("\(userId)")
         let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -95,7 +95,7 @@ class UsersService: UsersServiceProtocol {
                 userId: user.userId,
                 email: user.email,
                 name: user.name,
-                userName: user.userName,
+                userName: user.userName.lowercased(),
                 userDescription: user.description,
                 awards: userAwards,
                 collectables: userCollectables,

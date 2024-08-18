@@ -1,12 +1,8 @@
 package org.example.api_users.controller;
 
-import org.example.api_users.dto.FinishedRouteRequest;
-import org.example.api_users.dto.UserAwardRequest;
-import org.example.api_users.dto.UserCollectableRequest;
+import org.example.api_users.dto.*;
 import org.example.api_users.model.*;
-import org.example.api_users.service.FinishedRouteService;
-import org.example.api_users.service.UserAwardService;
-import org.example.api_users.service.UserService;
+import org.example.api_users.service.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +33,9 @@ public class UserControllerTest {
 
     @Mock
     private UserAwardService userAwardService;
+
+    @Mock
+    private FriendService friendService;
 
     @InjectMocks
     private UserController userController;
@@ -191,5 +191,201 @@ public class UserControllerTest {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         verify(userAwardService, never()).saveUserAward(any(UserAward.class));
+    }
+
+    @Test
+    public void testGetUsersByIds() {
+        List<String> userIds = Arrays.asList("1", "2");
+        List<User> mockUsers = Arrays.asList(
+                new User("1", "user1@example.com", "User One", "user1", null),
+                new User("2", "user2@example.com", "User Two", "user2", null)
+        );
+
+        when(userService.getUsersByIds(userIds)).thenReturn(mockUsers);
+
+        ResponseEntity<?> responseEntity = userController.getUsers(userIds);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isInstanceOf(List.class);
+        assertThat(((List<?>) responseEntity.getBody()).size()).isEqualTo(2);
+    }
+
+    @Test
+    public void testGetUsersWithNoIds() {
+        List<User> mockUsers = Arrays.asList(
+                new User("1", "user1@example.com", "User One", "user1", null),
+                new User("2", "user2@example.com", "User Two", "user2", null)
+        );
+
+        when(userService.getUsersByIds(null)).thenReturn(mockUsers);
+
+        ResponseEntity<?> responseEntity = userController.getUsers(null);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isInstanceOf(List.class);
+        assertThat(((List<?>) responseEntity.getBody()).size()).isEqualTo(2);
+    }
+
+    @Test
+    public void testGetUsersByIdsSomeNotFound() {
+        List<String> userIds = Arrays.asList("1", "2", "3");
+        List<User> mockUsers = Arrays.asList(
+                new User("1", "user1@example.com", "User One", "user1", null),
+                new User("2", "user2@example.com", "User Two", "user2", null)
+        );
+
+        when(userService.getUsersByIds(userIds)).thenReturn(mockUsers);
+
+        ResponseEntity<?> responseEntity = userController.getUsers(userIds);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isInstanceOf(List.class);
+        assertThat(((List<?>) responseEntity.getBody()).size()).isEqualTo(2);
+    }
+
+    @Test
+    public void testUpdateUserSuccess() {
+        String userId = "testUserId";
+        User existingUser = new User(userId, "original@test.com", "Original Name", "originalUserName", "Original description");
+
+        when(userService.getUserById(userId)).thenReturn(Optional.of(existingUser));
+
+        UserUpdateRequest updateRequest = new UserUpdateRequest();
+        updateRequest.setName("Updated Name");
+        updateRequest.setDescription("Updated description");
+
+        ResponseEntity<?> responseEntity = userController.updateUser(userId, updateRequest);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(existingUser.getName()).isEqualTo("Updated Name");
+        assertThat(existingUser.getDescription()).isEqualTo("Updated description");
+        verify(userService).saveUser(existingUser);
+    }
+
+    @Test
+    public void testUpdateUserNotFound() {
+        String userId = "testUserId";
+
+        when(userService.getUserById(userId)).thenReturn(Optional.empty());
+
+        UserUpdateRequest updateRequest = new UserUpdateRequest();
+        updateRequest.setName("Updated Name");
+
+        ResponseEntity<?> responseEntity = userController.updateUser(userId, updateRequest);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        verify(userService, never()).saveUser(any());
+    }
+
+    @Test
+    public void testSendOrConfirmFriendRequestSuccess() {
+        String userId = "user1";
+        String friendUserId = "user2";
+
+        FriendshipRequest request = new FriendshipRequest();
+        request.setFriendUserId(friendUserId);
+
+        when(userService.userExists(userId)).thenReturn(true);
+        when(userService.userExists(friendUserId)).thenReturn(true);
+        when(friendService.isFriendRequestExists(userId, friendUserId)).thenReturn(false);
+        when(friendService.isFriendshipConfirmed(userId, friendUserId)).thenReturn(false);
+
+        ResponseEntity<?> responseEntity = userController.sendOrConfirmFriendRequest(userId, request);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isEqualTo("Friend request sent");
+
+        verify(friendService, times(1)).addOrUpdateFriend(userId, friendUserId);
+    }
+
+    @Test
+    public void testSendOrConfirmFriendRequestAlreadyConfirmed() {
+        String userId = "user1";
+        String friendUserId = "user2";
+
+        FriendshipRequest request = new FriendshipRequest();
+        request.setFriendUserId(friendUserId);
+
+        when(userService.userExists(userId)).thenReturn(true);
+        when(userService.userExists(friendUserId)).thenReturn(true);
+        when(friendService.isFriendRequestExists(userId, friendUserId)).thenReturn(false);
+        when(friendService.isFriendshipConfirmed(userId, friendUserId)).thenReturn(true);
+
+        ResponseEntity<?> responseEntity = userController.sendOrConfirmFriendRequest(userId, request);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isEqualTo("Friendship confirmed");
+
+        verify(friendService, times(1)).addOrUpdateFriend(userId, friendUserId);
+    }
+
+    @Test
+    public void testSendOrConfirmFriendRequestMissingParameters() {
+        String userId = "user1";
+        FriendshipRequest request = new FriendshipRequest();
+
+        ResponseEntity<?> responseEntity = userController.sendOrConfirmFriendRequest(userId, request);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(responseEntity.getBody()).isEqualTo("Missing parameters");
+
+        verify(friendService, never()).addOrUpdateFriend(anyString(), anyString());
+    }
+
+    @Test
+    public void testSendOrConfirmFriendRequestUserNotFound() {
+        String userId = "user1";
+        String friendUserId = "user2";
+
+        FriendshipRequest request = new FriendshipRequest();
+        request.setFriendUserId(friendUserId);
+
+        when(userService.userExists(userId)).thenReturn(true);
+        when(userService.userExists(friendUserId)).thenReturn(false);
+
+        ResponseEntity<?> responseEntity = userController.sendOrConfirmFriendRequest(userId, request);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(responseEntity.getBody()).isEqualTo("User not found");
+
+        verify(friendService, never()).addOrUpdateFriend(anyString(), anyString());
+    }
+
+    @Test
+    public void testSendOrConfirmFriendRequestRequestAlreadyExists() {
+        String userId = "user1";
+        String friendUserId = "user2";
+
+        FriendshipRequest request = new FriendshipRequest();
+        request.setFriendUserId(friendUserId);
+
+        when(userService.userExists(userId)).thenReturn(true);
+        when(userService.userExists(friendUserId)).thenReturn(true);
+        when(friendService.isFriendRequestExists(userId, friendUserId)).thenReturn(true);
+
+        ResponseEntity<?> responseEntity = userController.sendOrConfirmFriendRequest(userId, request);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(responseEntity.getBody()).isEqualTo("Request already exists");
+
+        verify(friendService, never()).addOrUpdateFriend(anyString(), anyString());
+    }
+
+    @Test
+    public void testSendOrConfirmFriendRequestSameUserIds() {
+        String userId = "user1";
+        String friendUserId = "user1";
+
+        FriendshipRequest request = new FriendshipRequest();
+        request.setFriendUserId(friendUserId);
+
+        when(userService.userExists(userId)).thenReturn(true);
+
+        ResponseEntity<?> responseEntity = userController.sendOrConfirmFriendRequest(userId, request);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(responseEntity.getBody()).isEqualTo("Wrong userIds");
+
+        verify(friendService, never()).addOrUpdateFriend(anyString(), anyString());
     }
 }

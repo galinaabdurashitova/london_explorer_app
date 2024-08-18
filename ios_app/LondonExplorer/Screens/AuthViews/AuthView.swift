@@ -30,38 +30,42 @@ struct AuthView: View {
                     .foregroundColor(Color.redAccent)
             }
             
-            
-            if newUser {
-                CustomTextField(fieldText: .constant("Username"), fillerText: .constant("Create your unique username"), textVariable: $userName, maxLength: 16)
-                
-                CustomTextField(fieldText: .constant("Name"), fillerText: .constant("Enter your first name"), textVariable: $name, maxLength: 64)
-            }
-            
-            CustomTextField(fieldText: .constant("Email"), fillerText: .constant("Enter your email"), textVariable: $userEmail, maxLength: 64)
-            
-            CustomTextField(fieldText: .constant("Password"), fillerText: .constant(newUser ? "Set up your password" : "Enter your password"), textVariable: $password, isSecure: true, maxLength: 64)
-            
-            ButtonView(
-                text: .constant(newUser ? "Sign up" : "Log In"),
-                colour: Color.blueAccent,
-                textColour: Color.white,
-                size: .L,
-                disabled: Binding<Bool> (
-                    get: { (newUser && userName.isEmpty) || (newUser && name.isEmpty) || userEmail.isEmpty || password.isEmpty },
-                    set: { _ in }
-                ),
-                isLoading: $isLoading
-            ) {
-                Task {
-                    await authorise()
+            if auth.isStarting {
+                ProgressView()
+                    .progressViewStyle(.circular)
+            } else {
+                if newUser {
+                    CustomTextField(fieldText: .constant("Username"), fillerText: .constant("Create your unique username"), textVariable: $userName, maxLength: 16)
+                    
+                    CustomTextField(fieldText: .constant("Name"), fillerText: .constant("Enter your first name"), textVariable: $name, maxLength: 64)
                 }
-            }
-            
-            Button(action: {
-                newUser.toggle()
-            }) {
-                Text(newUser ? "Log In" : "Sign up")
-                    .foregroundColor(Color.blueAccent)
+                
+                CustomTextField(fieldText: .constant("Email"), fillerText: .constant("Enter your email"), textVariable: $userEmail, maxLength: 64)
+                
+                CustomTextField(fieldText: .constant("Password"), fillerText: .constant(newUser ? "Set up your password" : "Enter your password"), textVariable: $password, isSecure: true, maxLength: 64)
+                
+                ButtonView(
+                    text: .constant(newUser ? "Sign up" : "Log In"),
+                    colour: Color.blueAccent,
+                    textColour: Color.white,
+                    size: .L,
+                    disabled: Binding<Bool> (
+                        get: { (newUser && userName.isEmpty) || (newUser && name.isEmpty) || userEmail.isEmpty || password.isEmpty },
+                        set: { _ in }
+                    ),
+                    isLoading: $isLoading
+                ) {
+                    Task {
+                        await authorise()
+                    }
+                }
+                
+                Button(action: {
+                    newUser.toggle()
+                }) {
+                    Text(newUser ? "Log In" : "Sign up")
+                        .foregroundColor(Color.blueAccent)
+                }
             }
         }
         .padding(.all, 20)

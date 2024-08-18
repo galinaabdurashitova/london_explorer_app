@@ -42,4 +42,11 @@ public class UserService {
     }
 
     public List<UserCollectable> findUserCollectables(String userId) { return userRepository.findUserCollectables(userId); }
+
+    public List<User> getUsersByIds(List<String> userIds) {
+        if (userIds == null || userIds.isEmpty()) {
+            return userRepository.findAll();
+        }
+        return userRepository.findByUserIdIn(userIds);
+    }
 }

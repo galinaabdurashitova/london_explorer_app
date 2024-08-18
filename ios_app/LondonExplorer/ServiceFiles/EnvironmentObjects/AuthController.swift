@@ -12,7 +12,7 @@ import FirebaseAuth
 
 class AuthController: ObservableObject {
     @Published var isSignedIn = false
-    @Published var isStarting = false
+    @Published var isStarting = true
     @Published var profile: User = User(userId: "", name: "", userName: "")
     
     private var usersRepository: UsersServiceProtocol = UsersService()
@@ -22,10 +22,10 @@ class AuthController: ObservableObject {
         if testProfile == true  {
             self.setUserProfile()
         } else {
-            isStarting = true
+//            isStarting = true
             observeAuthChanges()
-            isStarting = false
         }
+        isStarting = false
     }
     
     func reloadUser() {
@@ -42,22 +42,12 @@ class AuthController: ObservableObject {
     }
     
     func getFinishedRoutes() async {
-        print("Start loading finished routes")
         for routeIndex in self.profile.finishedRoutes.indices {
-            print("Finished route \(routeIndex)")
             do {
                 let route = try await self.routesRepository.fetchRoute(routeId: self.profile.finishedRoutes[routeIndex].routeId)
-                print("Route fetched:")
-                print("Route name: \(route.name)")
-                print("Stops count: \(route.stops.count)")
-                print("Time: \(route.routeTime)")
                 
                 DispatchQueue.main.async {
                     self.profile.finishedRoutes[routeIndex].route = route
-                    print("Now route saved:")
-                    print("Route name: \(self.profile.finishedRoutes[routeIndex].route?.name)")
-                    print("Stops count: \(self.profile.finishedRoutes[routeIndex].route?.stops.count)")
-                    print("Time: \(self.profile.finishedRoutes[routeIndex].route?.routeTime)")
                 }
             } catch {
                 print("Error fetching route \(self.profile.finishedRoutes[routeIndex].id)")

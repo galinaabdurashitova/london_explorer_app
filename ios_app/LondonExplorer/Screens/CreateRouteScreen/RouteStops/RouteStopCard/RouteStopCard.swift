@@ -41,7 +41,7 @@ struct RouteStopCard: View {
                     .rotationEffect(isDragged == stop ? .degrees(0) : .degrees(90))
             }
             .padding(.all, 12)
-            .background(Color.white)
+            .background(isDragged == nil ? Color.white : stop == isDragged ? Color.white : Color.gray.opacity(0.5))
             .overlay(
                 RoundedRectangle(cornerRadius: 10.0)
                     .stroke(

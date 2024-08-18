@@ -132,7 +132,9 @@ class OnRouteViewModel: ObservableObject {
         Task {
             do {
                 try await usersService.saveFinishedRoute(userId: userId, route: self.routeProgress)
-                try await usersService.saveUserAward(userId: userId, awards: self.awarded)
+                if !self.awarded.isEmpty {
+                    try await usersService.saveUserAward(userId: userId, awards: self.awarded)
+                }
             } catch {
                 print("Error saving finished route: \(error.localizedDescription)")
                 throw error
