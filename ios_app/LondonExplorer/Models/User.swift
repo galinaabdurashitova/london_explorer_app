@@ -14,7 +14,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
     }
     
     var id: String
-    var email: String
+    var email: String?
     var name: String
     var userName: String
     var description: String?
@@ -59,7 +59,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         case finishedRoutes
     }
     
-    init(userId: String, email: String = "", name: String, userName: String, userDescription: String? = nil, image: UIImage? = nil, awards: [UserAward] = [], collectables: [UserCollectable] = [], friends: [String] = [], finishedRoutes: [FinishedRoute] = []) {
+    init(userId: String, email: String? = nil, name: String, userName: String, userDescription: String? = nil, image: UIImage? = nil, awards: [UserAward] = [], collectables: [UserCollectable] = [], friends: [String] = [], finishedRoutes: [FinishedRoute] = []) {
         self.id = userId
         self.email = email
         self.name = name
@@ -76,7 +76,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try container.decode(String.self, forKey: .userId)
-        self.email = try container.decode(String.self, forKey: .email)
+        self.email = try container.decode(String?.self, forKey: .email)
         self.name = try container.decode(String.self, forKey: .name)
         self.userName = try container.decode(String.self, forKey: .userName)
         self.description = try container.decode(String?.self, forKey: .userDescription)

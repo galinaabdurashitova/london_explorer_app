@@ -21,7 +21,7 @@ struct MainTabView: View {
                 }
                 .tag(0)
             
-            TestStorageView()
+            SearchView(tabSelection: $tabSelection)
                 .tabItem {
                     Label("Browse", systemImage: "magnifyingglass")
                         .environment(\.symbolVariants, .none)
@@ -35,13 +35,12 @@ struct MainTabView: View {
                 }
                 .tag(2)
             
-//            ProgressView()
-//                .environmentObject(networkMonitor)
-//                .tabItem {
-//                    Label("Favourites", systemImage: tabSelection == 3 ? "heart.fill" : "heart")
-//                        .environment(\.symbolVariants, .none)
-//                }
-//                .tag(3)
+            TestStorageView()
+                .tabItem {
+                    Label("Favourites", systemImage: tabSelection == 3 ? "heart.fill" : "heart")
+                        .environment(\.symbolVariants, .none)
+                }
+                .tag(3)
             
             ProfileView(user: auth.profile, tabSelection: $tabSelection)
                 .tabItem {

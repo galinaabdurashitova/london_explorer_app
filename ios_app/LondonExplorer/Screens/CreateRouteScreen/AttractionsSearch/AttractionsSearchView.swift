@@ -27,7 +27,7 @@ struct AttractionsSearchView: View {
                         Spacer()
                     }
                     
-                    SearchBar
+                    attractionSearchBar
                     
                     if viewModel.isLoading && viewModel.attractions.count < 1 {
                         loading
@@ -73,35 +73,11 @@ struct AttractionsSearchView: View {
         )
     }
     
-    private var SearchBar: some View {
+    private var attractionSearchBar: some View {
         VStack (spacing: 15) {
-            HStack (spacing: 15) {
-                HStack (spacing: 12) {
-                    Image(systemName: "magnifyingglass")
-                        .icon(size: 20, colour: Color.black.opacity(0.7))
-                    TextField("Search", text: $viewModel.searchText)
-                        .font(.system(size: 16))
-                        .onChange(of: viewModel.searchText) {
-                            viewModel.filterAttractions()
-                        }
-                }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8.0)
-                        .stroke(Color.gray, lineWidth: 1.0)
-                )
-                
-                Button(action: {
-                    viewModel.showFilter.toggle()
-                }) {
-                    Image("FilterSFIcon")
-                        .icon(size: 40, colour: Color.black.opacity(0.5))
-                        .padding(.all, 7)
-                        .background(Color.grayBackground)
-                        .cornerRadius(8)
-                }
+            SearchBar(searchText: $viewModel.searchText, showFilter: $viewModel.showFilter, isFilter: true) {
+                viewModel.filterAttractions()
             }
-            .frame(height: 50)
             
             if viewModel.showFilter {
                 ScrollView (.horizontal, showsIndicators: false) {

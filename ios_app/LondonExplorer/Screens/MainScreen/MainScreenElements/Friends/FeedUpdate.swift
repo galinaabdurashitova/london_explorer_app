@@ -26,13 +26,13 @@ struct FeedUpdate: View {
                     .opacity(0.5)
                 Text(update.caption)
                     .headline()
-                Text(update.subCaption)
-                    .subheadline()
+//                Text(update.subCaption)
+//                    .subheadline()
             }
             Spacer()
             
-            update.getIcon()
-                .icon(size: 50)
+//            update.getIcon()
+//                .icon(size: 50)
         }
         .padding(.all, 15.0)
         .background(Color.lightBlue)

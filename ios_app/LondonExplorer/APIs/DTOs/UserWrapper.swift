@@ -9,7 +9,7 @@ import Foundation
 
 struct UserWrapper: Codable {
     var userId: String
-    var email: String
+    var email: String?
     var name: String
     var userName: String
     var description: String? = nil

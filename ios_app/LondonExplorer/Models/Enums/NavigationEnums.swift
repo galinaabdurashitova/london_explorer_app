@@ -28,6 +28,7 @@ enum CreateRoutePath: Hashable {
 }
 
 enum ProfileNavigation: Hashable {
+    case profile(User)
     case finishedRoutes
     case collectables
     case awards

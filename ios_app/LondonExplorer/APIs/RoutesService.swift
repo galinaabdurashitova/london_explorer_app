@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol RoutesServiceProtocol {
+protocol RoutesServiceProtocol: Service {
     func fetchRoute(routeId: String) async throws -> Route
     func fetchUserRoutes(userId: String) async throws -> [Route]?
     func fetchRoutes(routesIds: [String]) async throws -> [Route]
@@ -16,16 +16,16 @@ protocol RoutesServiceProtocol {
     func deleteRoute(routeId: String) async throws
 }
 
-class RoutesService: RoutesServiceProtocol {
-    private let baseURL = URL(string: "https://c490973c-0f21-4e71-866e-f8e4c353507b-00-3j1hu3pc5bvs1.kirk.replit.dev/api/routes")!
+class RoutesService: Service, RoutesServiceProtocol {
+    private lazy var serviceURL: URL = {
+        return baseURL.appendingPathComponent("routes")
+    }()
+    
+    override init() {
+        super.init()
+    }
     
     @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
-    
-    enum ServiceError: Error {
-        case noData
-        case invalidResponse
-        case serverError(Int)
-    }
     
     func fetchRoute(routeId: String) async throws -> Route {
         if let route = savedRoutes.first(where: {

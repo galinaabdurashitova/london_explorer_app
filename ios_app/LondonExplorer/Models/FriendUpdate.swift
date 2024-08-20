@@ -12,25 +12,26 @@ struct FriendUpdate: Identifiable {
     var id = UUID()
     var friend: User
     var caption: String
-    var subCaption: String
     var date: Date
     var update: UpdateType
     
-    public enum UpdateType {
-        case routeCompleted
-        case collectables100
+    enum UpdateType: String {
+        case award = "Award"
+        case collectable = "Collectable"
+        case friend = "Friend"
+        case finishedRoute = "FinishedRoute"
     }
     
-    public func getIcon() -> Image {
-        switch(self.update) {
-        case .collectables100:
-            return Image("Medal3DIcon")
-        case .routeCompleted:
-            return Image("RouteDone3DIcon")
-//        default:
-//            return Image("Start3DIcon")
-        }
-    }
+//    public func getIcon() -> Image {
+//        switch(self.update) {
+//        case .collectables100:
+//            return Image("Medal3DIcon")
+//        case .routeCompleted:
+//            return Image("RouteDone3DIcon")
+////        default:
+////            return Image("Start3DIcon")
+//        }
+//    }
     
     var formattedDate: String {
         let dateFormatter = DateFormatter()

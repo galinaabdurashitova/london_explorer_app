@@ -55,6 +55,8 @@ struct ProfileView: View {
             }            
             .navigationDestination(for: ProfileNavigation.self) { value in
                 switch value {
+                case .profile(let user):
+                    ProfileView(user: user, tabSelection: $tabSelection)
                 case .finishedRoutes:
                     FinishedRoutesView()
                 case .collectables:
