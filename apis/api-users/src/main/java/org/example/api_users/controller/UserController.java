@@ -36,7 +36,11 @@ public class UserController {
     public ResponseEntity<?> getUsers(@RequestParam(value = "userIds", required = false) List<String> userIds) {
         List<User> users;
 
-        users = userService.getUsersByIds(userIds);
+        if (userIds == null || userIds.isEmpty()) {
+            users = userService.getAllUsers();
+        } else {
+            users = userService.getUsersByIds(userIds);
+        }
 
         List<Map<String, Object>> response = users.stream().map(user -> {
             Map<String, Object> userMap = new HashMap<>();
@@ -232,5 +236,43 @@ public class UserController {
         } else {
             return ResponseEntity.ok("Friend request sent");
         }
+    }
+
+    @DeleteMapping("/{userId}/friends/{friendUserId}")
+    public ResponseEntity<?> deleteFriend(@PathVariable String userId, @PathVariable String friendUserId) {
+        if (!userService.userExists(userId)) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        if (!userService.userExists(friendUserId)) {
+            return ResponseEntity.status(404).body("Friend user not found");
+        }
+
+        boolean friendRequestExists = friendService.isFriendRequestExists(friendUserId, userId);
+        if (!friendRequestExists) {
+            return ResponseEntity.status(404).body("Friendship does not exist");
+        }
+
+        friendService.declineFriendRequest(friendUserId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{userId}/friends/requests")
+    public ResponseEntity<?> getFriendRequests(@PathVariable String userId) {
+        if (!userService.userExists(userId)) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        List<String> friendsRequestedFriendship = friendService.findUsersFriendRequests(userId);
+
+        List<User> users = userService.getUsersByIds(friendsRequestedFriendship);
+
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/{userId}/friends/updates")
+    public ResponseEntity<List<FriendUpdateResponse>> getFriendsUpdates(@PathVariable String userId, @RequestParam(value = "limit", required = false) int limit) {
+        List<FriendUpdateResponse> updates = userService.getFriendsUpdates(userId, limit);
+        return ResponseEntity.ok(updates);
     }
 }
