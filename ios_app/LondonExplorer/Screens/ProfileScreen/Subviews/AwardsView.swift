@@ -34,7 +34,7 @@ struct AwardsView: View {
                 }
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal)
     }
     
     private func awardCard(award: AwardTypes, index: Int) -> some View {

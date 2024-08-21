@@ -55,7 +55,7 @@ struct CollectedCollectableView: View {
                     action()
                 }
             }
-            .padding(.all, 20)
+            .padding()
             .background(Color.white)
             .cornerRadius(30)
             .shadow(radius: 2)

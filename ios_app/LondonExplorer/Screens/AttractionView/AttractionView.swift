@@ -71,7 +71,7 @@ struct AttractionView: View {
                     }
                 )
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal)
             .coordinateSpace(name: "scroll")
             .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
                 scrollOffset = -value
@@ -109,7 +109,7 @@ struct AttractionView: View {
             Color.clear
                 .frame(width: 40, height: 40)
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal)
     }
     
     private var AddButton: some View {

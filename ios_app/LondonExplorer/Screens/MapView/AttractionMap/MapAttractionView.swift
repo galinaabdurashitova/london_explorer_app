@@ -37,12 +37,12 @@ struct MapAttractionView: View {
             BackButton() {
                 self.presentationMode.wrappedValue.dismiss()
             }
-            .padding(.leading, 20)
+            .padding(.leading)
         }
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showSheet) {
             AttractionSheetContent(attraction: $attraction)
-                .padding(.horizontal, 20)
+                .padding(.horizontal)
                 .padding(.top, 20)
                 .edgesIgnoringSafeArea(.bottom) 
                 .gesture(DragGesture().onChanged { _ in })

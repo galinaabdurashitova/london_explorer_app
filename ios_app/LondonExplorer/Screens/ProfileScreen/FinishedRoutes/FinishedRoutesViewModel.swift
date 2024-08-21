@@ -10,30 +10,30 @@ import SwiftUI
 
 class FinishedRoutesViewModel: ObservableObject {
     @Published var finishedRoutes: [User.FinishedRoute] = []
+    @Published var user: User
     
     private var usersRepository: UsersServiceProtocol = UsersService()
     private var routesService = RoutesService()
-    private var auth: AuthController?
     
-    func setAuthController(_ auth: AuthController) {
-        self.auth = auth
+    init(user: User) {
+        self.user = user
+        self.loadRoutes()
     }
     
     func loadRoutes() {
-        if let auth = auth {
+        DispatchQueue.main.async {
             Task {
-                var routes = auth.profile.finishedRoutes
-                for routeIndex in routes.indices {
-                    do {
-                        let route = try await routesService.fetchRoute(routeId: routes[routeIndex].routeId)
-                        routes[routeIndex].route = route
-                    } catch {
-                        print("Error fetching route \(routes[routeIndex].id)")
-                    }
-                }
+                self.finishedRoutes = self.user.finishedRoutes
                 
-                DispatchQueue.main.async {
-                    self.finishedRoutes = routes
+                for routeIndex in self.finishedRoutes.indices {
+                    if self.finishedRoutes[routeIndex].route != nil {
+                        do {
+                            let route = try await self.routesService.fetchRoute(routeId: self.finishedRoutes[routeIndex].routeId)
+                            self.finishedRoutes[routeIndex].route = route
+                        } catch {
+                            print("Error fetching route \(self.finishedRoutes[routeIndex].id)")
+                        }
+                    }
                 }
             }
         }

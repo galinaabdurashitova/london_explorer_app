@@ -45,7 +45,7 @@ struct EditRouteView: View {
             
             Spacer()
         }
-        .padding(.all, 20)
+        .padding()
     }
 }
 

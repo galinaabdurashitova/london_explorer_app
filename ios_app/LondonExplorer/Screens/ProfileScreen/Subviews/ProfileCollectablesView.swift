@@ -51,7 +51,7 @@ struct ProfileCollectablesView: View {
                 }
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal)
     }
     
     private var unknownCollectableCard: some View {

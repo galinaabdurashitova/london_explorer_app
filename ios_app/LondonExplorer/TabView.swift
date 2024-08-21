@@ -42,7 +42,7 @@ struct MainTabView: View {
                 }
                 .tag(3)
             
-            ProfileView(user: auth.profile, tabSelection: $tabSelection)
+            MyProfileView(tabSelection: $tabSelection)
                 .tabItem {
                     Label("Profile", systemImage: tabSelection == 4 ? "person.fill" : "person")
                         .environment(\.symbolVariants, .none)

@@ -14,7 +14,6 @@ struct SearchView: View {
     @StateObject var viewModel: SearchViewModel
     @Binding var tabSelection: Int
     @State var selected: Int = 0
-    @State var searchedUser: String = ""
     
     init(tabSelection: Binding<Int>) {
         self._viewModel = StateObject(wrappedValue: SearchViewModel())
@@ -41,54 +40,31 @@ struct SearchView: View {
                     .pickerStyle(SegmentedPickerStyle())
                     
                     if selected == 0 {
-                        SearchBar(searchText: .constant("")) {
-                            
-                        }
+                        routesSearch
                     } else {
                         userSearch
                     }
                 }
-                .padding(.all, 20)
+                .padding()
             }
-            .navigationDestination(for: RouteNavigation.self) { value in
-                switch value {
-                case .info(let route):
-                    RouteView(route: route)
-                case .progress(let route):
-                    OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
-                case .map(let route):
-                    MapRouteView(route: route)
-                case .finishedRoute(let finishedRoute):
-                    if let route = finishedRoute.route { RouteView(route: route) }
-                }
+            .onAppear {
+                viewModel.fetchUsers()
+                viewModel.fetchRoutes()
             }
-            .navigationDestination(for: ProfileNavigation.self) { value in
-                switch value {
-                case .profile(let user):
-                    ProfileView(user: user, tabSelection: $tabSelection)
-                case .finishedRoutes:
-                    FinishedRoutesView()
-                case .collectables:
-                    ProfileCollectablesView(user: MockData.Users[0])
-                case .awards:
-                    AwardsView(user: MockData.Users[0])
-                case .settings:
-                    SettingsView()
-                }
-            }
+            .appNavigation(tab: $tabSelection)
         }
     }
     
     private var userSearch: some View {
         VStack {
-            SearchBar(searchText: $searchedUser) {
+            SearchBar(searchText: $viewModel.searchedUser) {
                 viewModel.filterUsers()
             }
             
-            ForEach(viewModel.searchedUser.isEmpty ? $viewModel.users : $viewModel.filteredUsers) { user in
-                NavigationLink(value: ProfileNavigation.profile(user.wrappedValue)) {
+            ForEach(viewModel.searchedUser.isEmpty ? viewModel.users : viewModel.filteredUsers) { user in
+                NavigationLink(value: ProfileNavigation.profile(user)) {
                     HStack {
-                        if let image = user.image.wrappedValue {
+                        if let image = user.image {
                             Image(uiImage: image)
                                 .profilePicture(size: 50)
                         } else {
@@ -97,11 +73,45 @@ struct SearchView: View {
                         }
                         
                         VStack(alignment: .leading, spacing: 0) {
-                            Text(user.name.wrappedValue)
+                            Text(user.name)
                                 .sectionCaption()
-                            Text("@\(user.userName.wrappedValue)")
+                            Text("@\(user.userName)")
                                 .sectionSubCaption()
                         }
+                        .foregroundColor(Color.black)
+                        
+                        Spacer()
+                    }
+                    .padding(.vertical, 10)
+                    .overlay(
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(Color.black.opacity(0.5)),
+                        alignment: .bottom
+                    )
+                }
+            }
+        }
+    }
+    
+    private var routesSearch: some View {
+        VStack {
+            SearchBar(searchText: $viewModel.searchedRoute) {
+                viewModel.filterRoutes()
+            }
+            
+            ForEach(viewModel.searchedRoute.isEmpty ? viewModel.routes : viewModel.filteredRoutes) { route in
+                NavigationLink(value: RouteNavigation.info(route)) {
+                    HStack {
+                        Image(uiImage: route.image)
+                            .roundedFrame(width: 70, height: 70)
+                        
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(route.name)
+                                .sectionCaption()
+                            RouteLabelRow(route: route)
+                        }
+                        .foregroundColor(Color.black)
                         
                         Spacer()
                     }

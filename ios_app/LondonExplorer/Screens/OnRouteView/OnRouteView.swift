@@ -34,7 +34,7 @@ struct OnRouteView: View {
                     BackButton() {
                         self.presentationMode.wrappedValue.dismiss()
                     }
-                    .padding(.leading, 20)
+                    .padding(.leading)
                     
                     OnRouteStatWindow(viewModel: viewModel)
                 }

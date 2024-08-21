@@ -68,7 +68,7 @@ struct AuthView: View {
                 }
             }
         }
-        .padding(.all, 20)
+        .padding()
     }
     
     private func authorise() async {

@@ -37,8 +37,9 @@ struct CreateRouteView: View {
                         DownloadedRoutesWidget(routes: $routes)
                     }
                 }
-                .padding(.all, 20)
+                .padding()
             }
+            .appNavigation(tab: $tabSelection)
             .navigationDestination(for: CreateRoutePath.self) { value in
                 switch value {
                 case .routeStops:
@@ -47,18 +48,6 @@ struct CreateRouteView: View {
                     FinishCreateView(stops: stops, pathes: pathes, collectables: collectables, tabSelection: $tabSelection, path: $path)
                 case .savedRoute(let route):
                     SavedRouteView(route: route, tabSelection: $tabSelection, path: $path)
-                }
-            }
-            .navigationDestination(for: RouteNavigation.self) { value in
-                switch value {
-                case .info(let route):
-                    RouteView(route: route)
-                case .progress(let route):
-                    OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
-                case .map(let route):
-                    MapRouteView(route: route)
-                case .finishedRoute(let finishedRoute):
-                    if let route = finishedRoute.route { RouteView(route: route) }
                 }
             }
         }

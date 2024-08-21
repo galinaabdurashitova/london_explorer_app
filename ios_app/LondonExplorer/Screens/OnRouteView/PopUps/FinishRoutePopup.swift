@@ -63,12 +63,12 @@ struct FinishRoutePopup: View {
                         action()
                     }
                 }
-                .padding(.all, 20)
+                .padding()
                 .background(Color.white)
                 .cornerRadius(30)
                 .shadow(radius: 2)
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal)
             .padding(.bottom, 30)
             
             ConfettiAnimation()

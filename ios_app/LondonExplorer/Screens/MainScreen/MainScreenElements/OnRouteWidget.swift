@@ -10,7 +10,6 @@ import SwiftUI
 
 struct OnRouteWidget: View {
     @EnvironmentObject var currentRoute: CurrentRouteManager
-    @Binding var tabSelection: Int
     
     var body: some View {
         VStack (spacing: 20) {
@@ -56,7 +55,7 @@ struct OnRouteWidget: View {
 }
 
 #Preview {
-    OnRouteWidget(tabSelection: .constant(0))
+    OnRouteWidget()
         .environmentObject(AuthController())
         .environmentObject(CurrentRouteManager())
         .padding()

@@ -19,7 +19,7 @@ class AttractionsService: Service, AttractionsServiceProtocol {
         let (data, response) = try await URLSession.shared.data(from: serviceURL)
 
         do {
-            try self.checkResponse(response: response)
+            try self.checkResponse(response: response, service: "Attractions service", method: "fetchAttractions")
             let attractions = try JSONDecoder().decode([AttractionWrapper].self, from: data)
             var responseAttractions: [Attraction] = []
             

@@ -17,6 +17,27 @@ struct RouteDataView: View {
         VStack(spacing: 25) {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
+                    if auth.profile.id != viewModel.route.userCreated.id, let user = viewModel.userCreated {
+                        NavigationLink(value: ProfileNavigation.profile(user)) {
+                            HStack(spacing: 5) {
+                                if let image = user.image {
+                                    Image(uiImage: image)
+                                        .profilePicture(size: 50)
+                                } else {
+                                    Image("User3DIcon")
+                                        .profilePicture(size: 20)
+                                }
+                                
+                                Text(user.name)
+                                    .headline()
+                                
+                                Text("shared")
+                                    .subheadline()
+                            }
+                            .foregroundColor(Color.black)
+                        }
+                    }
+                    
                     Text(viewModel.route.name)
                         .screenHeadline()
                     
@@ -80,7 +101,7 @@ struct RouteDataView: View {
     }
     
     private var ThirdButton: some View {
-        NavigationLink(value: RouteNavigation.progress(viewModel.route)) {
+        NavigationLink(value: RouteNavigation.progress(viewModel.route, auth.profile, currentRoute.routeProgress)) {
             if let currentRoute = currentRoute.routeProgress, currentRoute.route.id == viewModel.route.id {
                 RouteButton.current.view
             } else if let finishedRoute = auth.profile.finishedRoutes.first(where: { $0.routeId == viewModel.route.id }) {

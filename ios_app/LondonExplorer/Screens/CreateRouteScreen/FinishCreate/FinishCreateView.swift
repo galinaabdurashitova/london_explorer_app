@@ -37,7 +37,7 @@ struct FinishCreateView: View {
                 Spacer().frame(height: 85)
             }
             .scrollClipDisabled()
-            .padding(.all, 20)
+            .padding()
             
             Button(action: {
                 viewModel.saveRoute(userId: auth.profile.id, userName: auth.profile.name)

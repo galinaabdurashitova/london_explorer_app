@@ -10,11 +10,12 @@ import Foundation
 class Service {
     internal let baseURL: URL = URL(string: "http://localhost:8080/api")!
     
-    func checkResponse(response: URLResponse) throws {
+    func checkResponse(response: URLResponse, service: String, method: String) throws {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ServiceError.invalidResponse
         }
         
+        print("\(service) \(method): \(httpResponse.statusCode)")
         switch httpResponse.statusCode {
         case 200..<300:
             break

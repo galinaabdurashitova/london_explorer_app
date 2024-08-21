@@ -66,7 +66,7 @@ struct OnRouteStatWindow: View {
             .cornerRadius(30)
             .shadow(color: Color.black.opacity(0.1), radius: 5)
         }
-        .padding(.all, 20)
+        .padding()
     }
     
     private var AttractionInfo: some View {

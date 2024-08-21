@@ -57,7 +57,7 @@ struct CreateStopsView: View {
                         }
                     }
                 }
-                .padding(.all, 20)
+                .padding()
             }
             
             if viewModel.stops.count > 1 {

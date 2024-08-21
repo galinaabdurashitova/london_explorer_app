@@ -10,7 +10,7 @@ import Foundation
 protocol RoutesServiceProtocol: Service {
     func fetchRoute(routeId: String) async throws -> Route
     func fetchUserRoutes(userId: String) async throws -> [Route]?
-    func fetchRoutes(routesIds: [String]) async throws -> [Route]
+    func fetchRoutes(routesIds: [String]?) async throws -> [Route]
     func createRoute(newRoute: Route) async throws
     func updateRoute(updatedRoute: Route) async throws
     func deleteRoute(routeId: String) async throws
@@ -43,15 +43,13 @@ class RoutesService: Service, RoutesServiceProtocol {
         }
     }
     
-    func fetchRoutes(routesIds: [String]) async throws -> [Route] {
-        let routes = savedRoutes.filter {
-            routesIds.contains($0.id)
-        }
-        
-        if routes.count > 0 {
-            return routes
+    func fetchRoutes(routesIds: [String]?) async throws -> [Route] {
+        if let routesIds = routesIds {
+            return savedRoutes.filter {
+                routesIds.contains($0.id)
+            }
         } else {
-            throw ServiceError.serverError(404)
+            return savedRoutes
         }
     }
     

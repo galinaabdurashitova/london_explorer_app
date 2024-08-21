@@ -12,17 +12,22 @@ struct MainScreenView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
+    @StateObject var friendsFeed: FriendsFeedViewModel
     @Binding var tabSelection: Int
+    
     @State var routes: [Route] = MockData.Routes
-    @State var friendsFeed: [FriendUpdate] = MockData.FriendsFeed
-    @State var onRoute: RouteProgress = MockData.RouteProgress[0]
-    @State var friendsOnRoute: [RouteProgress] = MockData.RouteProgress
+    
     @State var isLoading: Bool = true
     
     @State private var scrollOffset: CGFloat = 0
     
     private var headerHeight: CGFloat {
         max(50, 120 - scrollOffset)
+    }
+    
+    init(tabSelection: Binding<Int>) {
+        self._tabSelection = tabSelection
+        self._friendsFeed = StateObject(wrappedValue: FriendsFeedViewModel())
     }
     
     var body: some View {
@@ -35,18 +40,18 @@ struct MainScreenView: View {
                     Spacer()
                     if !isLoading {
                         VStack(spacing: 25) {
-                                OnRouteWidget(tabSelection: $tabSelection)
+                                OnRouteWidget()
                             if networkMonitor.isConnected {
 //                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
                                 SuggestedRoutesCarousel(routes: $routes)
-//                                FriendsFeed(friendsFeed: $friendsFeed)
+                                FriendsFeed(viewModel: friendsFeed)
                             } else {
                                 DownloadedRoutesWidget(routes: $routes)
                             }
                             
                             Spacer()
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal)
                         .background(
                             GeometryReader { geometry in
                                 Color.clear
@@ -55,7 +60,7 @@ struct MainScreenView: View {
                         )
                     } else {
                         LoadingView()
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal)
                     }
                 }
                 .coordinateSpace(name: "scroll")
@@ -65,18 +70,7 @@ struct MainScreenView: View {
             }
             .padding(.top, 20)
             .toolbar(.visible, for: .tabBar)
-            .navigationDestination(for: RouteNavigation.self) { value in
-                switch value {
-                case .info(let route):
-                    RouteView(route: route)
-                case .progress(let route):
-                    OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
-                case .map(let route):
-                    MapRouteView(route: route)
-                case .finishedRoute(let finishedRoute):
-                    if let route = finishedRoute.route { RouteView(route: route) }
-                }
-            }
+            .appNavigation(tab: $tabSelection)
             .navigationDestination(for: RouteProgress.self) { routeProgress in
                 OnRouteView(routeProgress: routeProgress)
             }

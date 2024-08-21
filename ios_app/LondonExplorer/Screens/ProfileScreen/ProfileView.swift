@@ -20,57 +20,33 @@ struct ProfileView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 25) {
-                    Header
-                    
-                    if let description = viewModel.user.description {
-                        Text(description)
-                    }
-                    
-                    UserStatIcons
-                    
-                    YourRoutes
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 25) {
+                Header
+                
+                if let description = viewModel.user.description {
+                    Text(description)
                 }
-            }
-            .refreshable {
-                viewModel.fetchUser()
-                viewModel.loadRoutes()
-            }
-            .scrollClipDisabled()
-            .padding(.top, 20)
-            .padding(.horizontal, 20)
-            .navigationDestination(for: RouteNavigation.self) { value in
-                switch value {
-                case .info(let route):
-                    RouteView(route: route)
-                case .progress(let route):
-                    OnRouteView(route: route, user: auth.profile, savedRouteProgress: currentRoute.routeProgress)
-                case .map(let route):
-                    MapRouteView(route: route)
-                case .finishedRoute(let finishedRoute):
-                    if let route = finishedRoute.route { RouteView(route: route) }
-                }
-            }            
-            .navigationDestination(for: ProfileNavigation.self) { value in
-                switch value {
-                case .profile(let user):
-                    ProfileView(user: user, tabSelection: $tabSelection)
-                case .finishedRoutes:
-                    FinishedRoutesView()
-                case .collectables:
-                    ProfileCollectablesView(user: viewModel.user)
-                case .awards:
-                    AwardsView(user: viewModel.user)
-                case .settings:
-                    SettingsView()
-                }
+                
+                UserStatIcons
+                
+                YourRoutes
             }
         }
+        .refreshable {
+            viewModel.fetchUser()
+            viewModel.loadRoutes()
+        }
+        .scrollClipDisabled()
+        .padding(.top, 20)
+        .padding(.horizontal)
         .onAppear {
             viewModel.fetchUser()
             viewModel.loadRoutes()
+            if !viewModel.user.friends.contains(auth.profile.id) {
+                print(1)
+                viewModel.getUserFriendRequests(currentUserId: auth.profile.id)
+            }
         }
     }
     
@@ -100,8 +76,23 @@ struct ProfileView: View {
                             Image(systemName: "gearshape")
                                 .icon(size: 30, colour: Color.black.opacity(0.3))
                         }
+                    } else {
+                        if viewModel.user.friends.contains(auth.profile.id) {
+                            FriendButton(type: .friends)
+                        } else if viewModel.isUserRequestProcessing {
+                            ProgressView()
+                        } else if viewModel.isFriendRequestSent {
+                            FriendButton(type: .requested)
+                        } else {
+                            Button(action: {
+                                viewModel.addFriend(userFromId: auth.profile.id)
+                            }) {
+                                FriendButton(type: .add)
+                            }
+                        }
                     }
                 }
+                
                 
                 HStack(spacing: 0) {
                     HStack(spacing: 10) {
@@ -117,15 +108,18 @@ struct ProfileView: View {
                             .frame(width: 1),
                         alignment: .trailing
                     )
-                                                    
-                    HStack(spacing: 10) {
-                        Text(String(viewModel.user.friends.count))
-                            .font(.system(size: 20, weight: .bold))
-                            .kerning(-0.2)
-                        Text("friends")
+                    
+                    NavigationLink(value: ProfileNavigation.friends(viewModel.user)) {
+                        HStack(spacing: 10) {
+                            Text(String(viewModel.user.friends.count))
+                                .font(.system(size: 20, weight: .bold))
+                                .kerning(-0.2)
+                            Text("friends")
+                        }
+                        .foregroundColor(Color.black)
+                        .frame(height: 45)
+                        .frame(maxWidth: .infinity)
                     }
-                    .frame(height: 45)
-                    .frame(maxWidth: .infinity)
                 }
             }
         }
@@ -133,15 +127,15 @@ struct ProfileView: View {
     
     private var UserStatIcons: some View {
         HStack(spacing: 10) {
-            NavigationLink(value: ProfileNavigation.awards) {
+            NavigationLink(value: ProfileNavigation.awards(viewModel.user)) {
                 StatIcon(icon: "Trophy3DIcon", number: viewModel.user.awards.count, word: "awards", colour: Color.redAccent)
             }
             
-            NavigationLink(value: ProfileNavigation.finishedRoutes) {
+            NavigationLink(value: ProfileNavigation.finishedRoutes(viewModel.user)) {
                 StatIcon(icon: "Route3DIcon", number: viewModel.user.finishedRoutes.count, word: "routes finished", colour: Color.greenAccent)
             }
             
-            NavigationLink(value: ProfileNavigation.collectables) {
+            NavigationLink(value: ProfileNavigation.collectables(viewModel.user)) {
                 StatIcon(icon: "Treasures3DIcon", number: viewModel.user.collectables.count, word: "collectables", colour: Color.blueAccent)
             }
         }
@@ -192,6 +186,6 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView(user: MockData.Users[0], tabSelection: .constant(4))
-        .environmentObject(AuthController(testProfile: true))
+        .environmentObject(AuthController(testProfile: false))
         .environmentObject(CurrentRouteManager())
 }

@@ -68,13 +68,13 @@ struct MapRouteView: View {
             BackButton() {
                 self.presentationMode.wrappedValue.dismiss()
             }
-            .padding(.leading, 20)
+            .padding(.leading)
         }
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showSheet) {
             RouteSheetContent(route: $route)
-                .padding(.horizontal, 20)
+                .padding(.horizontal)
                 .padding(.vertical, 40)
                 .edgesIgnoringSafeArea(.bottom) 
                 .gesture(DragGesture().onChanged { _ in })

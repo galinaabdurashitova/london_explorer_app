@@ -68,10 +68,15 @@ struct RouteView: View {
                     }
                 )
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal)
             .coordinateSpace(name: "scroll")
             .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
                 scrollOffset = -value
+            }
+        }
+        .onAppear {
+            if auth.profile.id != viewModel.route.userCreated.id {
+                viewModel.fetchUserCreated()
             }
         }
         .animation(.easeInOut, value: headerHeight)
@@ -112,7 +117,7 @@ struct RouteView: View {
             Color.clear
                 .frame(width: 40, height: 40)
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal)
     }
 }
 

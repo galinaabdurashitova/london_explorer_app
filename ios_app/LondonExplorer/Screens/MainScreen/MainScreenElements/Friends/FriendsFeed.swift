@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 struct FriendsFeed: View {
-    @Binding var friendsFeed: [FriendUpdate]
+    @EnvironmentObject var auth: AuthController
+    @ObservedObject var viewModel: FriendsFeedViewModel
     
     var body: some View {
         VStack (spacing: 20) {
@@ -22,8 +23,14 @@ struct FriendsFeed: View {
             }
             
             VStack (spacing: 12) {
-                if friendsFeed.count > 0 {
-                    ForEach ($friendsFeed) { update in
+                if viewModel.friendsRequests.count > 0 {
+                    ForEach ($viewModel.friendsRequests) { request in
+                        FriendRequestBanner(viewModel: viewModel, user: request)
+                    }
+                }
+                
+                if viewModel.updates.count > 0 {
+                    ForEach ($viewModel.updates) { update in
                         FeedUpdate(update: update)
                     }
                 } else {                        
@@ -35,12 +42,16 @@ struct FriendsFeed: View {
                 }
             }
         }
+        .onAppear {
+            viewModel.reloadFeed(userId: auth.profile.id)
+        }
     }
 }
 
 #Preview {
     ScrollView {
-        FriendsFeed(friendsFeed: .constant(MockData.FriendsFeed))
+        FriendsFeed(viewModel: FriendsFeedViewModel())
+            .environmentObject(AuthController())
     }
     .padding()
 }

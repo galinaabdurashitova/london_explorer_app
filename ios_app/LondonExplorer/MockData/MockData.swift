@@ -206,27 +206,31 @@ class MockData {
     ]
     
     public static var FriendsFeed: [FriendUpdate] = [
-//        FriendUpdate(
-//            friend: Users[0],
-//            caption: "Anna completed a route",
-//            subCaption: "Best London route",
-//            date: Date(),
-//            update: FriendUpdate.UpdateType.routeCompleted
-//        ),
-//        FriendUpdate(
-//            friend: Users[1],
-//            caption: "Mary achieved a medal",
-//            subCaption: "for 100 collectables",
-//            date: Date(),
-//            update: FriendUpdate.UpdateType.collectables100
-//        ),
-//        FriendUpdate(
-//            friend: Users[0],
-//            caption: "Anna completed a route",
-//            subCaption: "Best London route",
-//            date: Date(),
-//            update: FriendUpdate.UpdateType.routeCompleted
-//        )
+        FriendUpdate(
+            friend: Users[0],
+            description: "Anna completed a route",
+            date: Date(),
+            update: FriendUpdate.UpdateType.finishedRoute
+        ),
+        FriendUpdate(
+            friend: Users[1],
+            description: "Mary achieved a medal",
+            date: Date(),
+            update: FriendUpdate.UpdateType.award
+        ),
+        FriendUpdate(
+            friend: Users[0],
+            description: "Anna found a collectable",
+            date: Date(),
+            update: FriendUpdate.UpdateType.collectable
+        ),
+        
+        FriendUpdate(
+            friend: Users[1],
+            description: "Mary added new friend",
+            date: Date(),
+            update: FriendUpdate.UpdateType.friend
+        )
     ]
     
     public static var Users: [User] = [

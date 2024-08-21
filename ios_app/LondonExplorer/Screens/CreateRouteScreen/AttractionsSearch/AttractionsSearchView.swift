@@ -43,7 +43,7 @@ struct AttractionsSearchView: View {
                         }
                     }
                 }
-                .padding(.all, 20)
+                .padding()
             }
                 
                 

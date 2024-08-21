@@ -12,6 +12,8 @@ class ProfileViewModel: ObservableObject {
     @Published var routes: [Route] = []
     @Published var user: User
     @Published var error: String = ""
+    @Published var isUserRequestProcessing: Bool = false
+    @Published var isFriendRequestSent: Bool = false
     
     private var userService: UsersServiceProtocol = UsersService()
     private var routesService: RoutesServiceProtocol = RoutesService()
@@ -59,6 +61,39 @@ class ProfileViewModel: ObservableObject {
                     print("Error fetching route \(user.finishedRoutes[routeIndex].id)")
                 }
             }
+        }
+    }
+    
+    @MainActor
+    func addFriend(userFromId: String) {
+        Task {
+            self.isUserRequestProcessing = true
+            do {
+                try await self.userService.createFriendRequest(userFromId: userFromId, userToId: self.user.id)
+                self.fetchUser()
+                if !self.user.friends.contains(userFromId) {
+                    self.getUserFriendRequests(currentUserId: userFromId)
+                }
+            } catch {
+                print("Unable to add friend: \(error.localizedDescription)")
+            }
+            self.isUserRequestProcessing = false
+        }
+    }
+    
+    @MainActor
+    func getUserFriendRequests(currentUserId: String) {
+        Task {
+            self.isUserRequestProcessing = true
+            do {
+                let users = try await self.userService.fetchFriendRequests(userId: self.user.id)
+                if users.compactMap({ $0.id }).contains(currentUserId) {
+                    self.isFriendRequestSent = true
+                }
+            } catch {
+                print("Unable to get friend requests: \(error.localizedDescription)")
+            }
+            self.isUserRequestProcessing = false
         }
     }
 }

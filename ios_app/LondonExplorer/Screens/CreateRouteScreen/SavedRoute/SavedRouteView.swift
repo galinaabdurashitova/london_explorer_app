@@ -27,7 +27,7 @@ struct SavedRouteView: View {
                     
                     RouteDataView(viewModel: RouteViewModel(route: route))
                 }
-                .padding(.all, 20)
+                .padding()
                 
                 Spacer().frame(height: 80)
             }

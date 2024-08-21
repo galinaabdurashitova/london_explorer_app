@@ -46,6 +46,12 @@
 		2A56025B2C7547410057A5E1 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56025A2C7547410057A5E1 /* SearchView.swift */; };
 		2A56025D2C754A8B0057A5E1 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56025C2C754A8B0057A5E1 /* SearchBar.swift */; };
 		2A56025F2C754F190057A5E1 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56025E2C754F190057A5E1 /* SearchViewModel.swift */; };
+		2A56026D2C764C1D0057A5E1 /* MyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56026C2C764C1D0057A5E1 /* MyProfileView.swift */; };
+		2A56026F2C765DF10057A5E1 /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56026E2C765DF10057A5E1 /* AppNavigation.swift */; };
+		2A5602712C766AB70057A5E1 /* FriendButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5602702C766AB70057A5E1 /* FriendButton.swift */; };
+		2A5602742C767E840057A5E1 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5602732C767E840057A5E1 /* FriendsView.swift */; };
+		2A5602762C768F2B0057A5E1 /* FriendRequestBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5602752C768F2B0057A5E1 /* FriendRequestBanner.swift */; };
+		2A5602782C76904E0057A5E1 /* FriendsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5602772C76904E0057A5E1 /* FriendsFeedViewModel.swift */; };
 		2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */; };
 		2A58EA932C40778100F9A4C0 /* OnRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */; };
 		2A58EA952C40788200F9A4C0 /* RouteAttractionAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */; };
@@ -197,6 +203,12 @@
 		2A56025A2C7547410057A5E1 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		2A56025C2C754A8B0057A5E1 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		2A56025E2C754F190057A5E1 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		2A56026C2C764C1D0057A5E1 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
+		2A56026E2C765DF10057A5E1 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
+		2A5602702C766AB70057A5E1 /* FriendButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendButton.swift; sourceTree = "<group>"; };
+		2A5602732C767E840057A5E1 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
+		2A5602752C768F2B0057A5E1 /* FriendRequestBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestBanner.swift; sourceTree = "<group>"; };
+		2A5602772C76904E0057A5E1 /* FriendsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedViewModel.swift; sourceTree = "<group>"; };
 		2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteView.swift; sourceTree = "<group>"; };
 		2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteViewModel.swift; sourceTree = "<group>"; };
 		2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteAttractionAnnotation.swift; sourceTree = "<group>"; };
@@ -312,6 +324,7 @@
 			children = (
 				2A16D7A22C6F5DE600736532 /* EnvironmentObjects */,
 				2A0E39E12C4DB66200AC32A4 /* LocalStorage */,
+				2A56026E2C765DF10057A5E1 /* AppNavigation.swift */,
 				2A17571B2C6943A700D4DFB1 /* DateConverter.swift */,
 				2A0E39DF2C4D76AD00AC32A4 /* LocationManager.swift */,
 			);
@@ -423,9 +436,10 @@
 		2A16D7A72C6F5F5900736532 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				2A16D7B22C6FC87E00736532 /* AwardsView.swift */,
+				2A5602732C767E840057A5E1 /* FriendsView.swift */,
 				2A3CF4F32C6BFC6E00B1B769 /* ProfileCollectablesView.swift */,
 				2AFB413C2C63F1A8005AEF8B /* SettingsView.swift */,
-				2A16D7B22C6FC87E00736532 /* AwardsView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -462,6 +476,14 @@
 				2A56025E2C754F190057A5E1 /* SearchViewModel.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		2A5602722C767E660057A5E1 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				2A5602702C766AB70057A5E1 /* FriendButton.swift */,
+			);
+			path = Elements;
 			sourceTree = "<group>";
 		};
 		2A58EA8F2C40768C00F9A4C0 /* OnRouteView */ = {
@@ -756,9 +778,11 @@
 		2AFB40F42C601291005AEF8B /* Friends */ = {
 			isa = PBXGroup;
 			children = (
-				2AA5B1332C0923BD001EC475 /* FriendsFeed.swift */,
 				2AA5B1352C09D7BB001EC475 /* FeedUpdate.swift */,
+				2A5602752C768F2B0057A5E1 /* FriendRequestBanner.swift */,
+				2AA5B1332C0923BD001EC475 /* FriendsFeed.swift */,
 				2AA5B1442C0A02BA001EC475 /* FriendsOnRouteWidget.swift */,
+				2A5602772C76904E0057A5E1 /* FriendsFeedViewModel.swift */,
 			);
 			path = Friends;
 			sourceTree = "<group>";
@@ -824,10 +848,12 @@
 		2AFD1F722C249EE30061060E /* ProfileScreen */ = {
 			isa = PBXGroup;
 			children = (
+				2A5602722C767E660057A5E1 /* Elements */,
 				2A16D7A52C6F5F3D00736532 /* FinishedRoutes */,
 				2A16D7A72C6F5F5900736532 /* Subviews */,
 				2AFD1F732C249F4D0061060E /* ProfileView.swift */,
 				2AFD1F752C249F7F0061060E /* ProfileViewModel.swift */,
+				2A56026C2C764C1D0057A5E1 /* MyProfileView.swift */,
 			);
 			path = ProfileScreen;
 			sourceTree = "<group>";
@@ -921,6 +947,7 @@
 				2A5602502C7533620057A5E1 /* UpdateUserRequest.swift in Sources */,
 				2AFB40F02C6009C8005AEF8B /* DeleteCardDropDelegate.swift in Sources */,
 				2A5602582C7546110057A5E1 /* ServiceClass.swift in Sources */,
+				2A5602712C766AB70057A5E1 /* FriendButton.swift in Sources */,
 				2AA5B13A2C09E52B001EC475 /* RouteProgress.swift in Sources */,
 				2A56025B2C7547410057A5E1 /* SearchView.swift in Sources */,
 				2A0E39E72C4E931200AC32A4 /* FinishRoutePopup.swift in Sources */,
@@ -941,6 +968,7 @@
 				2AA5B1222C08D7C1001EC475 /* MockData.swift in Sources */,
 				2AA5B1432C0A017E001EC475 /* RouteProgressView.swift in Sources */,
 				2A0E39F12C4FF6E100AC32A4 /* FinishedRoutesView.swift in Sources */,
+				2A5602742C767E840057A5E1 /* FriendsView.swift in Sources */,
 				2AFB40EB2C5FEBF5005AEF8B /* CurrentRouteManager.swift in Sources */,
 				2A76D4BB2C171846007908E0 /* RouteStopsViewModel.swift in Sources */,
 				2A0E39DB2C4D4D2B00AC32A4 /* AttractionViewModel.swift in Sources */,
@@ -954,6 +982,7 @@
 				2AD4B9632C0CD98E00B90C8A /* LoadingStyle.swift in Sources */,
 				2AA5B13C2C09E5E5001EC475 /* User.swift in Sources */,
 				2AA9B92B2C5FB12E001F27B9 /* TestStorageView.swift in Sources */,
+				2A5602782C76904E0057A5E1 /* FriendsFeedViewModel.swift in Sources */,
 				2A1757242C6AC25000D4DFB1 /* UserWrapper.swift in Sources */,
 				2A5602522C753EBB0057A5E1 /* FriendRequest.swift in Sources */,
 				2A16D7B32C6FC87E00736532 /* AwardsView.swift in Sources */,
@@ -970,9 +999,11 @@
 				2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */,
 				2AFD1F652C247FA60061060E /* RouteDataView.swift in Sources */,
 				2A76D4AA2C15D5D7007908E0 /* MapAttractionView.swift in Sources */,
+				2A5602762C768F2B0057A5E1 /* FriendRequestBanner.swift in Sources */,
 				2A0E39E52C4E520800AC32A4 /* Fireworks.swift in Sources */,
 				2AA5B1412C09FB2E001EC475 /* RouteProgressBar.swift in Sources */,
 				2AC56A892C28C51B00F7249B /* AttractionsService.swift in Sources */,
+				2A56026D2C764C1D0057A5E1 /* MyProfileView.swift in Sources */,
 				2A76D4C32C18F7E5007908E0 /* RouteSheetContent.swift in Sources */,
 				2AE8A0372C14E8D3005E0F62 /* AttractionCategoriesCarousel.swift in Sources */,
 				2A58EA932C40778100F9A4C0 /* OnRouteViewModel.swift in Sources */,
@@ -998,6 +1029,7 @@
 				2AFB40EE2C6009AC005AEF8B /* RouteStopCardDropDelegate.swift in Sources */,
 				2A76D4D52C1F6C05007908E0 /* CustomTextField.swift in Sources */,
 				2A0E3A072C51800100AC32A4 /* UsersService.swift in Sources */,
+				2A56026F2C765DF10057A5E1 /* AppNavigation.swift in Sources */,
 				2A17571C2C6943A700D4DFB1 /* DateConverter.swift in Sources */,
 				2A76D4D12C1CBB70007908E0 /* FinishCreateView.swift in Sources */,
 				2A0E39FB2C50227D00AC32A4 /* TabView.swift in Sources */,

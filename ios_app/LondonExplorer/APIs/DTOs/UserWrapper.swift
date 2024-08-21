@@ -13,10 +13,10 @@ struct UserWrapper: Codable {
     var name: String
     var userName: String
     var description: String? = nil
-    var awards: [UserAward] = []
-    var collectables: [UserCollectable] = []
-    var friends: [String] = []
-    var finishedRoutes: [FinishedRoute] = []
+    var awards: [UserAward]? = []
+    var collectables: [UserCollectable]? = []
+    var friends: [String]? = []
+    var finishedRoutes: [FinishedRoute]? = []
     
     struct UserAward: Codable {
         var userAwardId: String = UUID().uuidString

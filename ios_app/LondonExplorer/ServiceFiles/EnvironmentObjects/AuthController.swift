@@ -96,7 +96,10 @@ class AuthController: ObservableObject {
             let profile = try await usersRepository.fetchUser(userId: user.uid)
             
             self.setUserProfile(user: profile)
-            self.isSignedIn = true
+            
+            DispatchQueue.main.async {
+                self.isSignedIn = true
+            }
             
             print("User \(user.uid) signed in.")
         } catch {
@@ -114,7 +117,11 @@ class AuthController: ObservableObject {
             try await usersRepository.createUser(newUser: userProfile)
             
             self.setUserProfile(user: userProfile)
-            self.isSignedIn = true
+            
+            
+            DispatchQueue.main.async {
+                self.isSignedIn = true
+            }
             
             print("User \(user.uid) signed up.")
         } catch {
