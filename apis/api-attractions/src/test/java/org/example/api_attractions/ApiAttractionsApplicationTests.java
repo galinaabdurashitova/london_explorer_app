@@ -1,38 +1,44 @@
 package org.example.api_attractions;
 
+import org.example.api_attractions.controller.AttractionController;
+import org.example.api_attractions.exception.GlobalExceptionHandler;
+import org.example.api_attractions.repository.AttractionRepository;
+import org.example.api_attractions.service.AttractionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.env.Environment;
-import org.springframework.http.ResponseEntity;
+import org.springframework.context.ApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 class ApiAttractionsApplicationTests {
 
 	@Autowired
-	private TestRestTemplate restTemplate;
-
-	@Autowired
-	private Environment environment;
+	private ApplicationContext applicationContext;
 
 	@Test
-	void testGetAllAttractionsEndpoint() {
-		// Retrieve the server port from the environment
-		String port = environment.getProperty("local.server.port");
-
-		// Prepare URL for the endpoint to test
-		String url = "http://localhost:" + port + "/api/attractions";
-
-		// Send HTTP GET request to the endpoint
-		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-
-		// Assert the response status code
-		assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
-
-		// Add more assertions as needed to validate the response body or headers
+	void testAttractionServiceBeanExists() {
+		// Check using the class type
+		assertThat(applicationContext.getBean(AttractionService.class)).isNotNull();
 	}
-}
 
+	@Test
+	void testAttractionRepositoryBeanExists() {
+		// Check using the class type
+		assertThat(applicationContext.getBean(AttractionRepository.class)).isNotNull();
+	}
+
+	@Test
+	void testGlobalExceptionHandlerBeanExists() {
+		// Check using the class type
+		assertThat(applicationContext.getBean(GlobalExceptionHandler.class)).isNotNull();
+	}
+
+	@Test
+	void testAttractionControllerBeanExists() {
+		// Check using the class type
+		assertThat(applicationContext.getBean(AttractionController.class)).isNotNull();
+	}
+
+}

@@ -22,7 +22,7 @@ public class AttractionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AttractionDTO> getAttractionById(@PathVariable String id) {
-        AttractionDTO attractionDTO = attractionService.getAttractionByIdProjected(id);
+        AttractionDTO attractionDTO = attractionService.getAttractionById(id);
         if (attractionDTO == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -30,8 +30,15 @@ public class AttractionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AttractionDTO>> getAllAttractions() {
-        List<AttractionDTO> attractions = attractionService.getAllAttractions();
-        return new ResponseEntity<>(attractions, HttpStatus.OK);
+    public ResponseEntity<?> getAllAttractions(@RequestParam(value = "attractionIds", required = false) List<String> attractionIds) {
+        List<AttractionDTO> attractions;
+
+        if (attractionIds == null || attractionIds.isEmpty()) {
+            attractions = attractionService.getAllAttractions();
+        } else {
+            attractions = attractionService.getAttractionsByIds(attractionIds);
+        }
+
+        return ResponseEntity.ok(attractions);
     }
 }
