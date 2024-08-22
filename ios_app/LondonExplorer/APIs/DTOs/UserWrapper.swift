@@ -9,17 +9,17 @@ import Foundation
 
 struct UserWrapper: Codable {
     var userId: String
-    var email: String
+    var email: String?
     var name: String
     var userName: String
     var description: String? = nil
-    var awards: [UserAward] = []
-    var collectables: [UserCollectable] = []
-    var friends: [String] = []
-    var finishedRoutes: [FinishedRoute] = []
+    var awards: [UserAward]? = []
+    var collectables: [UserCollectable]? = []
+    var friends: [String]? = []
+    var finishedRoutes: [FinishedRoute]? = []
     
     struct UserAward: Codable {
-        var awardId: String = UUID().uuidString
+        var userAwardId: String = UUID().uuidString
         var award: String
         var awardLevel: Int
         var awardDate: String
@@ -34,6 +34,7 @@ struct UserWrapper: Codable {
     struct FinishedRoute: Codable {
         var finishedRouteId: String = UUID().uuidString
         var routeId: String
+        var spentMinutes: Double
         var finishedDate: String
         var collectables: Int
     }

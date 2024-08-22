@@ -7,25 +7,25 @@
 
 import Foundation
 
-protocol RoutesServiceProtocol {
+protocol RoutesServiceProtocol: Service {
     func fetchRoute(routeId: String) async throws -> Route
     func fetchUserRoutes(userId: String) async throws -> [Route]?
-    func fetchRoutes(routesIds: [String]) async throws -> [Route]
+    func fetchRoutes(routesIds: [String]?) async throws -> [Route]
     func createRoute(newRoute: Route) async throws
     func updateRoute(updatedRoute: Route) async throws
     func deleteRoute(routeId: String) async throws
 }
 
-class RoutesService: RoutesServiceProtocol {
-    private let baseURL = URL(string: "https://c490973c-0f21-4e71-866e-f8e4c353507b-00-3j1hu3pc5bvs1.kirk.replit.dev/api/routes")!
+class RoutesService: Service, RoutesServiceProtocol {
+    private lazy var serviceURL: URL = {
+        return baseURL.appendingPathComponent("routes")
+    }()
+    
+    override init() {
+        super.init()
+    }
     
     @RoutesStorage(key: "LONDON_EXPLORER_ROUTES") var savedRoutes: [Route]
-    
-    enum ServiceError: Error {
-        case noData
-        case invalidResponse
-        case serverError(Int)
-    }
     
     func fetchRoute(routeId: String) async throws -> Route {
         if let route = savedRoutes.first(where: {
@@ -43,15 +43,13 @@ class RoutesService: RoutesServiceProtocol {
         }
     }
     
-    func fetchRoutes(routesIds: [String]) async throws -> [Route] {
-        let routes = savedRoutes.filter {
-            routesIds.contains($0.id)
-        }
-        
-        if routes.count > 0 {
-            return routes
+    func fetchRoutes(routesIds: [String]?) async throws -> [Route] {
+        if let routesIds = routesIds {
+            return savedRoutes.filter {
+                routesIds.contains($0.id)
+            }
         } else {
-            throw ServiceError.serverError(404)
+            return savedRoutes
         }
     }
     

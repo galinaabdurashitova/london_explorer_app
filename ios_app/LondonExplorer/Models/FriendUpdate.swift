@@ -11,24 +11,28 @@ import SwiftUI
 struct FriendUpdate: Identifiable {
     var id = UUID()
     var friend: User
-    var caption: String
-    var subCaption: String
+    var description: String
     var date: Date
     var update: UpdateType
+    var routeName: String? = nil
     
-    public enum UpdateType {
-        case routeCompleted
-        case collectables100
+    enum UpdateType: String {
+        case award = "Award"
+        case collectable = "Collectable"
+        case friend = "Friend"
+        case finishedRoute = "FinishedRoute"
     }
     
     public func getIcon() -> Image {
         switch(self.update) {
-        case .collectables100:
+        case .award:
             return Image("Medal3DIcon")
-        case .routeCompleted:
+        case .collectable:
+            return Image("Treasures3DIcon")
+        case .friend:
+            return Image("People3DIcon")
+        case .finishedRoute:
             return Image("RouteDone3DIcon")
-//        default:
-//            return Image("Start3DIcon")
         }
     }
     

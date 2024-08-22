@@ -10,47 +10,55 @@ import SwiftUI
 
 struct MainTabView: View {
     @EnvironmentObject var auth: AuthController
-    @State var tabSelection = 0
+    @EnvironmentObject var globalSettings: GlobalSettings
+    @EnvironmentObject var awards: AwardsObserver
     
     var body: some View {
-        TabView (selection: $tabSelection) {
-            MainScreenView(tabSelection: $tabSelection)
+        TabView (selection: $globalSettings.tabSelection) {
+            MainScreenView()
+                .onAppear {
+                    awards.checkAward(for: .loggedIn, user: auth.profile)
+                }
                 .tabItem {
-                    Label("Home", systemImage: tabSelection == 0 ? "house.fill" :  "house")
+                    Label("Home", systemImage: globalSettings.tabSelection == 0 ? "house.fill" :  "house")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(0)
             
-            TestStorageView()
+            SearchView()
                 .tabItem {
                     Label("Browse", systemImage: "magnifyingglass")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(1)
             
-            CreateRouteView(tabSelection: $tabSelection)
+            CreateRouteView()
                 .tabItem {
                     Label("New Route", systemImage: "plus")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(2)
             
-//            ProgressView()
-//                .environmentObject(networkMonitor)
+//            TestStorageView()
 //                .tabItem {
-//                    Label("Favourites", systemImage: tabSelection == 3 ? "heart.fill" : "heart")
+//                    Label("Favourites", systemImage: globalSettings.tabSelection == 3 ? "heart.fill" : "heart")
 //                        .environment(\.symbolVariants, .none)
 //                }
 //                .tag(3)
             
-            ProfileView(user: auth.profile, tabSelection: $tabSelection)
+            MyProfileView()
                 .tabItem {
-                    Label("Profile", systemImage: tabSelection == 4 ? "person.fill" : "person")
+                    Label("Profile", systemImage: globalSettings.tabSelection == 4 ? "person.fill" : "person")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(4)
         }
         .accentColor(Color.redDark)
+        .overlay {
+            if !awards.newAwards.isEmpty /*&& !auth.isFetchingUser*/ {
+                AwardPopup()
+            }
+        }
     }
 }
 
@@ -59,4 +67,6 @@ struct MainTabView: View {
         .environmentObject(NetworkMonitor())
         .environmentObject(AuthController())
         .environmentObject(CurrentRouteManager())
+        .environmentObject(GlobalSettings())
+        .environmentObject(AwardsObserver())
 }

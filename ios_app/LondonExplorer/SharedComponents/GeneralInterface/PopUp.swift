@@ -52,7 +52,7 @@ struct PopUp: View {
                             }
                         }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal)
                 .padding(.bottom, 30)
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
@@ -102,7 +102,7 @@ struct PopUp: View {
                 }
             }
         }
-        .padding(.all, 20)
+        .padding()
         .background(Color.white)
         .cornerRadius(30)
     }

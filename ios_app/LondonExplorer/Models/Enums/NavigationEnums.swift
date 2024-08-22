@@ -16,7 +16,7 @@ enum AttractionNavigation: Hashable {
 
 enum RouteNavigation: Hashable {
     case info(Route)
-    case progress(Route)
+    case progress(Route, User, RouteProgress?)
     case map(Route)
     case finishedRoute(User.FinishedRoute)
 }
@@ -28,7 +28,10 @@ enum CreateRoutePath: Hashable {
 }
 
 enum ProfileNavigation: Hashable {
-    case finishedRoutes
-    case collectables
+    case profile(User)
+    case finishedRoutes(User)
+    case collectables(User)
+    case awards(User)
+    case friends(User)
     case settings
 }

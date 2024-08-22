@@ -8,34 +8,18 @@
 import Foundation
 import MapKit
 
-protocol AttractionsServiceProtocol {
+protocol AttractionsServiceProtocol: Service {
     func fetchAttractions() async throws -> [Attraction]
 }
 
-class AttractionsService: AttractionsServiceProtocol {
-    private let baseURL = URL(string: "http://attractions-api-gmabdurashitova.replit.app/api/attractions")!
+class AttractionsService: Service, AttractionsServiceProtocol {
+    private let serviceURL = URL(string: "http://attractions-api-gmabdurashitova.replit.app/api/attractions")!
     
     func fetchAttractions() async throws -> [Attraction] {
-        let (data, response) = try await URLSession.shared.data(from: baseURL)
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw ServiceError.invalidResponse
-        }
-        
-        switch httpResponse.statusCode {
-        case 200..<300:
-            break
-        case 400:
-            throw ServiceError.serverError(400)
-        case 404:
-            throw ServiceError.serverError(404)
-        case 500:
-            throw ServiceError.serverError(500)
-        default:
-            throw ServiceError.serverError(httpResponse.statusCode)
-        }
+        let (data, response) = try await URLSession.shared.data(from: serviceURL)
 
         do {
+            try self.checkResponse(response: response, service: "Attractions service", method: "fetchAttractions")
             let attractions = try JSONDecoder().decode([AttractionWrapper].self, from: data)
             var responseAttractions: [Attraction] = []
             

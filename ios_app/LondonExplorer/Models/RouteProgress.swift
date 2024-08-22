@@ -44,4 +44,11 @@ struct RouteProgress: Identifiable, Codable, Hashable, Equatable {
         let minutes = Int(elapsed) / 60 % 60
         return (String(format: "%01d", hours), String(format: "%02d", minutes))
     }
+    
+    func totalElapsedMinutes() -> Double {
+        guard let endTime = endTime else { return 0 }  // Ensure endTime is not nil
+        let totalPauseDuration = pauseDuration
+        let elapsedTime = endTime.timeIntervalSince(startTime) - totalPauseDuration
+        return elapsedTime / 60.0  // Convert seconds to minutes
+    }
 }
