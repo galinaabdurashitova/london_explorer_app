@@ -17,9 +17,6 @@ struct FinishRoutePopup: View {
         ZStack {
             Color.white.opacity(0.1)
                 .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    isOpen = false
-                }
             
             VStack {
                 VStack(spacing: 10) {

@@ -12,8 +12,8 @@ struct MainScreenView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
+    @EnvironmentObject var awards: AwardsObserver
     @StateObject var friendsFeed: FriendsFeedViewModel
-    @Binding var tabSelection: Int
     
     @State var routes: [Route] = MockData.Routes
     
@@ -25,8 +25,7 @@ struct MainScreenView: View {
         max(50, 120 - scrollOffset)
     }
     
-    init(tabSelection: Binding<Int>) {
-        self._tabSelection = tabSelection
+    init() {
         self._friendsFeed = StateObject(wrappedValue: FriendsFeedViewModel())
     }
     
@@ -70,7 +69,7 @@ struct MainScreenView: View {
             }
             .padding(.top, 20)
             .toolbar(.visible, for: .tabBar)
-            .appNavigation(tab: $tabSelection)
+            .appNavigation()
             .navigationDestination(for: RouteProgress.self) { routeProgress in
                 OnRouteView(routeProgress: routeProgress)
             }
@@ -94,8 +93,9 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
 
 
 #Preview {
-    MainScreenView(tabSelection: .constant(0))
+    MainScreenView()
         .environmentObject(AuthController())
         .environmentObject(NetworkMonitor())
         .environmentObject(CurrentRouteManager())
+        .environmentObject(AwardsObserver())
 }

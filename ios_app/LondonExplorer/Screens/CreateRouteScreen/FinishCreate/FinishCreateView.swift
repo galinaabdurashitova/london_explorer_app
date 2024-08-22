@@ -14,12 +14,10 @@ struct FinishCreateView: View {
     @EnvironmentObject var auth: AuthController
     @StateObject var viewModel: FinishCreateViewModel
     @State private var isNavigationActive = false
-    @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     
-    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [Route.RouteCollectable], tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
+    init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [Route.RouteCollectable], path: Binding<NavigationPath>) {
         self._viewModel = StateObject(wrappedValue: FinishCreateViewModel(stops: stops, pathes: pathes, collectables: collectables))
-        self._tabSelection = tabSelection
         self._path = path
     }
     
@@ -118,7 +116,6 @@ struct FinishCreateView: View {
         stops: MockData.RouteStops,
         pathes: [nil, nil, nil],
         collectables: [],
-        tabSelection: .constant(2),
         path: .constant(NavigationPath())
     )
     .environmentObject(AuthController())

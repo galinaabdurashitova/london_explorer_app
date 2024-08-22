@@ -65,20 +65,18 @@ class ProfileViewModel: ObservableObject {
     }
     
     @MainActor
-    func addFriend(userFromId: String) {
-        Task {
-            self.isUserRequestProcessing = true
-            do {
-                try await self.userService.createFriendRequest(userFromId: userFromId, userToId: self.user.id)
-                self.fetchUser()
-                if !self.user.friends.contains(userFromId) {
-                    self.getUserFriendRequests(currentUserId: userFromId)
-                }
-            } catch {
-                print("Unable to add friend: \(error.localizedDescription)")
+    func addFriend(userFromId: String) async {
+        self.isUserRequestProcessing = true
+        do {
+            try await self.userService.createFriendRequest(userFromId: userFromId, userToId: self.user.id)
+            self.fetchUser()
+            if !self.user.friends.contains(userFromId) {
+                self.getUserFriendRequests(currentUserId: userFromId)
             }
-            self.isUserRequestProcessing = false
+        } catch {
+            print("Unable to add friend: \(error.localizedDescription)")
         }
+        self.isUserRequestProcessing = false
     }
     
     @MainActor

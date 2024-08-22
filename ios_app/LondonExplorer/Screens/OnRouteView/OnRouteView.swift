@@ -62,13 +62,15 @@ struct OnRouteView: View {
         .overlay {
             if viewModel.lastStop {
                 FinishRoutePopup(isOpen: $viewModel.lastStop, awards: viewModel.awarded) {
-                    do {
-                        try viewModel.finishRoute(userId: auth.profile.id)
-                        auth.reloadUser()
-                        currentRoute.routeProgress = nil
-                        self.presentationMode.wrappedValue.dismiss()
-                    } catch {
-                        viewModel.error = error.localizedDescription
+                    Task {
+                        do {
+                            try viewModel.finishRoute(userId: auth.profile.id)
+                            await auth.reloadUser()
+                            currentRoute.routeProgress = nil
+                            self.presentationMode.wrappedValue.dismiss()
+                        } catch {
+                            viewModel.error = error.localizedDescription
+                        }
                     }
                 }
             } else if let collectedItem = viewModel.collected {

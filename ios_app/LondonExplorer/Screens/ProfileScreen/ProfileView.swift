@@ -11,12 +11,12 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
+    @EnvironmentObject var globalSettings: GlobalSettings
+    @EnvironmentObject var awards: AwardsObserver
     @StateObject var viewModel: ProfileViewModel
-    @Binding var tabSelection: Int
     
-    init(user: User, tabSelection: Binding<Int>) {
+    init(user: User) {
         self._viewModel = StateObject(wrappedValue: ProfileViewModel(user: user))
-        self._tabSelection = tabSelection
     }
     
     var body: some View {
@@ -43,8 +43,7 @@ struct ProfileView: View {
         .onAppear {
             viewModel.fetchUser()
             viewModel.loadRoutes()
-            if !viewModel.user.friends.contains(auth.profile.id) {
-                print(1)
+            if !viewModel.user.friends.contains(auth.profile.id) && viewModel.user.id != auth.profile.id {
                 viewModel.getUserFriendRequests(currentUserId: auth.profile.id)
             }
         }
@@ -85,7 +84,11 @@ struct ProfileView: View {
                             FriendButton(type: .requested)
                         } else {
                             Button(action: {
-                                viewModel.addFriend(userFromId: auth.profile.id)
+                                Task {
+                                    await viewModel.addFriend(userFromId: auth.profile.id)
+                                    await auth.reloadUser()
+                                    awards.checkAward(for: .friendshipApproved, user: auth.profile)
+                                }
                             }) {
                                 FriendButton(type: .add)
                             }
@@ -175,7 +178,7 @@ struct ProfileView: View {
                 }
             } else {
                 Button(action: {
-                    tabSelection = 2
+                    globalSettings.tabSelection = 2
                 }) {
                     ActionBanner(text: "You haven’t created any routes", actionText: "Create a new route")
                 }
@@ -185,7 +188,9 @@ struct ProfileView: View {
 }
 
 #Preview {
-    ProfileView(user: MockData.Users[0], tabSelection: .constant(4))
+    ProfileView(user: MockData.Users[0])
         .environmentObject(AuthController(testProfile: false))
         .environmentObject(CurrentRouteManager())
+        .environmentObject(GlobalSettings())
+        .environmentObject(AwardsObserver())
 }

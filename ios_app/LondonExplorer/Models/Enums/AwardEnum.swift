@@ -24,6 +24,26 @@ enum AwardTypes: String, Codable, CaseIterable {
         case friendshipApproved
         case loggedIn
         case profileOpened
+        
+        func getAwards(user: User, routeProgress: RouteProgress? = nil) -> [User.UserAward] {
+            var awards: [User.UserAward] = []
+            
+            for award in AwardTypes.allCases.filter({ $0.trigger.contains(self) }) {
+                print("Check award \(award.rawValue)")
+                let userLevel = award.getUserLevel(user: user)
+                print("Current user level \(userLevel)")
+                let userPoints = award.getNewPoints(user: user, routeProgress: routeProgress)
+                print("New user points \(userPoints)")
+                let newUserLevel = award.getLevelForPoints(points: userPoints)
+                print("New user level \(newUserLevel)")
+                
+                if newUserLevel > userLevel {
+                    awards.append(User.UserAward(type: award, level: newUserLevel, date: Date()))
+                }
+            }
+            
+            return awards
+        }
     }
     
     var trigger: [AwardTriggers] {
@@ -87,25 +107,25 @@ enum AwardTypes: String, Codable, CaseIterable {
         }
     }
     
-    func getNewPoints(user: User, routeProgress: RouteProgress) -> Double {
+    func getNewPoints(user: User, routeProgress: RouteProgress? = nil) -> Double {
         switch self {
         case .routesFinished:
             return self.getPoints(user: user) + 1
         case .attractionsVisited:
-            return self.getPoints(user: user) + Double(routeProgress.route.stops.count)
+            return self.getPoints(user: user) + Double(routeProgress == nil ? 0 : routeProgress!.route.stops.count)
         case .routesPublished:
             return 0
         case .friends:
             return Double(user.friends.count)
         case .minutes:
-            return self.getPoints(user: user) + routeProgress.totalElapsedMinutes()
+            return self.getPoints(user: user) + (routeProgress == nil ? 0 : routeProgress!.totalElapsedMinutes())
         case .kilometers:
-            let newKilometers = routeProgress.route.pathes.compactMap({ $0?.expectedTravelTime }).reduce(0, +) / 1000
+            let newKilometers = (routeProgress == nil ? 0 : routeProgress!.route.pathes.compactMap({ $0?.expectedTravelTime }).reduce(0, +) / 1000)
             return self.getPoints(user: user) + newKilometers
         case .likedRoute:
             return 0
         case .collectables:
-            let newCollectables = routeProgress.collectables.filter{ !user.collectables.compactMap{ $0.type }.contains($0.type) }
+            let newCollectables = (routeProgress == nil ? [] : routeProgress!.collectables.filter{ !user.collectables.compactMap{ $0.type }.contains($0.type) })
             return self.getPoints(user: user) + Double(newCollectables.count)
         }
     }

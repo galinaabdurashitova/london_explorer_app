@@ -10,4 +10,6 @@ import SwiftUI
 
 class GlobalSettings: ObservableObject {
     @Published var useMockData: Bool = false
+    @Published var tabSelection: Int = 0
+    @Published var searchTab: Int = 0
 }

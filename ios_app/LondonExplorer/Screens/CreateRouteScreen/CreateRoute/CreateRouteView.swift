@@ -13,7 +13,6 @@ struct CreateRouteView: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
     @State var routes: [Route] = MockData.Routes
-    @Binding var tabSelection: Int
     @State var path = NavigationPath()
     
     var body: some View {
@@ -29,7 +28,7 @@ struct CreateRouteView: View {
                         Spacer()
                     }
                     
-                    YourRoutesCarousel(routes: $routes, tabSelection: $tabSelection, path: $path)
+                    YourRoutesCarousel(routes: $routes, path: $path)
                     
                     if networkMonitor.isConnected {
                         SuggestedRoutesCarousel(routes: $routes)
@@ -39,15 +38,15 @@ struct CreateRouteView: View {
                 }
                 .padding()
             }
-            .appNavigation(tab: $tabSelection)
+            .appNavigation()
             .navigationDestination(for: CreateRoutePath.self) { value in
                 switch value {
                 case .routeStops:
-                    CreateStopsView(tabSelection: $tabSelection, path: $path)
+                    CreateStopsView(path: $path)
                 case .finishCreate(let stops, let pathes, let collectables):
-                    FinishCreateView(stops: stops, pathes: pathes, collectables: collectables, tabSelection: $tabSelection, path: $path)
+                    FinishCreateView(stops: stops, pathes: pathes, collectables: collectables, path: $path)
                 case .savedRoute(let route):
-                    SavedRouteView(route: route, tabSelection: $tabSelection, path: $path)
+                    SavedRouteView(route: route, path: $path)
                 }
             }
         }
@@ -55,7 +54,7 @@ struct CreateRouteView: View {
 }
 
 #Preview {
-    CreateRouteView(tabSelection: .constant(2))
+    CreateRouteView()
         .environmentObject(NetworkMonitor())
         .environmentObject(AuthController())
         .environmentObject(CurrentRouteManager())

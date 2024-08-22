@@ -11,20 +11,28 @@ import SwiftUI
 struct MyProfileView: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
-    @Binding var tabSelection: Int
+    @EnvironmentObject var awards: AwardsObserver
     
     var body: some View {
         NavigationStack {
             ZStack(alignment: .topTrailing) {
-                ProfileView(user: auth.profile, tabSelection: $tabSelection)
+                if auth.isFetchingUser {
+                    ProgressView()
+                } else {
+                    ProfileView(user: auth.profile)
+                }
             }
-            .appNavigation(tab: $tabSelection)
+            .appNavigation()
+            .onAppear {
+                awards.checkAward(for: .profileOpened, user: auth.profile)
+            }
         }
     }
 }
 
 #Preview {
-    MyProfileView(tabSelection: .constant(4))
+    MyProfileView()
         .environmentObject(AuthController(testProfile: true))
         .environmentObject(CurrentRouteManager())
+        .environmentObject(AwardsObserver())
 }

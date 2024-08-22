@@ -13,13 +13,11 @@ struct CreateStopsView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var globalSettings: GlobalSettings
     @StateObject var viewModel: RouteStopsViewModel
-    @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     @State var showAttractionSearchView: Bool = false
     @State var confirmRemove: Bool = false
     
-    init(tabSelection: Binding<Int>, path: Binding<NavigationPath>) {
-        self._tabSelection = tabSelection
+    init(path: Binding<NavigationPath>) {
         self._path = path
         self._viewModel = StateObject(wrappedValue: RouteStopsViewModel(stops: [], pathes: []))
     }
@@ -198,7 +196,6 @@ struct CreateStopsView: View {
 
 #Preview {
     CreateStopsView(
-        tabSelection: .constant(2),
         path: .constant(NavigationPath())
     )
     .environmentObject(GlobalSettings())

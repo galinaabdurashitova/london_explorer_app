@@ -10,6 +10,7 @@ import SwiftUI
 
 struct FriendRequestBanner: View {
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var awards: AwardsObserver
     @ObservedObject var viewModel: FriendsFeedViewModel
     @Binding var user: User
     
@@ -36,7 +37,11 @@ struct FriendRequestBanner: View {
             Spacer()
             
             Button(action: {
-                viewModel.acceptRequest(currentUserId: auth.profile.id, userFromId: user.id)
+                Task {
+                    await viewModel.acceptRequest(currentUserId: auth.profile.id, userFromId: user.id)
+                    await auth.reloadUser()
+                    awards.checkAward(for: .friendshipApproved, user: auth.profile)
+                }
             }) {
                 Image(systemName: "checkmark")
                     .icon(size: 20, colour: Color.greenAccent)
@@ -67,5 +72,6 @@ struct FriendRequestBanner: View {
 #Preview {
     FriendRequestBanner(viewModel: FriendsFeedViewModel(), user: .constant(MockData.Users[0]))
         .environmentObject(AuthController())
+        .environmentObject(AwardsObserver())
         .padding()
 }

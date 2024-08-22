@@ -106,6 +106,7 @@ class OnRouteViewModel: ObservableObject {
         self.routeProgress.lastPauseTime = nil
     }
     
+    @MainActor
     func changeStop(next: Bool = true, user: User) {
         if next {
             if self.routeProgress.stops < self.routeProgress.route.stops.count {
@@ -122,7 +123,7 @@ class OnRouteViewModel: ObservableObject {
         } else {
             self.lastStop = true
             self.routeProgress.endTime = Date()
-            self.getAwards(user: user)
+            self.awarded = AwardTypes.AwardTriggers.finishedRoute.getAwards(user: user, routeProgress: self.routeProgress)
         }
     }
     
@@ -138,25 +139,6 @@ class OnRouteViewModel: ObservableObject {
             } catch {
                 print("Error saving finished route: \(error.localizedDescription)")
                 throw error
-            }
-        }
-    }
-    
-    /// Awards
-    func getAwards(user: User) {
-        DispatchQueue.main.async {
-            for award in AwardTypes.allCases.filter({ $0.trigger.contains(.finishedRoute) }) {
-                print("Check award \(award.rawValue)")
-                let userLevel = award.getUserLevel(user: user)
-                print("Current user level \(userLevel)")
-                let userPoints = award.getNewPoints(user: user, routeProgress: self.routeProgress)
-                print("New user points \(userPoints)")
-                let newUserLevel = award.getLevelForPoints(points: userPoints)
-                print("New user level \(newUserLevel)")
-                
-                if newUserLevel > userLevel {
-                    self.awarded.append(User.UserAward(type: award, level: newUserLevel, date: Date()))
-                }
             }
         }
     }

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct FriendsFeed: View {
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var globalSettings: GlobalSettings
     @ObservedObject var viewModel: FriendsFeedViewModel
     
     var body: some View {
@@ -23,19 +24,18 @@ struct FriendsFeed: View {
             }
             
             VStack (spacing: 12) {
-                if viewModel.friendsRequests.count > 0 {
+                if viewModel.friendsRequests.count > 0 || viewModel.updates.count > 0 {
                     ForEach ($viewModel.friendsRequests) { request in
                         FriendRequestBanner(viewModel: viewModel, user: request)
                     }
-                }
-                
-                if viewModel.updates.count > 0 {
+                    
                     ForEach ($viewModel.updates) { update in
                         FeedUpdate(update: update)
                     }
                 } else {                        
                     Button(action: {
-                        // Go to user search
+                        globalSettings.tabSelection = 1
+                        globalSettings.searchTab = 1
                     }) {
                         ActionBanner(text: "Your friends don’t have recent updates", actionText: "Add a friend")
                     }
@@ -52,6 +52,7 @@ struct FriendsFeed: View {
     ScrollView {
         FriendsFeed(viewModel: FriendsFeedViewModel())
             .environmentObject(AuthController())
+            .environmentObject(GlobalSettings())
     }
     .padding()
 }

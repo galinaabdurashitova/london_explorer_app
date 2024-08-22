@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 extension View {
-    func appNavigation(tab: Binding<Int>) -> some View {
+    func appNavigation() -> some View {
         self
             .navigationDestination(for: RouteNavigation.self) { value in
                 switch value {
@@ -26,7 +26,7 @@ extension View {
             .navigationDestination(for: ProfileNavigation.self) { value in
                 switch value {
                 case .profile(let user):
-                    ProfileView(user: user, tabSelection: tab)
+                    ProfileView(user: user)
                 case .finishedRoutes(let user):
                     FinishedRoutesView(user: user)
                 case .collectables(let user):

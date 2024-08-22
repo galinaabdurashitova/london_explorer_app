@@ -13,6 +13,7 @@ import FirebaseAuth
 class AuthController: ObservableObject {
     @Published var isSignedIn = false
     @Published var isStarting = true
+    @Published var isFetchingUser = false
     @Published var profile: User = User(userId: "", name: "", userName: "")
     
     private var usersRepository: UsersServiceProtocol = UsersService()
@@ -22,23 +23,22 @@ class AuthController: ObservableObject {
         if testProfile == true  {
             self.setUserProfile()
         } else {
-//            isStarting = true
             observeAuthChanges()
         }
-        isStarting = false
     }
     
-    func reloadUser() {
-        DispatchQueue.main.async {
-            Task {
-                do {
-                    self.profile = try await self.usersRepository.fetchUser(userId: self.profile.id)
-                    await self.getFinishedRoutes()
-                } catch {
-                    print("Error while fetching the user profile: \(error)")
-                }
-            }
+    @MainActor
+    func reloadUser() async {
+        self.isFetchingUser = true
+        do {
+            self.profile = try await self.usersRepository.fetchUser(userId: self.profile.id)
+            await self.getFinishedRoutes()
+        } catch {
+            print("Error while fetching the user profile: \(error)")
         }
+        self.isFetchingUser = false
+        print(self.profile.awards)
+        print("User reloaded")
     }
     
     func getFinishedRoutes() async {
@@ -82,6 +82,8 @@ class AuthController: ObservableObject {
                     } catch {
                         print("Error while fetching the user profile: \(error)")
                     }
+                    
+                    self.isStarting = false
                 }
             }
         }

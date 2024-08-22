@@ -16,6 +16,7 @@ class FriendsFeedViewModel: ObservableObject {
     private var usersService: UsersServiceProtocol = UsersService()
     private var routesService: RoutesServiceProtocol = RoutesService()
     
+    @MainActor
     func reloadFeed(userId: String) {
         self.isLoading = true
         self.getFriendRequests(userId: userId)
@@ -53,22 +54,22 @@ class FriendsFeedViewModel: ObservableObject {
         }
     }
 
-    func acceptRequest(currentUserId: String, userFromId: String) {
-        Task {
+    func acceptRequest(currentUserId: String, userFromId: String) async {
+
             do {
                 try await self.usersService.createFriendRequest(userFromId: currentUserId, userToId: userFromId)
-                self.reloadFeed(userId: currentUserId)
+                await self.reloadFeed(userId: currentUserId)
             } catch {
                 print("Unable to add friend: \(error.localizedDescription)")
             }
-        }
+        
     }
     
     func declineRequest(currentUserId: String, userFromId: String) {
         Task {
             do {
                 try await self.usersService.declineFriendRequest(userFromId: currentUserId, userToId: userFromId)
-                self.reloadFeed(userId: currentUserId)
+                await self.reloadFeed(userId: currentUserId)
             } catch {
                 print("Unable to add friend: \(error.localizedDescription)")
             }

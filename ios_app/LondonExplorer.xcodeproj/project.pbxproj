@@ -52,6 +52,8 @@
 		2A5602742C767E840057A5E1 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5602732C767E840057A5E1 /* FriendsView.swift */; };
 		2A5602762C768F2B0057A5E1 /* FriendRequestBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5602752C768F2B0057A5E1 /* FriendRequestBanner.swift */; };
 		2A5602782C76904E0057A5E1 /* FriendsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5602772C76904E0057A5E1 /* FriendsFeedViewModel.swift */; };
+		2A56027C2C777A020057A5E1 /* AwardPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56027B2C777A020057A5E1 /* AwardPopup.swift */; };
+		2A56027E2C77868E0057A5E1 /* AwardsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56027D2C77868E0057A5E1 /* AwardsObserver.swift */; };
 		2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */; };
 		2A58EA932C40778100F9A4C0 /* OnRouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */; };
 		2A58EA952C40788200F9A4C0 /* RouteAttractionAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */; };
@@ -209,6 +211,8 @@
 		2A5602732C767E840057A5E1 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		2A5602752C768F2B0057A5E1 /* FriendRequestBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestBanner.swift; sourceTree = "<group>"; };
 		2A5602772C76904E0057A5E1 /* FriendsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedViewModel.swift; sourceTree = "<group>"; };
+		2A56027B2C777A020057A5E1 /* AwardPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardPopup.swift; sourceTree = "<group>"; };
+		2A56027D2C77868E0057A5E1 /* AwardsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardsObserver.swift; sourceTree = "<group>"; };
 		2A58EA902C40769C00F9A4C0 /* OnRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteView.swift; sourceTree = "<group>"; };
 		2A58EA922C40778100F9A4C0 /* OnRouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnRouteViewModel.swift; sourceTree = "<group>"; };
 		2A58EA942C40788200F9A4C0 /* RouteAttractionAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteAttractionAnnotation.swift; sourceTree = "<group>"; };
@@ -398,6 +402,7 @@
 			isa = PBXGroup;
 			children = (
 				2A0E39F62C5016E200AC32A4 /* AuthController.swift */,
+				2A56027D2C77868E0057A5E1 /* AwardsObserver.swift */,
 				2AFB40EA2C5FEBF5005AEF8B /* CurrentRouteManager.swift */,
 				2AFB413E2C63F27F005AEF8B /* GlobalSettings.swift */,
 				2A8506912C0A8A65003A3117 /* NetworkMonitor.swift */,
@@ -763,14 +768,15 @@
 			isa = PBXGroup;
 			children = (
 				2A0E39EE2C4FF4FA00AC32A4 /* ActionBanner.swift */,
+				2A56027B2C777A020057A5E1 /* AwardPopup.swift */,
 				2A76D4BE2C172AAD007908E0 /* BackButton.swift */,
 				2A76D4AD2C15FF56007908E0 /* ButtonView.swift */,
 				2A76D4D42C1F6C05007908E0 /* CustomTextField.swift */,
 				2AC56A8C2C2987B900F7249B /* ErrorScreen.swift */,
 				2A76D4CD2C1B9653007908E0 /* PopUp.swift */,
 				2AE8A0212C13A2C6005E0F62 /* ScreenHeader.swift */,
-				2AA5B1312C090EE4001EC475 /* SectionHeader.swift */,
 				2A56025C2C754A8B0057A5E1 /* SearchBar.swift */,
+				2AA5B1312C090EE4001EC475 /* SectionHeader.swift */,
 			);
 			path = GeneralInterface;
 			sourceTree = "<group>";
@@ -995,6 +1001,7 @@
 				2AA5B10D2C08B890001EC475 /* ContentView.swift in Sources */,
 				2AFD1F762C249F7F0061060E /* ProfileViewModel.swift in Sources */,
 				2AFD1F592C21DAA40061060E /* CoordinatesCodableExtension.swift in Sources */,
+				2A56027E2C77868E0057A5E1 /* AwardsObserver.swift in Sources */,
 				2AA5B12C2C0904C5001EC475 /* RouteCard.swift in Sources */,
 				2A58EA912C40769C00F9A4C0 /* OnRouteView.swift in Sources */,
 				2AFD1F652C247FA60061060E /* RouteDataView.swift in Sources */,
@@ -1062,6 +1069,7 @@
 				2A16D79D2C6D486600736532 /* CollectableAnnotation.swift in Sources */,
 				2AA5B10B2C08B890001EC475 /* LondonExplorerApp.swift in Sources */,
 				2AE8A02F2C14BDB2005E0F62 /* Attraction.swift in Sources */,
+				2A56027C2C777A020057A5E1 /* AwardPopup.swift in Sources */,
 				2A0E39EB2C4EF07300AC32A4 /* RouteClock.swift in Sources */,
 				2A76D4B72C1624D6007908E0 /* RouteStopCard.swift in Sources */,
 				2A76D4C82C1A0A35007908E0 /* MapRouteView.swift in Sources */,

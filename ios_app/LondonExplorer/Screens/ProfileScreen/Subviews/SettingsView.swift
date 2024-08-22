@@ -27,6 +27,8 @@ struct SettingsView: View {
                     }
                 
                 Button(action: {
+                    globalSettings.tabSelection = 0
+                    globalSettings.searchTab = 0
                     auth.signOut()
                 }) {
                     HStack {

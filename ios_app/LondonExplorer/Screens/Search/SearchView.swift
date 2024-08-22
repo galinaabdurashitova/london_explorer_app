@@ -11,13 +11,11 @@ import SwiftUI
 struct SearchView: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
+    @EnvironmentObject var globalSettings: GlobalSettings
     @StateObject var viewModel: SearchViewModel
-    @Binding var tabSelection: Int
-    @State var selected: Int = 0
     
-    init(tabSelection: Binding<Int>) {
+    init() {
         self._viewModel = StateObject(wrappedValue: SearchViewModel())
-        self._tabSelection = tabSelection
     }
     
     var body: some View {
@@ -33,13 +31,13 @@ struct SearchView: View {
                         Spacer()
                     }
                     
-                    Picker(selection: $selected, label: Text("")) {
+                    Picker(selection: $globalSettings.searchTab, label: Text("")) {
                         Text("Routes").tag(0)
                         Text("Users").tag(1)
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     
-                    if selected == 0 {
+                    if globalSettings.searchTab == 0 {
                         routesSearch
                     } else {
                         userSearch
@@ -51,7 +49,7 @@ struct SearchView: View {
                 viewModel.fetchUsers()
                 viewModel.fetchRoutes()
             }
-            .appNavigation(tab: $tabSelection)
+            .appNavigation()
         }
     }
     
@@ -129,7 +127,8 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView(tabSelection: .constant(1))
+    SearchView()
         .environmentObject(AuthController())
         .environmentObject(CurrentRouteManager())
+        .environmentObject(GlobalSettings())
 }

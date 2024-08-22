@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct SavedRouteView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     @State var route: Route
-    @Binding var tabSelection: Int
     @Binding var path: NavigationPath
     
     var body: some View {
@@ -48,7 +48,7 @@ struct SavedRouteView: View {
                     textColour: Color.white,
                     size: .M
                 ) {
-                    tabSelection = 4
+                    globalSettings.tabSelection = 4
                 }
             }
             .padding(.bottom, 20)
@@ -61,8 +61,8 @@ struct SavedRouteView: View {
 #Preview {
     SavedRouteView(
         route: MockData.Routes[0],
-        tabSelection: .constant(2),
         path: .constant(NavigationPath())
     )
     .environmentObject(AuthController())
+    .environmentObject(GlobalSettings())
 }
