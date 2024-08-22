@@ -78,7 +78,7 @@ class MockData {
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
-            saves: [],
+            saves: ["1", "2", "3", "4", "5"],
             collectables: [
                 Route.RouteCollectable(
                     location: CLLocationCoordinate2D(latitude: 51.51606596804756, longitude: -0.1207032745398544),
@@ -110,7 +110,7 @@ class MockData {
             name: "London Secrets",
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
-            saves: [],
+            saves: ["1", "2", "3", "4", "5", "1", "2", "3"],
             collectables: [
                 Route.RouteCollectable(
                     location: CLLocationCoordinate2D(latitude: 51.498762278960335, longitude: -0.1263361765911308),
@@ -146,7 +146,7 @@ class MockData {
             name: "Some Route Some Route Some Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "LondonStreet"),
-            saves: [],
+            saves: ["1", "2", "3", "4"],
             collectables: [
                 Route.RouteCollectable(
                     location: CLLocationCoordinate2D(latitude: 51.498762278960335, longitude: -0.1263361765911308),
@@ -182,7 +182,7 @@ class MockData {
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
-            saves: [],
+            saves: ["1", "2", "3", "4", "5", "1", "2", "3", "4"],
             collectables: [], //5,
             downloadDate: Date(),
             stops: RouteStops
@@ -198,7 +198,7 @@ class MockData {
             name: "London Secrets",
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
-            saves: [],
+            saves: ["1", "2"],
             collectables: [], //5,
             stops: RouteStops
             , pathes: [nil, nil, nil]

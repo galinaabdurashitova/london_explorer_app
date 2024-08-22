@@ -35,12 +35,12 @@ struct MainTabView: View {
                 }
                 .tag(2)
             
-            TestStorageView()
-                .tabItem {
-                    Label("Favourites", systemImage: tabSelection == 3 ? "heart.fill" : "heart")
-                        .environment(\.symbolVariants, .none)
-                }
-                .tag(3)
+//            TestStorageView()
+//                .tabItem {
+//                    Label("Favourites", systemImage: tabSelection == 3 ? "heart.fill" : "heart")
+//                        .environment(\.symbolVariants, .none)
+//                }
+//                .tag(3)
             
             MyProfileView(tabSelection: $tabSelection)
                 .tabItem {
