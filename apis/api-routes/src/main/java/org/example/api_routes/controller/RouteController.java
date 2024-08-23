@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,6 +26,9 @@ public class RouteController {
 
     @Autowired
     private RouteCollectableService routeCollectableService;
+
+    @Autowired
+    private RouteSaveService routeSaveService;
 
     @GetMapping
     public ResponseEntity<?> getRoutes(@RequestParam(value = "routeIds", required = false) List<String> routeIds) {
@@ -163,6 +167,24 @@ public class RouteController {
         }
 
         routeService.saveRoute(route);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{routeId}/saves")
+    public ResponseEntity<?> saveRoute(@PathVariable String routeId, @RequestBody SaveRouteRequest request) {
+        Optional<Route> route = routeService.getRouteById(routeId);
+        if (!route.isPresent()) {
+            return ResponseEntity.status(404).body("Route not found");
+        }
+
+        if (request.getUserId() == null || request.getSaveDate() == null) {
+            return ResponseEntity.status(400).body("Missing parameters");
+        }
+
+        String uuid = UUID.randomUUID().toString();
+        RouteSave save = new RouteSave(uuid, routeId, request.getUserId(), request.getSaveDate());
+        routeSaveService.saveRoute(save);
+        
         return ResponseEntity.ok().build();
     }
 }

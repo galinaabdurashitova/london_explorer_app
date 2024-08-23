@@ -1,5 +1,6 @@
 package org.example.api_routes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,6 +10,7 @@ public class RouteStop {
     @Column(name = "stop_id", length = 36)
     private String stopId;
 
+    @JsonIgnore
     @Column(name = "route_id", nullable = false, length = 36)
     private String routeId;
 
