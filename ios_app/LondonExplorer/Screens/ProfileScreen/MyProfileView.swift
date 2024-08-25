@@ -16,11 +16,11 @@ struct MyProfileView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .topTrailing) {
-                if auth.isFetchingUser {
-                    ProgressView()
-                } else {
-                    ProfileView(user: auth.profile)
-                }
+//                if auth.isFetchingUser {
+//                    ProgressView()
+//                } else {
+                    ProfileView(user: auth.profile, loadUnpublished: true)
+//                }
             }
             .appNavigation()
             .onAppear {
@@ -34,5 +34,6 @@ struct MyProfileView: View {
     MyProfileView()
         .environmentObject(AuthController(testProfile: true))
         .environmentObject(CurrentRouteManager())
+        .environmentObject(GlobalSettings())
         .environmentObject(AwardsObserver())
 }

@@ -12,8 +12,6 @@ class AttractionViewModel: ObservableObject {
     @Binding var stops: [Route.RouteStop]
     @Binding var attraction: Attraction
     
-    private let imagesRep: ImagesRepository = ImagesRepository()
-    
     init(stops: Binding<[Route.RouteStop]>, attraction: Binding<Attraction>) {
         self._stops = stops
         self._attraction = attraction
@@ -43,7 +41,7 @@ class AttractionViewModel: ObservableObject {
     func fetchAttractionImages() async {
         if !attraction.finishedImagesDownload {
             do {
-                let images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
+                let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attraction.id)
                 
                 DispatchQueue.main.async {
                     self.attraction.images = images

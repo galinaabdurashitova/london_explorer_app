@@ -10,6 +10,8 @@ import SwiftUI
 
 struct WidgetError: View {
     @State var text: String
+    @State var isLoading: Bool = false
+    @State var action: () -> Void
     
     var body: some View {
         HStack {
@@ -20,10 +22,14 @@ struct WidgetError: View {
             Spacer()
             
             Button(action: {
-                // Update
+                action()
+                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+                    isLoading = true
+                }
             }) {
                 Image(systemName: "arrow.triangle.2.circlepath")
                     .icon(size: 35, colour: Color.black)
+                    .rotationEffect(Angle(degrees: isLoading ? 360 : 0))
                     .padding(.all, 8)
                     .background(Color.white)
                     .cornerRadius(100)
@@ -38,6 +44,8 @@ struct WidgetError: View {
 }
 
 #Preview {
-    WidgetError(text: "friends feed")
-        .padding()
+    WidgetError(text: "friends feed") {
+        
+    }
+    .padding()
 }

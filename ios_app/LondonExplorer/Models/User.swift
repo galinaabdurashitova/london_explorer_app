@@ -25,25 +25,104 @@ struct User: Codable, Identifiable, Hashable, Equatable {
     var finishedRoutes: [FinishedRoute]
     
     struct UserAward: Codable, Hashable, Equatable {
-        var id: String = UUID().uuidString
+        var id: String
         var type: AwardTypes
         var level: Int
         var date: Date
+        
+        init(id: String = UUID().uuidString, type: AwardTypes, level: Int, date: Date) {
+            self.id = id
+            self.type = type
+            self.level = level
+            self.date = date
+        }
+        
+        init(from dto: UserWrapper.UserAward) throws {
+            guard let awardDate = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toDate(from: dto.awardDate) else {
+                throw DecodingError.dataCorrupted(
+                        DecodingError.Context(
+                            codingPath: [],
+                            debugDescription: "Cannot convert award date"
+                        )
+                    )
+            }
+                    
+            guard let awardType = AwardTypes(rawValue: dto.award) else {
+                throw DecodingError.dataCorrupted(
+                        DecodingError.Context(
+                            codingPath: [],
+                            debugDescription: "Cannot convert award type"
+                        )
+                    )
+            }
+            
+            self.id = dto.userAwardId
+            self.type = awardType
+            self.level = dto.awardLevel
+            self.date = awardDate
+        }
     }
     
     struct UserCollectable: Codable, Hashable, Equatable {
-        var id: String = UUID().uuidString
+        var id: String
         var type: Collectable
         var finishedRouteId: String
+        
+        init(id: String = UUID().uuidString, type: Collectable, finishedRouteId: String) {
+            self.id = id
+            self.type = type
+            self.finishedRouteId = finishedRouteId
+        }
+        
+        init(from dto: UserWrapper.UserCollectable) throws {
+            guard let collectableType = Collectable(rawValue: dto.collectable) else {
+                throw DecodingError.dataCorrupted(
+                        DecodingError.Context(
+                            codingPath: [],
+                            debugDescription: "Cannot convert collectable"
+                        )
+                    )
+            }
+            
+            self.id = dto.userCollectableId
+            self.type = collectableType
+            self.finishedRouteId = dto.finishedRouteId
+        }
     }
     
     struct FinishedRoute: Codable, Hashable, Equatable {
-        var id: String = UUID().uuidString
+        var id: String
         var routeId: String
         var route: Route?
         var spentMinutes: Double
         var finishedDate: Date
         var collectables: Int
+        
+        init(id: String = UUID().uuidString, routeId: String, route: Route? = nil, spentMinutes: Double, finishedDate: Date, collectables: Int) {
+            self.id = id
+            self.routeId = routeId
+            self.route = route
+            self.spentMinutes = spentMinutes
+            self.finishedDate = finishedDate
+            self.collectables = collectables
+        }
+        
+        init(from dto: UserWrapper.FinishedRoute) throws {
+            guard let finishedDate = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toDate(from: dto.finishedDate) else {
+                throw DecodingError.dataCorrupted(
+                        DecodingError.Context(
+                            codingPath: [],
+                            debugDescription: "Cannot convert finished route date"
+                        )
+                    )
+            }
+            
+            self.id = dto.finishedRouteId
+            self.routeId = dto.routeId
+            self.spentMinutes = dto.spentMinutes
+            self.finishedDate = finishedDate
+            self.collectables = dto.collectables
+        }
     }
     
     enum CodingKeys: String, CodingKey {
@@ -70,6 +149,54 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         self.collectables = collectables
         self.friends = friends
         self.finishedRoutes = finishedRoutes
+    }
+    
+    init(from dto: UserWrapper) {
+        var userAwards: [User.UserAward] = []
+        if let awards = dto.awards {
+            for award in awards {
+                do {
+                    let userAward = try User.UserAward(from: award)
+                    userAwards.append(userAward)
+                } catch {
+                    print("Failed to convert award: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        var userCollectables: [User.UserCollectable] = []
+        if let collectables = dto.collectables {
+            for collectable in collectables {
+                do {
+                    let userCollectable = try User.UserCollectable(from: collectable)
+                    userCollectables.append(userCollectable)
+                } catch {
+                    print("Failed to convert collectable: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        var finishedRoutes: [User.FinishedRoute] = []
+        if let routes = dto.finishedRoutes {
+            for route in routes {
+                do {
+                    let finishedRoute = try User.FinishedRoute(from: route)
+                    finishedRoutes.append(finishedRoute)
+                } catch {
+                    print("Failed to convert finished date: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        self.id = dto.userId
+        self.email = dto.email
+        self.name = dto.name
+        self.userName = dto.userName.lowercased()
+        self.description = dto.description
+        self.awards = userAwards
+        self.collectables = userCollectables
+        self.friends = dto.friends ?? []
+        self.finishedRoutes = finishedRoutes.sorted { $0.finishedDate > $1.finishedDate }
     }
     
     init(from decoder: Decoder) throws {

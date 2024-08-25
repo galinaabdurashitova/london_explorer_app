@@ -11,13 +11,14 @@ import MapKit
 
 class FinishCreateViewModel: ObservableObject {
     @Published var route: Route
+    @Published var isSaving: Bool = false
     
-    private var routesService = RoutesService()
+    private var routesManager: RoutesStorageManager = RoutesStorageManager()
     
     init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [Route.RouteCollectable]) {
         self.route = Route(
             dateCreated: Date(),
-            userCreated: Route.UserCreated(id: ""),
+            userCreated: "",
             name: "",
             description: "",
             image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
@@ -27,15 +28,10 @@ class FinishCreateViewModel: ObservableObject {
         )
     }
     
-    func saveRoute(userId: String, userName: String) {
-        route.userCreated = Route.UserCreated(id: userId, name: userName)
-        
-        Task {
-            do {
-                try await routesService.createRoute(newRoute: route)
-            } catch {
-                print("Error saving route")
-            }
-        }
+    func saveRoute(userId: String)  {
+        self.isSaving = true
+        route.userCreated = userId
+        routesManager.saveRoute(route: route)
+        self.isSaving = false
     }
 }

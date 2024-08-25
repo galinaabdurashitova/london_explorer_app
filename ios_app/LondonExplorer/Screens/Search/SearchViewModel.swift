@@ -27,7 +27,7 @@ class SearchViewModel: ObservableObject {
     func fetchUsers() {
         DispatchQueue.main.async {
             Task {
-                self.users = try await self.userService.fetchUsers(userIds: nil)
+                self.users = try await self.userService.fetchAllUsers()
             }
         }
     }
@@ -51,7 +51,7 @@ class SearchViewModel: ObservableObject {
     func fetchRoutes() {
         DispatchQueue.main.async {
             Task {
-                self.routes = try await self.routesService.fetchRoutes(routesIds: nil)
+                self.routes = try await self.routesService.fetchAllRoutes()
             }
         }
     }

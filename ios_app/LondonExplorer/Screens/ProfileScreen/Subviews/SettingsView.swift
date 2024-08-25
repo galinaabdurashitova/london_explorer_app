@@ -22,9 +22,6 @@ struct SettingsView: View {
                 
                 Toggle("Use test data", isOn: $globalSettings.useMockData)
                     .padding(.trailing, 5)
-                    .onTapGesture {
-                        globalSettings.useMockData.toggle()
-                    }
                 
                 Button(action: {
                     globalSettings.tabSelection = 0

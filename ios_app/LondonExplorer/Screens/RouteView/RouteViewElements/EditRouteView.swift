@@ -25,6 +25,7 @@ struct EditRouteView: View {
                     viewModel.saveEditRoute()
                 }
                 .foregroundColor(Color.blueAccent)
+                .disabled(viewModel.newName.isEmpty || viewModel.newDescription.isEmpty)
             }
             
             HStack {
@@ -35,6 +36,11 @@ struct EditRouteView: View {
                     )
                 }
                 Spacer()
+            }
+            
+            if let error = viewModel.editError {
+                Text(error)
+                    .foregroundColor(Color.redAccent)
             }
             
             VStack(alignment: .leading, spacing: 10) {

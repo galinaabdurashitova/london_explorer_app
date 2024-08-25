@@ -13,4 +13,13 @@ public class RouteSaveService {
     public void saveRoute(RouteSave save) {
         routeSaveRepository.save(save);
     }
+
+    public boolean isRouteSaveExists(String routeId, String userId) {
+        return routeSaveRepository.existsByRouteIdAndUserId(routeId, userId);
+    }
+
+    public void deleteRouteSave(String routeId, String userId) {
+        RouteSave routeSave = routeSaveRepository.findRouteSave(routeId, userId);
+        routeSaveRepository.deleteById(routeSave.getRouteSaveId());
+    }
 }

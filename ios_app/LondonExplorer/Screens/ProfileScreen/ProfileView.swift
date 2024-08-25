@@ -15,34 +15,48 @@ struct ProfileView: View {
     @EnvironmentObject var awards: AwardsObserver
     @StateObject var viewModel: ProfileViewModel
     
-    init(user: User) {
-        self._viewModel = StateObject(wrappedValue: ProfileViewModel(user: user))
+    init(user: User, loadUnpublished: Bool = false) {
+        self._viewModel = StateObject(wrappedValue: ProfileViewModel(user: user, loadUnpublished: loadUnpublished))
     }
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 25) {
-                Header
-                
-                if let description = viewModel.user.description {
-                    Text(description)
+        ZStack {
+            if viewModel.userLoadingError {
+                ErrorScreen() {
+                    Task { await viewModel.loadData() }
                 }
-                
-                UserStatIcons
-                
-                YourRoutes
+            } else {
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 25) {
+                        Header
+                        
+                        if let description = viewModel.user.description {
+                            Text(description)
+                        }
+                        
+                        UserStatIcons
+                        
+                        ProfileUserRoutesList(viewModel: viewModel)
+                    }
+                }
+                .refreshable {
+                    await viewModel.loadData(isCurrentUser: viewModel.user == auth.profile)
+                }
             }
-        }
-        .refreshable {
-            viewModel.fetchUser()
-            viewModel.loadRoutes()
         }
         .scrollClipDisabled()
         .padding(.top, 20)
         .padding(.horizontal)
-        .onAppear {
-            viewModel.fetchUser()
-            viewModel.loadRoutes()
+        .popup(
+            isPresented: $viewModel.showError,
+            text: viewModel.error,
+            buttonText: "Ok",
+            oneButton: true,
+            systemImage: "xmark",
+            invertButtons: true
+        ) { }
+        .task {
+            await viewModel.loadData(isCurrentUser: viewModel.user == auth.profile)
             if !viewModel.user.friends.contains(auth.profile.id) && viewModel.user.id != auth.profile.id {
                 viewModel.getUserFriendRequests(currentUserId: auth.profile.id)
             }
@@ -76,23 +90,7 @@ struct ProfileView: View {
                                 .icon(size: 30, colour: Color.black.opacity(0.3))
                         }
                     } else {
-                        if viewModel.user.friends.contains(auth.profile.id) {
-                            FriendButton(type: .friends)
-                        } else if viewModel.isUserRequestProcessing {
-                            ProgressView()
-                        } else if viewModel.isFriendRequestSent {
-                            FriendButton(type: .requested)
-                        } else {
-                            Button(action: {
-                                Task {
-                                    await viewModel.addFriend(userFromId: auth.profile.id)
-                                    await auth.reloadUser()
-                                    awards.checkAward(for: .friendshipApproved, user: auth.profile)
-                                }
-                            }) {
-                                FriendButton(type: .add)
-                            }
-                        }
+                        FriendButton(viewModel: viewModel)
                     }
                 }
                 
@@ -131,57 +129,15 @@ struct ProfileView: View {
     private var UserStatIcons: some View {
         HStack(spacing: 10) {
             NavigationLink(value: ProfileNavigation.awards(viewModel.user)) {
-                StatIcon(icon: "Trophy3DIcon", number: viewModel.user.awards.count, word: "awards", colour: Color.redAccent)
+                ProfileStatIcon(icon: "Trophy3DIcon", number: Binding(get: { viewModel.user.awards.count }, set: { _ in }), word: "awards", colour: Color.redAccent)
             }
             
             NavigationLink(value: ProfileNavigation.finishedRoutes(viewModel.user)) {
-                StatIcon(icon: "Route3DIcon", number: viewModel.user.finishedRoutes.count, word: "routes finished", colour: Color.greenAccent)
+                ProfileStatIcon(icon: "Route3DIcon", number: Binding(get: { viewModel.user.finishedRoutes.count }, set: { _ in }), word: "routes finished", colour: Color.greenAccent)
             }
             
             NavigationLink(value: ProfileNavigation.collectables(viewModel.user)) {
-                StatIcon(icon: "Treasures3DIcon", number: viewModel.user.collectables.count, word: "collectables", colour: Color.blueAccent)
-            }
-        }
-    }
-    
-    private func StatIcon(icon: String, number: Int, word: String, colour: Color) -> some View {
-        VStack(spacing: 0) {
-            Image(icon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 50)
-            
-            Text(String(number))
-                .font(.system(size: 20, weight: .bold))
-            Text(word)
-                .font(.system(size: 14, weight: .light))
-
-        }
-        .foregroundColor(Color.black)
-        .frame(width: (UIScreen.main.bounds.width - 60) / 3, height: (UIScreen.main.bounds.width - 60) / 3)
-        .background(colour.opacity(0.2))
-        .cornerRadius(8)
-    }
-    
-    private var YourRoutes: some View {
-        VStack(spacing: 20) {
-            HStack {
-                SectionHeader(
-                    headline: .constant("Your Routes")
-                )
-                Spacer()
-            }
-            
-            if viewModel.routes.count > 0 {
-                ForEach($viewModel.routes, id: \.id) { route in
-                    RouteCard(route: route, size: .M)
-                }
-            } else {
-                Button(action: {
-                    globalSettings.tabSelection = 2
-                }) {
-                    ActionBanner(text: "You haven’t created any routes", actionText: "Create a new route")
-                }
+                ProfileStatIcon(icon: "Treasures3DIcon", number: Binding(get: { viewModel.user.collectables.count }, set: { _ in }), word: "collectables", colour: Color.blueAccent)
             }
         }
     }

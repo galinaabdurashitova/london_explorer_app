@@ -17,7 +17,7 @@ struct RouteDataView: View {
         VStack(spacing: 25) {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
-                    if auth.profile.id != viewModel.route.userCreated.id, let user = viewModel.userCreated {
+                    if auth.profile.id != viewModel.route.userCreated, let user = viewModel.userCreated {
                         NavigationLink(value: ProfileNavigation.profile(user)) {
                             HStack(spacing: 5) {
                                 if let image = user.image {
@@ -97,7 +97,7 @@ struct RouteDataView: View {
         .sheet(isPresented: $viewModel.isEditSheetPresented) {
             EditRouteView(viewModel: viewModel)
         }
-        .disabled(auth.profile.id != viewModel.route.userCreated.id)
+        .disabled(auth.profile.id != viewModel.route.userCreated)
     }
     
     private var ThirdButton: some View {

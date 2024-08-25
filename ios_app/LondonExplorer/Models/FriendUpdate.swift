@@ -41,5 +41,44 @@ struct FriendUpdate: Identifiable {
         dateFormatter.dateFormat = "HH:mm, dd/MM/yyyy"
         return dateFormatter.string(from: date)
     }
+    
+    init(id: UUID = UUID(), friend: User, description: String, date: Date, update: UpdateType, routeName: String? = nil) {
+        self.id = id
+        self.friend = friend
+        self.description = description
+        self.date = date
+        self.update = update
+        self.routeName = routeName
+    }
+    
+    init(from dto: FriendUpdateWrapper) throws {
+        guard let updateType = FriendUpdate.UpdateType(rawValue: dto.updateType) else {
+            throw DecodingError.dataCorrupted(
+                    DecodingError.Context(
+                        codingPath: [],
+                        debugDescription: "Cannot convert update type"
+                    )
+                )
+        }
+        
+        guard let date = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toDate(from: dto.updateDate) else {
+            throw DecodingError.dataCorrupted(
+                    DecodingError.Context(
+                        codingPath: [],
+                        debugDescription: "Cannot convert date"
+                    )
+                )
+        }
+        
+        self.friend = User(
+            userId: dto.userId,
+            name: dto.name,
+            userName: dto.userName
+        )
+        
+        self.description = dto.description
+        self.date = date
+        self.update = updateType
+    }
 }
 

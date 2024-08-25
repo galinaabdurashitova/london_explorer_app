@@ -9,51 +9,52 @@ import Foundation
 import MapKit
 
 protocol AttractionsServiceProtocol: Service {
-    func fetchAttractions() async throws -> [Attraction]
+    func fetchAllAttractions() async throws -> [Attraction]
+    func fetchAttractions(attractionIds: [String]?) async throws -> [Attraction]
+    func fetchAttraction(attractionId: String) async throws -> Attraction
 }
 
 class AttractionsService: Service, AttractionsServiceProtocol {
-    private let serviceURL = URL(string: "http://attractions-api-gmabdurashitova.replit.app/api/attractions")!
+    // http://attractions-api-gmabdurashitova.replit.app/api/attractions
+    private let serviceURL = URL(string: "http://localhost:8083/api/attractions")!
+    private let serviceName = "Attractions service"
     
-    func fetchAttractions() async throws -> [Attraction] {
-        let (data, response) = try await URLSession.shared.data(from: serviceURL)
+    
+    func fetchAllAttractions() async throws -> [Attraction] {
+        return try await fetchAttractions(attractionIds: nil)
+    }
+    
+    
+    func fetchAttractions(attractionIds: [String]? = nil) async throws -> [Attraction] {
+        let methodName = "fetchAttractions"
+        let queryItems = attractionIds?.joined(separator: ",") ?? ""
+        let url = serviceURL.appending(queryItems: [URLQueryItem(name: "attractionIds", value: queryItems)])
 
-        do {
-            try self.checkResponse(response: response, service: "Attractions service", method: "fetchAttractions")
-            let attractions = try JSONDecoder().decode([AttractionWrapper].self, from: data)
-            var responseAttractions: [Attraction] = []
-            
-            for attraction in attractions[0..<20] {
-                if !attraction.categories.isEmpty {
-                    let newAttraction = Attraction(
-                        id: attraction.id,
-                        name: attraction.name,
-                        shortDescription: attraction.shortDescription,
-                        fullDescription: attraction.fullDescription,
-                        address: attraction.address,
-                        coordinates: CLLocationCoordinate2D(
-                            latitude: attraction.latitude,
-                            longitude: attraction.longitude
-                        ),
-                        images: [],
-                        finishedImagesDownload: false,
-                        categories: attraction.categories.compactMap { Attraction.Category(rawValue: $0) }
-                    )
-                    responseAttractions.append(newAttraction)
-                }
-            }
-            
-            if attractions.isEmpty {
-                throw NSError(domain: "AttractionsService", code: 1, userInfo: [NSLocalizedDescriptionKey: "No attractions available."])
-            }
-            
-            return responseAttractions
-        } catch let error {
-            if let decodingError = error as? DecodingError {
-                throw NSError(domain: "AttractionsService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Decoding error: \(decodingError.localizedDescription)"])
-            } else {
-                throw error
+        let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
+        let attractions = try self.decodeResponse(from: data, as: [AttractionWrapper].self, serviceName: serviceName, methodName: methodName)
+        
+        var responseAttractions: [Attraction] = []
+        for attraction in attractions[0..<20] {     // Remove [0..<20] part to get all atractions - reduced for speed
+            if !attraction.categories.isEmpty {
+                let newAttraction = Attraction(from: attraction)
+                responseAttractions.append(newAttraction)
             }
         }
+        
+        guard !attractions.isEmpty else {
+            throw NSError(domain: serviceName, code: 1, userInfo: [NSLocalizedDescriptionKey: "No attractions available."])
+        }
+        
+        return responseAttractions
+    }
+    
+    
+    func fetchAttraction(attractionId: String) async throws -> Attraction {
+        let methodName = "fetchAttraction"
+        let url = serviceURL.appendingPathComponent("\(attractionId)")
+        
+        let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
+        let attraction = try self.decodeResponse(from: data, as: AttractionWrapper.self, serviceName: serviceName, methodName: methodName)
+        return Attraction(from: attraction)
     }
 }

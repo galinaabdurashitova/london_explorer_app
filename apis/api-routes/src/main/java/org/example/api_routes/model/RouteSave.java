@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 public class RouteSave {
 
     @Id
-    @Column(name = "route_saves_id", length = 36)
-    private String routeSavesId;
+    @Column(name = "route_save_id", length = 36)
+    private String routeSaveId;
 
     @Column(name = "route_id", nullable = false, length = 36)
     private String routeId;
@@ -26,15 +26,15 @@ public class RouteSave {
         // Empty constructor needed for JPA
     }
 
-    public RouteSave(String routeSavesId, String routeId, String userId, Timestamp saveDate) {
-        this.routeSavesId = routeSavesId;
+    public RouteSave(String routeSaveId, String routeId, String userId, Timestamp saveDate) {
+        this.routeSaveId = routeSaveId;
         this.routeId = routeId;
         this.userId = userId;
         this.saveDate = saveDate;
     }
 
-    public String getRouteSavesId() { return routeSavesId; }
-    public void setRouteSavesId(String routeSavesId) { this.routeSavesId = routeSavesId; }
+    public String getRouteSaveId() { return routeSaveId; }
+    public void setRouteSaveId(String routeSavesId) { this.routeSaveId = routeSavesId; }
 
     public String getRouteId() { return routeId; }
     public void setRouteId(String routeId) { this.routeId = routeId; }

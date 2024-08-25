@@ -10,71 +10,11 @@ import SwiftUI
 import MapKit
 
 class MockData {
-    public static func calculateRoute (stops: [Route.RouteStop]) async -> [MKRoute?] {
-        var pathes: [MKRoute?] = []
-        if stops.count > 1 {
-            pathes = Array(repeating: nil, count: stops.count-1)
-            for index in 1..<stops.count {
-                if let calculatedRouteStep = await calculateRouteStep(start: stops[index-1].attraction.coordinates, destination: stops[index].attraction.coordinates) {
-                    pathes[index-1] = calculatedRouteStep
-                } else {
-                    pathes[index-1] = nil
-                }
-            }
-        }
-        
-        return pathes
-    }
-        
-    public static func calculateRouteStep(start: CLLocationCoordinate2D, destination: CLLocationCoordinate2D) async -> MKRoute? {
-        let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: start))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination))
-        request.transportType = .walking
-
-        let directions = MKDirections(request: request)
-        do {
-            let response = try await directions.calculate()
-            if let path = response.routes.first {
-                return path
-            } else {
-                // Debugging: Print out if no routes were found
-                print("No routes found")
-            }
-        } catch {
-            print("Error calculating route: \(error.localizedDescription)")
-            // Print more detailed error information
-            if let error = error as? MKError {
-                switch error.code {
-                case .placemarkNotFound:
-                    print("MKError: Placemark not found")
-                case .directionsNotFound:
-                    print("MKError: Directions not found")
-                case .decodingFailed:
-                    print("MKError: Decoding failed")
-                case .loadingThrottled:
-                    print("MKError: Loading throttled")
-                case .serverFailure:
-                    print("MKError: Server failure")
-                case .unknown:
-                    print("MKError: Unknown")
-                default:
-                    print("MKError: Other error")
-                }
-            }
-        }
-        return nil
-    }
-    
     public static var Routes: [Route] = [
         Route(
             id: "1",
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
-            userCreated: 
-                Route.UserCreated(
-                    id: "1",
-                    name: "Anna"
-                ),
+            userCreated: "1",
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
@@ -102,11 +42,7 @@ class MockData {
         ),
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
-            userCreated:
-                Route.UserCreated(
-                    id: "2",
-                    name: "Mary"
-                ),
+            userCreated: "2",
             name: "London Secrets",
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),
@@ -138,11 +74,7 @@ class MockData {
         ),
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
-            userCreated:
-                Route.UserCreated(
-                    id: "1",
-                    name: "Anna"
-                ),
+            userCreated: "1",
             name: "Some Route Some Route Some Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "LondonStreet"),
@@ -174,11 +106,7 @@ class MockData {
         ),
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
-            userCreated:
-                Route.UserCreated(
-                    id: "2",
-                    name: "Mary"
-                ),
+            userCreated:"2",
             name: "Best London Route",
             description: "Visit all the main sights and see Big Ben following this fantastic route",
             image: UIImage(imageLiteralResourceName: "BigBen"),
@@ -190,11 +118,7 @@ class MockData {
         ),
         Route(
             dateCreated: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1, hour: 12, minute: 0))!,
-            userCreated:
-                Route.UserCreated(
-                    id: "1",
-                    name: "Anna"
-                ),
+            userCreated: "1",
             name: "London Secrets",
             description: "Another description but shorter",
             image: UIImage(imageLiteralResourceName: "Museum"),

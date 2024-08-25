@@ -23,6 +23,8 @@ public class RouteService {
 
     public List<Route> getAllRoutes() { return routeRepository.findAll(); }
 
+    public List<Route> getRoutesByUserId(String userId) { return routeRepository.findByUserCreatedIn(userId); }
+
     public List<RouteStop> findRouteStops(String routeId) {  return routeRepository.findRouteStops(routeId); }
 
     public List<RouteCollectable> findRouteCollectables(String routeId) { return routeRepository.findRouteCollectables(routeId); }
@@ -31,5 +33,21 @@ public class RouteService {
 
     public void saveRoute(Route route) {
         routeRepository.save(route);
+    }
+
+    public List<Route> getFavouriteRoutes(String userId) { return routeRepository.findUserSavedRoutes(userId); }
+
+    public List<Route> getTopSavedRoutes(int limit) {
+        List<Object[]> topRoutes = routeRepository.findTopSavedRoutes(limit);
+
+        return topRoutes.stream().map(update -> new Route(
+                (String) update[0], // routeId
+                (Timestamp) update[1], // dateCreated
+                (String) update[2], // userCreated
+                (String) update[3], // routeName
+                (String) update[4], // routeDescription
+                (int) update[5],  // routeTime
+                (Timestamp) update[6]  // datePublished
+        )).collect(Collectors.toList());
     }
 }

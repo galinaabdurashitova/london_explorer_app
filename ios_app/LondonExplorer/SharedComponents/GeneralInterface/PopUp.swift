@@ -9,11 +9,20 @@ import Foundation
 import SwiftUI
 
 extension View {
-    func popup(isPresented: Binding<Bool>, text: String, buttonText: String, iconName: String? = nil, invertButtons: Bool = false, action: @escaping () -> Void) -> some View {
+    func popup(isPresented: Binding<Bool>, text: String, buttonText: String, oneButton: Bool = false, iconName: Image? = nil, systemImage: String = "questionmark.circle", invertButtons: Bool = false, action: @escaping () -> Void) -> some View {
         self
             .overlay {
                 if isPresented.wrappedValue {
-                    PopUp(isOpen: isPresented, text: text, buttonText: buttonText, iconName: iconName, invertButtons: invertButtons, action: action)
+                    PopUp(
+                        isOpen: isPresented,
+                        text: text,
+                        buttonText: buttonText,
+                        oneButton: oneButton,
+                        iconName: iconName,
+                        systemImage: systemImage,
+                        invertButtons: invertButtons,
+                        action: action
+                    )
                 }
             }
     }
@@ -23,7 +32,9 @@ struct PopUp: View {
     @Binding var isOpen: Bool
     @State var text: String
     @State var buttonText: String
-    @State var iconName: String?
+    @State var oneButton: Bool = false
+    @State var iconName: Image?
+    @State var systemImage: String = "questionmark.circle"
     @State var invertButtons: Bool = false
     @State var action: () -> Void
     @State private var yOffset: CGFloat = UIScreen.main.bounds.height
@@ -69,9 +80,9 @@ struct PopUp: View {
                     .opacity(0.7)
                 
                 if let icon = iconName {
-                    Image(icon)
+                    icon
                 } else {
-                    Image(systemName: "questionmark.circle")
+                    Image(systemName: systemImage)
                         .icon(size: 75, colour: Color.redAccent.opacity(0.7))
                         .padding(.all, 15)
                         .background(Color.grayBackground)
@@ -91,14 +102,17 @@ struct PopUp: View {
                     isOpen = false
                 }
             }
-            ButtonView(
-                text: .constant("Cancel"),
-                colour: invertButtons ? Color.redDark : Color.blueAccent,
-                textColour: Color.white,
-                size: .L
-            ) {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    isOpen = false
+            
+            if !oneButton {
+                ButtonView(
+                    text: .constant("Cancel"),
+                    colour: invertButtons ? Color.redDark : Color.blueAccent,
+                    textColour: Color.white,
+                    size: .L
+                ) {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isOpen = false
+                    }
                 }
             }
         }
@@ -116,7 +130,7 @@ struct PopUp: View {
             isOpen: .constant(true),
             text: "It's some question a user needs to confirm It's some question a user needs to confirm",
             buttonText: "Do it",
-            iconName: "Route3DIcon",
+            iconName: Image("Route3DIcon"),
             invertButtons: true
         ) {
             

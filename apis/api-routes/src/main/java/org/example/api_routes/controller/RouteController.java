@@ -64,6 +64,34 @@ public class RouteController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/userCreated")
+    public ResponseEntity<?> getUserRoutes(@RequestParam(value = "userId", required = true) String userId) {
+        List<Route> routes = routeService.getRoutesByUserId(userId);
+
+        List<Map<String, Object>> response = routes.stream().map(route -> {
+            Map<String, Object> routeMap = new HashMap<>();
+            routeMap.put("routeId", route.getRouteId());
+            routeMap.put("dateCreated", route.getDateCreated());
+            routeMap.put("userCreated", route.getUserCreated());
+            routeMap.put("routeName", route.getRouteName());
+            routeMap.put("routeDescription", route.getRouteDescription());
+            routeMap.put("routeTime", route.getRouteTime());
+            routeMap.put("datePublished", route.getDatePublished());
+
+            List<RouteStop> stops = routeService.findRouteStops(route.getRouteId());
+            List<RouteCollectable> collectables = routeService.findRouteCollectables(route.getRouteId());
+            List<String> saves = routeService.findRouteSaves(route.getRouteId());
+
+            routeMap.put("stops", stops);
+            routeMap.put("collectables", collectables);
+            routeMap.put("saves", saves);
+
+            return routeMap;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{routeId}")
     public ResponseEntity<?> getRouteInfo(@PathVariable String routeId) {
         Optional<Route> route = routeService.getRouteById(routeId);
@@ -150,7 +178,7 @@ public class RouteController {
     }
 
     @PatchMapping("/{routeId}")
-    public ResponseEntity<?> updateUser(@PathVariable String routeId, @RequestBody RouteUpdateRequest updateRequest) {
+    public ResponseEntity<?> updateRoute(@PathVariable String routeId, @RequestBody RouteUpdateRequest updateRequest) {
         Optional<Route> optionalRoute = routeService.getRouteById(routeId);
 
         if (!optionalRoute.isPresent()) {
@@ -172,19 +200,91 @@ public class RouteController {
 
     @PostMapping("/{routeId}/saves")
     public ResponseEntity<?> saveRoute(@PathVariable String routeId, @RequestBody SaveRouteRequest request) {
+        if (request.getUserId() == null || request.getSaveDate() == null) {
+            return ResponseEntity.status(400).body("Missing parameters");
+        }
+
         Optional<Route> route = routeService.getRouteById(routeId);
         if (!route.isPresent()) {
             return ResponseEntity.status(404).body("Route not found");
         }
 
-        if (request.getUserId() == null || request.getSaveDate() == null) {
-            return ResponseEntity.status(400).body("Missing parameters");
-        }
-
         String uuid = UUID.randomUUID().toString();
         RouteSave save = new RouteSave(uuid, routeId, request.getUserId(), request.getSaveDate());
         routeSaveService.saveRoute(save);
-        
+
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{routeId}/saves/{userId}")
+    public ResponseEntity<?> deleteRouteSave(@PathVariable String routeId, @PathVariable String userId) {
+        Optional<Route> route = routeService.getRouteById(routeId);
+        if (!route.isPresent()) {
+            return ResponseEntity.status(404).body("Route not found");
+        }
+
+        boolean isSaveExists = routeSaveService.isRouteSaveExists(routeId, userId);
+        if (!isSaveExists) {
+            return ResponseEntity.status(404).body("Route save does not exist");
+        }
+
+        routeSaveService.deleteRouteSave(routeId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/favourites")
+    public ResponseEntity<?> getUserSavedRoutes(@RequestParam(value = "userId", required = true) String userId) {
+        List<Route> routes = routeService.getFavouriteRoutes(userId);
+
+        List<Map<String, Object>> response = routes.stream().map(route -> {
+            Map<String, Object> routeMap = new HashMap<>();
+            routeMap.put("routeId", route.getRouteId());
+            routeMap.put("dateCreated", route.getDateCreated());
+            routeMap.put("userCreated", route.getUserCreated());
+            routeMap.put("routeName", route.getRouteName());
+            routeMap.put("routeDescription", route.getRouteDescription());
+            routeMap.put("routeTime", route.getRouteTime());
+            routeMap.put("datePublished", route.getDatePublished());
+
+            List<RouteStop> stops = routeService.findRouteStops(route.getRouteId());
+            List<RouteCollectable> collectables = routeService.findRouteCollectables(route.getRouteId());
+            List<String> saves = routeService.findRouteSaves(route.getRouteId());
+
+            routeMap.put("stops", stops);
+            routeMap.put("collectables", collectables);
+            routeMap.put("saves", saves);
+
+            return routeMap;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/favourites/top")
+    public ResponseEntity<?> getTopSavedRoutes(@RequestParam(value = "limit", required = false) int limit) {
+        List<Route> routes = routeService.getTopSavedRoutes(limit);
+
+        List<Map<String, Object>> response = routes.stream().map(route -> {
+            Map<String, Object> routeMap = new HashMap<>();
+            routeMap.put("routeId", route.getRouteId());
+            routeMap.put("dateCreated", route.getDateCreated());
+            routeMap.put("userCreated", route.getUserCreated());
+            routeMap.put("routeName", route.getRouteName());
+            routeMap.put("routeDescription", route.getRouteDescription());
+            routeMap.put("routeTime", route.getRouteTime());
+            routeMap.put("datePublished", route.getDatePublished());
+
+            List<RouteStop> stops = routeService.findRouteStops(route.getRouteId());
+            List<RouteCollectable> collectables = routeService.findRouteCollectables(route.getRouteId());
+            List<String> saves = routeService.findRouteSaves(route.getRouteId());
+
+            routeMap.put("stops", stops);
+            routeMap.put("collectables", collectables);
+            routeMap.put("saves", saves);
+
+            return routeMap;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
     }
 }

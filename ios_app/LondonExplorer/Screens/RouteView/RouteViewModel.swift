@@ -15,10 +15,12 @@ class RouteViewModel: ObservableObject {
     @Published var newName: String
     @Published var newDescription: String
     @Published var images: [UIImage]
-    @Published var error: String = ""
+    @Published var confirmDelete: Bool = false
+    @Published var editError: String?
     
     private var userService: UsersServiceProtocol = UsersService()
     private var routesService: RoutesServiceProtocol = RoutesService()
+    private var routesManager: RoutesStorageManager = RoutesStorageManager()
     
     init(route: Route) {
         self.route = route
@@ -32,7 +34,7 @@ class RouteViewModel: ObservableObject {
     func fetchUserCreated() {
         Task {
             do {
-                let user = try await userService.fetchUser(userId: self.route.userCreated.id)
+                let user = try await userService.fetchUser(userId: self.route.userCreated)
                 
                 DispatchQueue.main.async {
                     self.userCreated = user
@@ -44,21 +46,20 @@ class RouteViewModel: ObservableObject {
     }
     
     func saveEditRoute() {
-        Task {
-            do {
-                var updatedRoute = self.route
-                updatedRoute.name = self.newName
-                updatedRoute.description = self.newDescription
-                
-                try await routesService.updateRoute(updatedRoute: updatedRoute)
-                
-                DispatchQueue.main.async {
-                    self.route = updatedRoute
-                    self.isEditSheetPresented = false
-                }
-            } catch {
-                
+        do {
+            self.editError = nil
+            
+            try routesManager.editRoute(routeId: self.route.id,
+                                        newName: self.newName.isEmpty ? nil : self.newName,
+                                        newDescription: self.newDescription.isEmpty ? nil : self.newDescription)
+            
+            DispatchQueue.main.async {
+                self.route.name = self.newName
+                self.route.description = self.newDescription
+                self.isEditSheetPresented = false
             }
+        } catch {
+            self.editError = error.localizedDescription
         }
     }
     
@@ -68,14 +69,7 @@ class RouteViewModel: ObservableObject {
         newDescription = route.description
     }
     
-    func deleteRoute() throws {
-        Task {
-            do {
-                try await routesService.deleteRoute(routeId: route.id)
-            } catch {
-                print("Error deleting route")
-                throw error
-            }
-        }
+    func deleteRoute() {
+        routesManager.deleteRoute(routeId: route.id)
     }
 }

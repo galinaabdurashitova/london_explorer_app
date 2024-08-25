@@ -13,7 +13,6 @@ struct FinishCreateView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var auth: AuthController
     @StateObject var viewModel: FinishCreateViewModel
-    @State private var isNavigationActive = false
     @Binding var path: NavigationPath
     
     init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], collectables: [Route.RouteCollectable], path: Binding<NavigationPath>) {
@@ -38,8 +37,7 @@ struct FinishCreateView: View {
             .padding()
             
             Button(action: {
-                viewModel.saveRoute(userId: auth.profile.id, userName: auth.profile.name)
-                isNavigationActive = true
+                viewModel.saveRoute(userId: auth.profile.id)
                 path.append(CreateRoutePath.savedRoute(viewModel.route))
             }) {
                 ButtonView(
@@ -50,7 +48,8 @@ struct FinishCreateView: View {
                     disabled: Binding<Bool> (
                         get: { return viewModel.route.name.isEmpty || viewModel.route.description.isEmpty },
                         set: { _ in }
-                    )
+                    ),
+                    isLoading: $viewModel.isSaving
                 )
             }
             .padding(.bottom, 20)

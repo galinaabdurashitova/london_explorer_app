@@ -20,7 +20,7 @@ public class Route {
     @Column(name = "route_name", nullable = false, length = 64)
     private String routeName;
 
-    @Column(name = "route_description", columnDefinition = "TEXT")
+    @Column(name = "route_description", nullable = false, columnDefinition = "TEXT")
     private String routeDescription;
 
     @Column(name = "route_time", nullable = false)
