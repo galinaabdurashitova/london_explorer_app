@@ -63,7 +63,7 @@ class AttractionSearchViewModel: ObservableObject {
     
     func fetchAttractionImage(attraction: inout Attraction) async {
         do {
-            let images = try await ImagesRepository.shared.getAttractionImage(attractionId: attraction.id)
+            let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attraction.id, maxNumber: 1)
             attraction.images = images
         } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
             print("Listing failed for attraction \(attraction.id): \(message)")

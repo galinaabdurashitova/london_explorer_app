@@ -23,7 +23,9 @@ class AuthController: ObservableObject {
         if testProfile == true  {
             self.setUserProfile()
         } else {
+            print(1)
             observeAuthChanges()
+            print(2)
         }
     }
     
@@ -55,6 +57,7 @@ class AuthController: ObservableObject {
         }
     }
     
+    
     private func setUserProfile(user: User = MockData.Users[0]) {
         DispatchQueue.main.async {
             self.profile = user
@@ -68,6 +71,7 @@ class AuthController: ObservableObject {
                 guard let user = user else {
                     DispatchQueue.main.async {
                         self?.isSignedIn = false
+                        self?.isStarting = false
                     }
                     return
                 }
@@ -83,6 +87,7 @@ class AuthController: ObservableObject {
                         print("Error while fetching the user profile: \(error)")
                     }
                     
+                    self.isStarting = false
                     self.isStarting = false
                 }
             }
@@ -120,7 +125,6 @@ class AuthController: ObservableObject {
             
             self.setUserProfile(user: userProfile)
             
-            
             DispatchQueue.main.async {
                 self.isSignedIn = true
             }
@@ -132,14 +136,13 @@ class AuthController: ObservableObject {
         }
     }
     
+    @MainActor
     func signOut() {
         do {
             try Auth.auth().signOut()
-            
-            DispatchQueue.main.async {
-                self.isSignedIn = false
-                self.setUserProfile(user: User(userId: "", name: "", userName: ""))
-            }
+            self.isSignedIn = false
+            self.isStarting = false
+            self.setUserProfile(user: User(userId: "", name: "", userName: ""))
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }

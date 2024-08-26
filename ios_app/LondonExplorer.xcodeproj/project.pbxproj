@@ -119,6 +119,8 @@
 		2AA9B9272C5F9BDC001F27B9 /* JustifiedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B9262C5F9BDC001F27B9 /* JustifiedText.swift */; };
 		2AA9B9292C5FA10D001F27B9 /* CurrentRoutesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B9282C5FA10D001F27B9 /* CurrentRoutesStorage.swift */; };
 		2AA9B92B2C5FB12E001F27B9 /* TestStorageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B92A2C5FB12E001F27B9 /* TestStorageView.swift */; };
+		2AC3C4BA2C7CE9F400E95BE1 /* UserMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C4B92C7CE9F400E95BE1 /* UserMapper.swift */; };
+		2AC3C4BC2C7CFE8300E95BE1 /* FriendUpdateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C4BB2C7CFE8300E95BE1 /* FriendUpdateMapper.swift */; };
 		2AC56A802C28C0F400F7249B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */; };
 		2AC56A842C28C31D00F7249B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A832C28C31D00F7249B /* FirebaseAuth */; };
 		2AC56A862C28C31D00F7249B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A852C28C31D00F7249B /* FirebaseStorage */; };
@@ -289,6 +291,8 @@
 		2AA9B9262C5F9BDC001F27B9 /* JustifiedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustifiedText.swift; sourceTree = "<group>"; };
 		2AA9B9282C5FA10D001F27B9 /* CurrentRoutesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRoutesStorage.swift; sourceTree = "<group>"; };
 		2AA9B92A2C5FB12E001F27B9 /* TestStorageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStorageView.swift; sourceTree = "<group>"; };
+		2AC3C4B92C7CE9F400E95BE1 /* UserMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMapper.swift; sourceTree = "<group>"; };
+		2AC3C4BB2C7CFE8300E95BE1 /* FriendUpdateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendUpdateMapper.swift; sourceTree = "<group>"; };
 		2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AC56A882C28C51B00F7249B /* AttractionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionsService.swift; sourceTree = "<group>"; };
 		2AC56A8A2C28C6BF00F7249B /* ImagesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesRepository.swift; sourceTree = "<group>"; };
@@ -487,7 +491,6 @@
 				2A5602512C753EBB0057A5E1 /* FriendRequest.swift */,
 				2A5602532C753FB90057A5E1 /* FriendsRequestsWrapper.swift */,
 				2A5602552C7543400057A5E1 /* FriendUpdateWrapper.swift */,
-				2A5602952C7B7DD50057A5E1 /* RouteMapper.swift */,
 				2A5602992C7B8F270057A5E1 /* RouteSaveRequest.swift */,
 				2A5602972C7B8DB40057A5E1 /* RouteUpdateRequest.swift */,
 				2A5602912C7B33600057A5E1 /* RouteWrapper.swift */,
@@ -694,10 +697,21 @@
 			path = Enums;
 			sourceTree = "<group>";
 		};
+		2AC3C4B82C7CE9D600E95BE1 /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+				2A5602952C7B7DD50057A5E1 /* RouteMapper.swift */,
+				2AC3C4B92C7CE9F400E95BE1 /* UserMapper.swift */,
+				2AC3C4BB2C7CFE8300E95BE1 /* FriendUpdateMapper.swift */,
+			);
+			path = Mappers;
+			sourceTree = "<group>";
+		};
 		2AC56A872C28C50E00F7249B /* APIs */ = {
 			isa = PBXGroup;
 			children = (
 				2A1757222C6AC23E00D4DFB1 /* DTOs */,
+				2AC3C4B82C7CE9D600E95BE1 /* Mappers */,
 				2AC56A882C28C51B00F7249B /* AttractionsService.swift */,
 				2AC56A8A2C28C6BF00F7249B /* ImagesRepository.swift */,
 				2A0E3A082C51801100AC32A4 /* RoutesService.swift */,
@@ -996,6 +1010,7 @@
 				2AFD1F5F2C237E820061060E /* RoutesStorage.swift in Sources */,
 				2A0E39DD2C4D59E300AC32A4 /* RouteProgressStat.swift in Sources */,
 				2A76D4BF2C172AAD007908E0 /* BackButton.swift in Sources */,
+				2AC3C4BA2C7CE9F400E95BE1 /* UserMapper.swift in Sources */,
 				2AFD1F5B2C21DAC80061060E /* CodableMKRoute.swift in Sources */,
 				2A76D4B02C160C2D007908E0 /* CategoryLabel.swift in Sources */,
 				2A58EA952C40788200F9A4C0 /* RouteAttractionAnnotation.swift in Sources */,
@@ -1039,6 +1054,7 @@
 				2AFD1F652C247FA60061060E /* RouteDataView.swift in Sources */,
 				2A5602982C7B8DB40057A5E1 /* RouteUpdateRequest.swift in Sources */,
 				2A76D4AA2C15D5D7007908E0 /* MapAttractionView.swift in Sources */,
+				2AC3C4BC2C7CFE8300E95BE1 /* FriendUpdateMapper.swift in Sources */,
 				2A5602762C768F2B0057A5E1 /* FriendRequestBanner.swift in Sources */,
 				2A0E39E52C4E520800AC32A4 /* Fireworks.swift in Sources */,
 				2AA5B1412C09FB2E001EC475 /* RouteProgressBar.swift in Sources */,

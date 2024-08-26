@@ -24,7 +24,7 @@ public class UserControllerCreateUserTest {
     @Test
     public void testCreateUser() {
         // Test to verify that a user is created successfully when all parameters are provided.
-        User mockUser = new User("testUserId", "test@example.com", "Test User", "testUser", null);
+        User mockUser = new User("testUserId", "test@example.com", "Test User", "testUser", null, null);
 
         when(userService.userExists(mockUser.getUserId())).thenReturn(false);
 
@@ -37,7 +37,7 @@ public class UserControllerCreateUserTest {
     @Test
     public void testCreateUserUserExists() {
         // Test to ensure that a conflict response is returned when trying to create a user that already exists.
-        User mockUser = new User("testUserId", "test@example.com", "Test User", "testUser", null);
+        User mockUser = new User("testUserId", "test@example.com", "Test User", "testUser", null, null);
 
         when(userService.userExists(mockUser.getUserId())).thenReturn(true);
 
@@ -50,7 +50,7 @@ public class UserControllerCreateUserTest {
     @Test
     public void testCreateUserMissingParameters() {
         // Test to ensure that a bad request response is returned when required parameters are missing.
-        User mockUser = new User(null, null, null, null, null);
+        User mockUser = new User(null, null, null, null, null, null);
 
         ResponseEntity<?> responseEntity = userController.createUser(mockUser);
 

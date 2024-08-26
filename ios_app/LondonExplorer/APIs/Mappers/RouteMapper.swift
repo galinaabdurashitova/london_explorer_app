@@ -50,7 +50,7 @@ class RouteMapper {
     }
     
     private func loadImage(for attractionId: String) async throws -> UIImage {
-        let images = try await ImagesRepository.shared.getAttractionImage(attractionId: attractionId)
+        let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attractionId, maxNumber: 1)
         guard !images.isEmpty else {
             let debugDescription = "Cannot get image"
             print("decoding error - Value not found for value \(UIImage.self) in context \(debugDescription)")
@@ -95,7 +95,8 @@ class RouteMapper {
         var routeStops: [Route.RouteStop] = []
         for stop in dto {
             do {
-                let attraction = try await AttractionsService().fetchAttraction(attractionId: stop.attractionId)
+                var attraction = try await AttractionsService().fetchAttraction(attractionId: stop.attractionId)
+                attraction.images = try await ImagesRepository.shared.getAttractionImages(attractionId: stop.attractionId, maxNumber: 1)
                 let routeStop = Route.RouteStop(id: stop.attractionId, stepNo: stop.stepNumber, attraction: attraction)
                 routeStops.append(routeStop)
             } catch {

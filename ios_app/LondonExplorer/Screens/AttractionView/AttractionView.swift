@@ -81,8 +81,8 @@ struct AttractionView: View {
                 AddButton
             }
         }
-        .onAppear {
-            Task { await viewModel.fetchAttractionImages() }
+        .task {
+            await viewModel.fetchAttractionImages()
         }
         .animation(.easeInOut, value: headerHeight)
         .navigationBarBackButtonHidden(true)

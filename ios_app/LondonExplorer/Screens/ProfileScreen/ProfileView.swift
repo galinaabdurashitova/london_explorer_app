@@ -39,9 +39,9 @@ struct ProfileView: View {
                         ProfileUserRoutesList(viewModel: viewModel)
                     }
                 }
-                .refreshable {
-                    await viewModel.loadData(isCurrentUser: viewModel.user == auth.profile)
-                }
+//                .refreshable {
+//                    await viewModel.loadData(isCurrentUser: viewModel.user == auth.profile)
+//                }
             }
         }
         .scrollClipDisabled()

@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -49,6 +48,7 @@ public class UserController {
             userMap.put("name", user.getName());
             userMap.put("userName", user.getUserName());
             userMap.put("description", user.getDescription());
+            userMap.put("imageName", user.getImageName());
 
             List<String> friends = userService.findUserFriends(user.getUserId());
             List<UserAward> awards = userService.findUserAwards(user.getUserId());
@@ -69,7 +69,7 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserInfo(@PathVariable String userId) {
         Optional<User> user = userService.getUserById(userId);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             return ResponseEntity.status(404).body("User not found");
         }
 
@@ -79,6 +79,7 @@ public class UserController {
         response.put("name", user.get().getName());
         response.put("userName", user.get().getUserName());
         response.put("description", user.get().getDescription());
+        response.put("imageName", user.get().getImageName());
         response.put("awards", userService.findUserAwards(userId));
         response.put("collectables", userService.findUserCollectables(userId));
         response.put("friends", userService.findUserFriends(userId));
@@ -191,7 +192,7 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest updateRequest) {
         Optional<User> optionalUser = userService.getUserById(userId);
 
-        if (!optionalUser.isPresent()) {
+        if (optionalUser.isEmpty()) {
             return ResponseEntity.status(404).body("User not found");
         }
 
@@ -205,6 +206,9 @@ public class UserController {
         }
         if (updateRequest.getDescription() != null) {
             user.setDescription(updateRequest.getDescription());
+        }
+        if (updateRequest.getImageName() != null) {
+            user.setImageName(updateRequest.getImageName());
         }
 
         userService.saveUser(user);
@@ -225,7 +229,7 @@ public class UserController {
             return ResponseEntity.status(400).body("Request already exists");
         }
 
-        if (userId == request.getFriendUserId()) {
+        if (Objects.equals(userId, request.getFriendUserId())) {
             return ResponseEntity.status(400).body("Wrong userIds");
         }
 

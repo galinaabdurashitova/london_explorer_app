@@ -4,6 +4,7 @@ public class UserUpdateRequest {
     private String name;
     private String userName;
     private String description;
+    private String imageName;
 
     public String getName() {
         return name;
@@ -28,4 +29,8 @@ public class UserUpdateRequest {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getImageName() { return imageName; }
+
+    public void setImageName(String imageName) { this.imageName = imageName; }
 }

@@ -14,10 +14,10 @@ class ImagesRepository {
     static var shared = ImagesRepository()
     private let storageRef = Storage.storage().reference()
     
-//    private var attractionImagesCache = [String: [UIImage]]()
+    private var attractionImagesCache: [String: [UIImage]] = [:]
     
 //    private let storage = Storage.storage()
-//    private var imageCache = [String: UIImage]()
+    private var usersImagesCache: [String: UIImage] = [:]
     
     enum ImageRepositoryError: Error {
         case listingFailed(String)
@@ -26,35 +26,28 @@ class ImagesRepository {
     
     private init() {}
     
-    func getAttractionImage(attractionId: String) async throws -> [UIImage] {
-//        if let cachedAttraction = attractionImagesCache[attraction] {
-//            return cachedAttraction
-//        }
+    func getAttractionImages(attractionId: String, maxNumber: Int = 5, reload: Bool = false) async throws -> [UIImage] {
+        if !reload, let cachedAttraction = attractionImagesCache[attractionId] {
+            return cachedAttraction
+        }
         
         let imageRef = storageRef.child("attractions/" + attractionId)
         
-        var images = [UIImage]()
+        var images: [UIImage] = []
         
         do {
             let result = try await imageRef.listAll()
             
-            if result.items.count > 0 {
-                let item = result.items[0]
+            
+            for index in 0..<min(maxNumber, result.items.count) {
                 do {
-                    let data = try await getData(from: item)
+                    print(result.items[index].name)
+                    let data = try await getData(from: result.items[index])
                     if let image = UIImage(data: data) {
                         images.append(image)
-                        
-                        // It causes crashes - need a fix
-//                        if var cachedAttraction = attractionImagesCache[attraction] {
-//                            cachedAttraction.append(image)
-//                            attractionImagesCache[attraction] = cachedAttraction
-//                        } else {
-//                            attractionImagesCache[attraction] = [image]
-//                        }
                     }
                 } catch {
-                    print("Failed to download image \(item.name): \(error.localizedDescription)")
+                    print("Failed to download image \(result.items[index].name): \(error.localizedDescription)")
                 }
             }
         } catch {
@@ -65,87 +58,33 @@ class ImagesRepository {
             throw ImageRepositoryError.downloadFailed(attractionId, "No images were successfully downloaded.")
         }
         
+        attractionImagesCache[attractionId] = images
+        
         return images
             
     }
     
-    func getAttractionImages(attractionId: String) async throws -> [UIImage] {
-//        if let cachedAttraction = attractionImagesCache[attraction] {
-//            return cachedAttraction
-//        }
+    
+    func getUserImage(userImageName: String) async throws -> UIImage {
+        if let cachedUser = usersImagesCache[userImageName] {
+            return cachedUser
+        }
         
-        let imageRef = storageRef.child("attractions/" + attractionId)
-        
-        var images = [UIImage]()
+        let imageRef = storageRef.child("users/" + userImageName)
         
         do {
-            let result = try await imageRef.listAll()
-            
-            for item in result.items {
-                do {
-                    let data = try await getData(from: item)
-                    if let image = UIImage(data: data) {
-                        images.append(image)
-                        
-                        // It causes crashes - need a fix
-//                        if var cachedAttraction = attractionImagesCache[attraction] {
-//                            cachedAttraction.append(image)
-//                            attractionImagesCache[attraction] = cachedAttraction
-//                        } else {
-//                            attractionImagesCache[attraction] = [image]
-//                        }
-                    }
-                } catch {
-                    print("Failed to download image \(item.name): \(error.localizedDescription)")
-                }
+            let data = try await getData(from: imageRef)
+            print("Data gotten")
+            if let image = UIImage(data: data) {
+                usersImagesCache[userImageName] = image
+                return image
+            } else {
+                throw ImageRepositoryError.downloadFailed(userImageName, "No images were successfully downloaded.")
             }
         } catch {
-            throw ImageRepositoryError.listingFailed(error.localizedDescription)
+            throw ImageRepositoryError.downloadFailed(userImageName, "No images were successfully downloaded.")
         }
-            
-        if images.isEmpty {
-            throw ImageRepositoryError.downloadFailed(attractionId, "No images were successfully downloaded.")
-        }
-        
-        return images
     }
-    
-//    func getUserImage(userId: String) async throws -> UIImage? {
-//        let imageRef = storageRef.child("users/" + userId)
-//        
-//        do {
-//            let result = try await imageRef.listAll()
-//            
-//            if result.items.count > 0 {
-//                let item = result.items[0]
-//                do {
-//                    let data = try await getData(from: item)
-//                    if let image = UIImage(data: data) {
-//                        images.append(image)
-//                        
-//                        // It causes crashes - need a fix
-////                        if var cachedAttraction = attractionImagesCache[attraction] {
-////                            cachedAttraction.append(image)
-////                            attractionImagesCache[attraction] = cachedAttraction
-////                        } else {
-////                            attractionImagesCache[attraction] = [image]
-////                        }
-//                    }
-//                } catch {
-//                    print("Failed to download image \(item.name): \(error.localizedDescription)")
-//                }
-//            }
-//        } catch {
-//            throw ImageRepositoryError.listingFailed(error.localizedDescription)
-//        }
-//            
-//        if images.isEmpty {
-//            throw ImageRepositoryError.downloadFailed(attractionId, "No images were successfully downloaded.")
-//        }
-//        
-//        return images
-//            
-//    }
     
     private func getData(from reference: StorageReference) async throws -> Data {
         return try await withCheckedThrowingContinuation { continuation in

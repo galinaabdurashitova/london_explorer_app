@@ -28,7 +28,7 @@ public class UserControllerUpdateUserTest {
     public void testUpdateUserSuccess() {
         // Test to verify that the user's information is updated successfully when the user is found.
         String userId = "testUserId";
-        User existingUser = new User(userId, "original@test.com", "Original Name", "originalUserName", "Original description");
+        User existingUser = new User(userId, "original@test.com", "Original Name", "originalUserName", "Original description", null);
 
         when(userService.getUserById(userId)).thenReturn(Optional.of(existingUser));
 

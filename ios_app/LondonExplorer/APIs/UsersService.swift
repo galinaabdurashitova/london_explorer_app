@@ -12,8 +12,8 @@ protocol UsersServiceProtocol: Service {
     func createUser(newUser: User) async throws                                     // Create user
     func saveFinishedRoute(userId: String, route: RouteProgress) async throws       // Save finished route
     func saveUserAward(userId: String, awards: [User.UserAward]) async throws       // Save user award
-    func updateUserInfo(userId: String, newName: String?,
-                        newUserName: String?, newDescription: String?) async throws // Update user
+    func updateUserInfo(userId: String, newName: String?, newUserName: String?,
+                        newDescription: String?, newImageName: String?) async throws // Update user
     func fetchAllUsers() async throws -> [User]                                     // Get all users
     func fetchUsers(userIds: [String]?) async throws -> [User]                      // Get users by IDs
     func createFriendRequest(userFromId: String, userToId: String) async throws     // Send/confirm friend request
@@ -26,6 +26,9 @@ class UsersService: Service, UsersServiceProtocol {
     private let serviceURL = URL(string: "http://localhost:8081/api/users")!
     private let serviceName = "Users service"
     
+    private let userMapper: UserMapper = UserMapper()
+    private let friendUpdateMapper: FriendUpdateMapper = FriendUpdateMapper()
+
     
     func fetchUser(userId: String) async throws -> User {
         let methodName = "fetchUser"
@@ -33,7 +36,8 @@ class UsersService: Service, UsersServiceProtocol {
 
         let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
         let user = try decodeResponse(from: data, as: UserWrapper.self, serviceName: serviceName, methodName: methodName)
-        return User(from: user)
+        let responseUsers = await userMapper.mapToUser(from: user)
+        return responseUsers
     }
     
     
@@ -46,7 +50,7 @@ class UsersService: Service, UsersServiceProtocol {
     
     
     func saveFinishedRoute(userId: String, route: RouteProgress) async throws {
-        guard let endTime = route.endTime else { throw ServiceError.serverError(400) }
+        guard route.endTime != nil else { throw ServiceError.serverError(400) }
         let methodName = "saveFinishedRoute"
         let url = serviceURL.appendingPathComponent("\(userId)/finishedRoutes")
         
@@ -59,17 +63,17 @@ class UsersService: Service, UsersServiceProtocol {
         let methodName = "saveUserAward"
         let url = serviceURL.appendingPathComponent("\(userId)/awards")
         
-        var newAwards = awards.compactMap { UserWrapper.UserAward(from: $0) }
+        let newAwards = awards.compactMap { UserWrapper.UserAward(from: $0) }
         let _ = try await self.makeRequest(method: .post, url: url, body: newAwards,
                                            serviceName: serviceName, methodName: methodName)
     }
     
     
-    func updateUserInfo(userId: String, newName: String? = nil, newUserName: String? = nil, newDescription: String? = nil) async throws {
+    func updateUserInfo(userId: String, newName: String? = nil, newUserName: String? = nil, newDescription: String? = nil, newImageName: String? = nil) async throws {
         let methodName = "updateUserInfo"
         let url = serviceURL.appendingPathComponent("\(userId)")
         
-        let newUserInfo = UpdateUserRequest(name: newName, userName: newUserName, description: newDescription)
+        let newUserInfo = UpdateUserRequest(name: newName, userName: newUserName, description: newDescription, imageName: newImageName)
         let _ = try await self.makeRequest(method: .patch, url: url, body: newUserInfo,
                                            serviceName: serviceName, methodName: methodName)
     }
@@ -86,7 +90,8 @@ class UsersService: Service, UsersServiceProtocol {
         let url = serviceURL.appending(queryItems: [URLQueryItem(name: "userIds", value: queryItems)])
         
         let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
-        return try self.decodeUsers(from: data, methodName: methodName)
+        let users = try await self.decodeUsers(from: data, methodName: methodName)
+        return users
     }
     
     
@@ -112,23 +117,24 @@ class UsersService: Service, UsersServiceProtocol {
         let url = serviceURL.appendingPathComponent("\(userId)/friends/requests")
         
         let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
-        return try self.decodeUsers(from: data, methodName: methodName)
+        let users = try await self.decodeUsers(from: data, methodName: methodName)
+        return users
     }
     
     
     func fetchFriendsUpdates(userId: String, limit: Int = 30) async throws -> [FriendUpdate] {
         let methodName = "fetchFriendsUpdates"
-        var url = serviceURL
+        let url = serviceURL
             .appendingPathComponent("\(userId)/friends/updates")
             .appending(queryItems: [URLQueryItem(name: "limit", value: String(limit))])
         
         let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
-        let updates = try JSONDecoder().decode([FriendUpdateWrapper].self, from: data)
+        let updates = try self.decodeResponse(from: data, as: [FriendUpdateWrapper].self, serviceName: serviceName, methodName: methodName)
         
         var responseUpdates: [FriendUpdate] = []
         for update in updates {
             do {
-                let update = try FriendUpdate(from: update)
+                let update = try await friendUpdateMapper.mapToFriendUpdate(from: update)
                 responseUpdates.append(update)
             } catch {
                 print("Failed to convert: \(error.localizedDescription)")
@@ -139,12 +145,13 @@ class UsersService: Service, UsersServiceProtocol {
     }
     
     
-    private func decodeUsers(from data: Data, methodName: String) throws -> [User] {
-        let users = try JSONDecoder().decode([UserWrapper].self, from: data)
+    private func decodeUsers(from data: Data, methodName: String) async throws -> [User] {
+        let users = try self.decodeResponse(from: data, as: [UserWrapper].self, serviceName: serviceName, methodName: methodName)
         
         var responseUsers: [User] = []
         for user in users {
-            responseUsers.append(User(from: user))
+            let mappedUser = await userMapper.mapToUser(from: user)
+            responseUsers.append(mappedUser)
         }
         
         return responseUsers

@@ -18,6 +18,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
     var name: String
     var userName: String
     var description: String?
+    var imageName: String?
     var image: UIImage?
     var awards: [UserAward]
     var collectables: [UserCollectable]
@@ -131,6 +132,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         case name
         case userName
         case userDescription
+        case imageName
 //        case image
         case awards
         case collectables
@@ -138,65 +140,18 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         case finishedRoutes
     }
     
-    init(userId: String, email: String? = nil, name: String, userName: String, userDescription: String? = nil, image: UIImage? = nil, awards: [UserAward] = [], collectables: [UserCollectable] = [], friends: [String] = [], finishedRoutes: [FinishedRoute] = []) {
+    init(userId: String, email: String? = nil, name: String, userName: String, userDescription: String? = nil, imageName: String? = nil, image: UIImage? = nil, awards: [UserAward] = [], collectables: [UserCollectable] = [], friends: [String] = [], finishedRoutes: [FinishedRoute] = []) {
         self.id = userId
         self.email = email
         self.name = name
         self.userName = userName
         self.description = userDescription
+        self.imageName = imageName
         self.image = image
         self.awards = awards
         self.collectables = collectables
         self.friends = friends
         self.finishedRoutes = finishedRoutes
-    }
-    
-    init(from dto: UserWrapper) {
-        var userAwards: [User.UserAward] = []
-        if let awards = dto.awards {
-            for award in awards {
-                do {
-                    let userAward = try User.UserAward(from: award)
-                    userAwards.append(userAward)
-                } catch {
-                    print("Failed to convert award: \(error.localizedDescription)")
-                }
-            }
-        }
-        
-        var userCollectables: [User.UserCollectable] = []
-        if let collectables = dto.collectables {
-            for collectable in collectables {
-                do {
-                    let userCollectable = try User.UserCollectable(from: collectable)
-                    userCollectables.append(userCollectable)
-                } catch {
-                    print("Failed to convert collectable: \(error.localizedDescription)")
-                }
-            }
-        }
-        
-        var finishedRoutes: [User.FinishedRoute] = []
-        if let routes = dto.finishedRoutes {
-            for route in routes {
-                do {
-                    let finishedRoute = try User.FinishedRoute(from: route)
-                    finishedRoutes.append(finishedRoute)
-                } catch {
-                    print("Failed to convert finished date: \(error.localizedDescription)")
-                }
-            }
-        }
-        
-        self.id = dto.userId
-        self.email = dto.email
-        self.name = dto.name
-        self.userName = dto.userName.lowercased()
-        self.description = dto.description
-        self.awards = userAwards
-        self.collectables = userCollectables
-        self.friends = dto.friends ?? []
-        self.finishedRoutes = finishedRoutes.sorted { $0.finishedDate > $1.finishedDate }
     }
     
     init(from decoder: Decoder) throws {
@@ -207,6 +162,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         self.name = try container.decode(String.self, forKey: .name)
         self.userName = try container.decode(String.self, forKey: .userName)
         self.description = try container.decode(String?.self, forKey: .userDescription)
+        self.imageName = try container.decode(String?.self, forKey: .imageName)
 //        self.image = UIImage(data: try container.decode(Data.self, forKey: .image)) ?? nil
         self.awards = try container.decode([UserAward].self, forKey: .awards)
         self.collectables = try container.decode([UserCollectable].self, forKey: .collectables)
@@ -222,6 +178,7 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         try container.encode(name, forKey: .name)
         try container.encode(userName, forKey: .userName)
         try container.encode(description, forKey: .userDescription)
+        try container.encode(imageName, forKey: .imageName)
 //        if let image = image {
 //            try container.encode(image.jpegData(compressionQuality: 1.0), forKey: .image)
 //        }

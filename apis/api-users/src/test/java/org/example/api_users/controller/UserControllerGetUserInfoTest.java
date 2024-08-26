@@ -28,7 +28,7 @@ public class UserControllerGetUserInfoTest {
     public void testGetUserInfo() {
         // Test to ensure that the user information is retrieved successfully.
         String userId = "testUserId";
-        User mockUser = new User(userId, "test@example.com", "Test User", "testUser", null);
+        User mockUser = new User(userId, "test@example.com", "Test User", "testUser", null, null);
 
         when(userService.getUserById(userId)).thenReturn(Optional.of(mockUser));
         when(userService.findUserAwards(userId)).thenReturn(Collections.emptyList());

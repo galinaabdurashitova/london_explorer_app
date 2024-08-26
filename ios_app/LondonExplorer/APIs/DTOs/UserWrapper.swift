@@ -13,6 +13,7 @@ struct UserWrapper: Codable {
     var name: String
     var userName: String
     var description: String? = nil
+    var imageName: String? = nil
     var awards: [UserAward]? = []
     var collectables: [UserCollectable]? = []
     var friends: [String]? = []
@@ -53,12 +54,13 @@ struct UserWrapper: Codable {
         var collectables: Int
     }
     
-    init(userId: String, email: String? = nil, name: String, userName: String, description: String? = nil, awards: [UserAward]? = nil, collectables: [UserCollectable]? = nil, friends: [String]? = nil, finishedRoutes: [FinishedRoute]? = nil) {
+    init(userId: String, email: String? = nil, name: String, userName: String, description: String? = nil, imageName: String? = nil, awards: [UserAward]? = nil, collectables: [UserCollectable]? = nil, friends: [String]? = nil, finishedRoutes: [FinishedRoute]? = nil) {
         self.userId = userId
         self.email = email
         self.name = name
         self.userName = userName
         self.description = description
+        self.imageName = imageName
         self.awards = awards
         self.collectables = collectables
         self.friends = friends
@@ -70,5 +72,6 @@ struct UserWrapper: Codable {
         self.email = model.email
         self.name = model.name
         self.userName = model.userName
+        self.imageName = model.imageName
     }
 }
