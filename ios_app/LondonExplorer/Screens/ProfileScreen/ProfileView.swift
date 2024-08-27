@@ -30,7 +30,7 @@ struct ProfileView: View {
                     VStack(alignment: .leading, spacing: 25) {
                         ProfileHeader(viewModel: viewModel)
                         
-                        if let description = viewModel.user.description {
+                        if let description = viewModel.user.description, !viewModel.userLoading {
                             Text(description)
                         }
                         

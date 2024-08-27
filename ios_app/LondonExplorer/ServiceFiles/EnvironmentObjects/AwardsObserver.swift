@@ -11,6 +11,7 @@ import SwiftUI
 class AwardsObserver: ObservableObject {
     @Published var newAwards: [User.UserAward] = []
     @Published var isSaving: Bool = false
+    @Published var isLoading: Bool = false
     private var routesNumber: Int = 0
     private var maxLikes: Int = 0
     
@@ -41,13 +42,17 @@ class AwardsObserver: ObservableObject {
         return award.getPoints(user: user, maxLikes: self.maxLikes, routeNumber: self.routesNumber)
     }
     
-    func getRoutesNumber(user: User) async {
+    @MainActor
+    func getRoutesAwards(user: User) async {
+        self.isLoading = true
         do {
             let routes = try await RoutesService().fetchUserRoutes(userId: user.id)
+            self.maxLikes = routes.compactMap { $0.saves.count }.max() ?? 0
             self.routesNumber = routes.count
         } catch {
             print("Unable to get routes number")
         }
+        self.isLoading = false
     }
     
     func setMaxLikes(likes: Int?) {

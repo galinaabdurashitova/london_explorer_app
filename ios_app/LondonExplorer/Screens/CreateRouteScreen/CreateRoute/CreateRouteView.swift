@@ -29,12 +29,6 @@ struct CreateRouteView: View {
                     }
                     
                     YourRoutesCarousel(routes: $routes, path: $path)
-                    
-                    if networkMonitor.isConnected {
-                        SuggestedRoutesCarousel(routes: $routes)
-                    } else {
-                        DownloadedRoutesWidget(routes: $routes)
-                    }
                 }
                 .padding()
             }

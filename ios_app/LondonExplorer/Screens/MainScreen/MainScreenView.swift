@@ -14,10 +14,7 @@ struct MainScreenView: View {
     @EnvironmentObject var currentRoute: CurrentRouteManager
     @EnvironmentObject var awards: AwardsObserver
     @StateObject var friendsFeed: FriendsFeedViewModel
-    
-    @State var routes: [Route] = MockData.Routes
-    
-    @State var isLoading: Bool = true
+    @StateObject var suggestedRoutes: SuggestedRoutesViewModel
     
     @State private var scrollOffset: CGFloat = 0
     
@@ -27,6 +24,7 @@ struct MainScreenView: View {
     
     init() {
         self._friendsFeed = StateObject(wrappedValue: FriendsFeedViewModel())
+        self._suggestedRoutes = StateObject(wrappedValue: SuggestedRoutesViewModel())
     }
     
     var body: some View {
@@ -37,30 +35,25 @@ struct MainScreenView: View {
                 
                 ScrollView(showsIndicators: false) {
                     Spacer()
-                    if !isLoading {
-                        VStack(spacing: 25) {
-                                OnRouteWidget()
-                            if networkMonitor.isConnected {
-//                                FriendsOnRouteWidget(friendsProgresses: $friendsOnRoute)
-                                SuggestedRoutesCarousel(routes: $routes)
-                                FriendsFeed(viewModel: friendsFeed)
-                            } else {
-                                DownloadedRoutesWidget(routes: $routes)
-                            }
-                            
-                            Spacer()
+                    VStack(spacing: 25) {
+                        OnRouteWidget()
+                        
+                        if networkMonitor.isConnected {
+                            SuggestedRoutesCarousel(viewModel: suggestedRoutes)
+                            FriendsFeed(viewModel: friendsFeed)
+                        } else {
+                            DownloadedRoutesWidget()
                         }
-                        .padding(.horizontal)
-                        .background(
-                            GeometryReader { geometry in
-                                Color.clear
-                                    .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).minY)
-                            }
-                        )
-                    } else {
-                        LoadingView()
-                            .padding(.horizontal)
+                        
+                        Spacer()
                     }
+                    .padding(.horizontal)
+                    .background(
+                        GeometryReader { geometry in
+                            Color.clear
+                                .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).minY)
+                        }
+                    )
                 }
                 .coordinateSpace(name: "scroll")
                 .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
@@ -72,11 +65,6 @@ struct MainScreenView: View {
             .appNavigation()
             .navigationDestination(for: RouteProgress.self) { routeProgress in
                 OnRouteView(routeProgress: routeProgress)
-            }
-        }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                self.isLoading = false
             }
         }
     }

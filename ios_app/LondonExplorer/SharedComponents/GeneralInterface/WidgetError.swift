@@ -22,10 +22,11 @@ struct WidgetError: View {
             Spacer()
             
             Button(action: {
-                action()
                 withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
                     isLoading = true
                 }
+                action()
+                isLoading = false
             }) {
                 Image(systemName: "arrow.triangle.2.circlepath")
                     .icon(size: 35, colour: Color.black)

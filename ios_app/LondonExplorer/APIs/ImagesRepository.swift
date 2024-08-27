@@ -97,4 +97,25 @@ class ImagesRepository {
             }
         }
     }
+    
+    func uploadImage(image: UIImage) async throws -> String? {
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            throw NSError(domain: "ImageErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to JPEG data"])
+        }
+        
+        let imageRef = storageRef.child("users").child(UUID().uuidString + ".jpg")
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        do {
+            _ = try await imageRef.putDataAsync(imageData, metadata: metadata)
+            
+            let downloadURL = try await imageRef.downloadURL()
+            return downloadURL.lastPathComponent
+            
+        } catch {
+            print("Error uploading image: \(error.localizedDescription)")
+            throw error
+        }
+    }
 }

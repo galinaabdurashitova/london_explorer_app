@@ -23,9 +23,7 @@ class AuthController: ObservableObject {
         if testProfile == true  {
             self.setUserProfile()
         } else {
-            print(1)
             observeAuthChanges()
-            print(2)
         }
     }
     
@@ -39,7 +37,6 @@ class AuthController: ObservableObject {
             print("Error while fetching the user profile: \(error)")
         }
         self.isFetchingUser = false
-        print(self.profile.awards)
         print("User reloaded")
     }
     
@@ -87,7 +84,6 @@ class AuthController: ObservableObject {
                         print("Error while fetching the user profile: \(error)")
                     }
                     
-                    self.isStarting = false
                     self.isStarting = false
                 }
             }
@@ -146,5 +142,20 @@ class AuthController: ObservableObject {
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
+    }
+    
+    func editProfile(setting: SettingsType, newValue: String) async throws {
+        switch setting {
+        case .picture:
+            try await usersRepository.updateUserInfo(userId: profile.id, newName: nil, newUserName: nil, newDescription: nil, newImageName: newValue)
+        case .name:
+            try await usersRepository.updateUserInfo(userId: profile.id, newName: newValue, newUserName: nil, newDescription: nil, newImageName: nil)
+        case .username:
+            try await usersRepository.updateUserInfo(userId: profile.id, newName: nil, newUserName: newValue, newDescription: nil, newImageName: nil)
+        case .description:
+            try await usersRepository.updateUserInfo(userId: profile.id, newName: nil, newUserName: nil, newDescription: newValue, newImageName: nil)
+        }
+        
+        await self.reloadUser()
     }
 }

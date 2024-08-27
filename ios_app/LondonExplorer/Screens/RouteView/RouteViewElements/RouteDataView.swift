@@ -88,7 +88,7 @@ struct RouteDataView: View {
                         viewModel.isPublishing = true
                         await viewModel.publishRoute()
                         globalSettings.profileReloadTrigger = true
-                        await awards.getRoutesNumber(user: auth.profile)
+                        await awards.getRoutesAwards(user: auth.profile)
                         awards.checkAward(for: .publishedRoute, user: auth.profile)
                         viewModel.isPublishing = false
                     }

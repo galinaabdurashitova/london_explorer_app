@@ -11,6 +11,7 @@ import SwiftUI
 enum CardLabel {
     case likes(Int)
     case download(Date)
+    case created(Date)
     case empty
     case completed(Date)
 
@@ -30,6 +31,13 @@ enum CardLabel {
         case .download(let date):
             HStack(spacing: 3) {
                 Text("Saved on")
+                    .font(.system(size: 12))
+                Text(formattedDate(date: date))
+                    .font(.system(size: 12, weight: .bold))
+            }
+        case .created(let date):
+            HStack(spacing: 3) {
+                Text("Created on")
                     .font(.system(size: 12))
                 Text(formattedDate(date: date))
                     .font(.system(size: 12, weight: .bold))

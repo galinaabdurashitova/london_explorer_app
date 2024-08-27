@@ -9,20 +9,34 @@ import Foundation
 import SwiftUI
 
 struct CustomTextField: View {
-    @Binding var fieldText: String
+    @Binding var fieldText: String?
     @Binding var fillerText: String
     @Binding var textVariable: String
-    @State var isSecure: Bool = false
-    @State private var borderColor: Color = Color.blueAccent
+    @State var isSecure: Bool
+    @State private var borderColor: Color
     @State private var shakeOffset: CGFloat = 0
+    @State var isVertical: Bool
     var height: Double?
-    var maxLength: Int = 264
+    var maxLength: Int
+    
+    init(fieldText: Binding<String?> = .constant(nil), fillerText: Binding<String>, textVariable: Binding<String>, isSecure: Bool = false, borderColor: Color = Color.blueAccent, isVertical: Bool = false, height: Double? = nil, maxLength: Int = 264) {
+        self._fieldText = fieldText
+        self._fillerText = fillerText
+        self._textVariable = textVariable
+        self.isSecure = isSecure
+        self.borderColor = borderColor
+        self.isVertical = isVertical
+        self.height = height
+        self.maxLength = maxLength
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 13) {
-            Text(fieldText)
-                .font(.system(size: 14, weight: .bold))
-                .kerning(-0.2)
+            if let fieldText = fieldText {
+                Text(fieldText)
+                    .font(.system(size: 14, weight: .bold))
+                    .kerning(-0.2)
+            }
             
             if isSecure {
                 SecureField(fillerText, text: $textVariable)
@@ -34,7 +48,7 @@ struct CustomTextField: View {
                         }
                     }
             } else {
-                TextField(fillerText, text: $textVariable, axis: height != nil ? .vertical : .horizontal)
+                TextField(fillerText, text: $textVariable, axis: height != nil || isVertical ? .vertical : .horizontal)
                     .font(.system(size: 16, weight: .regular))
                     .onChange(of: textVariable) { _, newValue in
                         if newValue.count > maxLength {

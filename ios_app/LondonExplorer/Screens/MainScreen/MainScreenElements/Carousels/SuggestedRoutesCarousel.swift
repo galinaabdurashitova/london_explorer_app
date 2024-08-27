@@ -9,16 +9,10 @@ import Foundation
 import SwiftUI
 
 struct SuggestedRoutesCarousel: View {
-    @Binding var routes: [Route]
-    var lines: Int
+    @ObservedObject var viewModel: SuggestedRoutesViewModel
     
-    init(routes: Binding<[Route]>, lines: Int = 1) {
-        self._routes = routes
-        if routes.count > 2 * lines {
-            self.lines = max(lines, 1)
-        } else {
-            self.lines = max(routes.count / lines, 1)
-        }
+    init(viewModel: SuggestedRoutesViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -31,43 +25,63 @@ struct SuggestedRoutesCarousel: View {
                 Spacer()
             }
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack (alignment: .top, spacing: 12) {
-                    ForEach(0..<numberOfColumns(), id: \.self) { column in
-                        VStack (spacing: 20) {
-                            ForEach(0..<lines, id: \.self) { row in
-                                if let routeIndex = indexForColumnRow(column: column, row: row), routeIndex < routes.count {
-                                    RouteCard(
-                                        route: $routes[routeIndex],
-                                        label: .likes(routes[routeIndex].saves.count),
-                                        navigation: RouteNavigation.info(routes[routeIndex])
-                                    )
-                                }
-                            }
-                        }
+            if viewModel.error {
+                WidgetError(text: "routes") {
+                    viewModel.loadRoutes()
+                }
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    if viewModel.isLoading {
+                        loader
+                    } else {
+                        routesList
                     }
                 }
+                .scrollClipDisabled()
             }
-            .scrollClipDisabled()
+        }
+        .onAppear {
+            if !viewModel.loaded || viewModel.routes.isEmpty {
+                viewModel.loadRoutes()
+            }
         }
     }
     
-    private func numberOfColumns() -> Int {
-        return (routes.count + lines - 1) / lines
+    private var loader: some View {
+        HStack (alignment: .top, spacing: 12) {
+            ForEach(0..<3) { _ in
+                VStack (spacing: 5) {
+                    Color(Color.black.opacity(0.05))
+                        .frame(width: 165, height: 165)
+                        .loading(isLoading: true)
+                    Color(Color.black.opacity(0.05))
+                        .frame(width: 165, height: 20)
+                        .loading(isLoading: true)
+                    Color(Color.black.opacity(0.05))
+                        .frame(width: 165, height: 40)
+                        .loading(isLoading: true)
+                }
+            }
+        }
     }
     
-    private func indexForColumnRow(column: Int, row: Int) -> Int? {
-        let index = column * lines + row
-        return index < routes.count ? index : nil
+    private var routesList: some View {
+        HStack (alignment: .top, spacing: 12) {
+            ForEach(viewModel.routes, id: \.id) { route in
+                RouteCard(
+                    route: Binding(get: { route }, set: { _ in }),
+                    label: .likes(route.saves.count),
+                    navigation: RouteNavigation.info(route)
+                )
+            }
+        }
     }
 }
 
 
 #Preview {
     SuggestedRoutesCarousel(
-        routes: .constant(MockData.Routes),
-        lines: 3
+        viewModel: SuggestedRoutesViewModel()
     )
-    .environmentObject(AuthController())
     .padding()
 }

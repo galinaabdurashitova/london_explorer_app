@@ -14,10 +14,14 @@ struct SettingsView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 25) {
+            VStack(alignment: .leading, spacing: 30) {
                 HStack {
                     ScreenHeader(headline: .constant("Settings"))
                     Spacer()
+                }
+                
+                ForEach(SettingsType.allCases, id: \.self) { setting in
+                    setting.link(for: auth.profile)
                 }
                 
                 Toggle("Use test data", isOn: $globalSettings.useMockData)
@@ -40,6 +44,9 @@ struct SettingsView: View {
             }
         }
         .padding(.horizontal)
+        .navigationDestination(for: SettingsType.self) { value in
+            SettingPage(setting: value)
+        }
     }
 }
 
