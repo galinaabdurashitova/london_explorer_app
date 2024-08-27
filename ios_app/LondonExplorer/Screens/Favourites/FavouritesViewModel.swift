@@ -13,17 +13,27 @@ class FavouritesViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var error: Bool = false
     
+    private var user: User
+    
     private var routesService: RoutesServiceProtocol = RoutesService()
     
+    init(user: User) {
+        self.user = user
+    }
+    
     @MainActor
-    func loadRoutes(user: User) async {
-        self.isLoading = true
+    func loadRoutes() {
+        self.isLoading =  true
         self.error = false
-        do {
-            self.savedRoutes = try await routesService.fetchFavouriteRoutes(userId: user.id)
-        } catch {
-            self.error = true
+        
+        Task {
+            do {
+                let routes = try await routesService.fetchFavouriteRoutes(userId: user.id)
+                savedRoutes = routes
+            } catch {
+                self.error = true
+            }
+            self.isLoading = false
         }
-        self.isLoading = false
     }
 }

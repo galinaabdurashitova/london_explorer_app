@@ -12,6 +12,7 @@ import MapKit
 struct FinishCreateView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var globalSettings: GlobalSettings
     @StateObject var viewModel: FinishCreateViewModel
     @Binding var path: NavigationPath
     
@@ -38,6 +39,7 @@ struct FinishCreateView: View {
             
             Button(action: {
                 viewModel.saveRoute(userId: auth.profile.id)
+                globalSettings.profileReloadTrigger = true
                 path.append(CreateRoutePath.savedRoute(viewModel.route))
             }) {
                 ButtonView(
@@ -118,4 +120,5 @@ struct FinishCreateView: View {
         path: .constant(NavigationPath())
     )
     .environmentObject(AuthController())
+    .environmentObject(GlobalSettings())
 }

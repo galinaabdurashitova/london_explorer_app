@@ -11,6 +11,7 @@ import SwiftUI
 struct RouteDataView: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
+    @EnvironmentObject var globalSettings: GlobalSettings
     @EnvironmentObject var awards: AwardsObserver
     @ObservedObject var viewModel: RouteViewModel
     
@@ -86,6 +87,7 @@ struct RouteDataView: View {
                     Task {
                         viewModel.isPublishing = true
                         await viewModel.publishRoute()
+                        globalSettings.profileReloadTrigger = true
                         await awards.getRoutesNumber(user: auth.profile)
                         awards.checkAward(for: .publishedRoute, user: auth.profile)
                         viewModel.isPublishing = false
@@ -114,6 +116,7 @@ struct RouteDataView: View {
                         Task {
                             viewModel.isSaving = true
                             await viewModel.dislikeRoute(user: auth.profile)
+                            globalSettings.favouriteRoutesReloadTrigger = true
                             viewModel.isSaving = false
                         }
                     }) {
@@ -124,6 +127,7 @@ struct RouteDataView: View {
                         Task {
                             viewModel.isSaving = true
                             await viewModel.saveRoute(user: auth.profile)
+                            globalSettings.favouriteRoutesReloadTrigger = true
                             viewModel.isSaving = false
                         }
                     }) {
@@ -168,6 +172,7 @@ struct RouteDataView: View {
     }
     .environmentObject(AuthController())
     .environmentObject(CurrentRouteManager())
+    .environmentObject(GlobalSettings())
     .environmentObject(AwardsObserver())
     .padding()
 }

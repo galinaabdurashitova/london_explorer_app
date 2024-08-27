@@ -33,6 +33,7 @@ struct FriendButton: View {
     
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var awards: AwardsObserver
+    @EnvironmentObject var globalSettings: GlobalSettings
     @ObservedObject var viewModel: ProfileViewModel
     
     var body: some View {
@@ -49,6 +50,7 @@ struct FriendButton: View {
                         await viewModel.addFriend(userFromId: auth.profile.id)
                         await auth.reloadUser()
                         awards.checkAward(for: .friendshipApproved, user: auth.profile)
+                        globalSettings.profileReloadTrigger = true
                     }
                 }) {
                     button(type: .add)
@@ -75,4 +77,5 @@ struct FriendButton: View {
     FriendButton(viewModel: ProfileViewModel(user: MockData.Users[0]))
         .environmentObject(AuthController(testProfile: false))
         .environmentObject(AwardsObserver())
+        .environmentObject(GlobalSettings())
 }

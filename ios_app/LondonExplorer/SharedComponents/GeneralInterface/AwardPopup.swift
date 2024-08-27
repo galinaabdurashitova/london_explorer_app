@@ -11,6 +11,7 @@ import SwiftUI
 struct AwardPopup: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var awards: AwardsObserver
+    @EnvironmentObject var globalSettings: GlobalSettings
     @State var isSaving: Bool = false
     
     var body: some View {
@@ -54,6 +55,7 @@ struct AwardPopup: View {
                         Task {
                             await awards.saveAwards(user: auth.profile)
                             await auth.reloadUser()
+                            globalSettings.profileReloadTrigger = true
                         }
                     }
                 }
@@ -80,5 +82,6 @@ struct AwardPopup: View {
         AwardPopup()
             .environmentObject(AuthController())
             .environmentObject(AwardsObserver())
+            .environmentObject(GlobalSettings())
     }
 }

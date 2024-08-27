@@ -11,6 +11,7 @@ import SwiftUI
 struct FriendRequestBanner: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var awards: AwardsObserver
+    @EnvironmentObject var globalSettings: GlobalSettings
     @ObservedObject var viewModel: FriendsFeedViewModel
     @Binding var user: User
     
@@ -41,6 +42,7 @@ struct FriendRequestBanner: View {
                     await viewModel.acceptRequest(currentUserId: auth.profile.id, userFromId: user.id)
                     await auth.reloadUser()
                     awards.checkAward(for: .friendshipApproved, user: auth.profile)
+                    globalSettings.profileReloadTrigger = true
                 }
             }) {
                 Image(systemName: "checkmark")
@@ -73,5 +75,6 @@ struct FriendRequestBanner: View {
     FriendRequestBanner(viewModel: FriendsFeedViewModel(), user: .constant(MockData.Users[0]))
         .environmentObject(AuthController())
         .environmentObject(AwardsObserver())
+        .environmentObject(GlobalSettings())
         .padding()
 }

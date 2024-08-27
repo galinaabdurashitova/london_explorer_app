@@ -12,11 +12,12 @@ class AwardsObserver: ObservableObject {
     @Published var newAwards: [User.UserAward] = []
     @Published var isSaving: Bool = false
     private var routesNumber: Int = 0
+    private var maxLikes: Int = 0
     
     @MainActor
     func checkAward(for trigger: AwardTypes.AwardTriggers, user: User, routeProgress: RouteProgress? = nil) {
         withAnimation {
-            self.newAwards = trigger.getAwards(user: user, routeProgress: routeProgress, routeNumber: self.routesNumber)
+            self.newAwards = trigger.getAwards(user: user, routeProgress: routeProgress,  maxLikes: self.maxLikes, routeNumber: self.routesNumber)
         }
         print("Awards checked")
     }
@@ -37,7 +38,7 @@ class AwardsObserver: ObservableObject {
     
     func getAwardPoints(user: User, award: AwardTypes) -> Double {
 //        print("Check for \(award.rawValue) with \(self.routesNumber)")
-        return award.getPoints(user: user, routeNumber: self.routesNumber)
+        return award.getPoints(user: user, maxLikes: self.maxLikes, routeNumber: self.routesNumber)
     }
     
     func getRoutesNumber(user: User) async {
@@ -46,6 +47,12 @@ class AwardsObserver: ObservableObject {
             self.routesNumber = routes.count
         } catch {
             print("Unable to get routes number")
+        }
+    }
+    
+    func setMaxLikes(likes: Int?) {
+        if let likes = likes {
+            self.maxLikes = likes
         }
     }
 }

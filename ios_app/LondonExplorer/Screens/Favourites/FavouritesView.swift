@@ -13,46 +13,53 @@ struct FavouritesView: View {
     @EnvironmentObject var globalSettings: GlobalSettings
     @StateObject var viewModel: FavouritesViewModel
     
-    init() {
-        self._viewModel = StateObject(wrappedValue: FavouritesViewModel())
+    init(user: User) {
+        _viewModel = StateObject(wrappedValue: FavouritesViewModel(user: user))
     }
     
     var body: some View {
         NavigationStack {
             if viewModel.error {
-                ErrorScreen() {
-                    Task { await viewModel.loadRoutes(user: auth.profile) }
+                ErrorScreen {
+                    viewModel.loadRoutes()
                 }
             } else {
-                ScrollView(showsIndicators: false) {
-                    VStack (spacing: 25) {
-                        HStack {
-                            ScreenHeader(
-                                headline: .constant("Your favourite routes"),
-                                subheadline: .constant("You can choose any of the routes you saved")
-                            )
-                            
-                            Spacer()
-                        }
-                        
-                        if viewModel.isLoading {
-                            loader
-                        } else {
-                            if viewModel.savedRoutes.count > 0 {
-                                routesList
-                            } else {
-                                Button(action: {
-                                    globalSettings.tabSelection = 1
-                                }) {
-                                    ActionBanner(text: "You haven’t saved any routes", actionText: "Search for routes")
-                                }
-                            }
-                        }
-                    }
-                    .padding()
+                mainContent
+            }
+        }
+        .onAppear {
+            if globalSettings.favouriteRoutesReloadTrigger {
+                viewModel.loadRoutes()
+                globalSettings.favouriteRoutesReloadTrigger = false
+            }
+        }
+    }
+    
+    private var mainContent: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 25) {
+                HStack {
+                    ScreenHeader(
+                        headline: .constant("Your favourite routes"),
+                        subheadline: .constant("You can choose any of the routes you saved")
+                    )
+                    Spacer()
                 }
-                .appNavigation()
-                .task { await viewModel.loadRoutes(user: auth.profile) }
+                
+                if viewModel.isLoading {
+                    loader
+                } else if viewModel.savedRoutes.isEmpty {
+                    emptyStateView
+                } else {
+                    routesList
+                }
+            }
+            .padding()
+        }
+        .appNavigation()
+        .refreshable {
+            if !viewModel.isLoading {
+                viewModel.loadRoutes()
             }
         }
     }
@@ -89,7 +96,7 @@ struct FavouritesView: View {
             ForEach(0..<3) { _ in
                 HStack(alignment: .top, spacing: 20) {
                     ForEach(0..<2) { _ in
-                        VStack (spacing: 5) {
+                        VStack(spacing: 5) {
                             Color(Color.black.opacity(0.05))
                                 .frame(width: 165, height: 165)
                                 .loading(isLoading: true)
@@ -105,10 +112,19 @@ struct FavouritesView: View {
             }
         }
     }
+    
+    private var emptyStateView: some View {
+        Button(action: {
+            globalSettings.tabSelection = 1
+        }) {
+            ActionBanner(text: "You haven’t saved any routes", actionText: "Search for routes")
+        }
+    }
 }
 
+
 #Preview {
-    FavouritesView()
+    FavouritesView(user: MockData.Users[0])
         .environmentObject(AuthController(testProfile: true))
         .environmentObject(GlobalSettings())
 }

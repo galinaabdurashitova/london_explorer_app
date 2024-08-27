@@ -27,6 +27,7 @@ class ProfileViewModel: ObservableObject {
     // General
     @Published var error: String = ""
     @Published var showError: Bool = false
+    @Published var firstLoaded: Bool = false
     
     private var userService: UsersServiceProtocol = UsersService()
     private var routesService: RoutesServiceProtocol = RoutesService()
@@ -38,17 +39,18 @@ class ProfileViewModel: ObservableObject {
     }
     
     @MainActor
-    func loadData(isCurrentUser: Bool = false) async {
+    func loadData(isCurrentUser: Bool = false)  {
         self.userLoading = true
         self.routesLoading = true
         
-        await self.fetchUser()
-        self.userLoading = false
-        
-        await self.loadUserRoutes(isCurrentUser: isCurrentUser)
-        self.routesLoading = false
-        
-        await self.getFinishedRoutes(isCurrentUser: isCurrentUser)
+        Task {
+            await self.fetchUser()
+            await self.getFinishedRoutes(isCurrentUser: isCurrentUser)
+            self.userLoading = false
+            
+            await self.loadUserRoutes(isCurrentUser: isCurrentUser)
+            self.routesLoading = false
+        }
     }
     
     @MainActor

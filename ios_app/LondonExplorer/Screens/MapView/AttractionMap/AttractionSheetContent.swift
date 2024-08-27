@@ -31,7 +31,7 @@ struct AttractionSheetContent: View {
                         textColour: Color.white,
                         size: .M
                     ) {
-                        
+                        openInGoogleMaps()
                     }
                     
                     ButtonView(
@@ -40,12 +40,38 @@ struct AttractionSheetContent: View {
                         textColour: Color.white,
                         size: .M
                     ) {
-                        
+                        openInAppleMaps()
                     }
                 }
             }
             .frame(height: 200)
             .padding(.bottom, geometry.size.height - 200)
+        }
+    }
+    
+    private func openInGoogleMaps() {
+        let address = URLEncoder().encode(attraction.address)
+         
+        let googleMapsURLString = "comgooglemaps://?q=\(address)"
+        let webGoogleMapsURLString = "https://maps.google.com/?q=\(address)"
+         
+         if let url = URL(string: googleMapsURLString), UIApplication.shared.canOpenURL(url) {
+             print(googleMapsURLString)
+             UIApplication.shared.open(url, options: [:], completionHandler: nil)
+         } else if let url = URL(string: webGoogleMapsURLString) {
+             print(webGoogleMapsURLString)
+             UIApplication.shared.open(url, options: [:], completionHandler: nil)
+         }
+    }
+    
+    private func openInAppleMaps() {
+        let address = URLEncoder().encode(attraction.address)
+        
+        let appleMapsURLString = "maps://?address=\(address)"
+        print(appleMapsURLString)
+        
+        if let url = URL(string: appleMapsURLString) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 }

@@ -48,12 +48,14 @@ class RouteViewModel: ObservableObject {
     
     // Fetch user - service
     @MainActor
-    func fetchUserCreated() async {
-        do {
-            let user = try await userService.fetchUser(userId: self.route.userCreated)
-            self.userCreated = user
-        } catch {
-            print("Unable to get user created")
+    func fetchUserCreated() {
+        Task {
+            do {
+                let user = try await userService.fetchUser(userId: self.route.userCreated)
+                self.userCreated = user
+            } catch {
+                print("Unable to get user created")
+            }
         }
     }
     

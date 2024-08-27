@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct EditRouteView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     @ObservedObject var viewModel: RouteViewModel
     
     var body: some View {
@@ -23,6 +24,7 @@ struct EditRouteView: View {
                 
                 Button("Save") {
                     viewModel.saveEditRoute()
+                    globalSettings.profileReloadTrigger = true
                 }
                 .foregroundColor(Color.blueAccent)
                 .disabled(viewModel.newName.isEmpty || viewModel.newDescription.isEmpty)
@@ -57,5 +59,6 @@ struct EditRouteView: View {
 
 #Preview {
     EditRouteView(viewModel: RouteViewModel(route: MockData.Routes[0]))
+        .environmentObject(GlobalSettings())
         .padding()
 }

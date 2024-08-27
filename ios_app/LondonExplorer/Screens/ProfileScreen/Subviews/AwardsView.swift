@@ -92,14 +92,15 @@ struct AwardsView: View {
             
             HStack {
                 Text(String(format: "%.0f", currentLevel))
+                    .font(.system(size: 14, weight: .light))
                 
                 Spacer()
                 
                 if currentLevel != nextLevel {
                     Text(String(format: "%.0f", nextLevel))
+                        .font(.system(size: 14, weight: .light))
                 }
             }
-            .font(.system(size: 14, weight: .light))
             .foregroundColor(Color.black.opacity(0.5))
             
             ProgressBar(

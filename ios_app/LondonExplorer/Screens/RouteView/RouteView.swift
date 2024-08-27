@@ -11,6 +11,7 @@ import SwiftUI
 struct RouteView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var globalSettings: GlobalSettings
     @EnvironmentObject var currentRoute: CurrentRouteManager
     @StateObject var viewModel: RouteViewModel
     
@@ -73,9 +74,9 @@ struct RouteView: View {
                 scrollOffset = -value
             }
         }
-        .task {
-            if auth.profile.id != viewModel.route.userCreated {
-                await viewModel.fetchUserCreated()
+        .onAppear {
+            if auth.profile.id != viewModel.route.userCreated && viewModel.userCreated == nil {
+                viewModel.fetchUserCreated()
             }
         }
         .animation(.easeInOut, value: headerHeight)
@@ -89,6 +90,7 @@ struct RouteView: View {
         ) {
             viewModel.deleteRoute()
             currentRoute.routeDeletion(route: viewModel.route)
+            globalSettings.profileReloadTrigger = true
             self.presentationMode.wrappedValue.dismiss()
         }
     }
@@ -121,4 +123,5 @@ struct RouteView: View {
     RouteView(route: MockData.Routes[0])
         .environmentObject(AuthController())
         .environmentObject(CurrentRouteManager())
+        .environmentObject(GlobalSettings())
 }

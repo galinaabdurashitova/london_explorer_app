@@ -25,14 +25,14 @@ enum AwardTypes: String, Codable, CaseIterable {
         case loggedIn
         case profileOpened
         
-        func getAwards(user: User, routeProgress: RouteProgress? = nil, routeNumber: Int = 0) -> [User.UserAward] {
+        func getAwards(user: User, routeProgress: RouteProgress? = nil, maxLikes: Int = 0, routeNumber: Int = 0) -> [User.UserAward] {
             var awards: [User.UserAward] = []
             
             for award in AwardTypes.allCases.filter({ $0.trigger.contains(self) }) {
                 print("Check award \(award.rawValue)")
                 let userLevel = award.getUserLevel(user: user)
                 print("Current user level \(userLevel)")
-                let userPoints = award.getNewPoints(user: user, routeProgress: routeProgress, routeNumber: routeNumber)
+                let userPoints = award.getNewPoints(user: user, routeProgress: routeProgress, maxLikes: maxLikes, routeNumber: routeNumber)
                 print("New user points \(userPoints)")
                 let newUserLevel = award.getLevelForPoints(points: userPoints)
                 print("New user level \(newUserLevel)")
@@ -50,7 +50,7 @@ enum AwardTypes: String, Codable, CaseIterable {
         switch self {
         case .routesFinished:       return [.finishedRoute]
         case .attractionsVisited:   return [.finishedRoute]
-        case .routesPublished:      return [.publishedRoute]                /// No
+        case .routesPublished:      return [.publishedRoute]
         case .friends:              return [.friendshipApproved, .loggedIn, .profileOpened]
         case .minutes:              return [.finishedRoute]
         case .kilometers:           return [.finishedRoute]
@@ -85,7 +85,7 @@ enum AwardTypes: String, Codable, CaseIterable {
         }
     }
     
-    func getPoints(user: User, routeNumber: Int = 0) -> Double {
+    func getPoints(user: User, maxLikes: Int = 0, routeNumber: Int = 0) -> Double {
         switch self {
         case .routesFinished:
             return Double(user.finishedRoutes.count)
@@ -101,13 +101,13 @@ enum AwardTypes: String, Codable, CaseIterable {
             let totalDistance = user.finishedRoutes.compactMap { $0.route?.pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) }.reduce(0, +)
             return Double(totalDistance) / 1000
         case .likedRoute:
-            return 0
+            return Double(maxLikes)
         case .collectables:
             return Double(user.collectables.count)
         }
     }
     
-    func getNewPoints(user: User, routeProgress: RouteProgress? = nil, routeNumber: Int = 0) -> Double {
+    func getNewPoints(user: User, routeProgress: RouteProgress? = nil, maxLikes: Int = 0, routeNumber: Int = 0) -> Double {
         switch self {
         case .routesFinished:
             return self.getPoints(user: user) + 1
@@ -123,7 +123,7 @@ enum AwardTypes: String, Codable, CaseIterable {
             let newKilometers = (routeProgress == nil ? 0 : routeProgress!.route.pathes.compactMap({ $0?.expectedTravelTime }).reduce(0, +) / 1000)
             return self.getPoints(user: user) + newKilometers
         case .likedRoute:
-            return 0
+            return Double(maxLikes)
         case .collectables:
             let newCollectables = (routeProgress == nil ? [] : routeProgress!.collectables.filter{ !user.collectables.compactMap{ $0.type }.contains($0.type) })
             return self.getPoints(user: user) + Double(newCollectables.count)

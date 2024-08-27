@@ -40,7 +40,7 @@ struct MainTabView: View {
                 .tag(2)
             
 //            TestStorageView()
-            FavouritesView()
+            FavouritesView(user: auth.profile)
                 .tabItem {
                     Label("Favourites", systemImage: globalSettings.tabSelection == 3 ? "heart.fill" : "heart")
                         .environment(\.symbolVariants, .none)

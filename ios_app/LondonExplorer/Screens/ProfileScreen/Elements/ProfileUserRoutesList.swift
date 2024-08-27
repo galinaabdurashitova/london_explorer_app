@@ -63,17 +63,7 @@ struct ProfileUserRoutesList: View {
                             ActionBanner(text: "You haven’t created any routes", actionText: "Create a new route")
                         }
                     } else {
-                        VStack(spacing: 10) {
-                            Text("User has no routes")
-                                .foregroundColor(Color.black.opacity(0.3))
-                            
-                            Image(systemName: "map")
-                                .icon(size: 50, colour: Color.black.opacity(0.2))
-                                .fontWeight(.ultraLight)
-                                .padding()
-                                .background(Color.black.opacity(0.025))
-                                .cornerRadius(100)
-                        }
+                        noRoutes
                     }
                 }
             }
@@ -81,8 +71,16 @@ struct ProfileUserRoutesList: View {
     }
     
     private var noRoutes: some View {
-        VStack {
+        VStack(spacing: 10) {
+            Text("User has no routes")
+                .foregroundColor(Color.black.opacity(0.3))
             
+            Image(systemName: "map")
+                .icon(size: 50, colour: Color.black.opacity(0.2))
+                .fontWeight(.ultraLight)
+                .padding()
+                .background(Color.black.opacity(0.025))
+                .cornerRadius(100)
         }
     }
     
