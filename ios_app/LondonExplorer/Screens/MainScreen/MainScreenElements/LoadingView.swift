@@ -30,13 +30,13 @@ struct LoadingView: View {
                             ForEach(0..<3) { _ in
                                 VStack (spacing: 5) {
                                     Color(Color.black.opacity(0.05))
-                                        .frame(width: 156, height: 156)
+                                        .frame(width: 165, height: 165)
                                         .loading(isLoading: true)
                                     Color(Color.black.opacity(0.05))
-                                        .frame(width: 156, height: 20)
+                                        .frame(width: 165, height: 20)
                                         .loading(isLoading: true)
                                     Color(Color.black.opacity(0.05))
-                                        .frame(width: 156, height: 40)
+                                        .frame(width: 165, height: 40)
                                         .loading(isLoading: true)
                                 }
                             }

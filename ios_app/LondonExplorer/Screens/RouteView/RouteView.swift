@@ -50,7 +50,7 @@ struct RouteView: View {
                     
                     RouteDataView(viewModel: viewModel)
                     
-                    if auth.profile.id == viewModel.route.userCreated {
+                    if auth.profile.id == viewModel.route.userCreated && viewModel.route.datePublished == nil {
                         Button("Delete the route") {
                             viewModel.confirmDelete = true
                         }
@@ -73,14 +73,15 @@ struct RouteView: View {
                 scrollOffset = -value
             }
         }
-        .onAppear {
+        .task {
             if auth.profile.id != viewModel.route.userCreated {
-                viewModel.fetchUserCreated()
+                await viewModel.fetchUserCreated()
             }
         }
         .animation(.easeInOut, value: headerHeight)
         .toolbar(.visible, for: .tabBar)
         .navigationBarBackButtonHidden(true)
+        .error(text: viewModel.errorText, isPresented: $viewModel.showError)
         .popup(
             isPresented: $viewModel.confirmDelete,
             text: "Are you sure you want to delete this route?",

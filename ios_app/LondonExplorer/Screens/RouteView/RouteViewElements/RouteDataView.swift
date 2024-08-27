@@ -11,6 +11,7 @@ import SwiftUI
 struct RouteDataView: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
+    @EnvironmentObject var awards: AwardsObserver
     @ObservedObject var viewModel: RouteViewModel
     
     var body: some View {
@@ -22,7 +23,7 @@ struct RouteDataView: View {
                             HStack(spacing: 5) {
                                 if let image = user.image {
                                     Image(uiImage: image)
-                                        .profilePicture(size: 50)
+                                        .profilePicture(size: 20)
                                 } else {
                                     Image("User3DIcon")
                                         .profilePicture(size: 20)
@@ -75,19 +76,68 @@ struct RouteDataView: View {
     }
     
     private var FirstButton: some View {
-        RouteButton.publish.view
-            .overlay(
-                Rectangle()
-                    .frame(width: 1),
-                alignment: .trailing
-            )
+        VStack {
+            if viewModel.isPublishing {
+                RouteButton.publishing.view
+            } else if let publishedDate = viewModel.route.datePublished {
+                RouteButton.published(publishedDate).view
+            } else {
+                Button(action: {
+                    Task {
+                        viewModel.isPublishing = true
+                        await viewModel.publishRoute()
+                        await awards.getRoutesNumber(user: auth.profile)
+                        awards.checkAward(for: .publishedRoute, user: auth.profile)
+                        viewModel.isPublishing = false
+                    }
+                }) {
+                    RouteButton.publish.view
+                }
+                .disabled(auth.profile.id != viewModel.route.userCreated)
+            }
+        }
+        .overlay(
+            Rectangle()
+                .fill(Color.black)
+                .frame(width: 1),
+            alignment: .trailing
+        )
     }
     
     private var SecondButton: some View {
-        Button(action: {
-            viewModel.isEditSheetPresented = true
-        }) {
-            RouteButton.edit.view
+        VStack {
+            if viewModel.isSaving {
+                RouteButton.saving.view
+            } else if viewModel.route.datePublished != nil {
+                if viewModel.route.saves.contains(auth.profile.id) {
+                    Button(action: {
+                        Task {
+                            viewModel.isSaving = true
+                            await viewModel.dislikeRoute(user: auth.profile)
+                            viewModel.isSaving = false
+                        }
+                    }) {
+                        RouteButton.saved(viewModel.route.saves.count).view
+                    }
+                } else {
+                    Button(action: {
+                        Task {
+                            viewModel.isSaving = true
+                            await viewModel.saveRoute(user: auth.profile)
+                            viewModel.isSaving = false
+                        }
+                    }) {
+                        RouteButton.save(viewModel.route.saves.count).view
+                    }
+                }
+            } else {
+                Button(action: {
+                    viewModel.isEditSheetPresented = true
+                }) {
+                    RouteButton.edit.view
+                }
+                .disabled(auth.profile.id != viewModel.route.userCreated)
+            }
         }
         .overlay(
             Rectangle()
@@ -97,7 +147,6 @@ struct RouteDataView: View {
         .sheet(isPresented: $viewModel.isEditSheetPresented) {
             EditRouteView(viewModel: viewModel)
         }
-        .disabled(auth.profile.id != viewModel.route.userCreated)
     }
     
     private var ThirdButton: some View {
@@ -119,5 +168,6 @@ struct RouteDataView: View {
     }
     .environmentObject(AuthController())
     .environmentObject(CurrentRouteManager())
+    .environmentObject(AwardsObserver())
     .padding()
 }

@@ -119,7 +119,7 @@ class ProfileViewModel: ObservableObject {
             }
         } catch {
             print("Unable to add friend: \(error.localizedDescription)")
-            self.error = "Unable to add friend"
+            self.error = "Unable to add friend: \(error.localizedDescription)"
             self.showError = true
         }
         self.isUserRequestProcessing = false

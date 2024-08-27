@@ -78,7 +78,7 @@ struct RouteWrapper: Codable {
         self.routeName = model.name
         self.routeDescription = model.description
         self.routeTime = Int(model.routeTime)
-        self.datePublished = ""
+        self.datePublished = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toString(from: model.datePublished ?? Date())
         self.saves = nil
         self.stops = model.stops.compactMap { RouteWrapper.RouteStop(from: $0) }
         self.collectables = model.collectables.compactMap { RouteWrapper.RouteCollectable(from: $0) }

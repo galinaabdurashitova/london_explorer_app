@@ -33,8 +33,8 @@ struct RouteCard: View {
                 ZStack (alignment: .topTrailing) {
                     Image(uiImage: route.image)
                         .roundedFrame(
-                            width: size == .S ? 156 : UIScreen.main.bounds.width - 40,
-                            height: size == .L ? UIScreen.main.bounds.width * 0.8 : 156
+                            width: size == .S ? 165 : UIScreen.main.bounds.width - 40,
+                            height: size == .L ? UIScreen.main.bounds.width * 0.8 : 165
                         )
                     
                     label.view
@@ -47,12 +47,12 @@ struct RouteCard: View {
                 
                 VStack (alignment: .leading, spacing: 5) {
                     Text(route.name)
-                        .headline()
+                        .headline(.leading)
                     Text(route.description)
-                        .subheadline()
+                        .subheadline(.leading)
                 }
             }
-            .frame(width: size == .S ? 156 : UIScreen.main.bounds.width - 40)
+            .frame(width: size == .S ? 165 : UIScreen.main.bounds.width - 40)
             .foregroundColor(Color.black)
         }
     }

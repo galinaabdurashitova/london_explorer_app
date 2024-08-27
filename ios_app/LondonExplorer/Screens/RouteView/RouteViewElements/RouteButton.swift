@@ -8,21 +8,24 @@
 import Foundation
 import SwiftUI
 
-enum RouteButton {
+enum RouteButton: Equatable {
     case publish
-    case published
+    case publishing
+    case published(Date)
     case edit
+    case save(Int)
+    case saving
+    case saved(Int)
     case start
     case completed(Date)
     case current
-    case download
-    case deleteDownload
     
     struct RouteButtonDetails {
         var label: String
         var colour: Color
         var text: String
         var date: Date?
+        var number: Int?
         
         var formattedDate: String? {
             if let date = date {
@@ -41,17 +44,44 @@ enum RouteButton {
                 colour: Color.blueAccent,
                 text: "Publish route"
             )
-        case .published:
+        case .publishing:
             return RouteButtonDetails(
-                label: "",
-                colour: Color.clear,
-                text: ""
+                label: "arrow.up.circle",
+                colour: Color.blueAccent,
+                text: "Publishing"
+            )
+        case .published(let date):
+            return RouteButtonDetails(
+                label: "checkmark.circle",
+                colour: Color.blueAccent,
+                text: "Published on",
+                date: date
             )
         case .edit:
             return RouteButtonDetails(
                 label: "pencil",
                 colour: Color.redAccent,
                 text: "Edit route"
+            )
+        case .save(let saves):
+            return RouteButtonDetails(
+                label: "heart",
+                colour: Color.redAccent,
+                text: "Save",
+                number: saves
+            )
+        case .saving:
+            return RouteButtonDetails(
+                label: "heart",
+                colour: Color.redAccent,
+                text: "Saving"
+            )
+        case .saved(let saves):
+            return RouteButtonDetails(
+                label: "heart.fill",
+                colour: Color.redAccent,
+                text: "Delete save",
+                number: saves
             )
         case .start:
             return RouteButtonDetails(
@@ -72,44 +102,43 @@ enum RouteButton {
                 colour: Color.greenAccent,
                 text: "Continue route"
             )
-        case .download:
-            return RouteButtonDetails(
-                label: "",
-                colour: Color.clear,
-                text: ""
-            )
-        case .deleteDownload:
-            return RouteButtonDetails(
-                label: "",
-                colour: Color.clear,
-                text: ""
-            )
         }
     }
     
     @ViewBuilder
     var view: some View {
         VStack(spacing: 7) {
-            Image(systemName: self.details.label)
-                .icon(size: 30, colour: self.details.colour)
-                .fontWeight(.light)
+            if self == .publishing || self == .saving {
+                ProgressView()
+                    .frame(height: 30)
+            } else {
+                Image(systemName: self.details.label)
+                    .icon(size: 30, colour: self.details.colour)
+                    .fontWeight(.light)
+            }
             
             VStack(spacing: 0) {
-                Text(self.details.text)
-                    .foregroundColor(Color.black)
-                    .font(.system(size: 14))
-                
-                if let date = self.details.formattedDate {
-                    Text(date)
+                if let number = self.details.number {
+                    Text(String(number))
+                        .foregroundColor(self.details.colour)
+                        .font(.system(size: 14, weight: .heavy))
+                } else {
+                    Text(self.details.text)
                         .foregroundColor(Color.black)
-                        .font(.system(size: 14, weight: .bold))
+                        .font(.system(size: 14))
+                    
+                    if let date = self.details.formattedDate {
+                        Text(date)
+                            .foregroundColor(Color.black)
+                            .font(.system(size: 14, weight: .bold))
+                    }
                 }
-            }            
+            }
         }
         .frame(width: (UIScreen.main.bounds.width - 40) / 3, height: 65)
     }
 }
 
 #Preview {
-    RouteButton.current.view
+    RouteButton.saving.view
 }

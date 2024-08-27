@@ -23,8 +23,9 @@ struct ContentView: View {
                     .environmentObject(currentRoute)
                     .environmentObject(globalSettings)
                     .environmentObject(awards)
-                    .onAppear {
+                    .task {
                         currentRoute.getMyRouteProgress(user: auth.profile)
+                        await awards.getRoutesNumber(user: auth.profile)
                     }
             } else {
                 AuthView()

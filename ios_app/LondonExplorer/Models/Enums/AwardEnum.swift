@@ -25,14 +25,14 @@ enum AwardTypes: String, Codable, CaseIterable {
         case loggedIn
         case profileOpened
         
-        func getAwards(user: User, routeProgress: RouteProgress? = nil) -> [User.UserAward] {
+        func getAwards(user: User, routeProgress: RouteProgress? = nil, routeNumber: Int = 0) -> [User.UserAward] {
             var awards: [User.UserAward] = []
             
             for award in AwardTypes.allCases.filter({ $0.trigger.contains(self) }) {
                 print("Check award \(award.rawValue)")
                 let userLevel = award.getUserLevel(user: user)
                 print("Current user level \(userLevel)")
-                let userPoints = award.getNewPoints(user: user, routeProgress: routeProgress)
+                let userPoints = award.getNewPoints(user: user, routeProgress: routeProgress, routeNumber: routeNumber)
                 print("New user points \(userPoints)")
                 let newUserLevel = award.getLevelForPoints(points: userPoints)
                 print("New user level \(newUserLevel)")
@@ -85,14 +85,14 @@ enum AwardTypes: String, Codable, CaseIterable {
         }
     }
     
-    func getPoints(user: User) -> Double {
+    func getPoints(user: User, routeNumber: Int = 0) -> Double {
         switch self {
         case .routesFinished:
             return Double(user.finishedRoutes.count)
         case .attractionsVisited:
             return Double(user.finishedRoutes.compactMap { $0.route?.stops.count }.reduce(0, +))
         case .routesPublished:
-            return 0
+            return Double(routeNumber)
         case .friends:
             return Double(user.friends.count)
         case .minutes:
@@ -107,14 +107,14 @@ enum AwardTypes: String, Codable, CaseIterable {
         }
     }
     
-    func getNewPoints(user: User, routeProgress: RouteProgress? = nil) -> Double {
+    func getNewPoints(user: User, routeProgress: RouteProgress? = nil, routeNumber: Int = 0) -> Double {
         switch self {
         case .routesFinished:
             return self.getPoints(user: user) + 1
         case .attractionsVisited:
             return self.getPoints(user: user) + Double(routeProgress == nil ? 0 : routeProgress!.route.stops.count)
         case .routesPublished:
-            return 0
+            return Double(routeNumber)
         case .friends:
             return Double(user.friends.count)
         case .minutes:

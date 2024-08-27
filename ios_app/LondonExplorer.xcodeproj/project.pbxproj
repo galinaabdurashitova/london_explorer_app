@@ -121,6 +121,9 @@
 		2AA9B92B2C5FB12E001F27B9 /* TestStorageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9B92A2C5FB12E001F27B9 /* TestStorageView.swift */; };
 		2AC3C4BA2C7CE9F400E95BE1 /* UserMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C4B92C7CE9F400E95BE1 /* UserMapper.swift */; };
 		2AC3C4BC2C7CFE8300E95BE1 /* FriendUpdateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C4BB2C7CFE8300E95BE1 /* FriendUpdateMapper.swift */; };
+		2AC3C4BE2C7D0DD200E95BE1 /* ErrorPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C4BD2C7D0DD200E95BE1 /* ErrorPopUp.swift */; };
+		2AC3C4C12C7D2E6B00E95BE1 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C4C02C7D2E6B00E95BE1 /* FavouritesView.swift */; };
+		2AC3C4C32C7D2E8A00E95BE1 /* FavouritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C4C22C7D2E8A00E95BE1 /* FavouritesViewModel.swift */; };
 		2AC56A802C28C0F400F7249B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */; };
 		2AC56A842C28C31D00F7249B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A832C28C31D00F7249B /* FirebaseAuth */; };
 		2AC56A862C28C31D00F7249B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A852C28C31D00F7249B /* FirebaseStorage */; };
@@ -293,6 +296,9 @@
 		2AA9B92A2C5FB12E001F27B9 /* TestStorageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStorageView.swift; sourceTree = "<group>"; };
 		2AC3C4B92C7CE9F400E95BE1 /* UserMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMapper.swift; sourceTree = "<group>"; };
 		2AC3C4BB2C7CFE8300E95BE1 /* FriendUpdateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendUpdateMapper.swift; sourceTree = "<group>"; };
+		2AC3C4BD2C7D0DD200E95BE1 /* ErrorPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPopUp.swift; sourceTree = "<group>"; };
+		2AC3C4C02C7D2E6B00E95BE1 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
+		2AC3C4C22C7D2E8A00E95BE1 /* FavouritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewModel.swift; sourceTree = "<group>"; };
 		2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AC56A882C28C51B00F7249B /* AttractionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionsService.swift; sourceTree = "<group>"; };
 		2AC56A8A2C28C6BF00F7249B /* ImagesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesRepository.swift; sourceTree = "<group>"; };
@@ -402,6 +408,7 @@
 				2AE8A03A2C14F395005E0F62 /* AttractionView */,
 				2A0E39FD2C50237E00AC32A4 /* AuthViews */,
 				2AE8A01E2C13A1D4005E0F62 /* CreateRouteScreen */,
+				2AC3C4BF2C7D2E5800E95BE1 /* Favourites */,
 				2AA5B11A2C08B90F001EC475 /* MainScreen */,
 				2A76D4A82C15D5A2007908E0 /* MapView */,
 				2A58EA8F2C40768C00F9A4C0 /* OnRouteView */,
@@ -707,6 +714,15 @@
 			path = Mappers;
 			sourceTree = "<group>";
 		};
+		2AC3C4BF2C7D2E5800E95BE1 /* Favourites */ = {
+			isa = PBXGroup;
+			children = (
+				2AC3C4C02C7D2E6B00E95BE1 /* FavouritesView.swift */,
+				2AC3C4C22C7D2E8A00E95BE1 /* FavouritesViewModel.swift */,
+			);
+			path = Favourites;
+			sourceTree = "<group>";
+		};
 		2AC56A872C28C50E00F7249B /* APIs */ = {
 			isa = PBXGroup;
 			children = (
@@ -812,6 +828,7 @@
 				2A76D4BE2C172AAD007908E0 /* BackButton.swift */,
 				2A76D4AD2C15FF56007908E0 /* ButtonView.swift */,
 				2A76D4D42C1F6C05007908E0 /* CustomTextField.swift */,
+				2AC3C4BD2C7D0DD200E95BE1 /* ErrorPopUp.swift */,
 				2AC56A8C2C2987B900F7249B /* ErrorScreen.swift */,
 				2A76D4CD2C1B9653007908E0 /* PopUp.swift */,
 				2AE8A0212C13A2C6005E0F62 /* ScreenHeader.swift */,
@@ -998,6 +1015,7 @@
 				2A5602712C766AB70057A5E1 /* FriendButton.swift in Sources */,
 				2AA5B13A2C09E52B001EC475 /* RouteProgress.swift in Sources */,
 				2A56025B2C7547410057A5E1 /* SearchView.swift in Sources */,
+				2AC3C4BE2C7D0DD200E95BE1 /* ErrorPopUp.swift in Sources */,
 				2A5602942C7B76660057A5E1 /* RouteMapHelper.swift in Sources */,
 				2A0E39E72C4E931200AC32A4 /* FinishRoutePopup.swift in Sources */,
 				2A5602542C753FB90057A5E1 /* FriendsRequestsWrapper.swift in Sources */,
@@ -1027,6 +1045,7 @@
 				2AD4B9612C0CC4A300B90C8A /* MainScreenHeader.swift in Sources */,
 				2AE8A0202C13A20A005E0F62 /* CreateRouteView.swift in Sources */,
 				2AD4B9652C0CDAFC00B90C8A /* LoadingView.swift in Sources */,
+				2AC3C4C12C7D2E6B00E95BE1 /* FavouritesView.swift in Sources */,
 				2AA5B1362C09D7BB001EC475 /* FeedUpdate.swift in Sources */,
 				2AA9B8E02C527DC6001F27B9 /* NavigationEnums.swift in Sources */,
 				2AFD1F5D2C21DAEC0061060E /* CodableMKPolyline.swift in Sources */,
@@ -1093,6 +1112,7 @@
 				2A0E39FB2C50227D00AC32A4 /* TabView.swift in Sources */,
 				2AA5B12E2C0909BC001EC475 /* SuggestedRoutesCarousel.swift in Sources */,
 				2AA5B14E2C0A11C9001EC475 /* DownloadedRoutesWidget.swift in Sources */,
+				2AC3C4C32C7D2E8A00E95BE1 /* FavouritesViewModel.swift in Sources */,
 				2AFD1F7A2C25E4770061060E /* CreateStopsView.swift in Sources */,
 				2AA5B1322C090EE4001EC475 /* SectionHeader.swift in Sources */,
 				2AFD1F622C237F3E0061060E /* SavedRouteView.swift in Sources */,

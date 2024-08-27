@@ -47,19 +47,14 @@ struct ProfileView: View {
         .scrollClipDisabled()
         .padding(.top, 20)
         .padding(.horizontal)
-        .popup(
-            isPresented: $viewModel.showError,
-            text: viewModel.error,
-            buttonText: "Ok",
-            oneButton: true,
-            systemImage: "xmark",
-            invertButtons: true
-        ) { }
+        .error(text: viewModel.error, isPresented: $viewModel.showError)
         .task {
             await viewModel.loadData(isCurrentUser: viewModel.user == auth.profile)
             if !viewModel.user.friends.contains(auth.profile.id) && viewModel.user.id != auth.profile.id {
                 viewModel.getUserFriendRequests(currentUserId: auth.profile.id)
-            }
+            } //else if viewModel.user.id == auth.profile.id {
+//                await awards.getRoutesNumber(user: auth.profile)
+//            }
         }
     }
     

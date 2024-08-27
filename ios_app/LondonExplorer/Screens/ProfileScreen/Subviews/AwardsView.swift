@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AwardsView: View {
     @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var awards: AwardsObserver
     @State var user: User
     
     var body: some View {
@@ -85,7 +86,7 @@ struct AwardsView: View {
     
     private func awardProgressBar(award: AwardTypes, colour: Color) -> some View {
         VStack(alignment: .center, spacing: 2) {
-            let currentPoints = award.getPoints(user: user)
+            let currentPoints = awards.getAwardPoints(user: user, award: award)
             let currentLevel = award.getLevelPoints(level: award.getUserLevel(user: user))
             let nextLevel = award.getLevelPoints(level: award.getUserLevel(user: user) + 1)
             
@@ -141,4 +142,5 @@ struct AwardsView: View {
 #Preview {
     AwardsView(user: MockData.Users[0])
         .environmentObject(AuthController(testProfile: true))
+        .environmentObject(AwardsObserver())
 }
