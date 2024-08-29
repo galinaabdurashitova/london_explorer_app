@@ -46,9 +46,7 @@ class AwardsObserver: ObservableObject {
     func getRoutesAwards(user: User) async {
         self.isLoading = true
         do {
-            let routes = try await RoutesService().fetchUserRoutes(userId: user.id)
-            self.maxLikes = routes.compactMap { $0.saves.count }.max() ?? 0
-            self.routesNumber = routes.count
+            self.routesNumber = try await RoutesService().getMostLikes(userId: user.id)
         } catch {
             print("Unable to get routes number")
         }

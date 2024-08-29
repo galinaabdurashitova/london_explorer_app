@@ -31,11 +31,16 @@ struct RouteCard: View {
         NavigationLink(value: navigation) {
             VStack (alignment: .leading, spacing: 10) {
                 ZStack (alignment: .topTrailing) {
-                    Image(uiImage: route.image)
-                        .roundedFrame(
+                    LoadingImage(url: $route.imageURL)
+                        .roundedFrameView(
                             width: size == .S ? 165 : UIScreen.main.bounds.width - 40,
                             height: size == .L ? UIScreen.main.bounds.width * 0.8 : 165
                         )
+//                    Image(uiImage: route.image)
+//                        .roundedFrame(
+//                            width: size == .S ? 165 : UIScreen.main.bounds.width - 40,
+//                            height: size == .L ? UIScreen.main.bounds.width * 0.8 : 165
+//                        )
                     
                     label.view
                         .padding(.all, 6.0)

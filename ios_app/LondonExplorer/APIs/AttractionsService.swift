@@ -38,7 +38,7 @@ class AttractionsService: Service, AttractionsServiceProtocol {
         let attractions = try self.decodeResponse(from: data, as: [AttractionWrapper].self, serviceName: serviceName, methodName: methodName)
         
         var responseAttractions: [Attraction] = []
-        for attraction in attractions[0..<20] {     // Remove [0..<20] part to get all atractions - reduced for speed
+        for attraction in attractions {     // Remove [0..<20] part to get all atractions - reduced for speed
             if !attraction.categories.isEmpty {
                 let newAttraction = Attraction(from: attraction)
                 responseAttractions.append(newAttraction)

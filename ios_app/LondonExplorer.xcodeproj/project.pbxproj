@@ -138,6 +138,7 @@
 		2AC3C5102C7FF66D00E95BE1 /* FourthSlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C50F2C7FF66D00E95BE1 /* FourthSlide.swift */; };
 		2AC3C5122C7FF78900E95BE1 /* FifthSlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C5112C7FF78900E95BE1 /* FifthSlide.swift */; };
 		2AC3C5142C7FF9B100E95BE1 /* SixthSlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C5132C7FF9B100E95BE1 /* SixthSlide.swift */; };
+		2AC3C5162C8080AC00E95BE1 /* LoadingImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C5152C8080AC00E95BE1 /* LoadingImage.swift */; };
 		2AC56A802C28C0F400F7249B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */; };
 		2AC56A842C28C31D00F7249B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A832C28C31D00F7249B /* FirebaseAuth */; };
 		2AC56A862C28C31D00F7249B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A852C28C31D00F7249B /* FirebaseStorage */; };
@@ -327,6 +328,7 @@
 		2AC3C50F2C7FF66D00E95BE1 /* FourthSlide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourthSlide.swift; sourceTree = "<group>"; };
 		2AC3C5112C7FF78900E95BE1 /* FifthSlide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FifthSlide.swift; sourceTree = "<group>"; };
 		2AC3C5132C7FF9B100E95BE1 /* SixthSlide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SixthSlide.swift; sourceTree = "<group>"; };
+		2AC3C5152C8080AC00E95BE1 /* LoadingImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingImage.swift; sourceTree = "<group>"; };
 		2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AC56A882C28C51B00F7249B /* AttractionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionsService.swift; sourceTree = "<group>"; };
 		2AC56A8A2C28C6BF00F7249B /* ImagesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesRepository.swift; sourceTree = "<group>"; };
@@ -695,6 +697,7 @@
 				2A16D7A12C6F5D5C00736532 /* MapsElements */,
 				2AFB40F22C6011B5005AEF8B /* RouteRelated */,
 				2A76D4A62C15D13D007908E0 /* ImagesSlidesHeader.swift */,
+				2AC3C5152C8080AC00E95BE1 /* LoadingImage.swift */,
 				2AA5B1282C090417001EC475 /* LondonExplorerLogo.swift */,
 				2A16D7B42C6FD89000736532 /* ProgressBar.swift */,
 			);
@@ -1169,6 +1172,7 @@
 				2A76D4D52C1F6C05007908E0 /* CustomTextField.swift in Sources */,
 				2A0E3A072C51800100AC32A4 /* UsersService.swift in Sources */,
 				2A56026F2C765DF10057A5E1 /* AppNavigation.swift in Sources */,
+				2AC3C5162C8080AC00E95BE1 /* LoadingImage.swift in Sources */,
 				2A56029E2C7BD3020057A5E1 /* ProfileUserRoutesList.swift in Sources */,
 				2A17571C2C6943A700D4DFB1 /* DateConverter.swift in Sources */,
 				2AC3C5122C7FF78900E95BE1 /* FifthSlide.swift in Sources */,
