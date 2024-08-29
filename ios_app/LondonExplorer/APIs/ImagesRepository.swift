@@ -15,8 +15,10 @@ class ImagesRepository {
     private let storageRef = Storage.storage().reference()
     
     private var attractionImagesCache: [String: [UIImage]] = [:]
+    private var attractionImageURLsCache: [String: [String]] = [:]
     
     private var usersImagesCache: [String: UIImage] = [:]
+    private var usersImageURLsCache: [String: String] = [:]
     
     enum ImageRepositoryError: Error {
         case listingFailed(String)
@@ -37,13 +39,13 @@ class ImagesRepository {
         do {
             let result = try await imageRef.listAll()
             
-            
             for index in 0..<min(maxNumber, result.items.count) {
                 do {
                     let data = try await getData(from: result.items[index])
                     if let image = UIImage(data: data) {
                         images.append(image)
                     }
+                    attractionImagesCache[attractionId] = images
                 } catch {
                     print("Failed to download image \(result.items[index].name): \(error.localizedDescription)")
                 }
@@ -96,6 +98,10 @@ class ImagesRepository {
     }
     
     func getAttractionImagesURL(attractionId: String) async throws -> [String] {
+        if let cachedAttraction = attractionImageURLsCache[attractionId] {
+            return cachedAttraction
+        }
+        
         let imageRef = storageRef.child("attractions/" + attractionId)
         
         var imagesURL: [String] = []
@@ -108,6 +114,7 @@ class ImagesRepository {
                     imagesURL.append(url.absoluteString)
                 }
             }
+            attractionImageURLsCache[attractionId] = imagesURL
         } catch {
             throw ImageRepositoryError.listingFailed(error.localizedDescription)
         }
@@ -120,9 +127,14 @@ class ImagesRepository {
     }
     
     func getUserImageUrl(userImageName: String) async -> String? {
+        if let cachedUser = usersImageURLsCache[userImageName] {
+            return cachedUser
+        }
+        
         let imageRef = storageRef.child("users/" + userImageName)
         
         if let url = await getImageURL(from: imageRef) {
+            usersImageURLsCache[userImageName] = url.absoluteString
             return url.absoluteString
         } else {
             return nil
@@ -142,7 +154,7 @@ class ImagesRepository {
         }
     }
     
-    func uploadImage(image: UIImage) async throws -> String? {
+    func uploadImage(userId: String, image: UIImage) async throws -> String? {
         guard let imageData = image.jpegData(compressionQuality: 0.8) else {
             throw NSError(domain: "ImageErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to JPEG data"])
         }
@@ -155,8 +167,9 @@ class ImagesRepository {
             _ = try await imageRef.putDataAsync(imageData, metadata: metadata)
             
             let downloadURL = try await imageRef.downloadURL()
+            usersImagesCache[userId] = image
+            usersImageURLsCache[userId] = downloadURL.absoluteString
             return downloadURL.lastPathComponent
-            
         } catch {
             print("Error uploading image: \(error.localizedDescription)")
             throw error
