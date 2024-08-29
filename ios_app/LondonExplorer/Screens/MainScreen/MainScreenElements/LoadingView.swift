@@ -43,6 +43,7 @@ struct LoadingView: View {
                         }
                     }
                     .scrollClipDisabled()
+                    .scrollDisabled(true)
                 }
                 
                 HStack {
@@ -57,17 +58,13 @@ struct LoadingView: View {
                     Spacer()
                 }
                 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    VStack (spacing: 12) {
-                        ForEach(0..<3) { _ in
-                            Color(Color.black.opacity(0.05))
-                                .frame(width: geometry.size.width, height: 70)
-                                .loading(isLoading: true)
-                        }
+                VStack {
+                    ForEach(0..<3) { _ in
+                        Color(Color.black.opacity(0.05))
+                            .frame(width: geometry.size.width, height: 70)
+                            .loading(isLoading: true)
                     }
                 }
-                
-                Spacer()
             }
         }
     }

@@ -16,7 +16,6 @@ class ImagesRepository {
     
     private var attractionImagesCache: [String: [UIImage]] = [:]
     
-//    private let storage = Storage.storage()
     private var usersImagesCache: [String: UIImage] = [:]
     
     enum ImageRepositoryError: Error {
@@ -41,7 +40,6 @@ class ImagesRepository {
             
             for index in 0..<min(maxNumber, result.items.count) {
                 do {
-                    print(result.items[index].name)
                     let data = try await getData(from: result.items[index])
                     if let image = UIImage(data: data) {
                         images.append(image)
@@ -74,7 +72,6 @@ class ImagesRepository {
         
         do {
             let data = try await getData(from: imageRef)
-            print("Data gotten")
             if let image = UIImage(data: data) {
                 usersImagesCache[userImageName] = image
                 return image
@@ -94,6 +91,53 @@ class ImagesRepository {
                 } else if let data = data {
                     continuation.resume(returning: data)
                 }
+            }
+        }
+    }
+    
+    func getAttractionImagesURL(attractionId: String) async throws -> [String] {
+        let imageRef = storageRef.child("attractions/" + attractionId)
+        
+        var imagesURL: [String] = []
+        
+        do {
+            let result = try await imageRef.listAll()
+            
+            for index in 0..<result.items.count {
+                if let url = await getImageURL(from: result.items[index]) {
+                    imagesURL.append(url.absoluteString)
+                }
+            }
+        } catch {
+            throw ImageRepositoryError.listingFailed(error.localizedDescription)
+        }
+            
+        if imagesURL.isEmpty {
+            throw ImageRepositoryError.downloadFailed(attractionId, "No image URL were successfully found.")
+        }
+        
+        return imagesURL
+    }
+    
+    func getUserImageUrl(userImageName: String) async -> String? {
+        let imageRef = storageRef.child("users/" + userImageName)
+        
+        if let url = await getImageURL(from: imageRef) {
+            return url.absoluteString
+        } else {
+            return nil
+        }
+    }
+    
+    private func getImageURL(from reference: StorageReference) async -> URL? {
+        return await withCheckedContinuation { continuation in
+            reference.downloadURL { url, error in
+                if let error = error {
+                    print("Error fetching image URL: \(error)")
+                    continuation.resume(returning: nil)
+                    return
+                }
+                continuation.resume(returning: url)
             }
         }
     }

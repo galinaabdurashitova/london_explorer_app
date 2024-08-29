@@ -24,7 +24,13 @@ struct FriendsFeed: View {
             }
             
             VStack (spacing: 12) {
-                if viewModel.friendsRequests.count > 0 || viewModel.updates.count > 0 {
+                if viewModel.isLoading {
+                    loader
+                } else if viewModel.error {
+                    WidgetError(text: "friends feed") {
+                        viewModel.reloadFeed(userId: auth.profile.id)
+                    }
+                } else if viewModel.friendsRequests.count > 0 || viewModel.updates.count > 0 {
                     ForEach ($viewModel.friendsRequests) { request in
                         FriendRequestBanner(viewModel: viewModel, user: request)
                     }
@@ -44,6 +50,16 @@ struct FriendsFeed: View {
         }
         .onAppear {
             viewModel.reloadFeed(userId: auth.profile.id)
+        }
+    }
+    
+    private var loader: some View {
+        VStack {
+            ForEach(0..<4) { _ in
+                Color(Color.black.opacity(0.05))
+                    .frame(height: 80)
+                    .loading(isLoading: true)
+            }
         }
     }
 }

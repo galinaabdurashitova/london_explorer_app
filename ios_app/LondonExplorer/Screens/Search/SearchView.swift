@@ -38,90 +38,17 @@ struct SearchView: View {
                     .pickerStyle(SegmentedPickerStyle())
                     
                     if globalSettings.searchTab == 0 {
-                        routesSearch
+                        RouteSearchView(viewModel: viewModel)
                     } else {
-                        userSearch
+                        UsersSearchView(viewModel: viewModel)
                     }
                 }
                 .padding()
             }
-            .onAppear {
-                viewModel.fetchUsers()
-                viewModel.fetchRoutes()
+            .refreshable {
+                viewModel.getScreenData()
             }
             .appNavigation()
-        }
-    }
-    
-    private var userSearch: some View {
-        VStack {
-            SearchBar(searchText: $viewModel.searchedUser) {
-                viewModel.filterUsers()
-            }
-            
-            ForEach(viewModel.searchedUser.isEmpty ? viewModel.users : viewModel.filteredUsers) { user in
-                NavigationLink(value: ProfileNavigation.profile(user)) {
-                    HStack {
-                        if let image = user.image {
-                            Image(uiImage: image)
-                                .profilePicture(size: 50)
-                        } else {
-                            Image("User3DIcon")
-                                .profilePicture(size: 50)
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 0) {
-                            Text(user.name)
-                                .sectionCaption()
-                            Text("@\(user.userName)")
-                                .sectionSubCaption()
-                        }
-                        .foregroundColor(Color.black)
-                        
-                        Spacer()
-                    }
-                    .padding(.vertical, 10)
-                    .overlay(
-                        Rectangle()
-                            .frame(height: 1)
-                            .foregroundColor(Color.black.opacity(0.5)),
-                        alignment: .bottom
-                    )
-                }
-            }
-        }
-    }
-    
-    private var routesSearch: some View {
-        VStack {
-            SearchBar(searchText: $viewModel.searchedRoute) {
-                viewModel.filterRoutes()
-            }
-            
-            ForEach(viewModel.searchedRoute.isEmpty ? viewModel.routes : viewModel.filteredRoutes) { route in
-                NavigationLink(value: RouteNavigation.info(route)) {
-                    HStack {
-                        Image(uiImage: route.image)
-                            .roundedFrame(width: 70, height: 70)
-                        
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text(route.name)
-                                .sectionCaption()
-                            RouteLabelRow(route: route)
-                        }
-                        .foregroundColor(Color.black)
-                        
-                        Spacer()
-                    }
-                    .padding(.vertical, 10)
-                    .overlay(
-                        Rectangle()
-                            .frame(height: 1)
-                            .foregroundColor(Color.black.opacity(0.5)),
-                        alignment: .bottom
-                    )
-                }
-            }
         }
     }
 }

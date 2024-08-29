@@ -59,6 +59,7 @@ struct OnRouteView: View {
         }
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
+        .error(text: viewModel.error, isPresented: $viewModel.showError)
         .toolbar(.hidden, for: .tabBar)
         .overlay {
             if viewModel.lastStop {
@@ -71,7 +72,9 @@ struct OnRouteView: View {
                             globalSettings.profileReloadTrigger = true
                             self.presentationMode.wrappedValue.dismiss()
                         } catch {
+                            viewModel.showError = true
                             viewModel.error = error.localizedDescription
+                            viewModel.showError = true
                         }
                     }
                 }

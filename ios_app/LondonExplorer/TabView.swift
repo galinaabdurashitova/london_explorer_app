@@ -77,6 +77,7 @@ struct MainTabView: View {
                     .padding(.horizontal)
             }
             .scrollDisabled(true)
+            .padding(.top)
         }
         .padding(.top, 20)
     }

@@ -13,21 +13,28 @@ class OnRouteViewModel: ObservableObject {
     /// Model used in the view variables
     @Published var routeProgress: RouteProgress
     
+    /// User related
+    @Published var collected: Route.RouteCollectable?
+    @Published var awarded: [User.UserAward] = []
+    
     /// Map variables
     @Published var currentCoordinate: CLLocationCoordinate2D?
     @Published var directionToStart: MKRoute?
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
     
-    /// Variables for correct view work
+    /// Route management
     @Published var lastStop: Bool = false
     @Published var stopRoute: Bool = false
-    @Published var showGreeting: Bool = false
+    
+    /// Greeting
     @Published var greetingText: String = ""
     @Published var greetingSubText: String = ""
+    @Published var showGreeting: Bool = false
+    
+    /// Variables for correct view work
     @Published var error: String = ""
+    @Published var showError: Bool = false
     @Published var isMapLoading: Bool = false
-    @Published var collected: Route.RouteCollectable?
-    @Published var awarded: [User.UserAward] = []
     
     /// Service variables
     private var locationManager = LocationManager()

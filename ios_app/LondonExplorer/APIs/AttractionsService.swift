@@ -30,6 +30,10 @@ class AttractionsService: Service, AttractionsServiceProtocol {
         let queryItems = attractionIds?.joined(separator: ",") ?? ""
         let url = serviceURL.appending(queryItems: [URLQueryItem(name: "attractionIds", value: queryItems)])
 
+        if let cached: [Attraction] = CacheManager.shared.getCachedData(for: url.absoluteString) {
+            return cached
+        }
+        
         let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
         let attractions = try self.decodeResponse(from: data, as: [AttractionWrapper].self, serviceName: serviceName, methodName: methodName)
         
@@ -41,9 +45,11 @@ class AttractionsService: Service, AttractionsServiceProtocol {
             }
         }
         
-        guard !attractions.isEmpty else {
+        guard !responseAttractions.isEmpty else {
             throw NSError(domain: serviceName, code: 1, userInfo: [NSLocalizedDescriptionKey: "No attractions available."])
         }
+        
+        CacheManager.shared.saveData(responseAttractions, for: url.absoluteString)
         
         return responseAttractions
     }
@@ -53,8 +59,16 @@ class AttractionsService: Service, AttractionsServiceProtocol {
         let methodName = "fetchAttraction"
         let url = serviceURL.appendingPathComponent("\(attractionId)")
         
+        if let cached: Attraction = CacheManager.shared.getCachedData(for: url.absoluteString) {
+            return cached
+        }
+        
         let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
         let attraction = try self.decodeResponse(from: data, as: AttractionWrapper.self, serviceName: serviceName, methodName: methodName)
-        return Attraction(from: attraction)
+        let attractionResponse = Attraction(from: attraction)
+        
+        CacheManager.shared.saveData(attractionResponse, for: url.absoluteString)
+        
+        return attractionResponse
     }
 }

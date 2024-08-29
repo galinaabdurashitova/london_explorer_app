@@ -27,21 +27,7 @@ struct ProfileUserRoutesList: View {
                     Spacer()
                     
                     if username {
-                        VStack(alignment: .trailing, spacing: -2) {
-                            Text("Show")
-                            Text("unpublished")
-                            
-                        }
-                        .font(.system(size: 15))
-                        .foregroundColor(Color.black.opacity(0.2))
-                        .padding(.trailing, -5)
-                        
-                        Toggle("", isOn: $viewModel.loadUnpublished)
-                            .padding(.all, 0)
-                            .frame(maxWidth: 57)
-                            .onTapGesture {
-                                viewModel.loadUnpublished.toggle()
-                            }
+                        unpublishedToggle
                     }
                 }
                 
@@ -54,7 +40,13 @@ struct ProfileUserRoutesList: View {
                 } else {
                     if viewModel.routes.count > 0 {
                         ForEach(viewModel.loadUnpublished ? viewModel.routes : viewModel.routes.filter { $0.datePublished != nil }, id: \.id) { route in
-                            RouteCard(route: Binding(get: { route }, set: { _ in }), size: .M)
+                            RouteCard(
+                                route: Binding(get: { route }, set: { _ in }),
+                                label: route.datePublished == nil ? .unpublished
+                                    : route.saves.count > 0 ? .likes(route.saves.count)
+                                    : .published(route.datePublished!),
+                                size: .M
+                            )
                         }
                     } else if username {
                         Button(action: {
@@ -67,6 +59,26 @@ struct ProfileUserRoutesList: View {
                     }
                 }
             }
+        }
+    }
+    
+    private var unpublishedToggle: some View {
+        HStack {
+            VStack(alignment: .trailing, spacing: -2) {
+                Text("Show")
+                Text("unpublished")
+                
+            }
+            .font(.system(size: 15))
+            .foregroundColor(Color.black.opacity(0.2))
+            .padding(.trailing, -5)
+            
+            Toggle("", isOn: $viewModel.loadUnpublished)
+                .padding(.all, 0)
+                .frame(maxWidth: 57)
+                .onTapGesture {
+                    viewModel.loadUnpublished.toggle()
+                }
         }
     }
     
