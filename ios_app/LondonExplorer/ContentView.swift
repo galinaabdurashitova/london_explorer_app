@@ -16,7 +16,17 @@ struct ContentView: View {
     
     var body: some View {
         Group {
-            if auth.isSignedIn {
+            if !networkMonitor.isConnected {
+                VStack(spacing: 25) {
+                    HStack {
+                        LondonExplorerLogo(scrollOffset: 50)
+                        Image("Bus3DIcon")
+                    }
+                    
+                    EmptyStateBanner()
+                }
+                .padding()
+            } else if auth.isSignedIn {
                 MainTabView()
                     .environmentObject(networkMonitor)
                     .environmentObject(auth)

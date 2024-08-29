@@ -18,19 +18,18 @@ struct FifthSlide: View {
                 .multilineTextAlignment(.center)
             
             VStack(spacing: 15) {
-                Image(systemName: "arrow.up.circle")
+                Image(systemName: isAnimating ? "arrow.up.circle" : "checkmark.circle")
                     .font(.system(size: 70))
                     .foregroundColor(Color.blueAccent)
-                    .symbolEffect(.bounce, options: .repeating, value: isAnimating)
+//                    .symbolEffect(.bounce, options: .repeating, value: isAnimating)
+                    .contentTransition(.symbolEffect(.replace, options: .repeating))
                     .fontWeight(.light)
                 Text("Publishing")
                     .fontWeight(.light)
                     .opacity(isAnimating ? 1 : 0.3)
             }
             .onAppear {
-                withAnimation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
-                    isAnimating = false
-                }
+                startAnimationLoop()
             }
             
             Text("Keep in mind that you can edit or delete your route only when it's not published")
@@ -41,9 +40,19 @@ struct FifthSlide: View {
         .cornerRadius(30)
         .shadow(radius: 3)
     }
+    
+    private func startAnimationLoop() {
+        withAnimation(Animation.easeInOut(duration: 1.5)) {
+            isAnimating.toggle()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            startAnimationLoop()
+        }
+    }
 }
 
 #Preview {
-    OnboardingCarousel()
+    FifthSlide()
         .padding()
 }
