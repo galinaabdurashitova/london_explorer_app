@@ -12,12 +12,9 @@ class AttractionViewModel: ObservableObject {
     @Binding var stops: [Route.RouteStop]
     @Binding var attraction: Attraction
     
-    private let imagesRep: ImagesRepository = ImagesRepository()
-    
     init(stops: Binding<[Route.RouteStop]>, attraction: Binding<Attraction>) {
         self._stops = stops
         self._attraction = attraction
-        Task { await fetchAttractionImages() }
     }
     
     func toggleAttracation(attraction: Attraction) {
@@ -40,15 +37,14 @@ class AttractionViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func fetchAttractionImages() async {
         if !attraction.finishedImagesDownload {
             do {
-                let images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
+                let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attraction.id, reload: true)
                 
-                DispatchQueue.main.async {
-                    self.attraction.images = images
-                    self.attraction.finishedImagesDownload = true
-                }
+                self.attraction.images = images
+                self.attraction.finishedImagesDownload = true
             } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
                 print("Listing failed for attraction \(attraction.id): \(message)")
             } catch ImagesRepository.ImageRepositoryError.downloadFailed(let itemName, let message) {

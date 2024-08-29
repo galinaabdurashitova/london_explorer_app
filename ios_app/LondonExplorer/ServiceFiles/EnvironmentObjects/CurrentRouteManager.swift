@@ -10,6 +10,7 @@ import SwiftUI
 
 class CurrentRouteManager: ObservableObject {
     @CurrentRoutesStorage(key: "LONDON_EXPLORER_CURRENT_ROUTES") var savedRoutesProgress: [RouteProgress]
+    
     @Published var routeProgress: RouteProgress? {
         didSet {
             if let routeProgress = routeProgress {

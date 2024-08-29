@@ -11,4 +11,5 @@ struct UpdateUserRequest: Codable {
     var name: String?
     var userName: String?
     var description: String?
+    var imageName: String?
 }

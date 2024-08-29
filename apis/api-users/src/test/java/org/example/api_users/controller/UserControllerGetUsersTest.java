@@ -29,8 +29,8 @@ public class UserControllerGetUsersTest {
         // Test to verify that users are retrieved successfully by their IDs.
         List<String> userIds = Arrays.asList("1", "2");
         List<User> mockUsers = Arrays.asList(
-                new User("1", "user1@example.com", "User One", "user1", null),
-                new User("2", "user2@example.com", "User Two", "user2", null)
+                new User("1", "user1@example.com", "User One", "user1", null, null),
+                new User("2", "user2@example.com", "User Two", "user2", null, null)
         );
 
         when(userService.getUsersByIds(userIds)).thenReturn(mockUsers);
@@ -46,8 +46,8 @@ public class UserControllerGetUsersTest {
     public void testGetUsersWithNoIds() {
         // Test to verify that all users are retrieved when no IDs are provided.
         List<User> mockUsers = Arrays.asList(
-                new User("1", "user1@example.com", "User One", "user1", null),
-                new User("2", "user2@example.com", "User Two", "user2", null)
+                new User("1", "user1@example.com", "User One", "user1", null, null),
+                new User("2", "user2@example.com", "User Two", "user2", null, null)
         );
 
         // Mock the getAllUsers method instead of getUsersByIds(null)
@@ -65,8 +65,8 @@ public class UserControllerGetUsersTest {
         // Test to verify that only the users found by their IDs are returned, excluding the ones not found.
         List<String> userIds = Arrays.asList("1", "2", "3");
         List<User> mockUsers = Arrays.asList(
-                new User("1", "user1@example.com", "User One", "user1", null),
-                new User("2", "user2@example.com", "User Two", "user2", null)
+                new User("1", "user1@example.com", "User One", "user1", null, null),
+                new User("2", "user2@example.com", "User Two", "user2", null, null)
         );
 
         when(userService.getUsersByIds(userIds)).thenReturn(mockUsers);

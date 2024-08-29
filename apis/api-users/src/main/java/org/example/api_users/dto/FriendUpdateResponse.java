@@ -5,14 +5,16 @@ import java.time.LocalDateTime;
 
 public class FriendUpdateResponse {
     private String userId;
+    private String imageName;
     private String name;
     private String userName;
     private Timestamp updateDate;
     private String updateType;
     private String description;
 
-    public FriendUpdateResponse(String userId, String name, String userName, Timestamp updateDate, String updateType, String description) {
+    public FriendUpdateResponse(String userId, String imageName, String name, String userName, Timestamp updateDate, String updateType, String description) {
         this.userId = userId;
+        this.imageName = imageName;
         this.name = name;
         this.userName = userName;
         this.updateDate = updateDate;
@@ -22,6 +24,9 @@ public class FriendUpdateResponse {
 
     public String getUserId() { return this.userId; }
     public void setUserId(String userId) { this.userId = userId; }
+
+    public String getImageName() { return this.imageName; }
+    public void setImageName(String imageName) { this.imageName = imageName; }
 
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }

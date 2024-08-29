@@ -31,9 +31,35 @@ struct FriendButton: View {
         }
     }
     
-    @State var type: Stage
+    @EnvironmentObject var auth: AuthController
+    @EnvironmentObject var awards: AwardsObserver
+    @EnvironmentObject var globalSettings: GlobalSettings
+    @ObservedObject var viewModel: ProfileViewModel
     
     var body: some View {
+        ZStack {
+            if viewModel.user.friends.contains(auth.profile.id) {
+                button(type: .add)
+            } else if viewModel.isUserRequestProcessing {
+                ProgressView()
+            } else if viewModel.isFriendRequestSent {
+                button(type: .requested)
+            } else {
+                Button(action: {
+                    Task {
+                        await viewModel.addFriend(userFromId: auth.profile.id)
+                        await auth.reloadUser()
+                        awards.checkAward(for: .friendshipApproved, user: auth.profile)
+                        globalSettings.profileReloadTrigger = true
+                    }
+                }) {
+                    button(type: .add)
+                }
+            }
+        }
+    }
+    
+    private func button(type: Stage) -> some View {
         HStack {
             Text(type.rawValue)
                 .foregroundColor(Color.white)
@@ -48,5 +74,8 @@ struct FriendButton: View {
 }
 
 #Preview {
-    FriendButton(type: .add)
+    FriendButton(viewModel: ProfileViewModel(user: MockData.Users[0]))
+        .environmentObject(AuthController(testProfile: false))
+        .environmentObject(AwardsObserver())
+        .environmentObject(GlobalSettings())
 }

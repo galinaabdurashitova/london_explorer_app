@@ -37,7 +37,6 @@ class AuthController: ObservableObject {
             print("Error while fetching the user profile: \(error)")
         }
         self.isFetchingUser = false
-        print(self.profile.awards)
         print("User reloaded")
     }
     
@@ -55,6 +54,7 @@ class AuthController: ObservableObject {
         }
     }
     
+    
     private func setUserProfile(user: User = MockData.Users[0]) {
         DispatchQueue.main.async {
             self.profile = user
@@ -68,6 +68,7 @@ class AuthController: ObservableObject {
                 guard let user = user else {
                     DispatchQueue.main.async {
                         self?.isSignedIn = false
+                        self?.isStarting = false
                     }
                     return
                 }
@@ -120,7 +121,6 @@ class AuthController: ObservableObject {
             
             self.setUserProfile(user: userProfile)
             
-            
             DispatchQueue.main.async {
                 self.isSignedIn = true
             }
@@ -132,16 +132,30 @@ class AuthController: ObservableObject {
         }
     }
     
+    @MainActor
     func signOut() {
         do {
             try Auth.auth().signOut()
-            
-            DispatchQueue.main.async {
-                self.isSignedIn = false
-                self.setUserProfile(user: User(userId: "", name: "", userName: ""))
-            }
+            self.isSignedIn = false
+            self.isStarting = false
+            self.setUserProfile(user: User(userId: "", name: "", userName: ""))
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
+    }
+    
+    func editProfile(setting: SettingsType, newValue: String) async throws {
+        switch setting {
+        case .picture:
+            try await usersRepository.updateUserInfo(userId: profile.id, newName: nil, newUserName: nil, newDescription: nil, newImageName: newValue)
+        case .name:
+            try await usersRepository.updateUserInfo(userId: profile.id, newName: newValue, newUserName: nil, newDescription: nil, newImageName: nil)
+        case .username:
+            try await usersRepository.updateUserInfo(userId: profile.id, newName: nil, newUserName: newValue, newDescription: nil, newImageName: nil)
+        case .description:
+            try await usersRepository.updateUserInfo(userId: profile.id, newName: nil, newUserName: nil, newDescription: newValue, newImageName: nil)
+        }
+        
+        await self.reloadUser()
     }
 }

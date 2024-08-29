@@ -24,9 +24,10 @@ extension Text {
             .opacity(0.5)
     }
     
-    func headline() -> some View {
+    func headline(_ alignment: TextAlignment = .leading) -> some View {
         self
             .font(.system(size: 14, weight: .medium))
+            .multilineTextAlignment(alignment)
     }
     
     func subheadline(_ alignment: TextAlignment = .leading) -> some View {

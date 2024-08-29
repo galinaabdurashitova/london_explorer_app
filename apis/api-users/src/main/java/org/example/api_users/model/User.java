@@ -21,16 +21,20 @@ public class User {
     @Column(name = "user_description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "image_name", nullable = true, length = 264)
+    private String imageName;
+
     public User() {
         // Empty constructor needed for JPA
     }
 
-    public User(String userId, String email, String name, String userName, String description) {
+    public User(String userId, String email, String name, String userName, String description, String imageName) {
         this.userId = userId;
         this.email = email;
         this.name = name;
         this.userName = userName;
         this.description = description;
+        this.imageName = imageName;
     }
 
     // Getters and Setters
@@ -74,4 +78,8 @@ public class User {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getImageName() { return imageName; }
+
+    public void setImageName(String imageName) { this.imageName = imageName; }
 }

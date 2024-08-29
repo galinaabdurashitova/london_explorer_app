@@ -12,11 +12,10 @@ protocol UsersServiceProtocol: Service {
     func createUser(newUser: User) async throws                                     // Create user
     func saveFinishedRoute(userId: String, route: RouteProgress) async throws       // Save finished route
     func saveUserAward(userId: String, awards: [User.UserAward]) async throws       // Save user award
-    func updateUserInfo(userId: String,
-                        newName: String?,
-                        newUserName: String?,
-                        newDescription: String?) async throws                       // Update user
-    func fetchUsers(userIds: [String]?) async throws -> [User]                      // Get all users/by IDs
+    func updateUserInfo(userId: String, newName: String?, newUserName: String?,
+                        newDescription: String?, newImageName: String?) async throws // Update user
+    func fetchAllUsers() async throws -> [User]                                     // Get all users
+    func fetchUsers(userIds: [String]?) async throws -> [User]                      // Get users by IDs
     func createFriendRequest(userFromId: String, userToId: String) async throws     // Send/confirm friend request
     func declineFriendRequest(userFromId: String, userToId: String) async throws    // Decline friend request
     func fetchFriendRequests(userId: String) async throws -> [User]                 // Get friendship requests
@@ -24,347 +23,137 @@ protocol UsersServiceProtocol: Service {
 }
 
 class UsersService: Service, UsersServiceProtocol {
-    private lazy var serviceURL: URL = {
-        return baseURL.appendingPathComponent("users")
-    }()
+    private let serviceURL = URL(string: "http://localhost:8081/api/users")!
+    private let serviceName = "Users service"
     
-    override init() {
-        super.init()
-    }
+    private let userMapper: UserMapper = UserMapper()
+    private let friendUpdateMapper: FriendUpdateMapper = FriendUpdateMapper()
+
     
     func fetchUser(userId: String) async throws -> User {
+        let methodName = "fetchUser"
         let url = serviceURL.appendingPathComponent("\(userId)")
-        let (data, response) = try await URLSession.shared.data(from: url)
 
-        do {
-            try self.checkResponse(response: response, service: "Users service", method: "fetchUser")
-            let user = try JSONDecoder().decode(UserWrapper.self, from: data)
-            return self.convertUser(userWrapper: user)
-        } catch let error {
-            if let decodingError = error as? DecodingError {
-                throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Decoding error: \(decodingError.localizedDescription)"])
-            } else {
-                throw error
-            }
-        }
+        let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
+        let user = try decodeResponse(from: data, as: UserWrapper.self, serviceName: serviceName, methodName: methodName)
+        let responseUsers = await userMapper.mapToUser(from: user)
+        return responseUsers
     }
+    
     
     func createUser(newUser: User) async throws {
-        var request = URLRequest(url: serviceURL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let methodName = "createUser"
         
-        let newUserWrapped = UserWrapper(
-            userId: newUser.id,
-            email: newUser.email,
-            name: newUser.name,
-            userName: newUser.userName
-        )
-        
-        do {
-            let jsonData = try JSONEncoder().encode(newUserWrapped)
-            request.httpBody = jsonData
-            let (_, response) = try await URLSession.shared.data(for: request)
-            try self.checkResponse(response: response, service: "Users service", method: "createUser")
-        } catch let encodingError as EncodingError {
-            throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Encoding error: \(encodingError.localizedDescription)"])
-        } catch {
-            throw error
-        }
+        let _ = try await self.makeRequest(method: .post, url: serviceURL, body: UserWrapper(from: newUser),
+                                               serviceName: serviceName, methodName: methodName)
     }
+    
     
     func saveFinishedRoute(userId: String, route: RouteProgress) async throws {
-        guard let endTime = route.endTime else { throw ServiceError.serverError(400) }
-        
+        guard route.endTime != nil else { throw ServiceError.serverError(400) }
+        let methodName = "saveFinishedRoute"
         let url = serviceURL.appendingPathComponent("\(userId)/finishedRoutes")
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        var newCollectables: [FinishedRouteWrapper.UserCollectable] = []
-        
-        for collectable in route.collectables {
-            newCollectables.append(
-                FinishedRouteWrapper.UserCollectable(userCollectableId: collectable.id, collectable: collectable.type.rawValue)
-            )
-        }
-        
-        let newFinishedRouteWrapped = FinishedRouteWrapper(
-            routeId: route.route.id,
-            spentMinutes: route.totalElapsedMinutes(),
-            finishedDate: DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toString(from: endTime),
-            userCollectables: newCollectables
-        )
-        
-        do {
-            let jsonData = try JSONEncoder().encode(newFinishedRouteWrapped)
-            request.httpBody = jsonData
-            let (_, response) = try await URLSession.shared.data(for: request)
-            try self.checkResponse(response: response, service: "Users service", method: "saveFinishedRoute")
-        } catch let encodingError as EncodingError {
-            throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Encoding error: \(encodingError.localizedDescription)"])
-        } catch {
-            throw error
-        }
+        let _ = try await self.makeRequest(method: .post, url: url, body: FinishedRouteWrapper(from: route),
+                                               serviceName: serviceName, methodName: methodName)
     }
+    
     
     func saveUserAward(userId: String, awards: [User.UserAward]) async throws {
+        let methodName = "saveUserAward"
         let url = serviceURL.appendingPathComponent("\(userId)/awards")
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        var newAwards: [UserWrapper.UserAward] = []
-        
-        for award in awards {
-            let newAward = UserWrapper.UserAward(
-                userAwardId: award.id,
-                award: award.type.rawValue,
-                awardLevel: award.level,
-                awardDate: DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toString(from: award.date)
-            )
-            
-            newAwards.append(newAward)
-        }
-        
-        do {
-            let jsonData = try JSONEncoder().encode(newAwards)
-            request.httpBody = jsonData
-            let (_, response) = try await URLSession.shared.data(for: request)
-            try self.checkResponse(response: response, service: "Users service", method: "saveUserAward")
-        } catch let encodingError as EncodingError {
-            throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Encoding error: \(encodingError.localizedDescription)"])
-        } catch {
-            throw error
-        }
+        let newAwards = awards.compactMap { UserWrapper.UserAward(from: $0) }
+        let _ = try await self.makeRequest(method: .post, url: url, body: newAwards,
+                                           serviceName: serviceName, methodName: methodName)
     }
     
-    func updateUserInfo(userId: String,
-                        newName: String? = nil,
-                        newUserName: String? = nil,
-                        newDescription: String? = nil) async throws {
-        let newUserInfo = UpdateUserRequest(name: newName, userName: newUserName, description: newDescription)
-        
+    
+    func updateUserInfo(userId: String, newName: String? = nil, newUserName: String? = nil, newDescription: String? = nil, newImageName: String? = nil) async throws {
+        let methodName = "updateUserInfo"
         let url = serviceURL.appendingPathComponent("\(userId)")
-        var request = URLRequest(url: url)
-        request.httpMethod = "PATCH"
         
-        do {
-            let jsonData = try JSONEncoder().encode(newUserInfo)
-            request.httpBody = jsonData
-            let (_, response) = try await URLSession.shared.data(for: request)
-            try self.checkResponse(response: response, service: "Users service", method: "updateUserInfo")
-        } catch let encodingError as EncodingError {
-            throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Encoding error: \(encodingError.localizedDescription)"])
-        } catch {
-            throw error
-        }
+        let newUserInfo = UpdateUserRequest(name: newName, userName: newUserName, description: newDescription, imageName: newImageName)
+        let _ = try await self.makeRequest(method: .patch, url: url, body: newUserInfo,
+                                           serviceName: serviceName, methodName: methodName)
     }
     
-    func fetchUsers(userIds: [String]?) async throws -> [User] {
+    
+    func fetchAllUsers() async throws -> [User] {
+        return try await fetchUsers(userIds: nil)
+    }
+    
+    
+    func fetchUsers(userIds: [String]? = nil) async throws -> [User] {
+        let methodName = "fetchUsers"
         let queryItems = userIds?.joined(separator: ",") ?? ""
         let url = serviceURL.appending(queryItems: [URLQueryItem(name: "userIds", value: queryItems)])
         
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        do {
-            try self.checkResponse(response: response, service: "Users service", method: "fetchUsers")
-            let users = try JSONDecoder().decode([UserWrapper].self, from: data)
-            
-            var responseUsers: [User] = []
-            for user in users {
-                responseUsers.append(self.convertUser(userWrapper: user))
-            }
-            
-            return responseUsers
-        } catch let error {
-            if let decodingError = error as? DecodingError {
-                throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Decoding error: \(decodingError.localizedDescription)"])
-            } else {
-                throw error
-            }
-        }
+        let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
+        let users = try await self.decodeUsers(from: data, methodName: methodName)
+        return users
     }
+    
     
     func createFriendRequest(userFromId: String, userToId: String) async throws {
+        let methodName = "createFriendRequest"
         let url = serviceURL.appendingPathComponent("\(userFromId)/friends")
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let friendRequest = FriendRequest(friendUserId: userToId)
-        
-        do {
-            let jsonData = try JSONEncoder().encode(friendRequest)
-            request.httpBody = jsonData
-            let (_, response) = try await URLSession.shared.data(for: request)
-            try self.checkResponse(response: response, service: "Users service", method: "createFriendRequest")
-        } catch let encodingError as EncodingError {
-            throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Encoding error: \(encodingError.localizedDescription)"])
-        } catch {
-            throw error
-        }
+        let _ = try await self.makeRequest(method: .post, url: url, body: friendRequest, serviceName: serviceName, methodName: methodName)
     }
+    
     
     func declineFriendRequest(userFromId: String, userToId: String) async throws {
+        let methodName = "declineFriendRequest"
         let url = serviceURL.appendingPathComponent("\(userFromId)/friends/\(userToId)")
-        var request = URLRequest(url: url)
-        request.httpMethod = "DELETE"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            let jsonString = String(data: data, encoding: .utf8)
-            print("Received JSON: \(jsonString ?? "No Data")")
-            try self.checkResponse(response: response, service: "Users service", method: "declineFriendRequest")
-        } catch {
-            throw error
-        }
+        let _ = try await self.makeRequest(method: .delete, url: url, serviceName: serviceName, methodName: methodName)
     }
+    
     
     func fetchFriendRequests(userId: String) async throws -> [User] {
+        let methodName = "fetchFriendRequests"
         let url = serviceURL.appendingPathComponent("\(userId)/friends/requests")
-        let (data, response) = try await URLSession.shared.data(from: url)
         
-        do {
-            try self.checkResponse(response: response, service: "Users service", method: "fetchFriendRequests")
-            let users = try JSONDecoder().decode([UserWrapper].self, from: data)
-            
-            var responseUsers: [User] = []
-            for user in users {
-                responseUsers.append(self.convertUser(userWrapper: user))
-            }
-            
-            return responseUsers
-        } catch let error {
-            if let decodingError = error as? DecodingError {
-                throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Decoding error: \(decodingError.localizedDescription)"])
-            } else {
-                throw error
-            }
-        }
+        let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
+        let users = try await self.decodeUsers(from: data, methodName: methodName)
+        return users
     }
+    
     
     func fetchFriendsUpdates(userId: String, limit: Int = 30) async throws -> [FriendUpdate] {
-        var url = serviceURL.appendingPathComponent("\(userId)/friends/updates")
-        url = url.appending(queryItems: [URLQueryItem(name: "limit", value: String(limit))])
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let methodName = "fetchFriendsUpdates"
+        let url = serviceURL
+            .appendingPathComponent("\(userId)/friends/updates")
+            .appending(queryItems: [URLQueryItem(name: "limit", value: String(limit))])
         
-        do {
-            try self.checkResponse(response: response, service: "Users service", method: "fetchFriendsUpdates")
-            let updates = try JSONDecoder().decode([FriendUpdateWrapper].self, from: data)
-            
-            var responseUpdates: [FriendUpdate] = []
-            for update in updates {
-                if let updateType = FriendUpdate.UpdateType(rawValue: update.updateType), let date = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toDate(from: update.updateDate) {
-                    responseUpdates.append(
-                        FriendUpdate(
-                            friend: User(
-                                userId: update.userId,
-                                name: update.name,
-                                userName: update.userName
-                            ),
-                            description: update.description,
-                            date: date,
-                            update: updateType
-                        )
-                    )
-                } else {
-                    print("Failed to convert update date \(update.updateDate) or update type \(update.updateType)")
-                }
-            }
-            
-            return responseUpdates
-        } catch let error {
-            if let decodingError = error as? DecodingError {               
-                switch decodingError {
-                case .typeMismatch(let key, let context):
-                    print("User service fetchUserProfile: decoding error - Type mismatch for key \(key) in context \(context.debugDescription)")
-                case .valueNotFound(let key, let context):
-                    print("User service fetchUserProfile: decoding error - Value not found for key \(key) in context \(context.debugDescription)")
-                case .keyNotFound(let key, let context):
-                    print("User service fetchUserProfile: decoding error - Key '\(key)' not found: \(context.debugDescription)")
-                case .dataCorrupted(let context):
-                    print("User service fetchUserProfile: decoding error - Data corrupted: \(context.debugDescription)")
-                @unknown default:
-                    print("User service fetchUserProfile: decoding error - Unknown decoding error")
-                }
-                throw NSError(domain: "UsersService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Decoding error: \(decodingError.localizedDescription)"])
-            } else {
-                print(error.localizedDescription)
-                throw error
+        let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
+        let updates = try self.decodeResponse(from: data, as: [FriendUpdateWrapper].self, serviceName: serviceName, methodName: methodName)
+        
+        var responseUpdates: [FriendUpdate] = []
+        for update in updates {
+            do {
+                let update = try await friendUpdateMapper.mapToFriendUpdate(from: update)
+                responseUpdates.append(update)
+            } catch {
+                print("Failed to convert: \(error.localizedDescription)")
             }
         }
+        
+        return responseUpdates
     }
     
-    private func convertUser(userWrapper: UserWrapper) -> User {
-        var userAwards: [User.UserAward] = []
+    
+    private func decodeUsers(from data: Data, methodName: String) async throws -> [User] {
+        let users = try self.decodeResponse(from: data, as: [UserWrapper].self, serviceName: serviceName, methodName: methodName)
         
-        if let awards = userWrapper.awards {
-            for award in awards {
-                if let awardDate = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toDate(from: award.awardDate), let awardType = AwardTypes(rawValue: award.award) {
-                    userAwards.append(
-                        User.UserAward(
-                            id: award.userAwardId,
-                            type: awardType,
-                            level: award.awardLevel,
-                            date: awardDate
-                        )
-                    )
-                } else {
-                    print("Failed to convert award date \(award.awardDate) or award type for award \(award.award)")
-                }
-            }
+        var responseUsers: [User] = []
+        for user in users {
+            let mappedUser = await userMapper.mapToUser(from: user)
+            responseUsers.append(mappedUser)
         }
         
-        var userCollectables: [User.UserCollectable] = []
-        
-        if let collectables = userWrapper.collectables {
-            for collectable in collectables {
-                if let collectableType = Collectable(rawValue: collectable.collectable) {
-                    userCollectables.append(
-                        User.UserCollectable(
-                            id: collectable.userCollectableId,
-                            type: collectableType,
-                            finishedRouteId: collectable.finishedRouteId
-                        )
-                    )
-                } else {
-                    print("Failed to convert collectable type for collectable \(collectable.collectable)")
-                }
-            }
-        }
-        
-        var finishedRoutes: [User.FinishedRoute] = []
-        
-        if let routes = userWrapper.finishedRoutes {
-            for route in routes {
-                if let finishedDate = DateConverter(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ").toDate(from: route.finishedDate) {
-                    finishedRoutes.append(
-                        User.FinishedRoute(
-                            id: route.finishedRouteId,
-                            routeId: route.routeId,
-                            spentMinutes: route.spentMinutes,
-                            finishedDate: finishedDate,
-                            collectables: route.collectables
-                        )
-                    )
-                } else {
-                    print("Failed to convert finished date \(route.finishedDate) for finished route \(route.finishedRouteId)")
-                }
-            }
-        }
-        
-        return User(
-            userId: userWrapper.userId,
-            email: userWrapper.email,
-            name: userWrapper.name,
-            userName: userWrapper.userName.lowercased(),
-            userDescription: userWrapper.description,
-            awards: userAwards,
-            collectables: userCollectables,
-            friends: userWrapper.friends ?? [],
-            finishedRoutes: finishedRoutes.sorted { $0.finishedDate > $1.finishedDate }
-        )
+        return responseUsers
     }
 }

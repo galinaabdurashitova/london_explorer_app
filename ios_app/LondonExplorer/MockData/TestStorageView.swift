@@ -63,5 +63,6 @@ struct TestStorageView: View {
             }
         }
         .padding()
+        .appNavigation()
     }
 }

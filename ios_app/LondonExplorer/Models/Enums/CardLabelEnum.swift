@@ -11,8 +11,11 @@ import SwiftUI
 enum CardLabel {
     case likes(Int)
     case download(Date)
+    case created(Date)
     case empty
     case completed(Date)
+    case published(Date)
+    case unpublished
 
     @ViewBuilder
     var view: some View {
@@ -34,6 +37,13 @@ enum CardLabel {
                 Text(formattedDate(date: date))
                     .font(.system(size: 12, weight: .bold))
             }
+        case .created(let date):
+            HStack(spacing: 3) {
+                Text("Created on")
+                    .font(.system(size: 12))
+                Text(formattedDate(date: date))
+                    .font(.system(size: 12, weight: .bold))
+            }
         case .empty:
             EmptyView()
         case .completed(let date):
@@ -43,6 +53,23 @@ enum CardLabel {
                 Text(formattedDate(date: date))
                     .font(.system(size: 12, weight: .bold))
             }
+        case .published(let date):
+            HStack(spacing: 3) {
+                Text("Published on")
+                    .font(.system(size: 12))
+                Text(formattedDate(date: date))
+                    .font(.system(size: 12, weight: .bold))
+            }
+        case .unpublished:
+            HStack(spacing: 3) {
+                Image(systemName: "icloud")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 15)
+                Text("Unpublished")
+                    .font(.system(size: 12, weight: .bold))
+            }
+            .foregroundColor(Color.blueAccent)
         }
     }
 

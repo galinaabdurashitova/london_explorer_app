@@ -19,14 +19,6 @@ public class AttractionServiceImpl implements AttractionService {
         this.attractionRepository = attractionRepository;
     }
 
-    @Override
-    public AttractionDTO getAttractionById(String id) {
-        Optional<Attraction> optionalAttraction = attractionRepository.findById(id);
-        if (optionalAttraction.isPresent()) {
-            return convertToDTO(optionalAttraction.get());
-        }
-        return null;
-    }
 
     @Override
     public List<AttractionDTO> getAllAttractions() {
@@ -37,7 +29,15 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
-    public AttractionDTO getAttractionByIdProjected(String id) {
+    public List<AttractionDTO> getAttractionsByIds(List<String> attractionIds) {
+        return attractionRepository.findByIdIn(attractionIds).stream()
+                .filter(attraction -> !attraction.getCategories().isEmpty())
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public AttractionDTO getAttractionById(String id) {
         Optional<Attraction> optionalAttraction = attractionRepository.findById(id);
         if (optionalAttraction.isPresent() && !optionalAttraction.get().getCategories().isEmpty()) {
             return convertToDTO(optionalAttraction.get());

@@ -107,6 +107,21 @@ struct Attraction: Identifiable, Equatable, Codable, Hashable {
         self.categories = categories
     }
     
+    init(from dto: AttractionWrapper) {
+        self.id = dto.id
+        self.name = dto.name
+        self.shortDescription = dto.shortDescription
+        self.fullDescription = dto.fullDescription
+        self.address = dto.address
+        self.coordinates = CLLocationCoordinate2D(
+            latitude: dto.latitude,
+            longitude: dto.longitude
+        )
+        self.images = []
+        self.finishedImagesDownload = false
+        self.categories = dto.categories.compactMap { Attraction.Category(rawValue: $0) }
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

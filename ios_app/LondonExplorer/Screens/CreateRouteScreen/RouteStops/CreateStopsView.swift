@@ -121,7 +121,7 @@ struct CreateStopsView: View {
                 } else {
                     NavigationLink(value: RouteNavigation.map(Route(
                         dateCreated: Date(),
-                        userCreated: Route.UserCreated(id: ""),
+                        userCreated: "",
                         name: "New Route",
                         description: "",
                         image: viewModel.stops.count > 0 ? viewModel.stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),

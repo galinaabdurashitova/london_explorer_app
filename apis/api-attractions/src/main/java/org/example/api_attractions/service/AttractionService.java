@@ -8,5 +8,5 @@ import java.util.List;
 public interface AttractionService {
     AttractionDTO getAttractionById(String id);
     List<AttractionDTO> getAllAttractions();
-    AttractionDTO getAttractionByIdProjected(String id);
+    List<AttractionDTO> getAttractionsByIds(List<String> attractionIds);
 }

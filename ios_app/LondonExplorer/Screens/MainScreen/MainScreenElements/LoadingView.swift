@@ -30,19 +30,20 @@ struct LoadingView: View {
                             ForEach(0..<3) { _ in
                                 VStack (spacing: 5) {
                                     Color(Color.black.opacity(0.05))
-                                        .frame(width: 156, height: 156)
+                                        .frame(width: 165, height: 165)
                                         .loading(isLoading: true)
                                     Color(Color.black.opacity(0.05))
-                                        .frame(width: 156, height: 20)
+                                        .frame(width: 165, height: 20)
                                         .loading(isLoading: true)
                                     Color(Color.black.opacity(0.05))
-                                        .frame(width: 156, height: 40)
+                                        .frame(width: 165, height: 40)
                                         .loading(isLoading: true)
                                 }
                             }
                         }
                     }
                     .scrollClipDisabled()
+                    .scrollDisabled(true)
                 }
                 
                 HStack {
@@ -57,17 +58,13 @@ struct LoadingView: View {
                     Spacer()
                 }
                 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    VStack (spacing: 12) {
-                        ForEach(0..<3) { _ in
-                            Color(Color.black.opacity(0.05))
-                                .frame(width: geometry.size.width, height: 70)
-                                .loading(isLoading: true)
-                        }
+                VStack {
+                    ForEach(0..<3) { _ in
+                        Color(Color.black.opacity(0.05))
+                            .frame(width: geometry.size.width, height: 70)
+                            .loading(isLoading: true)
                     }
                 }
-                
-                Spacer()
             }
         }
     }

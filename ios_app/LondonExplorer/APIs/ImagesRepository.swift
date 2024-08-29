@@ -10,95 +10,76 @@ import SwiftUI
 import Firebase
 import FirebaseStorage
 
-class ImagesRepository: ObservableObject {
-//    private let storage = Storage.storage()
+class ImagesRepository {
+    static var shared = ImagesRepository()
     private let storageRef = Storage.storage().reference()
-//    private var attractionImagesCache = [Attraction: [UIImage]]()
-//    private var imageCache = [String: UIImage]()
+    
+    private var attractionImagesCache: [String: [UIImage]] = [:]
+    
+    private var usersImagesCache: [String: UIImage] = [:]
     
     enum ImageRepositoryError: Error {
         case listingFailed(String)
         case downloadFailed(String, String)
     }
     
-    func getAttractionImage(attractionId: String) async throws -> [UIImage] {
-//        if let cachedAttraction = attractionImagesCache[attraction] {
-//            return cachedAttraction
-//        }
+    private init() {}
+    
+    func getAttractionImages(attractionId: String, maxNumber: Int = 5, reload: Bool = false) async throws -> [UIImage] {
+        if !reload, let cachedAttraction = attractionImagesCache[attractionId] {
+            return cachedAttraction
+        }
         
         let imageRef = storageRef.child("attractions/" + attractionId)
         
+        var images: [UIImage] = []
+        
         do {
             let result = try await imageRef.listAll()
-            var images = [UIImage]()
             
-            if result.items.count > 0 {
-                let item = result.items[0]
+            
+            for index in 0..<min(maxNumber, result.items.count) {
                 do {
-                    let data = try await getData(from: item)
+                    let data = try await getData(from: result.items[index])
                     if let image = UIImage(data: data) {
                         images.append(image)
-                        
-                        // It causes crashes - need a fix
-//                        if var cachedAttraction = attractionImagesCache[attraction] {
-//                            cachedAttraction.append(image)
-//                            attractionImagesCache[attraction] = cachedAttraction
-//                        } else {
-//                            attractionImagesCache[attraction] = [image]
-//                        }
                     }
                 } catch {
-                    print("Failed to download image \(item.name): \(error.localizedDescription)")
+                    print("Failed to download image \(result.items[index].name): \(error.localizedDescription)")
                 }
             }
-            
-            if images.isEmpty {
-                throw ImageRepositoryError.downloadFailed(attractionId, "No images were successfully downloaded.")
-            }
-            
-            return images
         } catch {
             throw ImageRepositoryError.listingFailed(error.localizedDescription)
         }
+            
+        if images.isEmpty {
+            throw ImageRepositoryError.downloadFailed(attractionId, "No images were successfully downloaded.")
+        }
+        
+        attractionImagesCache[attractionId] = images
+        
+        return images
+            
     }
     
-    func getAttractionImages(attractionId: String) async throws -> [UIImage] {
-//        if let cachedAttraction = attractionImagesCache[attraction] {
-//            return cachedAttraction
-//        }
+    
+    func getUserImage(userImageName: String) async throws -> UIImage {
+        if let cachedUser = usersImagesCache[userImageName] {
+            return cachedUser
+        }
         
-        let imageRef = storageRef.child("attractions/" + attractionId)
+        let imageRef = storageRef.child("users/" + userImageName)
         
         do {
-            let result = try await imageRef.listAll()
-            var images = [UIImage]()
-            
-            for item in result.items {
-                do {
-                    let data = try await getData(from: item)
-                    if let image = UIImage(data: data) {
-                        images.append(image)
-                        
-                        // It causes crashes - need a fix
-//                        if var cachedAttraction = attractionImagesCache[attraction] {
-//                            cachedAttraction.append(image)
-//                            attractionImagesCache[attraction] = cachedAttraction
-//                        } else {
-//                            attractionImagesCache[attraction] = [image]
-//                        }
-                    }
-                } catch {
-                    print("Failed to download image \(item.name): \(error.localizedDescription)")
-                }
+            let data = try await getData(from: imageRef)
+            if let image = UIImage(data: data) {
+                usersImagesCache[userImageName] = image
+                return image
+            } else {
+                throw ImageRepositoryError.downloadFailed(userImageName, "No images were successfully downloaded.")
             }
-            
-            if images.isEmpty {
-                throw ImageRepositoryError.downloadFailed(attractionId, "No images were successfully downloaded.")
-            }
-            
-            return images
         } catch {
-            throw ImageRepositoryError.listingFailed(error.localizedDescription)
+            throw ImageRepositoryError.downloadFailed(userImageName, "No images were successfully downloaded.")
         }
     }
     
@@ -111,6 +92,74 @@ class ImagesRepository: ObservableObject {
                     continuation.resume(returning: data)
                 }
             }
+        }
+    }
+    
+    func getAttractionImagesURL(attractionId: String) async throws -> [String] {
+        let imageRef = storageRef.child("attractions/" + attractionId)
+        
+        var imagesURL: [String] = []
+        
+        do {
+            let result = try await imageRef.listAll()
+            
+            for index in 0..<result.items.count {
+                if let url = await getImageURL(from: result.items[index]) {
+                    imagesURL.append(url.absoluteString)
+                }
+            }
+        } catch {
+            throw ImageRepositoryError.listingFailed(error.localizedDescription)
+        }
+            
+        if imagesURL.isEmpty {
+            throw ImageRepositoryError.downloadFailed(attractionId, "No image URL were successfully found.")
+        }
+        
+        return imagesURL
+    }
+    
+    func getUserImageUrl(userImageName: String) async -> String? {
+        let imageRef = storageRef.child("users/" + userImageName)
+        
+        if let url = await getImageURL(from: imageRef) {
+            return url.absoluteString
+        } else {
+            return nil
+        }
+    }
+    
+    private func getImageURL(from reference: StorageReference) async -> URL? {
+        return await withCheckedContinuation { continuation in
+            reference.downloadURL { url, error in
+                if let error = error {
+                    print("Error fetching image URL: \(error)")
+                    continuation.resume(returning: nil)
+                    return
+                }
+                continuation.resume(returning: url)
+            }
+        }
+    }
+    
+    func uploadImage(image: UIImage) async throws -> String? {
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            throw NSError(domain: "ImageErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to JPEG data"])
+        }
+        
+        let imageRef = storageRef.child("users").child(UUID().uuidString + ".jpg")
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        do {
+            _ = try await imageRef.putDataAsync(imageData, metadata: metadata)
+            
+            let downloadURL = try await imageRef.downloadURL()
+            return downloadURL.lastPathComponent
+            
+        } catch {
+            print("Error uploading image: \(error.localizedDescription)")
+            throw error
         }
     }
 }

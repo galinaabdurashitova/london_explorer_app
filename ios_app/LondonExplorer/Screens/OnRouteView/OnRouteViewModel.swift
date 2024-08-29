@@ -13,21 +13,28 @@ class OnRouteViewModel: ObservableObject {
     /// Model used in the view variables
     @Published var routeProgress: RouteProgress
     
+    /// User related
+    @Published var collected: Route.RouteCollectable?
+    @Published var awarded: [User.UserAward] = []
+    
     /// Map variables
     @Published var currentCoordinate: CLLocationCoordinate2D?
     @Published var directionToStart: MKRoute?
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
     
-    /// Variables for correct view work
+    /// Route management
     @Published var lastStop: Bool = false
     @Published var stopRoute: Bool = false
-    @Published var showGreeting: Bool = false
+    
+    /// Greeting
     @Published var greetingText: String = ""
     @Published var greetingSubText: String = ""
+    @Published var showGreeting: Bool = false
+    
+    /// Variables for correct view work
     @Published var error: String = ""
+    @Published var showError: Bool = false
     @Published var isMapLoading: Bool = false
-    @Published var collected: Route.RouteCollectable?
-    @Published var awarded: [User.UserAward] = []
     
     /// Service variables
     private var locationManager = LocationManager()
@@ -82,8 +89,9 @@ class OnRouteViewModel: ObservableObject {
         locationManager.onLocationUpdate = { newCoordinate in
             DispatchQueue.main.async { self.currentCoordinate = newCoordinate }
             Task {
-                await self.getDirectionToStart(start: newCoordinate)
+                let startPath = await RouteMapHelper.calculateRouteStep(start: newCoordinate, destination: self.routeProgress.route.stops[0].attraction.coordinates)
                 DispatchQueue.main.async {
+                    self.directionToStart = startPath
                     self.calculateRegion()
                 }
             }
@@ -163,45 +171,6 @@ class OnRouteViewModel: ObservableObject {
     }
     
     /// Map management functions
-    func getDirectionToStart(start: CLLocationCoordinate2D) async {
-        let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: start))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: self.routeProgress.route.stops[0].attraction.coordinates))
-        request.transportType = .walking
-        
-        let directions = MKDirections(request: request)
-        do {
-            let response = try await directions.calculate()
-            if let route = response.routes.first {
-                DispatchQueue.main.async {
-                    self.directionToStart = route
-                }
-            } else {
-                print("No routes found")
-            }
-        } catch {
-            print("Error calculating route: \(error.localizedDescription)")
-            if let error = error as? MKError {
-                switch error.code {
-                case .placemarkNotFound:
-                    print("MKError: Placemark not found")
-                case .directionsNotFound:
-                    print("MKError: Directions not found")
-                case .decodingFailed:
-                    print("MKError: Decoding failed")
-                case .loadingThrottled:
-                    print("MKError: Loading throttled")
-                case .serverFailure:
-                    print("MKError: Server failure")
-                case .unknown:
-                    print("MKError: Unknown")
-                default:
-                    print("MKError: Other error")
-                }
-            }
-        }
-    }
-    
     func calculateRegion() {
         var coordinates: [CLLocationCoordinate2D] = []
         
@@ -215,31 +184,8 @@ class OnRouteViewModel: ObservableObject {
             coordinates.append(self.routeProgress.route.stops[routeProgress.stops].attraction.coordinates)
         }
         
-        var minLat = coordinates.first?.latitude ?? 0
-        var maxLat = coordinates.first?.latitude ?? 0
-        var minLon = coordinates.first?.longitude ?? 0
-        var maxLon = coordinates.first?.longitude ?? 0
-        
-        for coordinate in coordinates {
-            minLat = min(minLat, coordinate.latitude)
-            maxLat = max(maxLat, coordinate.latitude)
-            minLon = min(minLon, coordinate.longitude)
-            maxLon = max(maxLon, coordinate.longitude)
-        }
-        
-        let center = CLLocationCoordinate2D(
-            latitude: minLat,
-//            latitude: (minLat + maxLat) / 2,
-            longitude: (minLon + maxLon) / 2
-        )
-        
-        let span = MKCoordinateSpan(
-            latitudeDelta: (maxLat - minLat) * 3, // 1.5,
-            longitudeDelta: (maxLon - minLon) * 1.5
-        )
-        
 //        DispatchQueue.main.async {
-            self.mapRegion = MKCoordinateRegion(center: center, span: span)
+            self.mapRegion = RouteMapHelper.calculateRegion(coordinates: coordinates)
 //        }
     }
 }

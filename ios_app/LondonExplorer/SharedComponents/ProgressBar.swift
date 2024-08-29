@@ -22,7 +22,7 @@ struct ProgressBar: View {
                     .foregroundColor(Color.lightBlue)
                 
                 Rectangle()
-                    .frame(width: min(geometry.size.width * self.getPercent(), geometry.size.width))
+                    .frame(width: min(max(0, geometry.size.width * self.getPercent()), geometry.size.width))
                     .cornerRadius(10)
                     .foregroundColor(colour)
             }

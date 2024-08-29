@@ -9,6 +9,7 @@ import Foundation
 
 struct FriendUpdateWrapper: Codable {
     var userId: String
+    var imageName: String?
     var name: String
     var userName: String
     var updateDate: String

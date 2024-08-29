@@ -17,27 +17,24 @@ struct CreateRouteView: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            ScrollView(showsIndicators: false) {
-                VStack (spacing: 25) {
-                    HStack {
-                        ScreenHeader(
-                            headline: .constant("New Route"),
-                            subheadline: .constant("You can create new route or choose from the existing")
-                        )
+            VStack (spacing: 25) {
+                HStack {
+                    ScreenHeader(
+                        headline: .constant("New Route"),
+                        subheadline: .constant("You can create new route or choose from the existing")
+                    )
 
-                        Spacer()
-                    }
-                    
-                    YourRoutesCarousel(routes: $routes, path: $path)
-                    
-                    if networkMonitor.isConnected {
-                        SuggestedRoutesCarousel(routes: $routes)
-                    } else {
-                        DownloadedRoutesWidget(routes: $routes)
-                    }
+                    Spacer()
                 }
-                .padding()
+                
+                OnboardingCarousel()
+                
+                NavigationLink(value: CreateRoutePath.routeStops) {
+                    ButtonView(text: .constant("Create new route"), colour: Color.lightBlue, textColour: Color.black, size: .L)
+                        .padding(.bottom, 10)
+                }
             }
+            .padding()
             .appNavigation()
             .navigationDestination(for: CreateRoutePath.self) { value in
                 switch value {

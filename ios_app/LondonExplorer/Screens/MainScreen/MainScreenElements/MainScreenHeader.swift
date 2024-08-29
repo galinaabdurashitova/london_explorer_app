@@ -20,12 +20,12 @@ struct MainScreenHeader: View {
                     
                     Spacer()
                     
-                    Button(action: {
-                        // Open camera
-                    }) {
-                        Image(systemName: "camera.fill")
-                            .icon(size: 45, colour: Color.black)
-                    }
+//                    Button(action: {
+//                        // Open camera
+//                    }) {
+//                        Image(systemName: "camera.fill")
+//                            .icon(size: 45, colour: Color.black)
+//                    }
                 }
                 .padding(.horizontal, 20)
                 .frame(height: headerHeight)

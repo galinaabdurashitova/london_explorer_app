@@ -35,7 +35,7 @@ public class UserServiceTest {
     public void testGetUserById() {
         // Verifies that UserService.getUserById correctly retrieves a user by their ID.
         String userId = "SHrUmpceW6bDkRBLIlS0koDjyNH2";
-        User mockUser = new User(userId, "Test@test.com", "Galina", "Galina", null);
+        User mockUser = new User(userId, "Test@test.com", "Galina", "Galina", null, null);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
 
@@ -48,7 +48,7 @@ public class UserServiceTest {
     @Test
     public void testSaveUser() {
         // Ensures that UserService.saveUser correctly saves a user to the repository.
-        User mockUser = new User("SHrUmpceW6bDkRBLIlS0koDjyNH2", "test@test.com", "Text", "Test", null);
+        User mockUser = new User("SHrUmpceW6bDkRBLIlS0koDjyNH2", "test@test.com", "Text", "Test", null, null);
 
         userService.saveUser(mockUser);
 
@@ -115,7 +115,7 @@ public class UserServiceTest {
     public void testGetUsersByIds() {
         // Verifies that UserService.getUsersByIds returns users by a list of IDs.
         List<String> userIds = Collections.singletonList("SHrUmpceW6bDkRBLIlS0koDjyNH2");
-        User mockUser = new User("SHrUmpceW6bDkRBLIlS0koDjyNH2", "test@test.com", "Galina", "Galina", null);
+        User mockUser = new User("SHrUmpceW6bDkRBLIlS0koDjyNH2", "test@test.com", "Galina", "Galina", null, null);
 
         when(userRepository.findByUserIdIn(userIds)).thenReturn(Collections.singletonList(mockUser));
 
@@ -128,8 +128,8 @@ public class UserServiceTest {
     @Test
     public void testGetAllUsers() {
         // Confirms that UserService.getAllUsers retrieves all users in the repository.
-        User mockUser1 = new User("SHrUmpceW6bDkRBLIlS0koDjyNH2", "test1@test.com", "Galina", "Galina", null);
-        User mockUser2 = new User("ABC123", "test2@test.com", "Ivan", "Ivan123", null);
+        User mockUser1 = new User("SHrUmpceW6bDkRBLIlS0koDjyNH2", "test1@test.com", "Galina", "Galina", null, null);
+        User mockUser2 = new User("ABC123", "test2@test.com", "Ivan", "Ivan123", null, null);
 
         when(userRepository.findAll()).thenReturn(List.of(mockUser1, mockUser2));
 
@@ -147,8 +147,8 @@ public class UserServiceTest {
         String userId = "SHrUmpceW6bDkRBLIlS0koDjyNH2";
         int limit = 5;
         List<Object[]> mockUpdates = List.of(
-                new Object[]{"friendId1", "Friend One", "friend1", Timestamp.valueOf("2024-08-15 12:34:56"), "FinishedRoute", "Route ID 123"},
-                new Object[]{"friendId2", "Friend Two", "friend2", Timestamp.valueOf("2024-08-16 13:45:00"), "Award", "Top Scorer Level 2"}
+                new Object[]{"friendId1", null, "Friend One", "friend1", Timestamp.valueOf("2024-08-15 12:34:56"), "FinishedRoute", "Route ID 123"},
+                new Object[]{"friendId2", null, "Friend Two", "friend2", Timestamp.valueOf("2024-08-16 13:45:00"), "Award", "Top Scorer Level 2"}
         );
 
         when(userRepository.findFriendsUpdates(userId, limit)).thenReturn(mockUpdates);

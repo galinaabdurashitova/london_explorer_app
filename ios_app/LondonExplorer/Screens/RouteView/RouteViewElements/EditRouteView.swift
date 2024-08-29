@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct EditRouteView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     @ObservedObject var viewModel: RouteViewModel
     
     var body: some View {
@@ -23,8 +24,10 @@ struct EditRouteView: View {
                 
                 Button("Save") {
                     viewModel.saveEditRoute()
+                    globalSettings.profileReloadTrigger = true
                 }
                 .foregroundColor(Color.blueAccent)
+                .disabled(viewModel.newName.isEmpty || viewModel.newDescription.isEmpty)
             }
             
             HStack {
@@ -35,6 +38,11 @@ struct EditRouteView: View {
                     )
                 }
                 Spacer()
+            }
+            
+            if let error = viewModel.editError {
+                Text(error)
+                    .foregroundColor(Color.redAccent)
             }
             
             VStack(alignment: .leading, spacing: 10) {
@@ -51,5 +59,6 @@ struct EditRouteView: View {
 
 #Preview {
     EditRouteView(viewModel: RouteViewModel(route: MockData.Routes[0]))
+        .environmentObject(GlobalSettings())
         .padding()
 }

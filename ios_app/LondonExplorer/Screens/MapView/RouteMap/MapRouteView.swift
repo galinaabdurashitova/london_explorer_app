@@ -23,7 +23,7 @@ struct MapRouteView: View {
     init(stops: [Route.RouteStop], pathes: [CodableMKRoute?], routeName: String = "") {
         self.route = Route(
             dateCreated: Date(),
-            userCreated: Route.UserCreated(id: ""),
+            userCreated: "",
             name: routeName.isEmpty ? "New Route" : routeName,
             description: "",
             image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),

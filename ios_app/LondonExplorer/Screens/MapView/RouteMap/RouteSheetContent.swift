@@ -28,7 +28,7 @@ struct RouteSheetContent: View {
                         textColour: Color.white,
                         size: .M
                     ) {
-                        
+                        openInGoogleMaps()
                     }
                     
                     ButtonView(
@@ -37,7 +37,7 @@ struct RouteSheetContent: View {
                         textColour: Color.white,
                         size: .M
                     ) {
-                        
+                        openInAppleMaps()
                     }
                 }
                 
@@ -47,6 +47,45 @@ struct RouteSheetContent: View {
             }
         }
         .scrollClipDisabled()
+    }
+    
+    private func openInGoogleMaps() {
+        guard route.stops.count > 1 else { return }
+         
+        let startCoordinate = route.stops.first!.attraction.coordinates
+        let destinationCoordinate = route.stops[1].attraction.coordinates
+         
+        var daddr = "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"
+        if route.stops.count > 2 {
+            let intermediateStops = route.stops.dropFirst().dropFirst().map {
+                "\($0.attraction.coordinates.latitude),\($0.attraction.coordinates.longitude)"
+            }
+            daddr += "+to:" + intermediateStops.joined(separator: "+to:")
+        }
+         
+        let googleMapsURLString = "comgooglemaps://?saddr=\(startCoordinate.latitude),\(startCoordinate.longitude)&daddr=\(daddr)&directionsmode=walking"
+        let webGoogleMapsURLString = "https://maps.google.com/?saddr=\(startCoordinate.latitude),\(startCoordinate.longitude)&daddr=\(daddr)&directionsmode=walking"
+         
+        if let url = URL(string: googleMapsURLString), UIApplication.shared.canOpenURL(url) {
+            print(googleMapsURLString)
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else if let url = URL(string: webGoogleMapsURLString) {
+            print(webGoogleMapsURLString)
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+    
+    private func openInAppleMaps() {
+        guard !route.stops.isEmpty else { return }
+        
+        let waypoints = route.stops.map { "\(URLEncoder().encode($0.attraction.address))" }.joined(separator: "&daddr=")
+        
+        let appleMapsURLString = "maps://?saddr=\(waypoints)"
+        print(appleMapsURLString)
+        
+        if let url = URL(string: appleMapsURLString) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
 }
 

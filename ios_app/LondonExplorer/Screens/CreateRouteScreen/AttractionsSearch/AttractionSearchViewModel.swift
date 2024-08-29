@@ -19,7 +19,6 @@ class AttractionSearchViewModel: ObservableObject {
     @Published var error: String? = nil
     
     private let service: AttractionsServiceProtocol = AttractionsService()
-    private let imagesRep: ImagesRepository = ImagesRepository()
     
     init(stops: [Route.RouteStop] = [], useTestData: Bool = false) {
         self.stops = stops
@@ -36,7 +35,7 @@ class AttractionSearchViewModel: ObservableObject {
         self.isLoading = true
         Task {
             do {
-                let fetchedAttractions = try await service.fetchAttractions()
+                let fetchedAttractions = try await service.fetchAllAttractions()
                 
                 for attraction in fetchedAttractions {
                     var newAttraction = attraction
@@ -64,7 +63,7 @@ class AttractionSearchViewModel: ObservableObject {
     
     func fetchAttractionImage(attraction: inout Attraction) async {
         do {
-            let images = try await imagesRep.getAttractionImage(attractionId: attraction.id)
+            let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attraction.id, maxNumber: 1)
             attraction.images = images
         } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
             print("Listing failed for attraction \(attraction.id): \(message)")
@@ -77,7 +76,7 @@ class AttractionSearchViewModel: ObservableObject {
     
     func fetchAttractionImages(attraction: inout Attraction) async {
         do {
-            let images = try await imagesRep.getAttractionImages(attractionId: attraction.id)
+            let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attraction.id)
             attraction.images = images
         } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
             print("Listing failed for attraction \(attraction.id): \(message)")

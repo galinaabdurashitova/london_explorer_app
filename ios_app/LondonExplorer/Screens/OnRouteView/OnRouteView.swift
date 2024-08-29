@@ -12,6 +12,7 @@ import MapKit
 struct OnRouteView: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var currentRoute: CurrentRouteManager
+    @EnvironmentObject var globalSettings: GlobalSettings
     @Environment(\.presentationMode) var presentationMode
     @StateObject var viewModel: OnRouteViewModel
     
@@ -58,6 +59,7 @@ struct OnRouteView: View {
         }
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
+        .error(text: viewModel.error, isPresented: $viewModel.showError)
         .toolbar(.hidden, for: .tabBar)
         .overlay {
             if viewModel.lastStop {
@@ -67,9 +69,12 @@ struct OnRouteView: View {
                             try viewModel.finishRoute(userId: auth.profile.id)
                             await auth.reloadUser()
                             currentRoute.routeProgress = nil
+                            globalSettings.profileReloadTrigger = true
                             self.presentationMode.wrappedValue.dismiss()
                         } catch {
+                            viewModel.showError = true
                             viewModel.error = error.localizedDescription
+                            viewModel.showError = true
                         }
                     }
                 }
@@ -104,4 +109,5 @@ struct OnRouteView: View {
     OnRouteView(routeProgress: MockData.RouteProgress[0])
         .environmentObject(AuthController())
         .environmentObject(CurrentRouteManager())
+        .environmentObject(GlobalSettings())
 }

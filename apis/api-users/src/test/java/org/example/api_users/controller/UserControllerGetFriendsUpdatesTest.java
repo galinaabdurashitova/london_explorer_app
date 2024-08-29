@@ -32,8 +32,8 @@ public class UserControllerGetFriendsUpdatesTest {
         int limit = 5;
 
         List<FriendUpdateResponse> mockUpdates = List.of(
-                new FriendUpdateResponse("friendId1", "Friend One", "friend1", Timestamp.valueOf("2024-08-15 12:34:56"), "FinishedRoute", "Route ID 123"),
-                new FriendUpdateResponse("friendId2", "Friend Two", "friend2", Timestamp.valueOf("2024-08-16 13:45:00"), "Award", "Top Scorer Level 2")
+                new FriendUpdateResponse("friendId1", null, "Friend One", "friend1", Timestamp.valueOf("2024-08-15 12:34:56"), "FinishedRoute", "Route ID 123"),
+                new FriendUpdateResponse("friendId2", null, "Friend Two", "friend2", Timestamp.valueOf("2024-08-16 13:45:00"), "Award", "Top Scorer Level 2")
         );
 
         when(userService.getFriendsUpdates(userId, limit)).thenReturn(mockUpdates);

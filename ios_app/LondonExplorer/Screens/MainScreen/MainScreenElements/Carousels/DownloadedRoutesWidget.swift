@@ -9,32 +9,37 @@ import Foundation
 import SwiftUI
 
 struct DownloadedRoutesWidget: View {
-    @Binding var routes: [Route]
+    @EnvironmentObject var auth: AuthController
+    @State var routes: [Route] = []
+    private var routeManager = RoutesStorageManager()
     
     var body: some View {
         VStack (spacing: 20) {
-            HStack {
-                SectionHeader(
-                    headline: .constant("Your Favourites"),
-                    subheadline: .constant("Try out these routes that you downloaded")
-                )
-                Spacer()
-            }
-            
-            VStack (spacing: 20) {
-                ForEach($routes) { route in
-                    if let download = route.downloadDate.wrappedValue {
-                        RouteCard(route: route, label: .download(download), size: .M)
+            if !routes.isEmpty {
+                HStack {
+                    SectionHeader(
+                        headline: .constant("Your Not Published Routes"),
+                        subheadline: .constant("Try out these routes that you created")
+                    )
+                    Spacer()
+                }
+                
+                VStack (spacing: 20) {
+                    ForEach($routes) { route in
+                        RouteCard(route: route, label: .created(route.dateCreated.wrappedValue), size: .M)
                     }
                 }
             }
+        }
+        .onAppear {
+            self.routes = routeManager.getUserRoute(userId: auth.profile.id)
         }
     }
 }
 
 
 #Preview {
-    DownloadedRoutesWidget(routes: .constant(MockData.Routes))
+    DownloadedRoutesWidget()
         .environmentObject(AuthController())
         .padding()
 }

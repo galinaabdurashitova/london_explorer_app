@@ -58,11 +58,12 @@ public class UserService {
 
         return updates.stream().map(update -> new FriendUpdateResponse(
                 (String) update[0], // userId
-                (String) update[1], // name
-                (String) update[2], // userName
-                (Timestamp) update[3], // updateDate
-                (String) update[4], // updateType
-                (String) update[5]  // description
+                (String) update[1], // imageName
+                (String) update[2], // name
+                (String) update[3], // userName
+                (Timestamp) update[4], // updateDate
+                (String) update[5], // updateType
+                (String) update[6]  // description
         )).collect(Collectors.toList());
     }
 }
