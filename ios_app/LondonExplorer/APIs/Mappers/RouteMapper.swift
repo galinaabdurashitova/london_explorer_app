@@ -24,8 +24,6 @@ class RouteMapper {
             userCreated: dto.userCreated,
             name: dto.routeName,
             description: dto.routeDescription,
-            image: stops[0].attraction.images[0],
-            imageURL: stops[0].attraction.imageURLs[0],
             saves: dto.saves ?? [],
             collectables: collectables,
             datePublished: datePublished,
@@ -80,8 +78,6 @@ class RouteMapper {
         for stop in dto {
             do {
                 var attraction = try await AttractionsService().fetchAttraction(attractionId: stop.attractionId)
-                attraction.images = try await ImagesRepository.shared.getAttractionImages(attractionId: stop.attractionId, maxNumber: 1)
-                attraction.imageURLs = try await ImagesRepository.shared.getAttractionImagesURL(attractionId: stop.attractionId)
                 let routeStop = Route.RouteStop(id: stop.attractionId, stepNo: stop.stepNumber, attraction: attraction)
                 routeStops.append(routeStop)
             } catch {

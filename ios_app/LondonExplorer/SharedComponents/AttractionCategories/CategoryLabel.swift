@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 struct CategoryLabel: View {
-    @State var category: Attraction.Category
+    @State var category: Category
     @Binding var disabled: Bool
     
-    init(category: Attraction.Category, disabled: Binding<Bool> = .constant(false)) {
+    init(category: Category, disabled: Binding<Bool> = .constant(false)) {
         self.category = category
-        _disabled = disabled
+        self._disabled = disabled
     }
     
     var body: some View {

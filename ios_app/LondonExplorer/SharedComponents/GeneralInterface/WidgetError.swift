@@ -22,11 +22,7 @@ struct WidgetError: View {
             Spacer()
             
             Button(action: {
-                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
-                    isLoading = true
-                }
-                action()
-                isLoading = false
+                self.reload()
             }) {
                 Image(systemName: "arrow.triangle.2.circlepath")
                     .icon(size: 35, colour: Color.black)
@@ -41,6 +37,14 @@ struct WidgetError: View {
         .padding(.vertical, 20.0)
         .background(Color.grayBackground)
         .cornerRadius(8)
+    }
+    
+    private func reload() {
+        withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+            self.isLoading = true
+        }
+        self.action()
+        self.isLoading = false
     }
 }
 

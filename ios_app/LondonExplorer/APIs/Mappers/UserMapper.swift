@@ -14,7 +14,7 @@ class UserMapper {
         let userCollectables = mapCollectables(from: dto.collectables)
         let finishedRoutes = mapFinishedRoutes(from: dto.finishedRoutes)
         
-        let image: UIImage? = dto.imageName != nil ? await loadImage(for: dto.imageName!) : nil
+        let image: String? = dto.imageName != nil ? await getFullImage(for: dto.imageName!) : nil
         
         return User(
             userId: dto.userId,
@@ -22,8 +22,7 @@ class UserMapper {
             name: dto.name,
             userName: dto.userName.lowercased(),
             userDescription: dto.description,
-            imageName: dto.imageName,
-            image: image,
+            imageName: image,
             awards: userAwards,
             collectables: userCollectables,
             friends: dto.friends ?? [],
@@ -31,14 +30,9 @@ class UserMapper {
         )
     }
     
-    func loadImage(for userImageName: String) async -> UIImage? {
-        do {
-            let image = try await ImagesRepository.shared.getUserImage(userImageName: userImageName)
-            return image
-        } catch {
-            print("Could not get user's image")
-            return nil
-        }
+    func getFullImage(for userImageName: String) async -> String? {
+        let image = await ImagesRepository.shared.getUserImageUrl(userImageName: userImageName)
+        return image
     }
     
     func mapAwards(for dto: [UserWrapper.UserAward]?) -> [User.UserAward] {

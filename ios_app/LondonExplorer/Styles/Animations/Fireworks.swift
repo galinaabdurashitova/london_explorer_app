@@ -22,7 +22,7 @@ struct Fireworks: View {
                     .rotationEffect(Angle.degrees(animate ? Double.random(in: 0...360) : 0))
                     .offset(x: animate ? randomOffset().width : 0, y: animate ? randomOffset().height : 0)
                     .scaleEffect(animate ? 2 : 0.1)
-                    .opacity(opacity) // Start fully opaque, fade out
+                    .opacity(opacity)
                     .animation(
                         Animation.easeOut(duration: 2.5).delay(Double(index) * 0.02),
                         value: animate
@@ -52,9 +52,6 @@ struct ConfettiPiece: View {
             Rectangle()
                 .fill(color)
                 .frame(width: 30, height: 15)
-//            Circle()
-//                .fill(color)
-//                .frame(width: 20, height: 10)
         }
     }
 }

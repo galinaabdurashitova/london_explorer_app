@@ -40,7 +40,7 @@ struct ThirdSlide: View {
     
     private func attractionCard(attraction: Attraction, index: Int, bool: Bool) -> some View {
         HStack {
-            Image(uiImage: attraction.images[0])
+            Image(index == 1 ? "BigBen1" : "BuckinghamPalace1")
                 .roundedFrame(width: 70, height: 70)
             
             VStack (alignment: .leading, spacing: 2) {

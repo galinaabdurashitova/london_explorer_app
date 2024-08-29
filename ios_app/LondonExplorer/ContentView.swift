@@ -17,15 +17,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             if !networkMonitor.isConnected {
-                VStack(spacing: 25) {
-                    HStack {
-                        LondonExplorerLogo(scrollOffset: 50)
-                        Image("Bus3DIcon")
-                    }
-                    
-                    EmptyStateBanner()
-                }
-                .padding()
+                noInternet
             } else if auth.isSignedIn {
                 MainTabView()
                     .environmentObject(networkMonitor)
@@ -33,14 +25,32 @@ struct ContentView: View {
                     .environmentObject(currentRoute)
                     .environmentObject(globalSettings)
                     .environmentObject(awards)
-                    .task {
-                        currentRoute.getMyRouteProgress(user: auth.profile)
-                        await awards.getRoutesAwards(user: auth.profile)
+                    .onAppear {
+                        launchApp()
                     }
             } else {
                 AuthView()
                     .environmentObject(auth)
             }
+        }
+    }
+    
+    private var noInternet: some View {
+        VStack(spacing: 25) {
+            HStack {
+                LondonExplorerLogo(scrollOffset: 50)
+                Image("Bus3DIcon")
+            }
+            
+            EmptyStateBanner()
+        }
+        .padding()
+    }
+    
+    private func launchApp() {
+        Task {
+            currentRoute.getMyRouteProgress(user: auth.profile)
+            await awards.getRoutesAwards(user: auth.profile)
         }
     }
 }

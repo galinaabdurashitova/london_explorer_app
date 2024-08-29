@@ -29,42 +29,50 @@ struct ErrorPopUp: View {
                 .edgesIgnoringSafeArea(.all)
                 .background(.ultraThinMaterial)
                 .onTapGesture {
-                    isPresented = false
+                    self.closePopUp()
                 }
             
-            VStack {
-                VStack(spacing: 10) {
-                    VStack(spacing: 20) {
-                        Text("An error occured")
-                            .multilineTextAlignment(.center)
-                            .font(.system(size: 20, weight: .semibold))
-                            .opacity(1.0)
-                        
-                        Image("Exclamation3DIcon")
-                        
-                        Text(text)
-                            .multilineTextAlignment(.center)
-                            .font(.system(size: 18))
-                            .opacity(0.7)
-                    }
-                    .padding(.all, 15)
-                    
-                    ButtonView(
-                        text: .constant("OK"),
-                        colour: Color.redDark,
-                        textColour: Color.white,
-                        size: .L
-                    ) {
-                        isPresented = false
-                    }
-                }
-                .padding()
-                .background(Color.white)
-                .cornerRadius(30)
-                .shadow(radius: 2)
-            }
-            .padding(.horizontal)
+            errorWindow
         }
+    }
+    
+    private var errorWindow: some View {
+        VStack {
+            VStack(spacing: 10) {
+                VStack(spacing: 20) {
+                    Text("An error occured")
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 20, weight: .semibold))
+                        .opacity(1.0)
+                    
+                    Image("Exclamation3DIcon")
+                    
+                    Text(text)
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 18))
+                        .opacity(0.7)
+                }
+                .padding(.all, 15)
+                
+                ButtonView(
+                    text: .constant("OK"),
+                    colour: Color.redDark,
+                    textColour: Color.white,
+                    size: .L
+                ) {
+                    self.closePopUp()
+                }
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(30)
+            .shadow(radius: 2)
+        }
+        .padding(.horizontal)
+    }
+    
+    private func closePopUp() {
+        self.isPresented = false
     }
 }
 

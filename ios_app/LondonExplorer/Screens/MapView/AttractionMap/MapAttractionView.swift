@@ -65,9 +65,7 @@ struct MapAttractionView: View {
                 .foregroundColor(Color.redAccent)
                 .padding(.top, 80)
             
-            Image(uiImage: attraction.images[0])
-                .resizable()
-                .aspectRatio(contentMode: .fill)
+            LoadingImage(url: $attraction.imageURLs[0])
                 .frame(width: 100, height: 100)
                 .cornerRadius(100)
         }

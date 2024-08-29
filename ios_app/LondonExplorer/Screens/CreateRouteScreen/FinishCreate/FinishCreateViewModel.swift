@@ -21,7 +21,6 @@ class FinishCreateViewModel: ObservableObject {
             userCreated: "",
             name: "",
             description: "",
-            image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
             collectables: collectables,
             stops: stops,
             pathes: pathes

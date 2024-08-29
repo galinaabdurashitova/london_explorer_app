@@ -31,7 +31,7 @@ struct AttractionView: View {
     var body: some View {
         VStack (spacing: -60) {
             ZStack (alignment: .topLeading) {
-                ImagesSlidesHeader(images: $viewModel.attraction.images)
+                ImagesSlidesHeader(images: $viewModel.attraction.imageURLs)
                     .frame(height: headerHeight)
                     .clipped()
                     .padding(.vertical, 0)
@@ -42,51 +42,52 @@ struct AttractionView: View {
             }
             .frame(height: headerHeight)
             
-            ScrollView (showsIndicators: false) {
-                VStack (spacing: 20) {
-                    Spacer().frame(height: 10)
-                    HStack {
-                        VStack (alignment: .leading, spacing: 5) {
-                            Text(viewModel.attraction.name)
-                                .screenHeadline()
-                            Text(viewModel.attraction.shortDescription)
-                                .subheadline()
-                        }
-                        Spacer()
-                    }
-                    
-                    AttractionCategoriesCarousel(categories: $viewModel.attraction.categories)
-                    
-                    Text(viewModel.attraction.fullDescription)
-                        .font(.system(size: 16))
-                    
-                    MapContent(attraction: $viewModel.attraction)
-                    
-                    Spacer().frame(height: allowAdd ? 80 : 40)
-                }
-                .background(
-                    GeometryReader { geometry in
-                        Color.clear
-                            .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).minY)
-                    }
-                )
-            }
-            .padding(.horizontal)
-            .coordinateSpace(name: "scroll")
-            .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-                scrollOffset = -value
-            }
+            viewContent
             
             if allowAdd {
                 AddButton
             }
         }
-        .task {
-            await viewModel.fetchAttractionImages()
-        }
         .animation(.easeInOut, value: headerHeight)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .tabBar)
+    }
+    
+    private var viewContent: some View {
+        ScrollView (showsIndicators: false) {
+            VStack (spacing: 20) {
+                Spacer().frame(height: 10)
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text(viewModel.attraction.name)
+                            .screenHeadline()
+                        Text(viewModel.attraction.shortDescription)
+                            .subheadline()
+                    }
+                    Spacer()
+                }
+                
+                AttractionCategoriesCarousel(categories: $viewModel.attraction.categories)
+                
+                Text(viewModel.attraction.fullDescription)
+                    .font(.system(size: 16))
+                
+                MapContent(attraction: $viewModel.attraction)
+                
+                Spacer().frame(height: allowAdd ? 80 : 40)
+            }
+            .background(
+                GeometryReader { geometry in
+                    Color.clear
+                        .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).minY)
+                }
+            )
+        }
+        .padding(.horizontal)
+        .coordinateSpace(name: "scroll")
+        .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+            scrollOffset = -value
+        }
     }
     
     private var Header: some View {

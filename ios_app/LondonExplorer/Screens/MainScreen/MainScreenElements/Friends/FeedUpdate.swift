@@ -14,13 +14,8 @@ struct FeedUpdate: View {
     var body: some View {
         NavigationLink(value: ProfileNavigation.profile(update.friend)) {
             HStack {
-                if let image = update.friend.image {
-                    Image(uiImage: image)
-                        .profilePicture(size: 50)
-                } else {
-                    Image("User3DIcon")
-                        .profilePicture(size: 50)
-                }
+                LoadingUserImage(userImage: $update.friend.imageName, imageSize: 50)
+                
                 VStack (alignment: .leading, spacing: 2) {
                     Text(update.formattedDate)
                         .font(.system(size: 12, weight: .semibold))

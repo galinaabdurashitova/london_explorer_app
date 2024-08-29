@@ -9,14 +9,12 @@ import Foundation
 import SwiftUI
 
 struct ImagesSlidesHeader: View {
-    @Binding var images: [UIImage]
+    @Binding var images: [String]
     
     var body: some View {
         TabView {
-            ForEach(images.indices, id: \.self) { item in
-                Image(uiImage: images[item])
-                    .resizable()
-                    .scaledToFill()
+            ForEach($images, id: \.self) { image in
+                LoadingImage(url: image)
                     .frame(height: 315)
             }
         }
@@ -27,6 +25,6 @@ struct ImagesSlidesHeader: View {
 
 #Preview {
     ImagesSlidesHeader(
-        images: .constant(MockData.Attractions[0].images)
+        images: .constant(MockData.Attractions[0].imageURLs)
     )
 }

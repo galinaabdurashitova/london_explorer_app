@@ -13,7 +13,6 @@ import MapKit
 struct CodableMKPolyline: Codable, Hashable {
     var coordinates: [CLLocationCoordinate2D]
 
-    // Initialize from an MKPolyline
     init(polyline: MKPolyline) {
         let count = polyline.pointCount
         var coords = [CLLocationCoordinate2D](repeating: kCLLocationCoordinate2DInvalid, count: count)
@@ -21,7 +20,6 @@ struct CodableMKPolyline: Codable, Hashable {
         self.coordinates = coords
     }
 
-    // Convert back to MKPolyline
     func toMKPolyline() -> MKPolyline {
         return MKPolyline(coordinates: coordinates, count: coordinates.count)
     }

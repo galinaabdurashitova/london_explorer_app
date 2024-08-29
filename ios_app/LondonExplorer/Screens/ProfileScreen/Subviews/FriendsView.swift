@@ -39,7 +39,7 @@ struct FriendsView: View {
                     } else {
                         ForEach(friends) { user in
                             NavigationLink(value: ProfileNavigation.profile(user)) {
-                                userCard(user: user)
+                                userCard(friend: user)
                             }
                         }
                     }
@@ -52,20 +52,14 @@ struct FriendsView: View {
         }
     }
     
-    private func userCard(user: User) -> some View {
+    private func userCard(friend: User) -> some View {
         HStack {
-            if let image = user.image {
-                Image(uiImage: image)
-                    .profilePicture(size: 70)
-            } else {
-                Image("User3DIcon")
-                    .profilePicture(size: 70)
-            }
+            LoadingUserImage(userImage: Binding(get: { friend.imageName }, set: { _ in }), imageSize: 70)
             
             VStack(alignment: .leading, spacing: 0) {
-                Text(user.name)
+                Text(friend.name)
                     .sectionCaption()
-                Text("@\(user.userName)")
+                Text("@\(friend.userName)")
                     .sectionSubCaption()
             }
             .foregroundColor(Color.black)

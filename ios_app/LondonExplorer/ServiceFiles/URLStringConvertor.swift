@@ -8,17 +8,15 @@
 import Foundation
 
 class URLEncoder {
-    
-    // Dictionary to map special characters to their URL-encoded equivalents
     private let urlEncodingMapping: [Character: String] = [
-        " " : "%20",  // Space
+        " " : "%20",
         "!" : "%21",
-        "\"" : "%22", // Double quote
+        "\"" : "%22",
         "#" : "%23",
         "$" : "%24",
         "%" : "%25",
         "&" : "%26",
-        "'" : "%27",  // Single quote
+        "'" : "%27",
         "(" : "%28",
         ")" : "%29",
         "*" : "%2A",
@@ -35,7 +33,7 @@ class URLEncoder {
         "?" : "%3F",
         "@" : "%40",
         "[" : "%5B",
-        "\\" : "%5C", // Backslash
+        "\\" : "%5C",
         "]" : "%5D",
         "^" : "%5E",
         "_" : "%5F",
@@ -47,7 +45,6 @@ class URLEncoder {
         "’" : "%E2%80%99"
     ]
     
-    // Function to replace characters with their URL-encoded equivalents
     func encode(_ string: String) -> String {
         return string.reduce("") { partialResult, character in
             if let encoded = urlEncodingMapping[character] {

@@ -18,13 +18,8 @@ struct FriendRequestBanner: View {
     var body: some View {
         HStack {
             NavigationLink(value: ProfileNavigation.profile(user)) {
-                if let image = user.image {
-                    Image(uiImage: image)
-                        .profilePicture(size: 50)
-                } else {
-                    Image("User3DIcon")
-                        .profilePicture(size: 50)
-                }
+                LoadingUserImage(userImage: $user.imageName, imageSize: 50)
+                
                 VStack (alignment: .leading, spacing: 2) {
                     Text("You have a friend request")
                         .font(.system(size: 12, weight: .semibold))

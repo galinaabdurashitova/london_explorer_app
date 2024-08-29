@@ -44,7 +44,7 @@ struct OnRouteMap: View {
                     coordinate: viewModel.routeProgress.route.stops[viewModel.routeProgress.stops - 1].attraction.coordinates
                 ) {
                     RouteAttractionAnnotation(
-                        image: $viewModel.routeProgress.route.stops[viewModel.routeProgress.stops - 1].attraction.images[0],
+                        image: $viewModel.routeProgress.route.stops[viewModel.routeProgress.stops - 1].attraction.imageURLs[0],
                         index: Binding<Int> (
                             get: { viewModel.routeProgress.stops - 1 },
                             set: { _ in }
@@ -66,7 +66,7 @@ struct OnRouteMap: View {
                     viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction.name,
                     coordinate: viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction.coordinates
                 ) {
-                    RouteAttractionAnnotation(image: $viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction.images[0], index: $viewModel.routeProgress.stops)
+                    RouteAttractionAnnotation(image: $viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction.imageURLs[0], index: $viewModel.routeProgress.stops)
                 }
                 .annotationTitles(.hidden)
             }

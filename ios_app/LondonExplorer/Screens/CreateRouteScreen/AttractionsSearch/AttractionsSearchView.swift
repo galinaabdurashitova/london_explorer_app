@@ -82,7 +82,7 @@ struct AttractionsSearchView: View {
             if viewModel.showFilter {
                 ScrollView (.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(Attraction.Category.allCases) { category in
+                        ForEach(Category.allCases) { category in
                             Button(action: {
                                 viewModel.toggleCategoryFilter(category: category)
                             }) {

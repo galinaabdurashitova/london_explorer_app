@@ -82,13 +82,10 @@ struct SettingPage: View {
                 if let newImage = newImage {
                     Image(uiImage: newImage)
                         .profilePicture(size: 150)
-                } else if let userImage = auth.profile.image {
-                    Image(uiImage: userImage)
-                        .profilePicture(size: 150)
                 } else {
-                    Image("User3DIcon")
-                        .profilePicture(size: 150)
+                    LoadingUserImage(userImage: $auth.profile.imageName, imageSize: 150)
                 }
+                
                 Color.black.opacity(0.2)
                 Image(systemName: "camera.fill")
                     .resizable()

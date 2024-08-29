@@ -23,7 +23,8 @@ struct ConfettiAnimation: View {
                     .animation(
                         Animation.linear(duration: Double.random(in: 3...9))
                             .repeatForever(autoreverses: false)
-                            .delay(Double(index) * 0.05)
+                            .delay(Double(index) * 0.05),
+                        value: startAnimation
                     )
             }
         }
@@ -37,8 +38,8 @@ struct ConfettiAnimation: View {
             .foregroundColor(colors.randomElement())
             .rotationEffect(.degrees(animationAmount))
             .animation(
-                Animation.linear(duration: Double.random(in: 3...9))
-//                    .repeatForever(autoreverses: false)
+                Animation.linear(duration: Double.random(in: 3...9)),
+                value: animationAmount
             )
             .onAppear {
                 self.animationAmount = Double.random(in: 0...360)

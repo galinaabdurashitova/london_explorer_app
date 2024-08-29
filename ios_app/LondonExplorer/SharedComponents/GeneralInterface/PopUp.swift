@@ -45,33 +45,37 @@ struct PopUp: View {
                 Color.white.opacity(0.1)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
-                        isOpen = false
+                        self.closePopUp()
                     }
                 
-                VStack {
-                    PopUp
-                        .shadow(radius: 2)
-                        .offset(y: yOffset)
-                        .onAppear {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                yOffset = 0
-                            }
-                        }
-                        .onChange(of: isOpen) { _, newValue in
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                yOffset = newValue ? 0 : UIScreen.main.bounds.height
-                            }
-                        }
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 30)
+                popUpWindow
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .background(.ultraThinMaterial)
         }
     }
     
-    var PopUp: some View {
+    private var popUpWindow: some View {
+        VStack {
+            popUpContent
+                .shadow(radius: 2)
+                .offset(y: yOffset)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        yOffset = 0
+                    }
+                }
+                .onChange(of: isOpen) { _, newValue in
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        yOffset = newValue ? 0 : UIScreen.main.bounds.height
+                    }
+                }
+        }
+        .padding(.horizontal)
+        .padding(.bottom, 30)
+    }
+    
+    private var popUpContent: some View {
         VStack(spacing: 10) {
             VStack(spacing: 20) {
                 Text(text)
@@ -98,9 +102,7 @@ struct PopUp: View {
                 size: .L
             ) {
                 action()
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    isOpen = false
-                }
+                self.closePopUp()
             }
             
             if !oneButton {
@@ -110,15 +112,19 @@ struct PopUp: View {
                     textColour: Color.white,
                     size: .L
                 ) {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        isOpen = false
-                    }
+                    self.closePopUp()
                 }
             }
         }
         .padding()
         .background(Color.white)
         .cornerRadius(30)
+    }
+    
+    private func closePopUp() {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            isOpen = false
+        }
     }
 }
 

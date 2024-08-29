@@ -124,7 +124,6 @@ struct CreateStopsView: View {
                         userCreated: "",
                         name: "New Route",
                         description: "",
-                        image: viewModel.stops.count > 0 ? viewModel.stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
                         collectables: [],
                         stops: viewModel.stops,
                         pathes: viewModel.pathes

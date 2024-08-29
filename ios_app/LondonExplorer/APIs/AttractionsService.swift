@@ -19,6 +19,8 @@ class AttractionsService: Service, AttractionsServiceProtocol {
     private let serviceURL = URL(string: "http://localhost:8083/api/attractions")!
     private let serviceName = "Attractions service"
     
+    private var attractionMapper: AttractionMapper = AttractionMapper()
+    
     
     func fetchAllAttractions() async throws -> [Attraction] {
         return try await fetchAttractions(attractionIds: nil)
@@ -35,19 +37,7 @@ class AttractionsService: Service, AttractionsServiceProtocol {
         }
         
         let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
-        let attractions = try self.decodeResponse(from: data, as: [AttractionWrapper].self, serviceName: serviceName, methodName: methodName)
-        
-        var responseAttractions: [Attraction] = []
-        for attraction in attractions {     // Remove [0..<20] part to get all atractions - reduced for speed
-            if !attraction.categories.isEmpty {
-                let newAttraction = Attraction(from: attraction)
-                responseAttractions.append(newAttraction)
-            }
-        }
-        
-        guard !responseAttractions.isEmpty else {
-            throw NSError(domain: serviceName, code: 1, userInfo: [NSLocalizedDescriptionKey: "No attractions available."])
-        }
+        let responseAttractions = try await decodeAttractions(from: data, methodName: methodName)
         
         CacheManager.shared.saveData(responseAttractions, for: url.absoluteString)
         
@@ -65,10 +55,28 @@ class AttractionsService: Service, AttractionsServiceProtocol {
         
         let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
         let attraction = try self.decodeResponse(from: data, as: AttractionWrapper.self, serviceName: serviceName, methodName: methodName)
-        let attractionResponse = Attraction(from: attraction)
+        let attractionResponse = try await attractionMapper.mapToAttraction(from: attraction)
         
         CacheManager.shared.saveData(attractionResponse, for: url.absoluteString)
         
         return attractionResponse
+    }
+    
+    private func decodeAttractions(from data: Data, methodName: String) async throws -> [Attraction] {
+        let attractions = try self.decodeResponse(from: data, as: [AttractionWrapper].self, serviceName: serviceName, methodName: methodName)
+        
+        var responseAttractions: [Attraction] = []
+        for attraction in attractions {     // Remove [0..<20] part to get all atractions - reduced for speed
+            if !attraction.categories.isEmpty {
+                do {
+                    let newAttraction = try await attractionMapper.mapToAttraction(from: attraction)
+                    responseAttractions.append(newAttraction)
+                } catch {
+                    print("Could not map the attraction: \(attraction.name)")
+                }
+            }
+        }
+        
+        return responseAttractions
     }
 }

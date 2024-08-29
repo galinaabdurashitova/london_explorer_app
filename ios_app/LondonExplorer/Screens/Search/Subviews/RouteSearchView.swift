@@ -35,8 +35,8 @@ struct RouteSearchView: View {
     
     private func routeCard(route: Route) -> some View {
         HStack {
-            Image(uiImage: route.image)
-                .roundedFrame(width: 70, height: 70)
+            LoadingImage(url: Binding(get: { route.stops[0].attraction.imageURLs[0] }, set: { _ in }))
+                .roundedFrameView(width: 70, height: 70)
             
             VStack(alignment: .leading, spacing: 5) {
                 Text(route.name)

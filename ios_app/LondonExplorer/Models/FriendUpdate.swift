@@ -41,14 +41,5 @@ struct FriendUpdate: Identifiable {
         dateFormatter.dateFormat = "HH:mm, dd/MM/yyyy"
         return dateFormatter.string(from: date)
     }
-    
-    init(id: UUID = UUID(), friend: User, description: String, date: Date, update: UpdateType, routeName: String? = nil) {
-        self.id = id
-        self.friend = friend
-        self.description = description
-        self.date = date
-        self.update = update
-        self.routeName = routeName
-    }
 }
 

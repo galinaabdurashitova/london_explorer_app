@@ -45,34 +45,7 @@ struct RouteView: View {
             }
             .frame(height: headerHeight)
             
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 25) {
-                    Spacer().frame(height: 0)
-                    
-                    RouteDataView(viewModel: viewModel)
-                    
-                    if auth.profile.id == viewModel.route.userCreated && viewModel.route.datePublished == nil {
-                        Button("Delete the route") {
-                            viewModel.confirmDelete = true
-                        }
-                        .padding(.top, 20)
-                        .foregroundColor(Color.redAccent)
-                    }
-                    
-                    Spacer().frame(height: 20)
-                }
-                .background(
-                    GeometryReader { geometry in
-                        Color.clear
-                            .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).minY)
-                    }
-                )
-            }
-            .padding(.horizontal)
-            .coordinateSpace(name: "scroll")
-            .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-                scrollOffset = -value
-            }
+            viewContent
         }
         .onAppear {
             if auth.profile.id != viewModel.route.userCreated && viewModel.userCreated == nil {
@@ -116,6 +89,37 @@ struct RouteView: View {
                 .frame(width: 40, height: 40)
         }
         .padding(.horizontal)
+    }
+    
+    private var viewContent: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 25) {
+                Spacer().frame(height: 0)
+                
+                RouteDataView(viewModel: viewModel)
+                
+                if auth.profile.id == viewModel.route.userCreated && viewModel.route.datePublished == nil {
+                    Button("Delete the route") {
+                        viewModel.confirmDelete = true
+                    }
+                    .padding(.top, 20)
+                    .foregroundColor(Color.redAccent)
+                }
+                
+                Spacer().frame(height: 20)
+            }
+            .background(
+                GeometryReader { geometry in
+                    Color.clear
+                        .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).minY)
+                }
+            )
+        }
+        .padding(.horizontal)
+        .coordinateSpace(name: "scroll")
+        .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+            scrollOffset = -value
+        }
     }
 }
 

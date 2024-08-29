@@ -47,24 +47,18 @@ class FriendUpdateMapper {
     }
     
     func mapUpdateUser(from dto: FriendUpdateWrapper) async -> User {
-        let image: UIImage? = dto.imageName != nil ? await loadImage(for: dto.imageName!) : nil
+        let image: String? = dto.imageName != nil ? await loadImage(for: dto.imageName!) : nil
         
         return User(
             userId: dto.userId,
             name: dto.name,
             userName: dto.userName,
-            imageName: dto.imageName,
-            image: image
+            imageName: image
         )
     }
     
-    func loadImage(for userImageName: String) async -> UIImage? {
-        do {
-            let image = try await ImagesRepository.shared.getUserImage(userImageName: userImageName)
-            return image
-        } catch {
-            print("Could not get user's image")
-            return nil
-        }
+    func loadImage(for userImageName: String) async -> String? {
+        let image = await ImagesRepository.shared.getUserImageUrl(userImageName: userImageName)
+        return image
     }
 }

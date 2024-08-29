@@ -14,8 +14,8 @@ struct AttractionCard: View {
     var body: some View {
         VStack (alignment: .leading, spacing: 10) {
             HStack (spacing: 14) {
-                Image(uiImage: attraction.images[0])
-                    .roundedFrame(width: 80, height: 80)
+                LoadingImage(url: $attraction.imageURLs[0])
+                    .roundedFrameView(width: 80, height: 80)
                 
                 VStack (alignment: .leading, spacing: 5) {
                     Text(attraction.name)

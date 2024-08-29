@@ -12,7 +12,7 @@ class RouteViewModel: ObservableObject {
     // Data
     @Published var route: Route
     @Published var userCreated: User?
-    @Published var images: [UIImage]
+    @Published var images: [String]
     
     // Edit
     @Published var isEditSheetPresented: Bool = false
@@ -42,7 +42,7 @@ class RouteViewModel: ObservableObject {
         self.newName = route.name
         self.newDescription = route.description
         self.images = route.stops.compactMap { stop in
-            stop.attraction.images.first
+            stop.attraction.imageURLs.first
         }
     }
     

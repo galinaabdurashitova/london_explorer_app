@@ -17,13 +17,7 @@ struct ProfileHeader: View {
             loader
         } else {
             HStack(spacing: 15) {
-                if let image = viewModel.user.image {
-                    Image(uiImage: image)
-                        .profilePicture(size: 120)
-                } else {
-                    Image("User3DIcon")
-                        .profilePicture(size: 120)
-                }
+                LoadingUserImage(userImage: $viewModel.user.imageName, imageSize: 120)
                 
                 VStack(alignment: .leading, spacing: 20) {
                     HStack {

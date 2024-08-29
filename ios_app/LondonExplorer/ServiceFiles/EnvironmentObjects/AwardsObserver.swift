@@ -16,7 +16,7 @@ class AwardsObserver: ObservableObject {
     private var maxLikes: Int = 0
     
     @MainActor
-    func checkAward(for trigger: AwardTypes.AwardTriggers, user: User, routeProgress: RouteProgress? = nil) {
+    func checkAward(for trigger: AwardTriggers, user: User, routeProgress: RouteProgress? = nil) {
         withAnimation {
             self.newAwards = trigger.getAwards(user: user, routeProgress: routeProgress,  maxLikes: self.maxLikes, routeNumber: self.routesNumber)
         }
@@ -38,7 +38,6 @@ class AwardsObserver: ObservableObject {
     }
     
     func getAwardPoints(user: User, award: AwardTypes) -> Double {
-//        print("Check for \(award.rawValue) with \(self.routesNumber)")
         return award.getPoints(user: user, maxLikes: self.maxLikes, routeNumber: self.routesNumber)
     }
     

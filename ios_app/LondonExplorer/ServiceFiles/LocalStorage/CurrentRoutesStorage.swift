@@ -32,7 +32,7 @@ struct CurrentRoutesStorage<T: Codable> {
         if T.self == Array<RouteProgress>.self {
             return [RouteProgress]()
         }
-        // Add other default value cases as needed
-        return ""  // Default for other types if needed
+        
+        return ""
     }
 }
