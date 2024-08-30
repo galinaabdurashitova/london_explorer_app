@@ -81,7 +81,7 @@ struct AwardPopup: View {
         Task {
             await awards.saveAwards(user: auth.profile)
             await auth.reloadUser()
-            globalSettings.profileReloadTrigger = true
+            globalSettings.setProfileReloadTrigger(to: true)
         }
     }
 }

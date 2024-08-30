@@ -30,3 +30,8 @@ struct LoadingImage: View {
         }
     }
 }
+
+#Preview {
+    LoadingImage(url: .constant(MockData.Attractions[0].imageURLs[0]))
+        .roundedFrameView()
+}

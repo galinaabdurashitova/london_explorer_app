@@ -12,11 +12,11 @@ struct RouteStopsList: View {
     @Binding var route: Route
     
     init(route: Binding<Route>) {
-        _route = route
+        self._route = route
     }
     
     init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
-        _route = Binding<Route> (
+        self._route = Binding<Route> (
             get: {
                 return Route(
                     dateCreated: Date(),
@@ -91,7 +91,8 @@ struct RouteStopsList: View {
             if let path = route.pathes[index] {
                 Text(
                     String(format: "%.0f", path.expectedTravelTime / 60)
-                    + " min")
+                    + " min"
+                )
                 .font(.system(size: 12, weight: .medium))
                 .opacity(0.5)
             }

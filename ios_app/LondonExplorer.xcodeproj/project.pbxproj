@@ -142,6 +142,7 @@
 		2AC3C53D2C8111DD00E95BE1 /* AttractionCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C53C2C8111DD00E95BE1 /* AttractionCategories.swift */; };
 		2AC3C5402C8118A800E95BE1 /* LoadingUserImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C53F2C8118A800E95BE1 /* LoadingUserImage.swift */; };
 		2AC3C5422C811D3B00E95BE1 /* RouteButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C5412C811D3A00E95BE1 /* RouteButtons.swift */; };
+		2AC3C5442C81D4E000E95BE1 /* TabsEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC3C5432C81D4E000E95BE1 /* TabsEnums.swift */; };
 		2AC56A802C28C0F400F7249B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */; };
 		2AC56A842C28C31D00F7249B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A832C28C31D00F7249B /* FirebaseAuth */; };
 		2AC56A862C28C31D00F7249B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC56A852C28C31D00F7249B /* FirebaseStorage */; };
@@ -335,6 +336,7 @@
 		2AC3C53C2C8111DD00E95BE1 /* AttractionCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionCategories.swift; sourceTree = "<group>"; };
 		2AC3C53F2C8118A800E95BE1 /* LoadingUserImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingUserImage.swift; sourceTree = "<group>"; };
 		2AC3C5412C811D3A00E95BE1 /* RouteButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteButtons.swift; sourceTree = "<group>"; };
+		2AC3C5432C81D4E000E95BE1 /* TabsEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsEnums.swift; sourceTree = "<group>"; };
 		2AC56A7F2C28C0F400F7249B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AC56A882C28C51B00F7249B /* AttractionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionsService.swift; sourceTree = "<group>"; };
 		2AC56A8A2C28C6BF00F7249B /* ImagesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesRepository.swift; sourceTree = "<group>"; };
@@ -624,8 +626,8 @@
 				2AA5B10A2C08B890001EC475 /* LondonExplorerApp.swift */,
 				2AA5B10C2C08B890001EC475 /* ContentView.swift */,
 				2A0E39FA2C50227D00AC32A4 /* TabView.swift */,
-				2AA5B1232C08D803001EC475 /* Models */,
 				2AC56A872C28C50E00F7249B /* APIs */,
+				2AA5B1232C08D803001EC475 /* Models */,
 				2A16D7A02C6F5C8B00736532 /* Screens */,
 				2A0E39DE2C4D769200AC32A4 /* ServiceFiles */,
 				2AA5B12A2C09049D001EC475 /* SharedComponents */,
@@ -728,6 +730,7 @@
 				2AA5B1522C0A166E001EC475 /* CardLabelEnum.swift */,
 				2AFB413A2C63DC79005AEF8B /* CollectableEnum.swift */,
 				2AA9B8DF2C527DC6001F27B9 /* NavigationEnums.swift */,
+				2AC3C5432C81D4E000E95BE1 /* TabsEnums.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1239,6 +1242,7 @@
 				2A16D79D2C6D486600736532 /* CollectableAnnotation.swift in Sources */,
 				2AA5B10B2C08B890001EC475 /* LondonExplorerApp.swift in Sources */,
 				2AE8A02F2C14BDB2005E0F62 /* Attraction.swift in Sources */,
+				2AC3C5442C81D4E000E95BE1 /* TabsEnums.swift in Sources */,
 				2A56027C2C777A020057A5E1 /* AwardPopup.swift in Sources */,
 				2AC3C4D42C7E80AE00E95BE1 /* SettingsTypes.swift in Sources */,
 				2A0E39EB2C4EF07300AC32A4 /* RouteClock.swift in Sources */,

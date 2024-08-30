@@ -20,6 +20,7 @@ protocol RoutesServiceProtocol: Service {
     func fetchFavouriteRoutes(userId: String) async throws -> [Route]   // Get favourite routes
     func fetchTopRoutes(limit: Int) async throws -> [Route]             // Get top routes
     func getMostLikes(userId: String) async throws -> Int               // Func for awards
+    func getRoutesNumber(userId: String) async throws -> Int            // Func for awards
 }
 
 class RoutesService: Service, RoutesServiceProtocol {
@@ -136,6 +137,20 @@ class RoutesService: Service, RoutesServiceProtocol {
         let mostLikes = routes.filter({ $0.saves != nil }).compactMap({ $0.saves!.count }).max() ?? 0
         
         return mostLikes
+    }
+    
+    func getRoutesNumber(userId: String) async throws -> Int {
+        let methodName = "getMostLikes"
+        let url = serviceURL
+            .appendingPathComponent("userCreated")
+            .appending(queryItems: [URLQueryItem(name: "userId", value: userId)])
+        
+        let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
+        let routes = try self.decodeResponse(from: data, as: [RouteWrapper].self, serviceName: serviceName, methodName: methodName)
+
+        let routesNumber = routes.count
+        
+        return routesNumber
     }
     
     

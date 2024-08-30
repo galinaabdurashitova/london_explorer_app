@@ -14,12 +14,14 @@ struct ContentView: View {
     @StateObject var globalSettings = GlobalSettings()
     @StateObject var awards = AwardsObserver()
     
+    @State var isLoading: Bool = false
+    
     var body: some View {
         Group {
             if !networkMonitor.isConnected {
                 noInternet
             } else if auth.isSignedIn {
-                MainTabView()
+                MainTabView(isAppLoading: $isLoading)
                     .environmentObject(networkMonitor)
                     .environmentObject(auth)
                     .environmentObject(currentRoute)
@@ -48,9 +50,11 @@ struct ContentView: View {
     }
     
     private func launchApp() {
+        self.isLoading = true
         Task {
             currentRoute.getMyRouteProgress(user: auth.profile)
             await awards.getRoutesAwards(user: auth.profile)
+            self.isLoading = false
         }
     }
 }

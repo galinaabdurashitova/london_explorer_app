@@ -16,13 +16,15 @@ struct RouteView: View {
     @StateObject var viewModel: RouteViewModel
     
     @State private var scrollOffset: CGFloat = 0
-    
     private var headerHeight: CGFloat {
-        max(110, 315 - max(0, scrollOffset * 2.5 - 100))
+        max(50, UIScreen.main.bounds.height * 0.3 - max(0, scrollOffset * 2.5 - 100))
+    }
+    private var headerOpacity: Double {
+        return Double(headerHeight - scrollOffset) / 100
     }
     
-    private var headerOpacity: Double {
-        return Double(headerHeight - scrollOffset * 2) / 100
+    private var currentUser: Bool {
+        auth.profile.id == viewModel.route.userCreated
     }
     
     init(route: Route) {
@@ -30,15 +32,13 @@ struct RouteView: View {
     }
     
     var body: some View {
-        VStack(spacing: -60) {
+        VStack(spacing: 0) {
             ZStack (alignment: .topLeading) {
                 ImagesSlidesHeader(
                     images: $viewModel.images
                 )
-                .frame(height: headerHeight)
-                .clipped()
-                .padding(.vertical, 0)
-                .edgesIgnoringSafeArea(.top)
+                .ignoresSafeArea()
+                .padding(.top, -120)
                 .opacity(headerOpacity)
                 
                 Header
@@ -48,7 +48,7 @@ struct RouteView: View {
             viewContent
         }
         .onAppear {
-            if auth.profile.id != viewModel.route.userCreated && viewModel.userCreated == nil {
+            if !self.currentUser && viewModel.userCreated == nil {
                 viewModel.fetchUserCreated()
             }
         }
@@ -59,13 +59,9 @@ struct RouteView: View {
         .popup(
             isPresented: $viewModel.confirmDelete,
             text: "Are you sure you want to delete this route?",
-            buttonText: "Delete the route"
-        ) {
-            viewModel.deleteRoute()
-            currentRoute.routeDeletion(route: viewModel.route)
-            globalSettings.profileReloadTrigger = true
-            self.presentationMode.wrappedValue.dismiss()
-        }
+            buttonText: "Delete the route",
+            action: self.deleteRoute
+        )
     }
     
     private var Header: some View {
@@ -98,9 +94,9 @@ struct RouteView: View {
                 
                 RouteDataView(viewModel: viewModel)
                 
-                if auth.profile.id == viewModel.route.userCreated && viewModel.route.datePublished == nil {
+                if self.currentUser && viewModel.route.datePublished == nil {
                     Button("Delete the route") {
-                        viewModel.confirmDelete = true
+                        viewModel.confirmDelete(true)
                     }
                     .padding(.top, 20)
                     .foregroundColor(Color.redAccent)
@@ -111,7 +107,12 @@ struct RouteView: View {
             .background(
                 GeometryReader { geometry in
                     Color.clear
-                        .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).minY)
+                        .preference(
+                            key: ScrollOffsetPreferenceKey.self,
+                            value: geometry
+                                    .frame(in: .named("scroll"))
+                                    .minY
+                        )
                 }
             )
         }
@@ -120,6 +121,13 @@ struct RouteView: View {
         .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
             scrollOffset = -value
         }
+    }
+    
+    private func deleteRoute() {
+        viewModel.deleteRoute()
+        currentRoute.routeDeletion(route: viewModel.route)
+        globalSettings.setProfileReloadTrigger(to: true)
+        self.presentationMode.wrappedValue.dismiss()
     }
 }
 

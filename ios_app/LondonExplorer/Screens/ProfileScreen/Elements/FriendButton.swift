@@ -39,7 +39,7 @@ struct FriendButton: View {
     var body: some View {
         ZStack {
             if viewModel.user.friends.contains(auth.profile.id) {
-                button(type: .add)
+                button(type: .friends)
             } else if viewModel.isUserRequestProcessing {
                 ProgressView()
             } else if viewModel.isFriendRequestSent {

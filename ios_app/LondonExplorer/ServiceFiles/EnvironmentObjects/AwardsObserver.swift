@@ -11,9 +11,11 @@ import SwiftUI
 class AwardsObserver: ObservableObject {
     @Published var newAwards: [User.UserAward] = []
     @Published var isSaving: Bool = false
-    @Published var isLoading: Bool = false
     private var routesNumber: Int = 0
     private var maxLikes: Int = 0
+    
+    private var usersService: UsersServiceProtocol = UsersService()
+    private var routesService: RoutesServiceProtocol = RoutesService()
     
     @MainActor
     func checkAward(for trigger: AwardTriggers, user: User, routeProgress: RouteProgress? = nil) {
@@ -28,7 +30,7 @@ class AwardsObserver: ObservableObject {
         self.isSaving = true
         if !self.newAwards.isEmpty {
             do {
-                try await UsersService().saveUserAward(userId: user.id, awards: self.newAwards)
+                try await usersService.saveUserAward(userId: user.id, awards: self.newAwards)
             } catch {
                 print("Error saving awards")
             }
@@ -43,13 +45,12 @@ class AwardsObserver: ObservableObject {
     
     @MainActor
     func getRoutesAwards(user: User) async {
-        self.isLoading = true
         do {
-            self.routesNumber = try await RoutesService().getMostLikes(userId: user.id)
+            self.routesNumber = try await routesService.getRoutesNumber(userId: user.id)
+            self.maxLikes = try await routesService.getMostLikes(userId: user.id)
         } catch {
             print("Unable to get routes number")
         }
-        self.isLoading = false
     }
     
     func setMaxLikes(likes: Int?) {

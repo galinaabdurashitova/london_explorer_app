@@ -30,7 +30,7 @@ struct ProfileHeader: View {
                         
                         Spacer()
                         
-                        if viewModel.user == auth.profile {
+                        if viewModel.user.id == auth.profile.id {
                             NavigationLink(value: ProfileNavigation.settings) {
                                 Image(systemName: "gearshape")
                                     .icon(size: 30, colour: Color.black.opacity(0.3))

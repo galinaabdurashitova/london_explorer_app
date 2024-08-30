@@ -15,6 +15,10 @@ struct RouteButtons: View {
     @EnvironmentObject var awards: AwardsObserver
     @ObservedObject var viewModel: RouteViewModel
     
+    private var currentUser: Bool {
+        auth.profile.id == viewModel.route.userCreated
+    }
+    
     var body: some View {
         HStack(spacing: 0) {
             FirstButton
@@ -35,7 +39,7 @@ struct RouteButtons: View {
                 Button(action: self.publishRoute) {
                     RouteButton.publish.view
                 }
-                .disabled(auth.profile.id != viewModel.route.userCreated)
+                .disabled(!self.currentUser)
             }
         }
         .overlay(
@@ -52,21 +56,25 @@ struct RouteButtons: View {
                 RouteButton.saving.view
             } else if viewModel.route.datePublished != nil {
                 if viewModel.route.saves.contains(auth.profile.id) {
-                    Button(action: self.dislikeRoute) {
+                    Button(action: {
+                        self.saveRoute(false)
+                    }) {
                         RouteButton.saved(viewModel.route.saves.count).view
                     }
                 } else {
-                    Button(action: self.likeRoute) {
+                    Button(action: {
+                        self.saveRoute(true)
+                    }) {
                         RouteButton.save(viewModel.route.saves.count).view
                     }
                 }
             } else {
                 Button(action: {
-                    viewModel.isEditSheetPresented = true
+                    viewModel.setShowEditSheet(to: true)
                 }) {
                     RouteButton.edit.view
                 }
-                .disabled(auth.profile.id != viewModel.route.userCreated)
+                .disabled(!self.currentUser)
             }
         }
         .overlay(
@@ -93,30 +101,25 @@ struct RouteButtons: View {
     
     private func publishRoute() {
         Task {
-            viewModel.isPublishing = true
+            viewModel.setIsPublishing(to: true)
             await viewModel.publishRoute()
-            globalSettings.profileReloadTrigger = true
             await awards.getRoutesAwards(user: auth.profile)
             awards.checkAward(for: .publishedRoute, user: auth.profile)
-            viewModel.isPublishing = false
+            globalSettings.setProfileReloadTrigger(to: true)
+            viewModel.setIsPublishing(to: false)
         }
     }
     
-    private func likeRoute() {
+    private func saveRoute(_ save: Bool) {
         Task {
-            viewModel.isSaving = true
-            await viewModel.saveRoute(user: auth.profile)
-            globalSettings.favouriteRoutesReloadTrigger = true
-            viewModel.isSaving = false
-        }
-    }
-    
-    private func dislikeRoute() {
-        Task {
-            viewModel.isSaving = true
-            await viewModel.dislikeRoute(user: auth.profile)
-            globalSettings.favouriteRoutesReloadTrigger = true
-            viewModel.isSaving = false
+            viewModel.setIsSaving(to: true)
+            if save {
+                await viewModel.saveRoute(user: auth.profile)
+            } else {
+                await viewModel.dislikeRoute(user: auth.profile)
+            }
+            globalSettings.setFavouriteRoutesReloadTrigger(to: true)
+            viewModel.setIsSaving(to: false)
         }
     }
 }

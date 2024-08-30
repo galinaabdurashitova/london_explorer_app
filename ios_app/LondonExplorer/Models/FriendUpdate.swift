@@ -14,7 +14,7 @@ struct FriendUpdate: Identifiable {
     var description: String
     var date: Date
     var update: UpdateType
-    var routeName: String? = nil
+    var routeName: String?
     
     enum UpdateType: String {
         case award = "Award"
@@ -40,6 +40,15 @@ struct FriendUpdate: Identifiable {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm, dd/MM/yyyy"
         return dateFormatter.string(from: date)
+    }
+    
+    init(id: UUID = UUID(), friend: User, description: String, date: Date, update: UpdateType, routeName: String? = nil) {
+        self.id = id
+        self.friend = friend
+        self.description = description
+        self.date = date
+        self.update = update
+        self.routeName = routeName
     }
 }
 

@@ -49,7 +49,7 @@ struct EditRouteView: View {
             
             Button("Save") {
                 viewModel.saveEditRoute()
-                globalSettings.profileReloadTrigger = true
+                globalSettings.setProfileReloadTrigger(to: true)
             }
             .foregroundColor(Color.blueAccent)
             .disabled(viewModel.newName.isEmpty || viewModel.newDescription.isEmpty)

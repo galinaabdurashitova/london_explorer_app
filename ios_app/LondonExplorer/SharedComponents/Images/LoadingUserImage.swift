@@ -25,3 +25,7 @@ struct LoadingUserImage: View {
         .profilePictureView(size: imageSize)
     }
 }
+
+#Preview {
+    LoadingUserImage(userImage: .constant(MockData.Attractions[0].imageURLs[0]), imageSize: 100)
+}

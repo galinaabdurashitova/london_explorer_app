@@ -10,8 +10,13 @@ import SwiftUI
 
 struct SavedRouteView: View {
     @EnvironmentObject var globalSettings: GlobalSettings
-    @State var route: Route
+    @StateObject var viewModel: RouteViewModel
     @Binding var path: NavigationPath
+    
+    init(route: Route, path: Binding<NavigationPath>) {
+        self._viewModel = StateObject(wrappedValue: RouteViewModel(route: route))
+        self._path = path
+    }
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -25,7 +30,7 @@ struct SavedRouteView: View {
                         Spacer()
                     }
                     
-                    RouteDataView(viewModel: RouteViewModel(route: route))
+                    RouteDataView(viewModel: viewModel)
                 }
                 .padding()
                 
@@ -55,6 +60,7 @@ struct SavedRouteView: View {
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.visible, for: .tabBar)
+        .error(text: viewModel.errorText, isPresented: $viewModel.showError)
     }
 }
 

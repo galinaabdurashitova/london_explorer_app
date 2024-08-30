@@ -14,12 +14,13 @@ struct ImagesSlidesHeader: View {
     var body: some View {
         TabView {
             ForEach($images, id: \.self) { image in
-                LoadingImage(url: image)
-                    .frame(height: 315)
+                HStack {
+                    LoadingImage(url: image)
+                }
+                .clipped()
             }
         }
         .tabViewStyle(PageTabViewStyle())
-        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
     }
 }
 

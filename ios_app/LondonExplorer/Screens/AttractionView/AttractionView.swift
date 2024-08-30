@@ -11,16 +11,15 @@ import SwiftUI
 struct AttractionView: View {
     @Environment(\.presentationMode) var presentationMode
     @StateObject var viewModel: AttractionViewModel
-    @State private var scrollOffset: CGFloat = 0
     
     private var allowAdd: Bool
     
+    @State private var scrollOffset: CGFloat = 0
     private var headerHeight: CGFloat {
-        max(110, 315 - max(0, scrollOffset * 2.5 - 100))
+        max(50, UIScreen.main.bounds.height * 0.3 - max(0, scrollOffset * 2.5 - 100))
     }
-    
     private var headerOpacity: Double {
-        return Double(headerHeight - scrollOffset * 2) / 100
+        return Double(headerHeight - scrollOffset) / 100
     }
     
     init(stops: Binding<[Route.RouteStop]> = .constant([]), attraction: Binding<Attraction>, allowAdd: Bool) {
@@ -29,23 +28,23 @@ struct AttractionView: View {
     }
     
     var body: some View {
-        VStack (spacing: -60) {
-            ZStack (alignment: .topLeading) {
+        VStack (spacing: 0) {
+            ZStack(alignment: .topLeading) {
                 ImagesSlidesHeader(images: $viewModel.attraction.imageURLs)
-                    .frame(height: headerHeight)
-                    .clipped()
-                    .padding(.vertical, 0)
-                    .edgesIgnoringSafeArea(.top)
+                    .ignoresSafeArea()
+                    .padding(.top, -120)
                     .opacity(headerOpacity)
                 
                 Header
             }
             .frame(height: headerHeight)
             
-            viewContent
-            
-            if allowAdd {
-                AddButton
+            ZStack(alignment: .bottom) {
+                viewContent
+                
+                if allowAdd {
+                    AddButton
+                }
             }
         }
         .animation(.easeInOut, value: headerHeight)
@@ -114,29 +113,30 @@ struct AttractionView: View {
     }
     
     private var AddButton: some View {
-        if !(viewModel.stops.map{ $0.attraction }).contains(viewModel.attraction) {
-            ButtonView(
-                text: .constant("Add to the route"),
-                colour: Color.blueAccent,
-                textColour: Color.white,
-                size: .L
-            ) {
-                viewModel.toggleAttracation(attraction: viewModel.attraction)
-                self.presentationMode.wrappedValue.dismiss()
+        VStack {
+            if !(viewModel.stops.map{ $0.attraction }).contains(viewModel.attraction) {
+                ButtonView(
+                    text: .constant("Add to the route"),
+                    colour: Color.blueAccent,
+                    textColour: Color.white,
+                    size: .L
+                ) {
+                    viewModel.toggleAttracation(attraction: viewModel.attraction)
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+            } else {
+                ButtonView(
+                    text: .constant("Remove from the route"),
+                    colour: Color.redAccent,
+                    textColour: Color.white,
+                    size: .L
+                ) {
+                    viewModel.toggleAttracation(attraction: viewModel.attraction)
+                    self.presentationMode.wrappedValue.dismiss()
+                }
             }
-            .padding(.bottom, 20)
-        } else {
-            ButtonView(
-                text: .constant("Remove from the route"),
-                colour: Color.redAccent,
-                textColour: Color.white,
-                size: .L
-            ) {
-                viewModel.toggleAttracation(attraction: viewModel.attraction)
-                self.presentationMode.wrappedValue.dismiss()
-            }
-            .padding(.bottom, 20)
         }
+        .padding(.bottom, UIScreen.main.bounds.height * 0.02)
     }
 }
 

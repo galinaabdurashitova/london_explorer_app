@@ -133,4 +133,51 @@ struct User: Codable, Identifiable, Hashable, Equatable {
         self.friends = friends
         self.finishedRoutes = finishedRoutes
     }
+    
+    static func == (lhs: User, rhs: User) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case userId
+        case email
+        case name
+        case userName
+        case userDescription
+        case imageName
+        case awards
+        case collectables
+        case friends
+        case finishedRoutes
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.id = try container.decode(String.self, forKey: .userId)
+        self.email = try container.decode(String?.self, forKey: .email)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.userName = try container.decode(String.self, forKey: .userName)
+        self.description = try container.decode(String?.self, forKey: .userDescription)
+        self.imageName = try container.decode(String?.self, forKey: .imageName)
+        self.awards = try container.decode([UserAward].self, forKey: .awards)
+        self.collectables = try container.decode([UserCollectable].self, forKey: .collectables)
+        self.friends = try container.decode([String].self, forKey: .friends)
+        self.finishedRoutes = try container.decode([FinishedRoute].self, forKey: .finishedRoutes)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(id, forKey: .userId)
+        try container.encode(email, forKey: .email)
+        try container.encode(name, forKey: .name)
+        try container.encode(userName, forKey: .userName)
+        try container.encode(description, forKey: .userDescription)
+        try container.encode(imageName, forKey: .imageName)
+        try container.encode(awards, forKey: .awards)
+        try container.encode(collectables, forKey: .collectables)
+        try container.encode(friends, forKey: .friends)
+        try container.encode(finishedRoutes, forKey: .finishedRoutes)
+    }
 }
