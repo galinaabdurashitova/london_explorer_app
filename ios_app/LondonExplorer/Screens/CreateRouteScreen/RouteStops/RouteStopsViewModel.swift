@@ -11,7 +11,7 @@ import SwiftUI
 class RouteStopsViewModel: ObservableObject {
     @Published var stops: [Route.RouteStop]
     @Published var pathes: [CodableMKRoute?]
-    @Published var collectables: [Route.RouteCollectable]
+    @Published var collectables: [Route.RouteCollectable] = []
     @Published var isLoading: Bool = false
     @Published var draggingItem: Route.RouteStop?
     @Published var deleteIconSize: Double = 25
@@ -19,7 +19,6 @@ class RouteStopsViewModel: ObservableObject {
     init(stops: [Route.RouteStop], pathes: [CodableMKRoute?]) {
         self.stops = stops
         self.pathes = pathes
-        self.collectables = []
     }
     
     @MainActor
@@ -36,31 +35,33 @@ class RouteStopsViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func updateStopNumbers() {
-        DispatchQueue.main.async {
-            for index in self.stops.indices {
-                self.stops[index].stepNo = index + 1
-            }
+        for index in self.stops.indices {
+            self.stops[index].stepNo = index + 1
         }
     }
     
     func recalculate() async {
-        updateStopNumbers()
+        await updateStopNumbers()
         await calculateRoute()
     }
     
+    @MainActor
     func deleteStop(stop: Route.RouteStop) {
         if let index = stops.firstIndex(where: { $0 == stop }) {
-            stops.remove(at: index)
-            updateStopNumbers()
+            self.stops.remove(at: index)
+            self.updateStopNumbers()
         }
     }
     
+    @MainActor
     func removeAllStops() {
-        stops = []
-        pathes = []
+        self.stops = []
+        self.pathes = []
     }
     
+    @MainActor
     func generateCollectables() {
         let minCollectables = max(1, stops.count - 2)
         let maxCollectables = stops.count + 3
@@ -78,8 +79,6 @@ class RouteStopsViewModel: ObservableObject {
             }
         }
         
-//        DispatchQueue.main.async {
-            self.collectables = generatedCollectables
-//        }
+        self.collectables = generatedCollectables
     }
 }

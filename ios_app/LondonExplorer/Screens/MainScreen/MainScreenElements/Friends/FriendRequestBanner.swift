@@ -32,14 +32,7 @@ struct FriendRequestBanner: View {
             }
             Spacer()
             
-            Button(action: {
-                Task {
-                    await viewModel.acceptRequest(currentUserId: auth.profile.id, userFromId: user.id)
-                    await auth.reloadUser()
-                    awards.checkAward(for: .friendshipApproved, user: auth.profile)
-                    globalSettings.profileReloadTrigger = true
-                }
-            }) {
+            Button(action: self.acceptFriendRequest) {
                 Image(systemName: "checkmark")
                     .icon(size: 20, colour: Color.greenAccent)
                     .fontWeight(.semibold)
@@ -63,6 +56,15 @@ struct FriendRequestBanner: View {
         .foregroundColor(Color.black)
         .background(Color.lightBlue)
         .cornerRadius(8)
+    }
+    
+    private func acceptFriendRequest() {
+        Task {
+            await viewModel.acceptRequest(currentUserId: auth.profile.id, userFromId: user.id)
+            await auth.reloadUser()
+            awards.checkAward(for: .friendshipApproved, user: auth.profile)
+            globalSettings.setProfileReloadTrigger(to: true)
+        }
     }
 }
 

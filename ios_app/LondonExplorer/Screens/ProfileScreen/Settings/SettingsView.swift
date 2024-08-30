@@ -27,12 +27,7 @@ struct SettingsView: View {
                 Toggle("Use test data", isOn: $globalSettings.useMockData)
                     .padding(.trailing, 5)
                 
-                Button(action: {
-                    globalSettings.tabSelection = 0
-                    globalSettings.searchTab = 0
-                    
-                    auth.signOut()
-                }) {
+                Button(action: self.signOut) {
                     HStack {
                         Image(systemName: "rectangle.portrait.and.arrow.right")
                             .icon(size: 25, colour: Color.redAccent)
@@ -47,6 +42,11 @@ struct SettingsView: View {
         .navigationDestination(for: SettingsType.self) { value in
             SettingPage(setting: value)
         }
+    }
+    
+    func signOut() {
+        globalSettings.signOut()
+        auth.signOut()
     }
 }
 

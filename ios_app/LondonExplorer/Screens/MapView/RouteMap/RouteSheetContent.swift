@@ -26,19 +26,17 @@ struct RouteSheetContent: View {
                         text: .constant("Open in\nGoogle Maps"),
                         colour: Color.blueAccent,
                         textColour: Color.white,
-                        size: .M
-                    ) {
-                        openInGoogleMaps()
-                    }
+                        size: .M,
+                        action: self.openInGoogleMaps
+                    )
                     
                     ButtonView(
                         text: .constant("Open in\nApple Maps"),
                         colour: Color.blueAccent,
                         textColour: Color.white,
-                        size: .M
-                    ) {
-                        openInAppleMaps()
-                    }
+                        size: .M,
+                        action: self.openInAppleMaps
+                    )
                 }
                 
                 RouteStopsList(route: $route)

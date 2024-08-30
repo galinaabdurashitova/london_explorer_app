@@ -9,6 +9,52 @@ import Foundation
 import SwiftUI
 
 struct ProfileStatIcons: View {
+    enum StatIconType: CaseIterable {
+        case awards
+        case finishedRoutes
+        case collectables
+        
+        var iconName: String {
+            switch self {
+            case .awards:           return "Trophy3DIcon"
+            case .finishedRoutes:   return "Route3DIcon"
+            case .collectables:     return "Treasures3DIcon"
+            }
+        }
+        
+        var word: String {
+            switch self {
+            case .awards:           return "awards"
+            case .finishedRoutes:   return "routes finished"
+            case .collectables:     return "collectables"
+            }
+        }
+        
+        var colour: Color {
+            switch self {
+            case .awards:           return Color.redAccent
+            case .finishedRoutes:   return Color.greenAccent
+            case .collectables:     return Color.blueAccent
+            }
+        }
+        
+        func getNavigation(user: User) -> ProfileNavigation {
+            switch self {
+            case .awards:           return ProfileNavigation.awards(user)
+            case .finishedRoutes:   return ProfileNavigation.finishedRoutes(user)
+            case .collectables:     return ProfileNavigation.collectables(user)
+            }
+        }
+        
+        func getNumber(user: User) -> Int {
+            switch self {
+            case .awards:           return user.awards.count
+            case .finishedRoutes:   return user.finishedRoutes.count
+            case .collectables:     return user.collectables.count
+            }
+        }
+    }
+    
     @ObservedObject var viewModel: ProfileViewModel
     
     var body: some View {
@@ -21,16 +67,10 @@ struct ProfileStatIcons: View {
     
     private var iconRow: some View {
         HStack(spacing: 10) {
-            NavigationLink(value: ProfileNavigation.awards(viewModel.user)) {
-                statIcon(icon: "Trophy3DIcon", number: viewModel.user.awards.count, word: "awards", colour: Color.redAccent)
-            }
-            
-            NavigationLink(value: ProfileNavigation.finishedRoutes(viewModel.user)) {
-                statIcon(icon: "Route3DIcon", number: viewModel.user.finishedRoutes.count, word: "routes finished", colour: Color.greenAccent)
-            }
-            
-            NavigationLink(value: ProfileNavigation.collectables(viewModel.user)) {
-                statIcon(icon: "Treasures3DIcon", number: viewModel.user.collectables.count, word: "collectables", colour: Color.blueAccent)
+            ForEach(StatIconType.allCases, id: \.self) { iconType in
+                NavigationLink(value: iconType.getNavigation(user: viewModel.user)) {
+                    statIcon(icon: iconType.iconName, number: iconType.getNumber(user: viewModel.user), word: iconType.word, colour: iconType.colour)
+                }
             }
         }
     }

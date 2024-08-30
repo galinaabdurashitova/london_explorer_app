@@ -13,16 +13,19 @@ struct AwardsView: View {
     @EnvironmentObject var awards: AwardsObserver
     @State var user: User
     
+    private var currentUser: Bool {
+        user.id == auth.profile.id
+    }
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .center, spacing: 25) {
                 HStack {
                     let awardCount = "\(String(user.awards.count))/\(String(AwardTypes.allCases.count * 3))"
-                    let username = user.id == auth.profile.id
                     
                     ScreenHeader(
-                        headline: .constant("\(username ? "Your" : "\(user.name)'s") awards"),
-                        subheadline:  .constant("\(username ? "You" : user.name) recieved \(awardCount) awards")
+                        headline: .constant("\(currentUser ? "Your" : "\(user.name)'s") awards"),
+                        subheadline:  .constant("\(currentUser ? "You" : user.name) recieved \(awardCount) awards")
                     )
                     
                     Spacer()
@@ -85,11 +88,11 @@ struct AwardsView: View {
     }
     
     private func awardProgressBar(award: AwardTypes, colour: Color) -> some View {
-        VStack(alignment: .center, spacing: 2) {
-            let currentPoints = awards.getAwardPoints(user: user, award: award)
-            let currentLevel = award.getLevelPoints(level: award.getUserLevel(user: user))
-            let nextLevel = award.getLevelPoints(level: award.getUserLevel(user: user) + 1)
-            
+        let currentPoints = awards.getAwardPoints(user: user, award: award)
+        let currentLevel = award.getLevelPoints(level: award.getUserLevel(user: user))
+        let nextLevel = award.getLevelPoints(level: award.getUserLevel(user: user) + 1)
+        
+        return VStack(alignment: .center, spacing: 2) {
             HStack {
                 Text(String(format: "%.0f", currentLevel))
                     .font(.system(size: 14, weight: .light))

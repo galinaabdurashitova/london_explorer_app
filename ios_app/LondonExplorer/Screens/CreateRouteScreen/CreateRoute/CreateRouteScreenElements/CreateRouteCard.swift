@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// Not used in the final version
 struct CreateRouteCard: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @Binding var path: NavigationPath

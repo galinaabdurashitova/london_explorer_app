@@ -27,9 +27,10 @@ class FinishCreateViewModel: ObservableObject {
         )
     }
     
+    @MainActor
     func saveRoute(userId: String)  {
         self.isSaving = true
-        route.userCreated = userId
+        self.route.userCreated = userId
         routesManager.saveRoute(route: route)
         self.isSaving = false
     }

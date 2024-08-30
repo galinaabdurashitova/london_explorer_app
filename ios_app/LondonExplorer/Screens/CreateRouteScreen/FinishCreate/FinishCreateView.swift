@@ -37,11 +37,7 @@ struct FinishCreateView: View {
             .scrollClipDisabled()
             .padding()
             
-            Button(action: {
-                viewModel.saveRoute(userId: auth.profile.id)
-                globalSettings.profileReloadTrigger = true
-                path.append(CreateRoutePath.savedRoute(viewModel.route))
-            }) {
+            Button(action: self.saveRoute) {
                 ButtonView(
                     text: .constant("Save route"),
                     colour: Color.blueAccent,
@@ -109,6 +105,12 @@ struct FinishCreateView: View {
             
             RouteStopsList(route: $viewModel.route)
         }
+    }
+    
+    private func saveRoute() {
+        viewModel.saveRoute(userId: auth.profile.id)
+        globalSettings.setProfileReloadTrigger(to: true)
+        path.append(CreateRoutePath.savedRoute(viewModel.route))
     }
 }
 

@@ -26,7 +26,7 @@ struct FriendButton: View {
             switch self {
             case .friends:      return Color.blueAccent
             case .requested:    return Color.greenAccent
-            case .add:          return Color.black.opacity(0.2)
+            case .add:          return Color.black.opacity(0.16)
             }
         }
     }
@@ -45,14 +45,7 @@ struct FriendButton: View {
             } else if viewModel.isFriendRequestSent {
                 button(type: .requested)
             } else {
-                Button(action: {
-                    Task {
-                        await viewModel.addFriend(userFromId: auth.profile.id)
-                        await auth.reloadUser()
-                        awards.checkAward(for: .friendshipApproved, user: auth.profile)
-                        globalSettings.profileReloadTrigger = true
-                    }
-                }) {
+                Button(action: self.addFriend) {
                     button(type: .add)
                 }
             }
@@ -70,6 +63,15 @@ struct FriendButton: View {
         .padding(.all, 5)
         .background(type.color)
         .cornerRadius(8)
+    }
+    
+    private func addFriend() {
+        Task {
+            await viewModel.addFriend(userFromId: auth.profile.id)
+            await auth.reloadUser()
+            awards.checkAward(for: .friendshipApproved, user: auth.profile)
+            globalSettings.setProfileReloadTrigger(to: true)
+        }
     }
 }
 

@@ -100,10 +100,7 @@ struct OnRouteStatWindow: View {
     
     private var Buttons: some View {
         HStack (spacing: 2) {
-            Button(action: {
-                viewModel.changeStop(next: false, user: auth.profile)
-                currentRoute.routeProgress = viewModel.routeProgress
-            }) {
+            Button(action: self.pressBack) {
                 VStack (spacing: 3) {
                     Image(systemName: "backward")
                         .icon(size: 30, colour: Color.blueAccent)
@@ -115,14 +112,7 @@ struct OnRouteStatWindow: View {
             }
             .frame(width: ((UIScreen.main.bounds.width - 84) / 4) + 5, height: 60)
             
-            Button(action: {
-                if viewModel.routeProgress.paused {
-                    viewModel.stopRoute = true
-                } else {
-                    viewModel.pause()
-                    currentRoute.routeProgress = viewModel.routeProgress
-                }
-            }) {
+            Button(action: self.pressPause) {
                 VStack (spacing: 3) {
                     Image(systemName: viewModel.routeProgress.paused ? "stop" : "pause.circle")
                         .icon(size: 30, colour: Color.redAccent)
@@ -143,15 +133,7 @@ struct OnRouteStatWindow: View {
                 alignment: .trailing
             )
             
-            Button(action: {
-                if viewModel.routeProgress.paused {
-                    viewModel.resume()
-                    currentRoute.routeProgress = viewModel.routeProgress
-                } else {
-                    viewModel.changeStop(user: auth.profile)
-                    currentRoute.routeProgress = viewModel.routeProgress
-                }
-            }) {
+            Button(action: self.pressForward) {
                 VStack (spacing: 3) {
                     Image(systemName: viewModel.routeProgress.paused ? "play" : "forward")
                         .icon(size: 30, colour: Color.greenAccent)
@@ -162,6 +144,30 @@ struct OnRouteStatWindow: View {
                 }
             }
             .frame(width: (UIScreen.main.bounds.width - 84) / 4, height: 60)
+        }
+    }
+    
+    private func pressBack() {
+        viewModel.changeStop(next: false, user: auth.profile)
+        currentRoute.routeProgress = viewModel.routeProgress
+    }
+    
+    private func pressPause() {
+        if viewModel.routeProgress.paused {
+            viewModel.setStopRoute(to: true)
+        } else {
+            viewModel.pause()
+            currentRoute.routeProgress = viewModel.routeProgress
+        }
+    }
+    
+    private func pressForward() {
+        if viewModel.routeProgress.paused {
+            viewModel.resume()
+            currentRoute.routeProgress = viewModel.routeProgress
+        } else {
+            viewModel.changeStop(user: auth.profile)
+            currentRoute.routeProgress = viewModel.routeProgress
         }
     }
 }

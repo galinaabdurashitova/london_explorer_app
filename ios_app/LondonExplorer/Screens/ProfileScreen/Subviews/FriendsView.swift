@@ -15,15 +15,17 @@ struct FriendsView: View {
     @State var isLoadingFriends: Bool = false
     @State var friendsError: Bool = false
     
+    private var currentUser: Bool {
+        user.id == auth.profile.id
+    }
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .center, spacing: 25) {
                 HStack {
-                    let username = user.id == auth.profile.id
-                    
                     ScreenHeader(
-                        headline: .constant("\(username ? "Your" : "\(user.name)'s") friends"),
-                        subheadline:  .constant("\(username ? "You have" : "\(user.name) has")  \(friends.count) friends")
+                        headline: .constant("\(currentUser ? "Your" : "\(user.name)'s") friends"),
+                        subheadline:  .constant("\(currentUser ? "You have" : "\(user.name) has")  \(friends.count) friends")
                     )
                     
                     Spacer()
@@ -33,9 +35,7 @@ struct FriendsView: View {
                     if isLoadingFriends {
                         loader
                     } else if friendsError {
-                        ErrorScreen {
-                            fetchUserFriends()
-                        }
+                        ErrorScreen(action: self.fetchUserFriends)
                     } else {
                         ForEach(friends) { user in
                             NavigationLink(value: ProfileNavigation.profile(user)) {
@@ -47,9 +47,7 @@ struct FriendsView: View {
             }
         }
         .padding(.horizontal)
-        .onAppear {
-            fetchUserFriends()
-        }
+        .onAppear(perform: self.fetchUserFriends)
     }
     
     private func userCard(friend: User) -> some View {

@@ -12,15 +12,17 @@ struct FinishedRoutesView: View {
     @EnvironmentObject var auth: AuthController
     @State var user: User
     
+    private var currentUser: Bool {
+        user.id == auth.profile.id
+    }
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 20) {
                 HStack {
-                    let username = user.id == auth.profile.id
-                    
                     SectionHeader(
-                        headline: .constant("\(username ? "Your" : "\(user.name)'s") Finished Routes"),
-                        subheadline: .constant("\(username ? "You" : user.name) finished \(user.finishedRoutes.count) routes")
+                        headline: .constant("\(currentUser ? "Your" : "\(user.name)'s") Finished Routes"),
+                        subheadline: .constant("\(currentUser ? "You" : user.name) finished \(user.finishedRoutes.count) routes")
                     )
                     Spacer()
                 }

@@ -15,8 +15,12 @@ struct ProfileView: View {
     @EnvironmentObject var awards: AwardsObserver
     @StateObject var viewModel: ProfileViewModel
     
-    init(user: User, loadUnpublished: Bool = false) {
-        self._viewModel = StateObject(wrappedValue: ProfileViewModel(user: user, loadUnpublished: loadUnpublished))
+    private var currentUser: Bool {
+        viewModel.user == auth.profile
+    }
+    
+    init(user: User, isMyProfile: Bool = false) {
+        self._viewModel = StateObject(wrappedValue: ProfileViewModel(user: user, isMyProfile: isMyProfile))
     }
     
     var body: some View {
@@ -39,10 +43,7 @@ struct ProfileView: View {
                         ProfileUserRoutesList(viewModel: viewModel)
                     }
                 }
-                .refreshable {
-                    viewModel.loadData(isCurrentUser: viewModel.user == auth.profile)
-                    awards.setMaxLikes(likes: viewModel.routes.compactMap { $0.saves.count }.max())
-                }
+                .refreshable { self.refreshData() }
             }
         }
         .scrollClipDisabled()
@@ -50,20 +51,26 @@ struct ProfileView: View {
         .padding(.horizontal)
         .error(text: viewModel.error, isPresented: $viewModel.showError)
         .onAppear {
-            if viewModel.user == auth.profile {
-                if globalSettings.profileReloadTrigger {
-                    viewModel.loadData(isCurrentUser: viewModel.user == auth.profile)
-                    globalSettings.profileReloadTrigger = false
-                }
-                awards.setMaxLikes(likes: viewModel.routes.compactMap { $0.saves.count }.max())
-            } else if viewModel.user != auth.profile && !viewModel.firstLoaded {
-                viewModel.loadData(isCurrentUser: viewModel.user == auth.profile)
-                if !viewModel.user.friends.contains(auth.profile.id)
-                    && viewModel.user.id != auth.profile.id {
-                    viewModel.getUserFriendRequests(currentUserId: auth.profile.id)
-                }
-                viewModel.firstLoaded = true
-            }
+            self.loadScreen()
+        }
+    }
+    
+    private func loadScreen() {
+        if viewModel.isMyProfile && globalSettings.profileReloadTrigger {
+            self.refreshData()
+            globalSettings.setProfileReloadTrigger(to: false)
+        } else if !viewModel.firstLoaded {
+            self.refreshData()
+        }
+        viewModel.setScreenLoad(to: true)
+    }
+    
+    private func refreshData() {
+        viewModel.loadData(isCurrentUser: currentUser)
+        if currentUser {
+            awards.setMaxLikes(likes: viewModel.routes.compactMap { $0.saves.count }.max())
+        } else if !viewModel.user.friends.contains(auth.profile.id) {
+            viewModel.getUserFriendRequests(currentUserId: auth.profile.id)
         }
     }
 }

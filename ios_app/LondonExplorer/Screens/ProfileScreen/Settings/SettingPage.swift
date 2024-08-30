@@ -59,10 +59,9 @@ struct SettingPage: View {
                         },
                         set: { _ in }
                     ),
-                    isLoading: $isSaving
-                ) {
-                    self.saveChanges()
-                }
+                    isLoading: $isSaving,
+                    action: self.saveChanges
+                )
                 .padding(.bottom, 15)
             }
         }
@@ -71,9 +70,7 @@ struct SettingPage: View {
         .sheet(isPresented: $isShowingImagePicker) {
             ImagePicker(image: $newImage)
         }
-        .onAppear {
-            self.initialScreenSetup()
-        }
+        .onAppear(perform: self.initialScreenSetup)
     }
     
     private var imageUpdate: some View {
@@ -101,7 +98,7 @@ struct SettingPage: View {
                 .kerning(-0.2)
         }
         .onTapGesture {
-            isShowingImagePicker = true
+            self.isShowingImagePicker = true
         }
     }
     
@@ -116,19 +113,19 @@ struct SettingPage: View {
         case .description:
             self.text = auth.profile.description ?? ""
         }
-        isFocused = true
+        self.isFocused = true
     }
     
     private func saveChanges() {
         isSaving = true
         Task {
             do {
-                if setting == .picture, let image = newImage {
+                if self.setting == .picture, let image = newImage {
                     let imageName = try await ImagesRepository.shared.uploadImage(userId: auth.profile.id, image: image)
                     self.text = imageName ?? ""
                 }
                 try await auth.editProfile(setting: setting, newValue: text)
-                globalSettings.profileReloadTrigger = true
+                globalSettings.setProfileReloadTrigger(to: true)
                 self.presentationMode.wrappedValue.dismiss()
             } catch {
                 self.error = true

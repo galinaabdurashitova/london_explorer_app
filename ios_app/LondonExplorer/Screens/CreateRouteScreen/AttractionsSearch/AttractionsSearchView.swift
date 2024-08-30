@@ -52,14 +52,9 @@ struct AttractionsSearchView: View {
                     text: .constant("Add (\(String(viewModel.stops.count)))"),
                     colour: Color.lightBlue,
                     textColour: Color.black,
-                    size: .L
-                ) {
-                    routeViewModel.stops = viewModel.stops
-                    Task {
-                        await routeViewModel.calculateRoute()
-                    }
-                    self.presentationMode.wrappedValue.dismiss()
-                }
+                    size: .L,
+                    action: self.chooseStops
+                )
                 .padding(.bottom, 20)
             }
         }
@@ -101,7 +96,9 @@ struct AttractionsSearchView: View {
     
     private var AttractionsList: some View {
         VStack (spacing: 5) {
-            ForEach(viewModel.filters.isEmpty && viewModel.searchText.isEmpty ? $viewModel.attractions : $viewModel.filteredAttractions) { attraction in
+            let attractions = viewModel.filters.isEmpty && viewModel.searchText.isEmpty ? $viewModel.attractions : $viewModel.filteredAttractions
+            
+            ForEach(attractions) { attraction in
                 HStack (spacing: 5) {
                     NavigationLink(
                         destination: {
@@ -170,6 +167,14 @@ struct AttractionsSearchView: View {
                 alignment: .top
             )
         }
+    }
+    
+    private func chooseStops() {
+        routeViewModel.stops = viewModel.stops
+        Task {
+            await routeViewModel.calculateRoute()
+        }
+        self.presentationMode.wrappedValue.dismiss()
     }
 }
 

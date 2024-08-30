@@ -12,46 +12,55 @@ struct ProfileCollectablesView: View {
     @EnvironmentObject var auth: AuthController
     @State var user: User
     
+    private var currentUser: Bool {
+        user.id == auth.profile.id
+    }
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .center, spacing: 25) {
                 HStack {
                     ScreenHeader(
-                        headline: user.id == auth.profile.id ? .constant("Your collectables") : .constant("\(user.name)'s collectables"),
-                        subheadline: user.id == auth.profile.id ? .constant("You found \(String(user.collectables.count))/20 collectables") : .constant("\(user.name) found \(String(user.collectables.count))/20 collectables")
+                        headline: currentUser ? .constant("Your collectables") : .constant("\(user.name)'s collectables"),
+                        subheadline: currentUser ? .constant("You found \(String(user.collectables.count))/20 collectables") : .constant("\(user.name) found \(String(user.collectables.count))/20 collectables")
                     )
                     
                     Spacer()
                 }
                 
-                VStack(alignment: .leading, spacing: 15) {
-                    ForEach(0..<(Collectable.allCases.count + 1) / 2) { rowIndex in
-                        HStack(spacing: 15) {
-                            let rowSlice = Array(
-                                Collectable.allCases[
-                                    (rowIndex * 2)..<min(
-                                        rowIndex * 2 + 2,
-                                        Collectable.allCases.count
-                                    )
-                                ]
+                collectablesList
+            }
+        }
+        .padding(.horizontal)
+    }
+    
+    private var collectablesList: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            let numberOfRows = (Collectable.allCases.count + 1) / 2
+            
+            ForEach(0..<numberOfRows, id: \.self) { rowIndex in
+                HStack(spacing: 15) {
+                    let rowSlice = Array(
+                        Collectable.allCases[
+                            (rowIndex * 2)..<min(
+                                rowIndex * 2 + 2,
+                                Collectable.allCases.count
                             )
-                            
-                            ForEach(rowSlice.indices, id: \.self) { collectableIndex in
-                                let index = rowIndex * 2 + collectableIndex
-                                
-                                if let userCollectable = user.collectables.first(where: { $0.type == Collectable.allCases[index] }) {
-                                    collectableCard(collectable: userCollectable, index: index)
-                                } else {
-                                    unknownCollectableCard
-                                }
-                                
-                            }
+                        ]
+                    )
+                    
+                    ForEach(rowSlice.indices, id: \.self) { collectableIndex in
+                        let index = rowIndex * 2 + collectableIndex
+                        
+                        if let userCollectable = user.collectables.first(where: { $0.type == Collectable.allCases[index] }) {
+                            collectableCard(collectable: userCollectable, index: index)
+                        } else {
+                            unknownCollectableCard
                         }
                     }
                 }
             }
         }
-        .padding(.horizontal)
     }
     
     private var unknownCollectableCard: some View {

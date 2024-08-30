@@ -77,7 +77,7 @@ class RouteMapper {
         var routeStops: [Route.RouteStop] = []
         for stop in dto {
             do {
-                var attraction = try await AttractionsService().fetchAttraction(attractionId: stop.attractionId)
+                let attraction = try await AttractionsService().fetchAttraction(attractionId: stop.attractionId)
                 let routeStop = Route.RouteStop(id: stop.attractionId, stepNo: stop.stepNumber, attraction: attraction)
                 routeStops.append(routeStop)
             } catch {

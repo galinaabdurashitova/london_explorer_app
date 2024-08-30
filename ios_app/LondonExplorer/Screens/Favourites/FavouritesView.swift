@@ -27,12 +27,7 @@ struct FavouritesView: View {
                 mainContent
             }
         }
-        .onAppear {
-            if globalSettings.favouriteRoutesReloadTrigger {
-                viewModel.loadRoutes()
-                globalSettings.favouriteRoutesReloadTrigger = false
-            }
-        }
+        .onAppear(perform: self.loadScreenData)
     }
     
     private var mainContent: some View {
@@ -58,15 +53,14 @@ struct FavouritesView: View {
         }
         .appNavigation()
         .refreshable {
-            if !viewModel.isLoading {
-                viewModel.loadRoutes()
-            }
+            self.refreshData()
         }
     }
     
     private var routesList: some View {
         VStack(spacing: 20) {
-            ForEach(0..<(viewModel.savedRoutes.count + 1) / 2) { rowIndex in
+            let numberOfRows = (viewModel.savedRoutes.count + 1) / 2
+            ForEach(0..<numberOfRows, id: \.self) { rowIndex in
                 HStack(alignment: .top, spacing: 20) {
                     let rowSlice = Array(
                         viewModel.savedRoutes[
@@ -115,9 +109,23 @@ struct FavouritesView: View {
     
     private var emptyStateView: some View {
         Button(action: {
-            globalSettings.tabSelection = 1
+            globalSettings.goToTab(.search)
+            globalSettings.goToSearchTab(.routes)
         }) {
             ActionBanner(text: "You haven’t saved any routes", actionText: "Search for routes")
+        }
+    }
+    
+    private func loadScreenData() {
+        if globalSettings.favouriteRoutesReloadTrigger {
+            viewModel.loadRoutes()
+            globalSettings.setFavouriteRoutesReloadTrigger(to: false)
+        }
+    }
+    
+    private func refreshData() {
+        if !viewModel.isLoading {
+            viewModel.loadRoutes()
         }
     }
 }
