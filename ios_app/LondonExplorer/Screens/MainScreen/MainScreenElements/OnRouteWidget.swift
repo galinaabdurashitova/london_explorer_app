@@ -23,8 +23,8 @@ struct OnRouteWidget: View {
                 
                 NavigationLink(value: routeProgress) {
                     RouteProgressView(
-                        image: Binding<UIImage>(
-                            get: { return routeProgress.route.image },
+                        image: Binding<String>(
+                            get: { return routeProgress.route.stops[0].attraction.imageURLs[0] },
                             set: { _ in }
                         ),
                         routeName: Binding<String>(

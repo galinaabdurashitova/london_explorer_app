@@ -37,9 +37,9 @@ struct SearchView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     
-                    if globalSettings.searchTab == 0 {
+                    if globalSettings.searchTab == SearchTabs.routes.rawValue {
                         RouteSearchView(viewModel: viewModel)
-                    } else {
+                    } else if globalSettings.searchTab == SearchTabs.users.rawValue {
                         UsersSearchView(viewModel: viewModel)
                     }
                 }

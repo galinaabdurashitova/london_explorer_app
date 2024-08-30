@@ -131,7 +131,7 @@ class OnRouteViewModel: ObservableObject {
         } else {
             self.lastStop = true
             self.routeProgress.endTime = Date()
-            self.awarded = AwardTypes.AwardTriggers.finishedRoute.getAwards(user: user, routeProgress: self.routeProgress)
+            self.awarded = AwardTriggers.finishedRoute.getAwards(user: user, routeProgress: self.routeProgress)
         }
     }
     

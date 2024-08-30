@@ -12,7 +12,7 @@ class RouteViewModel: ObservableObject {
     // Data
     @Published var route: Route
     @Published var userCreated: User?
-    @Published var images: [UIImage]
+    @Published var images: [String]
     
     // Edit
     @Published var isEditSheetPresented: Bool = false
@@ -33,6 +33,7 @@ class RouteViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var errorText: String = ""
     
+    // Services
     private var userService: UsersServiceProtocol = UsersService()
     private var routesService: RoutesServiceProtocol = RoutesService()
     private var routesManager: RoutesStorageManager = RoutesStorageManager()
@@ -42,7 +43,7 @@ class RouteViewModel: ObservableObject {
         self.newName = route.name
         self.newDescription = route.description
         self.images = route.stops.compactMap { stop in
-            stop.attraction.images.first
+            stop.attraction.imageURLs.first
         }
     }
     
@@ -89,6 +90,11 @@ class RouteViewModel: ObservableObject {
         routesManager.deleteRoute(routeId: route.id)
     }
     
+    @MainActor
+    func confirmDelete(_ confirm: Bool) {
+        self.confirmDelete = confirm
+    }
+    
     // Publish route - service
     @MainActor
     func publishRoute() async {
@@ -123,5 +129,20 @@ class RouteViewModel: ObservableObject {
             self.errorText = error.localizedDescription
             self.showError = true
         }
+    }
+    
+    @MainActor
+    func setShowEditSheet(to value: Bool) {
+        self.isEditSheetPresented = value
+    }
+    
+    @MainActor
+    func setIsPublishing(to value: Bool) {
+        self.isPublishing = value
+    }
+    
+    @MainActor
+    func setIsSaving(to value: Bool) {
+        self.isSaving = value
     }
 }

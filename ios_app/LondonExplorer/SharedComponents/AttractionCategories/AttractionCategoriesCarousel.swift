@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AttractionCategoriesCarousel: View {
-    @Binding var categories: [Attraction.Category]
+    @Binding var categories: [Category]
     @State private var totalWidth: CGFloat = 0
     @State private var screenWidth: CGFloat = 0
     
@@ -35,14 +35,14 @@ struct AttractionCategoriesCarousel: View {
         .scrollClipDisabled()
         .scrollDisabled(totalWidth <= UIScreen.main.bounds.width - 40)
         .onAppear {
-            self.totalWidth = 0 // Reset totalWidth to recalculate when the view appears
+            self.totalWidth = 0 
         }
     }
 }
 
 #Preview {
     AttractionCategoriesCarousel(
-        categories: Binding<[Attraction.Category]> (
+        categories: Binding<[Category]> (
             get: { return MockData.Attractions[0].categories },
             set: { _ in }
         )

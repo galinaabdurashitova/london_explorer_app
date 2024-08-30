@@ -8,14 +8,27 @@
 import Foundation
 import SwiftUI
 
+extension View {
+    func roundedFrameView(width: Double = 100, height: Double = 100) -> some View {
+        self
+            .frame(width: width, height: height)
+            .cornerRadius(8)
+    }
+    
+    func profilePictureView(size: Double = 100) -> some View {
+        self
+            .frame(width: size, height: size)
+            .cornerRadius(100)
+    }
+}
+
 extension Image {
 
     func profilePicture(size: Double = 100) -> some View {
         self
             .resizable()
             .aspectRatio(contentMode: .fill)
-            .frame(width: size, height: size)
-            .cornerRadius(100)
+            .profilePictureView(size: size)
     }
     
     func icon(size: Double = 100, colour: Color? = nil) -> some View {
@@ -37,8 +50,7 @@ extension Image {
         self
             .resizable()
             .aspectRatio(contentMode: .fill)
-            .frame(width: width, height: height)
-            .cornerRadius(8)
+            .roundedFrameView(width: width, height: height)
     }
     
     func roundedHeightFrame(height: Double = 100) -> some View {

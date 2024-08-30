@@ -11,12 +11,14 @@ import SwiftUI
 class AwardsObserver: ObservableObject {
     @Published var newAwards: [User.UserAward] = []
     @Published var isSaving: Bool = false
-    @Published var isLoading: Bool = false
     private var routesNumber: Int = 0
     private var maxLikes: Int = 0
     
+    private var usersService: UsersServiceProtocol = UsersService()
+    private var routesService: RoutesServiceProtocol = RoutesService()
+    
     @MainActor
-    func checkAward(for trigger: AwardTypes.AwardTriggers, user: User, routeProgress: RouteProgress? = nil) {
+    func checkAward(for trigger: AwardTriggers, user: User, routeProgress: RouteProgress? = nil) {
         withAnimation {
             self.newAwards = trigger.getAwards(user: user, routeProgress: routeProgress,  maxLikes: self.maxLikes, routeNumber: self.routesNumber)
         }
@@ -28,7 +30,7 @@ class AwardsObserver: ObservableObject {
         self.isSaving = true
         if !self.newAwards.isEmpty {
             do {
-                try await UsersService().saveUserAward(userId: user.id, awards: self.newAwards)
+                try await usersService.saveUserAward(userId: user.id, awards: self.newAwards)
             } catch {
                 print("Error saving awards")
             }
@@ -38,21 +40,17 @@ class AwardsObserver: ObservableObject {
     }
     
     func getAwardPoints(user: User, award: AwardTypes) -> Double {
-//        print("Check for \(award.rawValue) with \(self.routesNumber)")
         return award.getPoints(user: user, maxLikes: self.maxLikes, routeNumber: self.routesNumber)
     }
     
     @MainActor
     func getRoutesAwards(user: User) async {
-        self.isLoading = true
         do {
-            let routes = try await RoutesService().fetchUserRoutes(userId: user.id)
-            self.maxLikes = routes.compactMap { $0.saves.count }.max() ?? 0
-            self.routesNumber = routes.count
+            self.routesNumber = try await routesService.getRoutesNumber(userId: user.id)
+            self.maxLikes = try await routesService.getMostLikes(userId: user.id)
         } catch {
             print("Unable to get routes number")
         }
-        self.isLoading = false
     }
     
     func setMaxLikes(likes: Int?) {

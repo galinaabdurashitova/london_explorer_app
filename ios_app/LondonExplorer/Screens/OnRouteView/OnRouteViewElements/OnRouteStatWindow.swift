@@ -71,8 +71,8 @@ struct OnRouteStatWindow: View {
     
     private var AttractionInfo: some View {
         HStack (spacing: 10) {
-            Image(uiImage: viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction.images[0])
-                .roundedFrame(width: 60, height: 60)
+            LoadingImage(url: $viewModel.routeProgress.route.stops[viewModel.routeProgress.stops].attraction.imageURLs[0])
+                .roundedFrameView(width: 60, height: 60)
             
             VStack (alignment: .leading, spacing: 0) {
                 Text("Aproaching")

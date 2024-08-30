@@ -14,7 +14,7 @@ struct FriendUpdate: Identifiable {
     var description: String
     var date: Date
     var update: UpdateType
-    var routeName: String? = nil
+    var routeName: String?
     
     enum UpdateType: String {
         case award = "Award"

@@ -23,44 +23,52 @@ struct SearchBar: View {
     
     var body: some View {
         HStack (spacing: 15) {
-            HStack (spacing: 12) {
-                Image(systemName: "magnifyingglass")
-                    .icon(size: 20, colour: Color.black.opacity(0.7))
-                
-                TextField("Search", text: $searchText)
-                    .font(.system(size: 16))
-                    .onChange(of: searchText) {
-                        searchAction()
-                    }
-                
-                if !searchText.isEmpty {
-                    Button(action: {
-                        searchText = ""
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .icon(size: 20, colour: Color.black.opacity(0.5))
-                    }
-                }
-            }
-            .padding()
-            .overlay(
-                RoundedRectangle(cornerRadius: 8.0)
-                    .stroke(Color.gray, lineWidth: 1.0)
-            )
+            bar
             
             if isFilter {
-                Button(action: {
-                    showFilter.toggle()
-                }) {
-                    Image("FilterSFIcon")
-                        .icon(size: 40, colour: Color.black.opacity(0.5))
-                        .padding(.all, 7)
-                        .background(Color.grayBackground)
-                        .cornerRadius(8)
-                }
+                filterButton
             }
         }
         .frame(height: 50)
+    }
+    
+    private var bar: some View {
+        HStack (spacing: 12) {
+            Image(systemName: "magnifyingglass")
+                .icon(size: 20, colour: Color.black.opacity(0.7))
+            
+            TextField("Search", text: $searchText)
+                .font(.system(size: 16))
+                .onChange(of: searchText) {
+                    searchAction()
+                }
+            
+            if !searchText.isEmpty {
+                Button(action: {
+                    searchText = ""
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .icon(size: 20, colour: Color.black.opacity(0.5))
+                }
+            }
+        }
+        .padding()
+        .overlay(
+            RoundedRectangle(cornerRadius: 8.0)
+                .stroke(Color.gray, lineWidth: 1.0)
+        )
+    }
+    
+    private var filterButton: some View {
+        Button(action: {
+            showFilter.toggle()
+        }) {
+            Image("FilterSFIcon")
+                .icon(size: 40, colour: Color.black.opacity(0.5))
+                .padding(.all, 7)
+                .background(Color.grayBackground)
+                .cornerRadius(8)
+        }
     }
 }
 

@@ -13,10 +13,10 @@ class RouteMapper {
         let dateCreated = try checkDate(dto.dateCreated, dateType: "date created")
         let datePublished = try checkDate(dto.datePublished, dateType: "date published")
         
-        let image = try await loadImage(for: dto.stops[0].attractionId)
         let collectables = try mapCollectables(from: dto.collectables)
         let stops = try await mapStops(from: dto.stops)
         let pathes = await calculatePathes(for: stops)
+        
         
         return Route(
             id: dto.routeId,
@@ -24,7 +24,6 @@ class RouteMapper {
             userCreated: dto.userCreated,
             name: dto.routeName,
             description: dto.routeDescription,
-            image: image,
             saves: dto.saves ?? [],
             collectables: collectables,
             datePublished: datePublished,
@@ -47,23 +46,6 @@ class RouteMapper {
         }
         
         return date
-    }
-    
-    private func loadImage(for attractionId: String) async throws -> UIImage {
-        let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attractionId, maxNumber: 1)
-        guard !images.isEmpty else {
-            let debugDescription = "Cannot get image"
-            print("decoding error - Value not found for value \(UIImage.self) in context \(debugDescription)")
-            throw DecodingError.valueNotFound(
-                UIImage.self,
-                DecodingError.Context(
-                    codingPath: [],
-                    debugDescription: debugDescription
-                )
-            )
-        }
-        
-        return images[0]
     }
     
     private func mapCollectables(from dto: [RouteWrapper.RouteCollectable]) throws -> [Route.RouteCollectable] {
@@ -96,7 +78,6 @@ class RouteMapper {
         for stop in dto {
             do {
                 var attraction = try await AttractionsService().fetchAttraction(attractionId: stop.attractionId)
-                attraction.images = try await ImagesRepository.shared.getAttractionImages(attractionId: stop.attractionId, maxNumber: 1)
                 let routeStop = Route.RouteStop(id: stop.attractionId, stepNo: stop.stepNumber, attraction: attraction)
                 routeStops.append(routeStop)
             } catch {

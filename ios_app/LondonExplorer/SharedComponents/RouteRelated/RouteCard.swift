@@ -30,30 +30,38 @@ struct RouteCard: View {
     var body: some View {
         NavigationLink(value: navigation) {
             VStack (alignment: .leading, spacing: 10) {
-                ZStack (alignment: .topTrailing) {
-                    Image(uiImage: route.image)
-                        .roundedFrame(
-                            width: size == .S ? 165 : UIScreen.main.bounds.width - 40,
-                            height: size == .L ? UIScreen.main.bounds.width * 0.8 : 165
-                        )
-                    
-                    label.view
-                        .padding(.all, 6.0)
-                        .background(Color.lightBlue)
-                        .opacity(0.7)
-                        .cornerRadius(16.0)
-                        .padding(.all, 7.0)
-                }
+                image
                 
-                VStack (alignment: .leading, spacing: 5) {
-                    Text(route.name)
-                        .headline(.leading)
-                    Text(route.description)
-                        .subheadline(.leading)
-                }
+                text
             }
             .frame(width: size == .S ? 165 : UIScreen.main.bounds.width - 40)
             .foregroundColor(Color.black)
+        }
+    }
+    
+    private var image: some View {
+        ZStack (alignment: .topTrailing) {
+            LoadingImage(url: $route.stops[0].attraction.imageURLs[0])
+                .roundedFrameView(
+                    width: size == .S ? 165 : UIScreen.main.bounds.width - 40,
+                    height: size == .L ? UIScreen.main.bounds.width * 0.8 : 165
+                )
+            
+            label.view
+                .padding(.all, 6.0)
+                .background(Color.lightBlue)
+                .opacity(0.7)
+                .cornerRadius(16.0)
+                .padding(.all, 7.0)
+        }
+    }
+    
+    private var text: some View {
+        VStack (alignment: .leading, spacing: 5) {
+            Text(route.name)
+                .headline(.leading)
+            Text(route.description)
+                .subheadline(.leading)
         }
     }
 }

@@ -44,13 +44,7 @@ enum SettingsType: Equatable, Hashable, CaseIterable {
     func field(for user: User) -> some View {
         switch self {
         case .picture:
-            if let image = user.image {
-                Image(uiImage: image)
-                    .profilePicture(size: 50)
-            } else {
-                Image("User3DIcon")
-                    .profilePicture(size: 50)
-            }
+            LoadingUserImage(userImage: Binding(get: { user.imageName }, set: { _ in }), imageSize: 50)
         case .name:
             Text(user.name)
                 .font(.system(size: 18, weight: .light))

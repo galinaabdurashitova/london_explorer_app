@@ -8,23 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct RouteProgress: Identifiable, Codable, Hashable, Equatable {
-    static func == (lhs: RouteProgress, rhs: RouteProgress) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(route)
-        hasher.combine(collectables)
-        hasher.combine(stops)
-        hasher.combine(user)
-        hasher.combine(startTime)
-        hasher.combine(endTime)
-        hasher.combine(paused)
-        hasher.combine(lastPauseTime)
-    }
-    
+struct RouteProgress: Identifiable, Codable, Hashable, Equatable {    
     var id = UUID()
     var route: Route
     var collectables: [Route.RouteCollectable] = []
@@ -51,4 +35,22 @@ struct RouteProgress: Identifiable, Codable, Hashable, Equatable {
         let elapsedTime = endTime.timeIntervalSince(startTime) - totalPauseDuration
         return elapsedTime / 60.0  // Convert seconds to minutes
     }
+    
+    static func == (lhs: RouteProgress, rhs: RouteProgress) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(route)
+        hasher.combine(collectables)
+        hasher.combine(stops)
+        hasher.combine(user)
+        hasher.combine(startTime)
+        hasher.combine(endTime)
+        hasher.combine(paused)
+        hasher.combine(lastPauseTime)
+    }
+    
+    
 }

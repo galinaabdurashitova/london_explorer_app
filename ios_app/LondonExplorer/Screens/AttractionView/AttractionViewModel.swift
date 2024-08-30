@@ -36,22 +36,4 @@ class AttractionViewModel: ObservableObject {
             stops[index].stepNo = index + 1
         }
     }
-    
-    @MainActor
-    func fetchAttractionImages() async {
-        if !attraction.finishedImagesDownload {
-            do {
-                let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attraction.id, reload: true)
-                
-                self.attraction.images = images
-                self.attraction.finishedImagesDownload = true
-            } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
-                print("Listing failed for attraction \(attraction.id): \(message)")
-            } catch ImagesRepository.ImageRepositoryError.downloadFailed(let itemName, let message) {
-                print("Download failed for \(itemName): \(message)")
-            } catch {
-                print("Unexpected error: \(error.localizedDescription)")
-            }
-        }
-    }
 }

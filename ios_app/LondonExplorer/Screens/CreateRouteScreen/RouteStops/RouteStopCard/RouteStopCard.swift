@@ -17,8 +17,8 @@ struct RouteStopCard: View {
     var body: some View {
         ZStack (alignment: .topLeading) {
             HStack {
-                Image(uiImage: stop.attraction.images[0])
-                    .roundedFrame(width: 80, height: 80)
+                LoadingImage(url: $stop.attraction.imageURLs[0])
+                    .roundedFrameView(width: 80, height: 80)
                 
                 VStack (alignment: .leading, spacing: 5) {
                     Text("Stop \(stop.stepNo)")

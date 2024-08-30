@@ -13,8 +13,10 @@ struct MainTabView: View {
     @EnvironmentObject var globalSettings: GlobalSettings
     @EnvironmentObject var awards: AwardsObserver
     
+    @Binding var isAppLoading: Bool
+    
     var body: some View {
-        if awards.isLoading {
+        if isAppLoading {
             appLoader
         } else {
             TabView (selection: $globalSettings.tabSelection) {
@@ -42,7 +44,6 @@ struct MainTabView: View {
                     }
                     .tag(2)
                 
-                //            TestStorageView()
                 FavouritesView(user: auth.profile)
                     .tabItem {
                         Label("Favourites", systemImage: globalSettings.tabSelection == 3 ? "heart.fill" : "heart")
@@ -66,7 +67,7 @@ struct MainTabView: View {
         }
     }
     
-    private var appLoader: some View {        
+    private var appLoader: some View {
         VStack(spacing: 0) {
             MainScreenHeader(scrollOffset: 0, headerHeight: 120)
                 .frame(height: 120)
@@ -84,7 +85,7 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView()
+    MainTabView(isAppLoading: .constant(false))
         .environmentObject(NetworkMonitor())
         .environmentObject(AuthController())
         .environmentObject(CurrentRouteManager())

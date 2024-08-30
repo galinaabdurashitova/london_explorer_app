@@ -26,7 +26,6 @@ struct MapRouteView: View {
             userCreated: "",
             name: routeName.isEmpty ? "New Route" : routeName,
             description: "",
-            image: stops.count > 0 ? stops[0].attraction.images[0] : UIImage(imageLiteralResourceName: "default"),
             collectables: [],
             stops: stops,
             pathes: pathes
@@ -47,7 +46,7 @@ struct MapRouteView: View {
                         coordinate: route.stops[index].attraction.coordinates
                     ) {
                         RouteAttractionAnnotation(
-                            image: $route.stops[index].attraction.images[0],
+                            image: $route.stops[index].attraction.imageURLs[0],
                             index: .constant(index)
                         )
                     }

@@ -13,8 +13,8 @@ struct SectionHeader: View {
     @Binding var subheadline: String?
     
     init(headline: Binding<String>, subheadline: Binding<String?> = .constant(nil)) {
-        _headline = headline
-        _subheadline = subheadline
+        self._headline = headline
+        self._subheadline = subheadline
     }
     
     var body: some View {

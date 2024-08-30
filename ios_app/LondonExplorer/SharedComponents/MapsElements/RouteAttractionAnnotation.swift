@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct RouteAttractionAnnotation: View {
-    @Binding var image: UIImage
+    @Binding var image: String
     @Binding var index: Int
     
     var body: some View {
@@ -24,9 +24,7 @@ struct RouteAttractionAnnotation: View {
                 .frame(width: 65, height: 65)
                 .foregroundColor(Color.redAccent)
             
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
+            LoadingImage(url: $image)
                 .frame(width: 60, height: 60)
                 .cornerRadius(100)
             
@@ -46,7 +44,7 @@ struct RouteAttractionAnnotation: View {
 
 #Preview {
     RouteAttractionAnnotation(
-        image: .constant(UIImage(imageLiteralResourceName: "BigBen")),
+        image: .constant(MockData.Attractions[0].imageURLs[0]),
         index: .constant(1)
     )
 }

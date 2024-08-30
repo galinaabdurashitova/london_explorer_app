@@ -11,7 +11,7 @@ import SwiftUI
 class AttractionSearchViewModel: ObservableObject {
     @Published var attractions: [Attraction]
     @Published var filteredAttractions: [Attraction]
-    @Published var filters: [Attraction.Category] = []
+    @Published var filters: [Category] = []
     @Published var stops: [Route.RouteStop]
     @Published var searchText: String = ""
     @Published var showFilter: Bool = false
@@ -27,29 +27,17 @@ class AttractionSearchViewModel: ObservableObject {
             self.attractions = MockData.Attractions
         } else {
             self.attractions = []
-            self.fetchAttractions()
+            Task { await self.fetchAttractions() }
         }
     }
     
+    @MainActor
     func fetchAttractions() {
         self.isLoading = true
         Task {
             do {
-                let fetchedAttractions = try await service.fetchAllAttractions()
-                
-                for attraction in fetchedAttractions {
-                    var newAttraction = attraction
-                    await fetchAttractionImage(attraction: &newAttraction)
-                    if !newAttraction.images.isEmpty {
-                        DispatchQueue.main.async {
-                            self.attractions.append(newAttraction)
-                        }
-                    }
-                }
-                
-                DispatchQueue.main.async {
-                    self.filteredAttractions = self.attractions
-                }
+                self.attractions = try await service.fetchAllAttractions()
+                self.filteredAttractions = self.attractions
             } catch {
                 DispatchQueue.main.async { self.error = error.localizedDescription }
                 print("Error: \(error)")
@@ -61,33 +49,7 @@ class AttractionSearchViewModel: ObservableObject {
         }
     }
     
-    func fetchAttractionImage(attraction: inout Attraction) async {
-        do {
-            let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attraction.id, maxNumber: 1)
-            attraction.images = images
-        } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
-            print("Listing failed for attraction \(attraction.id): \(message)")
-        } catch ImagesRepository.ImageRepositoryError.downloadFailed(let itemName, let message) {
-            print("Download failed for \(itemName): \(message)")
-        } catch {
-            print("Unexpected error: \(error.localizedDescription)")
-        }
-    }
-    
-    func fetchAttractionImages(attraction: inout Attraction) async {
-        do {
-            let images = try await ImagesRepository.shared.getAttractionImages(attractionId: attraction.id)
-            attraction.images = images
-        } catch ImagesRepository.ImageRepositoryError.listingFailed(let message) {
-            print("Listing failed for attraction \(attraction.id): \(message)")
-        } catch ImagesRepository.ImageRepositoryError.downloadFailed(let itemName, let message) {
-            print("Download failed for \(itemName): \(message)")
-        } catch {
-            print("Unexpected error: \(error.localizedDescription)")
-        }
-    }
-    
-    func toggleCategoryFilter(category: Attraction.Category) {
+    func toggleCategoryFilter(category: Category) {
         if !filters.contains(category) {
             filters.append(category)
         } else {

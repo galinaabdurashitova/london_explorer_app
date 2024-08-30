@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct RouteProgressView: View {
-    @Binding var image: UIImage
+    @Binding var image: String
     @Binding var routeName: String
     @Binding var collectablesDone: Int
     @Binding var collectablesTotal: Int
@@ -17,7 +17,7 @@ struct RouteProgressView: View {
     @Binding var stopsTotal: Int
     @Binding var user: User?
     
-    init(image: Binding<UIImage>, routeName: Binding<String>, collectablesDone: Binding<Int>, collectablesTotal: Binding<Int>, stopsDone: Binding<Int>, stopsTotal: Binding<Int>, user: Binding<User?> = .constant(nil)) {
+    init(image: Binding<String>, routeName: Binding<String>, collectablesDone: Binding<Int>, collectablesTotal: Binding<Int>, stopsDone: Binding<Int>, stopsTotal: Binding<Int>, user: Binding<User?> = .constant(nil)) {
         self._image = image
         self._routeName = routeName
         self._collectablesDone = collectablesDone
@@ -30,47 +30,9 @@ struct RouteProgressView: View {
     var body: some View {
         VStack (alignment: .leading, spacing: 3) {
             HStack (spacing: 10) {
-                ZStack (alignment: .topLeading) {
-                    Image(uiImage: image)
-                        .roundedFrame(width: ((UIScreen.main.bounds.width - 90) * 0.5), height: 120)
-                    
-                    Image("Route3DIcon")
-                        .icon(size: 60)
-                        .padding(.all, -17)
-                }
+                routeProgressImage
                 
-                VStack (alignment: .leading, spacing: 8) {
-                    if let user = self.user {
-                        HStack (spacing: 4) {
-                            if let image = user.image {
-                                Image(uiImage: image)
-                                    .profilePicture(size: 22)
-                            } else {
-                                Image("User3DIcon")
-                                    .profilePicture(size: 22)
-                            }
-                            
-                            Text(user.name)
-                                .font(.system(size: 14, weight: .bold))
-                            Text("is on a")
-                                .font(.system(size: 14, weight: .light))
-                        }
-                    }
-                    
-                    Text(routeName)
-                        .sectionCaption()
-                        .multilineTextAlignment(.leading)
-                    
-                    RouteProgressStat(
-                        collectablesDone: $collectablesDone,
-                        collectablesTotal: $collectablesTotal,
-                        stopsDone: $stopsDone,
-                        stopsTotal: $stopsTotal,
-                        align: .left
-                    )
-                }
-                .foregroundColor(Color.black)
-                .frame(height: 120)
+                routeProgressContent
             }
             
             RouteProgressBar(num: $stopsDone, total: stopsTotal)
@@ -82,12 +44,52 @@ struct RouteProgressView: View {
                 .stroke(self.user == nil ? Color.redAccent : Color.blueAccent, lineWidth: 2.0)
         )
     }
+    
+    private var routeProgressImage: some View {
+        ZStack (alignment: .topLeading) {
+            LoadingImage(url: $image)
+                .roundedFrameView(width: ((UIScreen.main.bounds.width - 90) * 0.5), height: 120)
+            
+            Image("Route3DIcon")
+                .icon(size: 60)
+                .padding(.all, -17)
+        }
+    }
+    
+    private var routeProgressContent: some View {
+        VStack (alignment: .leading, spacing: 8) {
+            if let user = self.user {
+                HStack (spacing: 4) {
+                    LoadingUserImage(userImage: Binding(get: { user.imageName }, set: { _ in }), imageSize: 22)
+                    
+                    Text(user.name)
+                        .font(.system(size: 14, weight: .bold))
+                    Text("is on a")
+                        .font(.system(size: 14, weight: .light))
+                }
+            }
+            
+            Text(routeName)
+                .sectionCaption()
+                .multilineTextAlignment(.leading)
+            
+            RouteProgressStat(
+                collectablesDone: $collectablesDone,
+                collectablesTotal: $collectablesTotal,
+                stopsDone: $stopsDone,
+                stopsTotal: $stopsTotal,
+                align: .left
+            )
+        }
+        .foregroundColor(Color.black)
+        .frame(height: 120)
+    }
 }
 
 #Preview {
     VStack (spacing: 25) {
         RouteProgressView(
-            image: .constant(MockData.Attractions[0].images[0]),
+            image: .constant(MockData.Attractions[0].imageURLs[0]),
             routeName: .constant("Some Route"),
             collectablesDone: .constant(2),
             collectablesTotal: .constant(5),
@@ -95,7 +97,7 @@ struct RouteProgressView: View {
             stopsTotal: .constant(6)
         )
         RouteProgressView(
-            image: .constant(MockData.Attractions[0].images[0]),
+            image: .constant(MockData.Attractions[0].imageURLs[0]),
             routeName: .constant("Some Route"),
             collectablesDone: .constant(2),
             collectablesTotal: .constant(5),

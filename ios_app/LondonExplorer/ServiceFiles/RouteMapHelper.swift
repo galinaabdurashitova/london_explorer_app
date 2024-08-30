@@ -22,12 +22,10 @@ class RouteMapHelper {
             if let route = response.routes.first {
                 return route
             } else {
-                // Debugging: Print out if no routes were found
                 print("No routes found")
             }
         } catch {
             print("Error calculating route: \(error.localizedDescription)")
-            // Print more detailed error information
             if let error = error as? MKError {
                 switch error.code {
                 case .placemarkNotFound:
