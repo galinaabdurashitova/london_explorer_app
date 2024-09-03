@@ -53,7 +53,8 @@ struct SavedRouteView: View {
                     textColour: Color.white,
                     size: .M
                 ) {
-                    globalSettings.tabSelection = 4
+                    path.removeLast(path.count)
+                    globalSettings.goToTab(.profile)
                 }
             }
             .padding(.bottom, 20)
@@ -70,5 +71,6 @@ struct SavedRouteView: View {
         path: .constant(NavigationPath())
     )
     .environmentObject(AuthController())
+    .environmentObject(CurrentRouteManager())
     .environmentObject(GlobalSettings())
 }

@@ -39,10 +39,7 @@ struct FriendsFeed: View {
                         FeedUpdate(update: update)
                     }
                 } else {                        
-                    Button(action: {
-                        globalSettings.tabSelection = 1
-                        globalSettings.searchTab = 1
-                    }) {
+                    Button(action: self.goToUserSearch) {
                         ActionBanner(text: "Your friends don’t have recent updates", actionText: "Add a friend")
                     }
                 }
@@ -61,6 +58,11 @@ struct FriendsFeed: View {
                     .loading(isLoading: true)
             }
         }
+    }
+    
+    private func goToUserSearch() {
+        globalSettings.goToTab(.search)
+        globalSettings.goToSearchTab(.users)
     }
 }
 

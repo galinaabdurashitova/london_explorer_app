@@ -20,12 +20,8 @@ struct FeedUpdate: View {
                     Text(update.formattedDate)
                         .font(.system(size: 12, weight: .semibold))
                         .opacity(0.5)
-                    Text(update.update == .award ? "\(update.friend.name) recieved an award"
-                         : update.update == .collectable ? "\(update.friend.name) found a collectable"
-                         : update.update == .friend ? "\(update.friend.name) added a new friend"
-                         : update.update == .finishedRoute ? "\(update.friend.name) finished a route"
-                         : "An update from \(update.friend.name)")
-                    .headline()
+                    Text(self.getUpdateText())
+                        .headline()
                     
                     if update.update == .finishedRoute, let routeName = update.routeName {
                         Text(routeName)
@@ -45,6 +41,14 @@ struct FeedUpdate: View {
             .background(Color.lightBlue)
             .cornerRadius(8)
         }
+    }
+    
+    private func getUpdateText() -> String {
+        update.update == .award ? "\(update.friend.name) recieved an award"
+             : update.update == .collectable ? "\(update.friend.name) found a collectable"
+             : update.update == .friend ? "\(update.friend.name) added a new friend"
+             : update.update == .finishedRoute ? "\(update.friend.name) finished a route"
+             : "An update from \(update.friend.name)"
     }
 }
 

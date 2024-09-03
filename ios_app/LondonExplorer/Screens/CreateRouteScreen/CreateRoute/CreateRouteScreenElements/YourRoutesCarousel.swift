@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// Not used in the final version
 struct YourRoutesCarousel: View {
     @Binding var routes: [Route]
     @Binding var path: NavigationPath

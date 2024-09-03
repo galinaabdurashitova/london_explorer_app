@@ -15,7 +15,7 @@ struct MyProfileView: View {
     
     var body: some View {
         NavigationStack {
-            ProfileView(user: auth.profile, loadUnpublished: true)
+            ProfileView(user: auth.profile, isMyProfile: true)
                 .appNavigation()
                 .onAppear {
                     awards.checkAward(for: .profileOpened, user: auth.profile)

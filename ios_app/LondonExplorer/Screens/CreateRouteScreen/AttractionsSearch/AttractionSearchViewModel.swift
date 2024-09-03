@@ -39,13 +39,11 @@ class AttractionSearchViewModel: ObservableObject {
                 self.attractions = try await service.fetchAllAttractions()
                 self.filteredAttractions = self.attractions
             } catch {
-                DispatchQueue.main.async { self.error = error.localizedDescription }
+                self.error = error.localizedDescription
                 print("Error: \(error)")
             }
             
-            DispatchQueue.main.async {
-                self.isLoading = false
-            }
+            self.isLoading = false
         }
     }
     

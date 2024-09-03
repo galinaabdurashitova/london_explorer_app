@@ -35,6 +35,7 @@ class OnRouteViewModel: ObservableObject {
     @Published var error: String = ""
     @Published var showError: Bool = false
     @Published var isMapLoading: Bool = false
+    @Published var isFinishing: Bool = false
     
     /// Service variables
     private var locationManager = LocationManager()
@@ -49,6 +50,17 @@ class OnRouteViewModel: ObservableObject {
             user: user
         )
     
+        self.setGreetingTexts(route: route, user: user, savedRouteProgress: savedRouteProgress)
+        Task { await self.screenSetup() }
+    }
+    
+    init(routeProgress: RouteProgress) {
+        self.routeProgress = routeProgress
+        Task { await self.screenSetup() }
+    }
+    
+    /// Screen setup functions
+    private func setGreetingTexts(route: Route, user: User, savedRouteProgress: RouteProgress?) {
         if let savedRouteProgress = savedRouteProgress {
             if route.id == savedRouteProgress.route.id {
                 self.routeProgress = savedRouteProgress
@@ -73,17 +85,8 @@ class OnRouteViewModel: ObservableObject {
                 self.greetingSubText = "You're about to start the route! Get ready!"
             }
         }
-        
-        Task { await self.screenSetup() }
     }
     
-    init(routeProgress: RouteProgress) {
-        self.routeProgress = routeProgress
-        
-        Task { await self.screenSetup() }
-    }
-    
-    /// Screen setup functions
     func screenSetup() async {
         self.isMapLoading = true
         locationManager.onLocationUpdate = { newCoordinate in
@@ -101,11 +104,13 @@ class OnRouteViewModel: ObservableObject {
     }
     
     /// Route progress management functions
+    @MainActor
     func pause() {
         self.routeProgress.paused = true
         self.routeProgress.lastPauseTime = Date()
     }
     
+    @MainActor
     func resume() {
         if let lastPauseTime = self.routeProgress.lastPauseTime {
             self.routeProgress.pauseDuration += Date().timeIntervalSince(lastPauseTime)
@@ -135,19 +140,19 @@ class OnRouteViewModel: ObservableObject {
         }
     }
     
-    func finishRoute(userId: String) throws {
+    @MainActor
+    func finishRoute(userId: String) async {
         self.routeProgress.endTime = Date()
 
-        Task {
-            do {
-                try await usersService.saveFinishedRoute(userId: userId, route: self.routeProgress)
-                if !self.awarded.isEmpty {
-                    try await usersService.saveUserAward(userId: userId, awards: self.awarded)
-                }
-            } catch {
-                print("Error saving finished route: \(error.localizedDescription)")
-                throw error
+        do {
+            try await usersService.saveFinishedRoute(userId: userId, route: self.routeProgress)
+            if !self.awarded.isEmpty {
+                try await usersService.saveUserAward(userId: userId, awards: self.awarded)
             }
+        } catch {
+            print("Error saving finished route: \(error.localizedDescription)")
+            self.showError = true
+            self.error = error.localizedDescription
         }
     }
     
@@ -162,6 +167,7 @@ class OnRouteViewModel: ObservableObject {
         return false
     }
     
+    @MainActor
     func collectCollectable() {
         if let collectedItem = self.collected, !self.routeProgress.collectables.contains(collectedItem) {
             self.routeProgress.collectables.append(collectedItem)
@@ -171,6 +177,7 @@ class OnRouteViewModel: ObservableObject {
     }
     
     /// Map management functions
+    @MainActor
     func calculateRegion() {
         var coordinates: [CLLocationCoordinate2D] = []
         
@@ -184,8 +191,22 @@ class OnRouteViewModel: ObservableObject {
             coordinates.append(self.routeProgress.route.stops[routeProgress.stops].attraction.coordinates)
         }
         
-//        DispatchQueue.main.async {
-            self.mapRegion = RouteMapHelper.calculateRegion(coordinates: coordinates)
-//        }
+        self.mapRegion = RouteMapHelper.calculateRegion(coordinates: coordinates)
+    }
+    
+    /// Utility functions
+    @MainActor
+    func setGreeting(to value: Bool) {
+        self.showGreeting = value
+    }
+    
+    @MainActor
+    func setFinishing(to value: Bool) {
+        self.isFinishing = value
+    }
+    
+    @MainActor
+    func setStopRoute(to value: Bool) {
+        self.stopRoute = value
     }
 }

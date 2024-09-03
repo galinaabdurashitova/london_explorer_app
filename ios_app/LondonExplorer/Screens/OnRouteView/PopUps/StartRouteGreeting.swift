@@ -15,46 +15,58 @@ struct StartRouteGreeting: View {
     @State var actionCancel: () -> Void
     
     var body: some View {
-        VStack {
-            VStack(spacing: 10) {
-                VStack(spacing: 20) {
-                    Text(text)
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 20, weight: .semibold))
-                        .opacity(1.0)
-                    
-                    Text(subText)
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 18))
-                        .opacity(0.7)
-                    
-                    Image("Route3DIcon")
-                }
-                .padding(.all, 15)
-                
-                ButtonView(
-                    text: .constant("Let's go!"),
-                    colour: Color.blueAccent,
-                    textColour: Color.white,
-                    size: .L
-                ) {
-                    actionGo()
-                }
-                ButtonView(
-                    text: .constant("Cancel"),
-                    colour: Color.redDark,
-                    textColour: Color.white,
-                    size: .L
-                ) {
-                    actionCancel()
-                }
-            }
-            .padding()
-            .background(Color.white)
-            .cornerRadius(30)
-            .shadow(radius: 2)
+        ZStack {
+            Color.white.opacity(0.1)
+                .edgesIgnoringSafeArea(.all)
+                .background(.ultraThinMaterial)
+            
+            window
         }
+    }
+    
+    private var window: some View {
+        VStack(spacing: 10) {
+            windowContent
+            
+            ButtonView(
+                text: .constant("Let's go!"),
+                colour: Color.blueAccent,
+                textColour: Color.white,
+                size: .L
+            ) {
+                actionGo()
+            }
+            ButtonView(
+                text: .constant("Cancel"),
+                colour: Color.redDark,
+                textColour: Color.white,
+                size: .L
+            ) {
+                actionCancel()
+            }
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(30)
+        .shadow(radius: 2)
         .padding(.horizontal)
+    }
+    
+    private var windowContent: some View {
+        VStack(spacing: 20) {
+            Text(text)
+                .multilineTextAlignment(.center)
+                .font(.system(size: 20, weight: .semibold))
+                .opacity(1.0)
+            
+            Text(subText)
+                .multilineTextAlignment(.center)
+                .font(.system(size: 18))
+                .opacity(0.7)
+            
+            Image("Route3DIcon")
+        }
+        .padding(.all, 15)
     }
 }
 

@@ -119,24 +119,25 @@ struct AttractionView: View {
                     text: .constant("Add to the route"),
                     colour: Color.blueAccent,
                     textColour: Color.white,
-                    size: .L
-                ) {
-                    viewModel.toggleAttracation(attraction: viewModel.attraction)
-                    self.presentationMode.wrappedValue.dismiss()
-                }
+                    size: .L,
+                    action: self.toggleAttraction
+                )
             } else {
                 ButtonView(
                     text: .constant("Remove from the route"),
                     colour: Color.redAccent,
                     textColour: Color.white,
-                    size: .L
-                ) {
-                    viewModel.toggleAttracation(attraction: viewModel.attraction)
-                    self.presentationMode.wrappedValue.dismiss()
-                }
+                    size: .L,
+                    action: self.toggleAttraction
+                )
             }
         }
         .padding(.bottom, UIScreen.main.bounds.height * 0.02)
+    }
+    
+    private func toggleAttraction() {
+        viewModel.toggleAttracation(attraction: viewModel.attraction)
+        self.presentationMode.wrappedValue.dismiss()
     }
 }
 

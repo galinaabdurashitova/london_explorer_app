@@ -54,7 +54,10 @@ struct ShimmerEffect: ViewModifier {
                         .blur(radius: 10)
                         .mask(content)
                         .offset(x: isAnimating ? geometry.size.width : -geometry.size.width)
-                        .animation(Animation.linear(duration: 2.0).repeatForever(autoreverses: false))
+                        .animation(
+                            Animation.linear(duration: 2.0).repeatForever(autoreverses: false),
+                            value: isAnimating
+                        )
                 }
             )
             .onAppear {

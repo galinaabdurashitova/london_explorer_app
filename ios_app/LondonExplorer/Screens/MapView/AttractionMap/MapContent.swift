@@ -20,7 +20,7 @@ struct MapContent: View {
             VStack {
                 HStack (spacing: 5) {
                     Spacer()
-                        MapLinkButton()
+                    MapLinkButton()
                 }
                 
                 Map(

@@ -61,7 +61,7 @@ struct MapRouteView: View {
                 }
             }
             .onTapGesture {
-                showSheet = true
+                self.showSheet = true
             }
                         
             BackButton() {
@@ -72,17 +72,21 @@ struct MapRouteView: View {
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showSheet) {
-            RouteSheetContent(route: $route)
-                .padding(.horizontal)
-                .padding(.vertical, 40)
-                .edgesIgnoringSafeArea(.bottom) 
-                .gesture(DragGesture().onChanged { _ in })
-                .presentationCornerRadius(30)
-                .presentationDetents([.medium, .height(120)])
-                .presentationBackgroundInteraction(.enabled)
-                .interactiveDismissDisabled()
-                .presentationContentInteraction(.scrolls)
+            routeSheet
         }
+    }
+    
+    private var routeSheet: some View {
+        RouteSheetContent(route: $route)
+            .padding(.horizontal)
+            .padding(.vertical, 40)
+            .edgesIgnoringSafeArea(.bottom)
+            .gesture(DragGesture().onChanged { _ in })
+            .presentationCornerRadius(30)
+            .presentationDetents([.medium, .height(120)])
+            .presentationBackgroundInteraction(.enabled)
+            .interactiveDismissDisabled()
+            .presentationContentInteraction(.scrolls)
     }
 }
 

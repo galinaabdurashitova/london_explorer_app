@@ -53,12 +53,9 @@ struct AuthView: View {
                         get: { (newUser && userName.isEmpty) || (newUser && name.isEmpty) || userEmail.isEmpty || password.isEmpty },
                         set: { _ in }
                     ),
-                    isLoading: $isLoading
-                ) {
-                    Task {
-                        await authorise()
-                    }
-                }
+                    isLoading: $isLoading,
+                    action: self.authorise
+                )
                 
                 Button(action: {
                     newUser.toggle()
@@ -71,18 +68,21 @@ struct AuthView: View {
         .padding()
     }
     
-    private func authorise() async {
+    private func authorise() {
         self.isLoading = true
-        do {
-            if newUser {
-                try await auth.signUp(name: name, userName: userName, email: userEmail, password: password)
-            } else {
-                try await auth.login(email: userEmail, password: password)
+        
+        Task {
+            do {
+                if newUser {
+                    try await auth.signUp(name: name, userName: userName, email: userEmail, password: password)
+                } else {
+                    try await auth.login(email: userEmail, password: password)
+                }
+            } catch {
+                self.errorMessage = error.localizedDescription
             }
-        } catch {
-            errorMessage = error.localizedDescription
+            self.isLoading = false
         }
-        self.isLoading = false
     }
 }
 

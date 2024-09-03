@@ -39,69 +39,80 @@ struct OnRouteView: View {
                     
                     OnRouteStatWindow(viewModel: viewModel)
                 }
-                
-                if viewModel.showGreeting {
-                    Color.white.opacity(0.1)
-                        .edgesIgnoringSafeArea(.all)
-                        .background(.ultraThinMaterial)
-                    
-                    StartRouteGreeting(
-                        text: viewModel.greetingText,
-                        subText: viewModel.greetingSubText
-                    ) {
-                        currentRoute.routeProgress = viewModel.routeProgress
-                        viewModel.showGreeting = false
-                    } actionCancel: {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
-                }
             }
         }
         .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
         .error(text: viewModel.error, isPresented: $viewModel.showError)
-        .toolbar(.hidden, for: .tabBar)
         .overlay {
-            if viewModel.lastStop {
-                FinishRoutePopup(isOpen: $viewModel.lastStop, awards: viewModel.awarded) {
-                    Task {
-                        do {
-                            try viewModel.finishRoute(userId: auth.profile.id)
-                            await auth.reloadUser()
-                            currentRoute.routeProgress = nil
-                            globalSettings.profileReloadTrigger = true
-                            self.presentationMode.wrappedValue.dismiss()
-                        } catch {
-                            viewModel.showError = true
-                            viewModel.error = error.localizedDescription
-                            viewModel.showError = true
-                        }
-                    }
-                }
-            } else if let collectedItem = viewModel.collected {
-                CollectedCollectableView(
-                    collectable: collectedItem.type,
-                    alreadyHave: auth.profile.collectables.compactMap{ $0.type }.contains(collectedItem.type) || viewModel.routeProgress.collectables.contains(collectedItem)
-                ) {
-                    viewModel.collectCollectable()
-                    currentRoute.routeProgress = viewModel.routeProgress
-                }
-            }
+            overlays
         }
         .popup(
             isPresented: $viewModel.stopRoute,
             text: "Are you sure you want to stop the route? Your progress won't be saved",
-            buttonText: "Stop the route"
-        ) {
-            currentRoute.routeProgress = nil
-            self.presentationMode.wrappedValue.dismiss()
-        }
-        .sheet(isPresented: Binding<Bool>( get: { !viewModel.error.isEmpty }, set: { _ in })) {
-            VStack {
-                Text("Error saving progress: \(viewModel.error)")
-                    .foregroundColor(Color.redAccent)
+            buttonText: "Stop the route",
+            action: self.stopRoute
+        )
+    }
+    
+    private var overlays: some View {
+        ZStack {
+            if viewModel.showGreeting {
+                StartRouteGreeting(
+                    text: viewModel.greetingText,
+                    subText: viewModel.greetingSubText
+                ) {
+                    self.closeGreeting()
+                } actionCancel: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+            } else if viewModel.lastStop {
+                FinishRoutePopup(
+                    isOpen: $viewModel.lastStop,
+                    isLoading: $viewModel.isFinishing,
+                    awards: viewModel.awarded
+                ) {
+                    self.finishRoute()
+                }
+            } else if let collectedItem = viewModel.collected {
+                CollectedCollectableView(
+                    collectable: collectedItem.type,
+                    alreadyHave: self.alreadyHaveCollectable(collectedItem)
+                ) {
+                    self.collectCollectable()
+                }
             }
         }
+    }
+    
+    private func closeGreeting() {
+        currentRoute.routeProgress = viewModel.routeProgress
+        viewModel.setGreeting(to: false)
+    }
+    
+    private func collectCollectable() {
+        viewModel.collectCollectable()
+        currentRoute.routeProgress = viewModel.routeProgress
+    }
+    
+    private func alreadyHaveCollectable(_ collectable: Route.RouteCollectable) -> Bool {
+        auth.profile.collectables.compactMap{ $0.type }.contains(collectable.type) || viewModel.routeProgress.collectables.contains(collectable)
+    }
+    
+    private func finishRoute() {
+        viewModel.setFinishing(to: true)
+        Task {
+            await viewModel.finishRoute(userId: auth.profile.id)
+            await auth.reloadUser()
+            globalSettings.setProfileReloadTrigger(to: true)
+            self.stopRoute()
+            viewModel.setFinishing(to: false)
+        }
+    }
+    
+    private func stopRoute() {
+        currentRoute.routeProgress = nil
+        self.presentationMode.wrappedValue.dismiss()
     }
 }
 

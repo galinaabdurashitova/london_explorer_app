@@ -31,7 +31,7 @@ struct MapAttractionView: View {
                 .annotationTitles(.hidden)
             }
             .onTapGesture {
-                showSheet = true
+                self.showSheet = true
             }
                         
             BackButton() {
@@ -41,16 +41,20 @@ struct MapAttractionView: View {
         }
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showSheet) {
-            AttractionSheetContent(attraction: $attraction)
-                .padding(.horizontal)
-                .padding(.top, 20)
-                .edgesIgnoringSafeArea(.bottom) 
-                .gesture(DragGesture().onChanged { _ in })
-                .presentationCornerRadius(30)
-                .presentationDetents([.height(200), .height(90)])
-                .presentationBackgroundInteraction(.enabled)
-                .interactiveDismissDisabled()
+            attractionSheet
         }
+    }
+    
+    private var attractionSheet: some View {
+        AttractionSheetContent(attraction: $attraction)
+            .padding(.horizontal)
+            .padding(.top, 20)
+            .edgesIgnoringSafeArea(.bottom)
+            .gesture(DragGesture().onChanged { _ in })
+            .presentationCornerRadius(30)
+            .presentationDetents([.height(200), .height(90)])
+            .presentationBackgroundInteraction(.enabled)
+            .interactiveDismissDisabled()
     }
     
     private var AttractionAnnotation: some View {

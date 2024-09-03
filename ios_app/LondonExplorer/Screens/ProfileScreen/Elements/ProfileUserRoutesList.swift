@@ -13,30 +13,28 @@ struct ProfileUserRoutesList: View {
     @EnvironmentObject var globalSettings: GlobalSettings
     @ObservedObject var viewModel: ProfileViewModel
     
+    private var currentUser: Bool {
+        viewModel.user.id == auth.profile.id
+    }
+    
     var body: some View {
         if viewModel.routesLoading {
             loader
         } else {
-            let username = viewModel.user.id == auth.profile.id
-            
             VStack(spacing: 20) {
                 HStack {
                     SectionHeader(
-                        headline: .constant("\(username ? "Your" : "\(viewModel.user.name)'s") Routes")
+                        headline: .constant("\(currentUser ? "Your" : "\(viewModel.user.name)'s") Routes")
                     )
                     Spacer()
                     
-                    if username {
+                    if currentUser {
                         unpublishedToggle
                     }
                 }
                 
                 if viewModel.routesLoadingError {
-                    WidgetError(text: "user's routes") {
-                        Task {
-                            await viewModel.loadUserRoutes(isCurrentUser: auth.profile.id == viewModel.user.id)
-                        }
-                    }
+                    WidgetError(text: "user's routes", action: self.loadData)
                 } else {
                     if viewModel.routes.count > 0 {
                         ForEach(viewModel.loadUnpublished ? viewModel.routes : viewModel.routes.filter { $0.datePublished != nil }, id: \.id) { route in
@@ -48,9 +46,9 @@ struct ProfileUserRoutesList: View {
                                 size: .M
                             )
                         }
-                    } else if username {
+                    } else if currentUser {
                         Button(action: {
-                            globalSettings.tabSelection = 2
+                            globalSettings.goToTab(.newRoute)
                         }) {
                             ActionBanner(text: "You haven’t created any routes", actionText: "Create a new route")
                         }
@@ -118,6 +116,12 @@ struct ProfileUserRoutesList: View {
                         .loading(isLoading: true)
                 }
             }
+        }
+    }
+    
+    private func loadData() {
+        Task {
+            await viewModel.loadUserRoutes(isCurrentUser: currentUser)
         }
     }
 }

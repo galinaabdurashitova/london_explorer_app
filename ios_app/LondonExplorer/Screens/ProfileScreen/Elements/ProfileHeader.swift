@@ -30,13 +30,13 @@ struct ProfileHeader: View {
                         
                         Spacer()
                         
-                        if viewModel.user.id == auth.profile.id {
+                        if viewModel.user.id != auth.profile.id {
+                            FriendButton(viewModel: viewModel)
+                        } else if viewModel.isMyProfile {
                             NavigationLink(value: ProfileNavigation.settings) {
                                 Image(systemName: "gearshape")
                                     .icon(size: 30, colour: Color.black.opacity(0.3))
                             }
-                        } else {
-                            FriendButton(viewModel: viewModel)
                         }
                     }
                     
@@ -98,22 +98,13 @@ struct ProfileHeader: View {
                 }
                 
                 HStack(spacing: 0) {
-                    Color(Color.black.opacity(0.05))
-                        .frame(width: 75, height: 24)
-                        .loading(isLoading: true)
-                        .frame(height: 45)
-                        .frame(maxWidth: .infinity)
-                        .overlay(
-                            Rectangle()
-                                .frame(width: 1),
-                            alignment: .trailing
-                        )
-                    
-                    Color(Color.black.opacity(0.05))
-                        .frame(width: 75, height: 24)
-                        .loading(isLoading: true)
-                        .frame(height: 45)
-                        .frame(maxWidth: .infinity)
+                    ForEach(0..<2) { _ in
+                        Color(Color.black.opacity(0.05))
+                            .frame(width: 75, height: 24)
+                            .loading(isLoading: true)
+                            .frame(height: 45)
+                            .frame(maxWidth: .infinity)
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ import SwiftUI
 class ProfileViewModel: ObservableObject {
     // Routes
     @Published var routes: [Route] = []
+    @Published var isMyProfile: Bool
     @Published var loadUnpublished: Bool
     @Published var routesLoading: Bool = false
     @Published var routesLoadingError: Bool = false
@@ -33,11 +34,13 @@ class ProfileViewModel: ObservableObject {
     private var routesService: RoutesServiceProtocol = RoutesService()
     private var routesManager: RoutesStorageManager = RoutesStorageManager()
     
-    init(user: User, loadUnpublished: Bool = false) {
+    init(user: User, isMyProfile: Bool = false) {
         self.user = user
-        self.loadUnpublished = loadUnpublished
+        self.isMyProfile = isMyProfile
+        self.loadUnpublished = isMyProfile
     }
     
+    // Functins to load screen data
     @MainActor
     func loadData(isCurrentUser: Bool = false)  {
         self.userLoading = true
@@ -53,6 +56,7 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    // User
     @MainActor
     func fetchUser() async {
         self.userLoadingError = false
@@ -64,6 +68,7 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    // Finished routes
     @MainActor
     func getFinishedRoutes(isCurrentUser: Bool = false) async {
         for routeIndex in user.finishedRoutes.indices {
@@ -82,6 +87,7 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    // Routes
     @MainActor
     func loadUserRoutes(isCurrentUser: Bool = false) async {
         self.routesLoadingError = false
@@ -110,6 +116,7 @@ class ProfileViewModel: ObservableObject {
         return routesManager.getUserRoute(userId: user.id)
     }
     
+    // Friends
     @MainActor
     func addFriend(userFromId: String) async {
         self.isUserRequestProcessing = true
@@ -141,5 +148,11 @@ class ProfileViewModel: ObservableObject {
             }
             self.isUserRequestProcessing = false
         }
+    }
+    
+    // Utility
+    @MainActor
+    func setScreenLoad(to value: Bool) {
+        self.firstLoaded = value
     }
 }

@@ -17,10 +17,11 @@ class AttractionViewModel: ObservableObject {
         self._attraction = attraction
     }
     
+    @MainActor
     func toggleAttracation(attraction: Attraction) {
         if let index = stops.firstIndex(where: { $0.attraction == attraction }) {
-            stops.remove(at: index)
-            updateStopNumbers()
+            self.stops.remove(at: index)
+            self.updateStopNumbers()
         } else if stops.count < 10 {
             stops.append(
                 Route.RouteStop(
@@ -31,9 +32,10 @@ class AttractionViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func updateStopNumbers() {
         for index in stops.indices {
-            stops[index].stepNo = index + 1
+            self.stops[index].stepNo = index + 1
         }
     }
 }
