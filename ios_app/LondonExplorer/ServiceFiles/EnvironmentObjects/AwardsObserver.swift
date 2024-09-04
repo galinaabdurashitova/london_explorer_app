@@ -31,10 +31,12 @@ class AwardsObserver: ObservableObject {
         if !self.newAwards.isEmpty {
             do {
                 try await usersService.saveUserAward(userId: user.id, awards: self.newAwards)
+                withAnimation {
+                    self.newAwards = []
+                }
             } catch {
                 print("Error saving awards")
             }
-            withAnimation { newAwards = [] }
         }
         self.isSaving = false
     }
@@ -51,6 +53,13 @@ class AwardsObserver: ObservableObject {
         } catch {
             print("Unable to get routes number")
         }
+    }
+    
+    @MainActor
+    func signOut() {
+        self.newAwards = []
+        self.maxLikes = 0
+        self.routesNumber = 0
     }
     
     func setMaxLikes(likes: Int?) {

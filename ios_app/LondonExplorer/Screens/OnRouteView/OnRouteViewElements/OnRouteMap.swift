@@ -80,7 +80,7 @@ struct OnRouteMap: View {
                         "Collectable",
                         coordinate: currentCollectable.location
                     ) {
-                        if viewModel.routeProgress.collectables.compactMap({ $0.type }).contains(currentCollectable.type) {
+                        if viewModel.routeProgress.collectables.compactMap({ $0.id }).contains(currentCollectable.id) {
                             CollectableAnnotation(color: .constant(Color.gray))
                                 .onTapGesture {
                                     withAnimation(.easeInOut) { viewModel.collected = currentCollectable }

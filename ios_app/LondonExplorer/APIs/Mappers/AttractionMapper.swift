@@ -10,6 +10,10 @@ import MapKit
 
 class AttractionMapper {
     func mapToAttraction(from dto: AttractionWrapper) async throws -> Attraction {
+        if let cachedAttraction = CacheManager.shared.getAttractionCachedData(for: dto.id) {
+            return cachedAttraction
+        }
+        
         let imageURLs = try await ImagesRepository.shared.getAttractionImagesURL(attractionId: dto.id)
         
         let attraction = Attraction(
@@ -25,6 +29,10 @@ class AttractionMapper {
             imageURLs: imageURLs,
             categories: dto.categories.compactMap { Category(rawValue: $0) }
         )
+        
+        if !imageURLs.isEmpty {
+            CacheManager.shared.saveAttractionData(attraction, for: attraction.id)
+        }
         
         return attraction
     }

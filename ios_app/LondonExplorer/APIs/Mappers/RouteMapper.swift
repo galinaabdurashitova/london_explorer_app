@@ -10,6 +10,11 @@ import SwiftUI
 
 class RouteMapper {
     func mapToRoute(from dto: RouteWrapper) async throws -> Route {
+        if var cachedRoute = CacheManager.shared.getRouteCachedData(for: dto.routeId) {
+            cachedRoute.saves = dto.saves ?? []
+            return cachedRoute
+        }
+        
         let dateCreated = try checkDate(dto.dateCreated, dateType: "date created")
         let datePublished = try checkDate(dto.datePublished, dateType: "date published")
         
@@ -18,7 +23,7 @@ class RouteMapper {
         let pathes = await calculatePathes(for: stops)
         
         
-        return Route(
+        let route = Route(
             id: dto.routeId,
             dateCreated: dateCreated,
             userCreated: dto.userCreated,
@@ -31,6 +36,12 @@ class RouteMapper {
             pathes: pathes,
             calculatedRotueTime: Double(dto.routeTime)
         )
+        
+        if !pathes.isEmpty, !pathes.contains(nil) {
+            CacheManager.shared.saveRouteData(route, for: route.id)
+        }
+        
+        return route
     }
     
     private func checkDate(_ dateString: String, dateType: String) throws -> Date {
