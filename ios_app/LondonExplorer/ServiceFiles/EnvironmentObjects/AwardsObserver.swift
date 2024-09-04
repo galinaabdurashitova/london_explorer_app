@@ -41,8 +41,8 @@ class AwardsObserver: ObservableObject {
         self.isSaving = false
     }
     
-    func getAwardPoints(user: User, award: AwardTypes) -> Double {
-        return award.getPoints(user: user, maxLikes: self.maxLikes, routeNumber: self.routesNumber)
+    func getAwardPoints(user: User, routes: [Route], award: AwardTypes) -> Double {
+        return award.getPoints(user: user, routes: routes)
     }
     
     @MainActor

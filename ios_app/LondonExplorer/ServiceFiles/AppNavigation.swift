@@ -31,8 +31,8 @@ extension View {
                     FinishedRoutesView(user: user)
                 case .collectables(let user):
                     ProfileCollectablesView(user: user)
-                case .awards(let user):
-                    AwardsView(user: user)
+                case .awards(let user, let routes):
+                    AwardsView(user: user, routes: routes)
                 case .friends(let user):
                     FriendsView(user: user)
                 case .settings:

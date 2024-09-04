@@ -40,14 +40,13 @@ class AuthController: ObservableObject {
         print("User reloaded")
     }
     
+    @MainActor
     func getFinishedRoutes() async {
         for routeIndex in self.profile.finishedRoutes.indices {
             do {
                 let route = try await self.routesRepository.fetchRoute(routeId: self.profile.finishedRoutes[routeIndex].routeId)
                 
-                DispatchQueue.main.async {
-                    self.profile.finishedRoutes[routeIndex].route = route
-                }
+                self.profile.finishedRoutes[routeIndex].route = route
             } catch {
                 print("Error fetching route \(self.profile.finishedRoutes[routeIndex].id)")
             }

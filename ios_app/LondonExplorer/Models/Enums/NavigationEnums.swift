@@ -31,7 +31,7 @@ enum ProfileNavigation: Hashable {
     case profile(User)
     case finishedRoutes(User)
     case collectables(User)
-    case awards(User)
+    case awards(User, [Route])
     case friends(User)
     case settings
 }

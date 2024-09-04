@@ -38,9 +38,9 @@ struct ProfileStatIcons: View {
             }
         }
         
-        func getNavigation(user: User) -> ProfileNavigation {
+        func getNavigation(user: User, routes: [Route]) -> ProfileNavigation {
             switch self {
-            case .awards:           return ProfileNavigation.awards(user)
+            case .awards:           return ProfileNavigation.awards(user, routes)
             case .finishedRoutes:   return ProfileNavigation.finishedRoutes(user)
             case .collectables:     return ProfileNavigation.collectables(user)
             }
@@ -68,7 +68,7 @@ struct ProfileStatIcons: View {
     private var iconRow: some View {
         HStack(spacing: 10) {
             ForEach(StatIconType.allCases, id: \.self) { iconType in
-                NavigationLink(value: iconType.getNavigation(user: viewModel.user)) {
+                NavigationLink(value: iconType.getNavigation(user: viewModel.user, routes: viewModel.routes)) {
                     statIcon(icon: iconType.iconName, number: iconType.getNumber(user: viewModel.user), word: iconType.word, colour: iconType.colour)
                 }
             }

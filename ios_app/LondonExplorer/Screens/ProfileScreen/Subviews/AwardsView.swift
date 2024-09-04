@@ -12,6 +12,7 @@ struct AwardsView: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var awards: AwardsObserver
     @State var user: User
+    @State var routes: [Route] = []
     
     private var currentUser: Bool {
         user.id == auth.profile.id
@@ -88,7 +89,7 @@ struct AwardsView: View {
     }
     
     private func awardProgressBar(award: AwardTypes, colour: Color) -> some View {
-        let currentPoints = awards.getAwardPoints(user: user, award: award)
+        let currentPoints = awards.getAwardPoints(user: user, routes: routes, award: award)
         let currentLevel = award.getLevelPoints(level: award.getUserLevel(user: user))
         let nextLevel = award.getLevelPoints(level: award.getUserLevel(user: user) + 1)
         
@@ -144,7 +145,7 @@ struct AwardsView: View {
 }
 
 #Preview {
-    AwardsView(user: MockData.Users[0])
+    AwardsView(user: MockData.Users[0], routes: MockData.Routes)
         .environmentObject(AuthController(testProfile: true))
         .environmentObject(AwardsObserver())
 }

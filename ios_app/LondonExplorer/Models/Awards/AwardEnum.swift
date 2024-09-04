@@ -57,14 +57,14 @@ enum AwardTypes: String, Codable, CaseIterable {
         }
     }
     
-    func getPoints(user: User, maxLikes: Int = 0, routeNumber: Int = 0) -> Double {
+    func getPoints(user: User, routes: [Route] = []) -> Double {
         switch self {
         case .routesFinished:
             return Double(user.finishedRoutes.count)
         case .attractionsVisited:
             return Double(user.finishedRoutes.compactMap { $0.route?.stops.count }.reduce(0, +))
         case .routesPublished:
-            return Double(routeNumber)
+            return Double(routes.filter({ $0.datePublished != nil }).count)
         case .friends:
             return Double(user.friends.count)
         case .minutes:
@@ -73,7 +73,8 @@ enum AwardTypes: String, Codable, CaseIterable {
             let totalDistance = user.finishedRoutes.compactMap { $0.route?.pathes.compactMap { $0?.expectedTravelTime }.reduce(0, +) }.reduce(0, +)
             return Double(totalDistance) / 1000
         case .likedRoute:
-            return Double(maxLikes)
+            let maxLikes = routes.compactMap { $0.saves.count }
+            return Double(maxLikes.max() ?? 0)
         case .collectables:
             return Double(user.collectables.count)
         }
