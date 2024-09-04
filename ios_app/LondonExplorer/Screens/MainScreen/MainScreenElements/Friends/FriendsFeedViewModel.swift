@@ -41,8 +41,8 @@ class FriendsFeedViewModel: ObservableObject {
             for updateIndex in self.updates.indices {
                 if self.updates[updateIndex].update == .finishedRoute {
                     do {
-                        let route = try await self.routesService.fetchRoute(routeId: self.updates[updateIndex].description)
-                        self.updates[updateIndex].routeName = route.name
+                        let routeName = try await self.routesService.getRouteName(routeId: self.updates[updateIndex].description)
+                        self.updates[updateIndex].routeName = routeName
                     } catch {
                         print("Could not fetch a route: \(self.updates[updateIndex].description)")
                     }

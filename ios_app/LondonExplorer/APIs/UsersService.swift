@@ -23,7 +23,14 @@ protocol UsersServiceProtocol: Service {
 }
 
 class UsersService: Service, UsersServiceProtocol {
-    private let serviceURL = URL(string: "http://localhost:8081/api/users")!
+    private var serviceURL: URL {
+        if Server.localServer {
+            URL(string: "http://localhost:8081/api/users")!
+        } else {
+            URL(string: "https://users-api-gmabdurashitova.replit.app/api/users")!
+        }
+    }
+    
     private let serviceName = "Users service"
     
     private let userMapper: UserMapper = UserMapper()

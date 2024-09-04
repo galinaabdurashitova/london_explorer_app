@@ -23,6 +23,9 @@ struct AuthView: View {
             HStack {
                 LondonExplorerLogo(scrollOffset: 50)
                 Image("Bus3DIcon")
+                    .onTapGesture(count: 4) {
+                        Server.localServer.toggle()
+                    }
             }
             
             if let error = errorMessage {

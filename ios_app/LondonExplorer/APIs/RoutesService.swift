@@ -21,10 +21,17 @@ protocol RoutesServiceProtocol: Service {
     func fetchTopRoutes(limit: Int) async throws -> [Route]             // Get top routes
     func getMostLikes(userId: String) async throws -> Int               // Func for awards
     func getRoutesNumber(userId: String) async throws -> Int            // Func for awards
+    func getRouteName(routeId: String) async throws -> String           // Func for friends update
 }
 
 class RoutesService: Service, RoutesServiceProtocol {
-    private let serviceURL = URL(string: "http://localhost:8082/api/routes")!
+    private var serviceURL: URL {
+        if Server.localServer {
+            URL(string: "http://localhost:8082/api/routes")!
+        } else {
+            URL(string: "https://routes-api-gmabdurashitova.replit.app/api/routes")!
+        }
+    }
     private let serviceName = "Routes service"
     
     private let routeMapper = RouteMapper()
@@ -153,6 +160,15 @@ class RoutesService: Service, RoutesServiceProtocol {
         return routesNumber
     }
     
+    func getRouteName(routeId: String) async throws -> String {
+        let methodName = "getRouteName"
+        let url = serviceURL.appendingPathComponent("\(routeId)")
+        
+        let data = try await self.makeRequest(method: .get, url: url, serviceName: serviceName, methodName: methodName)
+        let route = try self.decodeResponse(from: data, as: RouteWrapper.self, serviceName: serviceName, methodName: methodName)
+        
+        return route.routeName
+    }
     
     private func decodeRoutes(from data: Data, methodName: String) async throws -> [Route] {
         let routes = try self.decodeResponse(from: data, as: [RouteWrapper].self, serviceName: serviceName, methodName: methodName)
