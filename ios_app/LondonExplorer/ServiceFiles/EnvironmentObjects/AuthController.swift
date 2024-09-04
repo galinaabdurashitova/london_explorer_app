@@ -90,7 +90,7 @@ class AuthController: ObservableObject {
         }
     }
     
-    
+    @MainActor
     func login(email: String, password: String) async throws {
         do {
             let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
@@ -100,9 +100,7 @@ class AuthController: ObservableObject {
             
             self.setUserProfile(user: profile)
             
-            DispatchQueue.main.async {
-                self.isSignedIn = true
-            }
+            self.isSignedIn = true
             
             print("User \(user.uid) signed in.")
         } catch {
@@ -111,6 +109,7 @@ class AuthController: ObservableObject {
         }
     }
     
+    @MainActor
     func signUp(name: String, userName: String, email: String, password: String) async throws {
         do {
             let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -121,9 +120,7 @@ class AuthController: ObservableObject {
             
             self.setUserProfile(user: userProfile)
             
-            DispatchQueue.main.async {
-                self.isSignedIn = true
-            }
+            self.isSignedIn = true
             
             print("User \(user.uid) signed up.")
         } catch {

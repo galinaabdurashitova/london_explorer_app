@@ -96,7 +96,7 @@ struct OnRouteView: View {
     }
     
     private func alreadyHaveCollectable(_ collectable: Route.RouteCollectable) -> Bool {
-        auth.profile.collectables.compactMap{ $0.type }.contains(collectable.type) || viewModel.routeProgress.collectables.contains(collectable)
+        auth.profile.collectables.compactMap{ $0.type }.contains(collectable.type) || viewModel.routeProgress.collectables.compactMap{ $0.type }.contains(collectable.type)
     }
     
     private func finishRoute() {

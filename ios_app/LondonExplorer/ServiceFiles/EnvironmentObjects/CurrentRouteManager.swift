@@ -27,6 +27,8 @@ class CurrentRouteManager: ObservableObject {
                 $0.user.id == user.id
             }) {
                 self.routeProgress = routeProgress
+            } else {
+                self.routeProgress = nil
             }
         }
     }

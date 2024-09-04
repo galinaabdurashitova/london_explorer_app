@@ -11,6 +11,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var auth: AuthController
     @EnvironmentObject var globalSettings: GlobalSettings
+    @EnvironmentObject var awards: AwardsObserver
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -46,6 +47,7 @@ struct SettingsView: View {
     
     func signOut() {
         globalSettings.signOut()
+        awards.signOut()
         auth.signOut()
     }
 }
@@ -54,4 +56,5 @@ struct SettingsView: View {
     SettingsView()
         .environmentObject(AuthController(testProfile: true))
         .environmentObject(GlobalSettings())
+        .environmentObject(AwardsObserver())
 }
