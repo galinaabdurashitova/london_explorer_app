@@ -16,7 +16,7 @@ struct PathConnection: View {
     
     var body: some View {
         ZStack {
-            Image("path")
+            Image("Path")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: UIScreen.main.bounds.width * 0.62)
