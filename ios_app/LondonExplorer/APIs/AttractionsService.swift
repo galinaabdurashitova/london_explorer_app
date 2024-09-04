@@ -15,8 +15,13 @@ protocol AttractionsServiceProtocol: Service {
 }
 
 class AttractionsService: Service, AttractionsServiceProtocol {
-    // http://attractions-api-gmabdurashitova.replit.app/api/attractions
-    private let serviceURL = URL(string: "http://localhost:8083/api/attractions")!
+    private var serviceURL: URL {
+        if Server.localServer {
+            URL(string: "http://localhost:8083/api/attractions")!
+        } else {
+            URL(string: "http://attractions-api-gmabdurashitova.replit.app/api/attractions")!
+        }
+    }
     private let serviceName = "Attractions service"
     
     private var attractionMapper: AttractionMapper = AttractionMapper()

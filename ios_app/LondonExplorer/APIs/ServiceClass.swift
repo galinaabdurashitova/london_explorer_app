@@ -7,6 +7,14 @@
 
 import Foundation
 
+class Server {
+    static var localServer: Bool = false {
+        didSet {
+            print("Server changed to \(localServer ? "local" : "web")")
+        }
+    }
+}
+
 class Service {
     enum RequestMethods: String {
         case get = "GET"
@@ -36,6 +44,7 @@ class Service {
     }
     
     func makeRequest(method: RequestMethods, url: URL, body: Encodable? = nil, serviceName: String, methodName: String) async throws -> Data {
+        print(method.rawValue + " " + url.absoluteString)
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

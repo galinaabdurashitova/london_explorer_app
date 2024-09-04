@@ -24,6 +24,9 @@ struct LondonExplorerLogo: View {
                 .font(.custom("Sirukota", size: fontSize + 4))
                 .foregroundColor(Color.redAccent)
         }
+        .onTapGesture(count: 4) {
+            Server.localServer.toggle()
+        }
     }
 }
 
