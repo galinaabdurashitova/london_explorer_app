@@ -1,5 +1,7 @@
 # London Explorer — iOS + Spring Boot Modular Architecture
 
+📹 [Demo video](https://drive.google.com/file/d/1tl4DR5qIYxWN_CztKQcC1NM70mVMm0hJ/view?usp=sharing)
+
 London Explorer is a SwiftUI-based iOS application with a modular Spring Boot backend, designed for gamified city exploration. The app allows users to build, save, and complete custom walking routes in London, unlock collectables, earn awards, and interact with friends through a dynamic activity feed.
 
 This project was developed as a final thesis for an MSc in Software Engineering and demonstrates advanced iOS architecture patterns, RESTful integration, and microservice-based backend design.
