@@ -10,6 +10,11 @@ This project was developed as a final thesis for an MSc in Software Engineering 
 
 ## 🧩 Project Architecture
 
+### High-level Context Diagram
+<p align="center">
+  <img src="docs/Diagrams/App_context.svg" width="600"/>
+</p>
+
 ### iOS App
 - **Framework**: SwiftUI (no UIKit)
 - **Architecture**: MVVM + Environment Injection + Clean Module Separation
@@ -37,16 +42,16 @@ This project was developed as a final thesis for an MSc in Software Engineering 
 ## 🚀 Core Features
 
 <p align="center">
-  <img src="Screenshots/1_login.png" width="180"/>
-  <img src="Screenshots/18_onRouteBanner.png" width="180"/>
-  <img src="Screenshots/8_myProfile.png" width="180"/>
-  <img src="Screenshots/9_userAwards.png" width="180"/>
-  <img src="Screenshots/14_routeMap.png" width="180"/>
-  <img src="Screenshots/17_onRoute.png" width="180"/>
-  <img src="Screenshots/20_foundCollectable.png" width="180"/>
-  <img src="Screenshots/22_award.png" width="180"/>
-  <img src="Screenshots/24_createRouteProcess_2.png" width="180"/>
-  <img src="Screenshots/25_chooseAttractions.png" width="180"/>
+  <img src="docs/Screenshots/1_login.png" width="180"/>
+  <img src="docs/Screenshots/18_onRouteBanner.png" width="180"/>
+  <img src="docs/Screenshots/8_myProfile.png" width="180"/>
+  <img src="docs/Screenshots/9_userAwards.png" width="180"/>
+  <img src="docs/Screenshots/14_routeMap.png" width="180"/>
+  <img src="docs/Screenshots/17_onRoute.png" width="180"/>
+  <img src="docs/Screenshots/20_foundCollectable.png" width="180"/>
+  <img src="docs/Screenshots/22_award.png" width="180"/>
+  <img src="docs/Screenshots/24_createRouteProcess_2.png" width="180"/>
+  <img src="docs/Screenshots/25_chooseAttractions.png" width="180"/>
 </p>
 
 ### iOS
@@ -98,3 +103,21 @@ This application was built as the capstone project for a Master’s in Software 
 - Expertise in full-stack REST architecture
 - Scalable modular code design
 - End-to-end system thinking across mobile and backend layers
+
+---
+
+## 📲 Screen Flows
+The following diagrams illustrate the main user journeys:
+
+<p align="center">
+  <img src="docs/Diagrams/Flows/Main_flow.png" width="600"/>
+</p>
+<p align="center">
+  <img src="docs/Diagrams/Flows/Create_route_flow.png" width="600"/>
+</p>
+<p align="center">
+  <img src="docs/Diagrams/Flows/My_profile_flow.png" width="600"/>
+</p>
+<p align="center">
+  <img src="docs/Diagrams/Flows/User_profile_flow.png" width="600"/>
+</p>
