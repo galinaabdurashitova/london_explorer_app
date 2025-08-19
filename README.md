@@ -110,14 +110,18 @@ This application was built as the capstone project for a Master’s in Software 
 The following diagrams illustrate the main user journeys:
 
 <p align="center">
-  <img src="docs/Diagrams/Flows/Main_flow.png" width="600"/>
+  <img src="docs/Diagrams/Flows/Main_flow.png" width="800"/><br/>
+  <b>Main Flow</b>
 </p>
 <p align="center">
-  <img src="docs/Diagrams/Flows/Create_route_flow.png" width="600"/>
+  <img src="docs/Diagrams/Flows/Create_route_flow.png" width="800"/><br/>
+  <b>Create Route Flow</b>
 </p>
 <p align="center">
-  <img src="docs/Diagrams/Flows/My_profile_flow.png" width="600"/>
+  <img src="docs/Diagrams/Flows/My_profile_flow.png" width="800"/><br/>
+  <b>My Profile Flow</b>
 </p>
 <p align="center">
-  <img src="docs/Diagrams/Flows/User_profile_flow.png" width="600"/>
+  <img src="docs/Diagrams/Flows/User_profile_flow.png" width="800"/><br/>
+  <b>User Profile Flow</b>
 </p>
